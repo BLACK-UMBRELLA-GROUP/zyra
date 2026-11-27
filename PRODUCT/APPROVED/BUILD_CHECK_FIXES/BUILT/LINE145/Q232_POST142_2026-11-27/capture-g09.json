@@ -1,0 +1,21 @@
+{
+  "name": "capture-g09",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/visual/lock8_v5_guardian_journeys_test.dart",
+    "--dart-define=ZYRA_LINE102_GUARDIAN_JOURNEYS_DIR=build/line145/post142/g09",
+    "--name",
+    "V5 active Sara fixture uses (open|paused) review|V5 Basic remains View only"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:49:31.962448+00:00",
+  "finished_utc": "2026-11-27T16:49:45.194063+00:00",
+  "seconds": 13.23,
+  "exit": 0
+}

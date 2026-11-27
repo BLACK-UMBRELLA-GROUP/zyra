@@ -1,0 +1,397 @@
+{
+  "line": 145,
+  "authority": "Q214; Q232; bounded line145 follow-up brief",
+  "before_commit": "50347df3",
+  "comparisons": {
+    "g11_seeker__adam_main": {
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "device_pixel_ratio": 1,
+      "corner_mask_px": 40,
+      "corner_mask_shape": "four 40x40 corner squares",
+      "avatar_center_xy": [
+        215,
+        176
+      ],
+      "avatar_radius_px": 42,
+      "rgb_delta_threshold_exclusive": 10,
+      "significant_pixels": 5252,
+      "significant_bbox_xyxy_inclusive": [
+        174,
+        135,
+        255,
+        216
+      ],
+      "outside_avatar_max_rgb_channel_delta": 3,
+      "outside_avatar_significant_pixels": 0,
+      "alpha_difference_pixels": 0,
+      "matches_held_q214_raster_proof": true,
+      "geometry_evidence": "No RGB channel displacement above 3 outside the approved avatar; retains existing Q214 1px card/text geometry allowance.",
+      "before_sha256": "340be2c560c878eee83c39ebaf5cf79e7821766f07a1e72d76195676ed9ef07d",
+      "before_bytes": 95888,
+      "fresh_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line145/post142/golden-candidates/g11_seeker__adam_main.png",
+      "fresh_sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+      "fresh_bytes": 94447,
+      "approved_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "approved_sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+      "expected_after_sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+      "before_hash_verified": true,
+      "fresh_hash_and_size_verified": true,
+      "approved_hash_and_size_verified": true,
+      "fresh_equals_integrated_approved_png": true,
+      "pass": true
+    },
+    "g12_seeker__yusuf_additional": {
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "device_pixel_ratio": 1,
+      "corner_mask_px": 40,
+      "corner_mask_shape": "four 40x40 corner squares",
+      "avatar_center_xy": [
+        215,
+        176
+      ],
+      "avatar_radius_px": 42,
+      "rgb_delta_threshold_exclusive": 10,
+      "significant_pixels": 5252,
+      "significant_bbox_xyxy_inclusive": [
+        174,
+        135,
+        255,
+        216
+      ],
+      "outside_avatar_max_rgb_channel_delta": 3,
+      "outside_avatar_significant_pixels": 0,
+      "alpha_difference_pixels": 0,
+      "matches_held_q214_raster_proof": true,
+      "geometry_evidence": "No RGB channel displacement above 3 outside the approved avatar; retains existing Q214 1px card/text geometry allowance.",
+      "before_sha256": "c289900ea800d0c954f3e65db1fb6085668184f8f89857c514d3785e63909c8c",
+      "before_bytes": 94913,
+      "fresh_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line145/post142/golden-candidates/g12_seeker__yusuf_additional.png",
+      "fresh_sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+      "fresh_bytes": 93596,
+      "approved_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "approved_sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+      "expected_after_sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+      "before_hash_verified": true,
+      "fresh_hash_and_size_verified": true,
+      "approved_hash_and_size_verified": true,
+      "fresh_equals_integrated_approved_png": true,
+      "pass": true
+    }
+  },
+  "contact_sheets": [
+    {
+      "file": "g11_seeker__adam_main_before_after_diff.png",
+      "tile_size": [
+        430,
+        932
+      ],
+      "columns": 3,
+      "rows": 1,
+      "captions": [
+        "g11_seeker__adam_main: accepted queue75 at 50347df3; native 1x",
+        "g11_seeker__adam_main: fresh line145 capture; native 1x",
+        "g11_seeker__adam_main: absolute RGB difference multiplied by 8; no masks applied to display"
+      ]
+    },
+    {
+      "file": "g12_seeker__yusuf_additional_before_after_diff.png",
+      "tile_size": [
+        430,
+        932
+      ],
+      "columns": 3,
+      "rows": 1,
+      "captions": [
+        "g12_seeker__yusuf_additional: accepted queue75 at 50347df3; native 1x",
+        "g12_seeker__yusuf_additional: fresh line145 capture; native 1x",
+        "g12_seeker__yusuf_additional: absolute RGB difference multiplied by 8; no masks applied to display"
+      ]
+    },
+    {
+      "file": "q214_before_after_diff.png",
+      "tile_size": [
+        430,
+        932
+      ],
+      "columns": 3,
+      "rows": 2,
+      "row_order": [
+        "g11_seeker__adam_main",
+        "g12_seeker__yusuf_additional"
+      ],
+      "column_order": [
+        "accepted queue75 before",
+        "fresh line145 after",
+        "absolute RGB difference x8"
+      ],
+      "display_masks": "none; 40px corner and 42px avatar masks apply to numeric proof only"
+    },
+    {
+      "file": "j01_one__no_journey_master_actual.png",
+      "view": "j01_one__no_journey",
+      "description": "Empty Journey; real tab-bar shadow",
+      "tile_size": [
+        430,
+        932
+      ],
+      "columns": 2,
+      "rows": 1,
+      "master_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j01_one__no_journey.png",
+      "master_sha256": "ba4bfef8e1e60290de682648f2895039ecac0fbecaf837d4211ac89c3d1af0fa",
+      "master_native_pixels": [
+        1290,
+        2796
+      ],
+      "actual_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line145/post142/j01/j01_one__no_journey.png",
+      "actual_sha256": "95d2bc095aa3f50e3875a78e6cd17d4f9e3bfa3c6bddb2540f2083a4edf25543",
+      "actual_native_pixels": [
+        1290,
+        2796
+      ],
+      "captions": [
+        "Current locked master: JOURNEY_TAB/j01_one__no_journey; displayed at 430x932",
+        "Fresh line145 actual: j01_one__no_journey; displayed at 430x932"
+      ],
+      "downsampling": "Per-channel integer box average with nearest-integer rounding; no cropping, upscaling, or font rendering",
+      "comparison_scope": "Real-shadow appearance and layout; g09 photo contents are excluded by item13; Open Journey ink is line141 scope; no whole-master pixel-match claim",
+      "actual_equals_original_held_q232_png": true,
+      "inherited_master_differences": "Larger and higher empty-state circle, text wrapping/font raster, and tab-bar placement/insets differ from the prototype; fresh PNG is identical to held Q232, so these are not new geometry shifts"
+    },
+    {
+      "file": "g09_journeys__adam_master_actual.png",
+      "view": "g09_journeys__adam",
+      "description": "Guardian One; active Family review",
+      "tile_size": [
+        430,
+        932
+      ],
+      "columns": 2,
+      "rows": 1,
+      "master_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+      "master_sha256": "fd14430a1c0b5646daff24b569378bc7d1865fcbc96a10b8eb3127798055b63b",
+      "master_native_pixels": [
+        1290,
+        2796
+      ],
+      "actual_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line145/post142/g09/g09_journeys__adam.png",
+      "actual_sha256": "a109634c035d46d10a2894feeafd58d00db46423ffd320ed8a3c2747e3aa41c5",
+      "actual_native_pixels": [
+        1290,
+        2796
+      ],
+      "captions": [
+        "Current locked master: GUARDIAN_TABS/g09_journeys__adam; displayed at 430x932",
+        "Fresh line145 actual: g09_journeys__adam; displayed at 430x932"
+      ],
+      "downsampling": "Per-channel integer box average with nearest-integer rounding; no cropping, upscaling, or font rendering",
+      "comparison_scope": "Real-shadow appearance and layout; g09 photo contents are excluded by item13; Open Journey ink is line141 scope; no whole-master pixel-match claim",
+      "actual_equals_original_held_q232_png": true,
+      "open_journey_ink_observation": {
+        "actual": {
+          "dominant_opaque_dark_text_rgb": [
+            43,
+            36,
+            32
+          ],
+          "dominant_opaque_dark_text_hex": "#2B2420",
+          "exact_pixels": 2204,
+          "logical_roi_xyxy": [
+            150,
+            685,
+            280,
+            712
+          ],
+          "native_pixel_ratio": 3
+        },
+        "master": {
+          "dominant_opaque_dark_text_rgb": [
+            43,
+            36,
+            32
+          ],
+          "dominant_opaque_dark_text_hex": "#2B2420",
+          "exact_pixels": 1391,
+          "logical_roi_xyxy": [
+            150,
+            700,
+            280,
+            725
+          ],
+          "native_pixel_ratio": 3
+        },
+        "target_hex": "#2B2420",
+        "actual_matches_master_espresso_ink": true,
+        "line141_status": "QUESTION Q238; its remaining checks stay with that line",
+        "line145_scope": "No Open Journey ink change; fresh actual and current target both show espresso, so no ink mismatch is claimed here"
+      },
+      "inherited_master_differences": "Text raster/size/position, page and card insets, photo scaling, navigation styling and shadow appearance differ from the prototype; fresh PNG is identical to held Q232, so these are not new geometry shifts"
+    },
+    {
+      "file": "g09b_journeys__adam_paused_master_actual.png",
+      "view": "g09b_journeys__adam_paused",
+      "description": "Guardian One; Family review paused",
+      "tile_size": [
+        430,
+        932
+      ],
+      "columns": 2,
+      "rows": 1,
+      "master_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09b_journeys__adam_paused.png",
+      "master_sha256": "9c828f6136a6ba09fb503c564d7bff40332ca90743034c965cb6c3cd19cafdef",
+      "master_native_pixels": [
+        1290,
+        2796
+      ],
+      "actual_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line145/post142/g09/g09b_journeys__adam_paused.png",
+      "actual_sha256": "51e041956808ef0d25395df68384f39e7f4a6bb476dad90ed24967d1d2e48377",
+      "actual_native_pixels": [
+        1290,
+        2796
+      ],
+      "captions": [
+        "Current locked master: GUARDIAN_TABS/g09b_journeys__adam_paused; displayed at 430x932",
+        "Fresh line145 actual: g09b_journeys__adam_paused; displayed at 430x932"
+      ],
+      "downsampling": "Per-channel integer box average with nearest-integer rounding; no cropping, upscaling, or font rendering",
+      "comparison_scope": "Real-shadow appearance and layout; g09 photo contents are excluded by item13; Open Journey ink is line141 scope; no whole-master pixel-match claim",
+      "actual_equals_original_held_q232_png": true,
+      "open_journey_ink_observation": {
+        "actual": {
+          "dominant_opaque_dark_text_rgb": [
+            43,
+            36,
+            32
+          ],
+          "dominant_opaque_dark_text_hex": "#2B2420",
+          "exact_pixels": 2204,
+          "logical_roi_xyxy": [
+            150,
+            685,
+            280,
+            712
+          ],
+          "native_pixel_ratio": 3
+        },
+        "master": {
+          "dominant_opaque_dark_text_rgb": [
+            43,
+            36,
+            32
+          ],
+          "dominant_opaque_dark_text_hex": "#2B2420",
+          "exact_pixels": 1391,
+          "logical_roi_xyxy": [
+            150,
+            700,
+            280,
+            725
+          ],
+          "native_pixel_ratio": 3
+        },
+        "target_hex": "#2B2420",
+        "actual_matches_master_espresso_ink": true,
+        "line141_status": "QUESTION Q238; its remaining checks stay with that line",
+        "line145_scope": "No Open Journey ink change; fresh actual and current target both show espresso, so no ink mismatch is claimed here"
+      },
+      "inherited_master_differences": "Text raster/size/position, page and card insets, photo scaling, navigation styling and shadow appearance differ from the prototype; fresh PNG is identical to held Q232, so these are not new geometry shifts"
+    },
+    {
+      "file": "g09c_journeys__adam_guardian_basic_master_actual.png",
+      "view": "g09c_journeys__adam_guardian_basic",
+      "description": "Guardian Basic; View only",
+      "tile_size": [
+        430,
+        932
+      ],
+      "columns": 2,
+      "rows": 1,
+      "master_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "master_sha256": "913560834e0ae309096f80c923102879d9326c0f3e184030b0f7592004de7758",
+      "master_native_pixels": [
+        1290,
+        2796
+      ],
+      "actual_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line145/post142/g09/g09c_journeys__adam_guardian_basic.png",
+      "actual_sha256": "ff233991d8874508e30936c91846172594fec6a9244865832387ccebc0258da1",
+      "actual_native_pixels": [
+        1290,
+        2796
+      ],
+      "captions": [
+        "Current locked master: GUARDIAN_TABS/g09c_journeys__adam_guardian_basic; displayed at 430x932",
+        "Fresh line145 actual: g09c_journeys__adam_guardian_basic; displayed at 430x932"
+      ],
+      "downsampling": "Per-channel integer box average with nearest-integer rounding; no cropping, upscaling, or font rendering",
+      "comparison_scope": "Real-shadow appearance and layout; g09 photo contents are excluded by item13; Open Journey ink is line141 scope; no whole-master pixel-match claim",
+      "actual_equals_original_held_q232_png": true,
+      "open_journey_ink_observation": {
+        "actual": {
+          "dominant_opaque_dark_text_rgb": [
+            43,
+            36,
+            32
+          ],
+          "dominant_opaque_dark_text_hex": "#2B2420",
+          "exact_pixels": 2204,
+          "logical_roi_xyxy": [
+            150,
+            685,
+            280,
+            712
+          ],
+          "native_pixel_ratio": 3
+        },
+        "master": {
+          "dominant_opaque_dark_text_rgb": [
+            43,
+            36,
+            32
+          ],
+          "dominant_opaque_dark_text_hex": "#2B2420",
+          "exact_pixels": 1391,
+          "logical_roi_xyxy": [
+            150,
+            700,
+            280,
+            725
+          ],
+          "native_pixel_ratio": 3
+        },
+        "target_hex": "#2B2420",
+        "actual_matches_master_espresso_ink": true,
+        "line141_status": "QUESTION Q238; its remaining checks stay with that line",
+        "line145_scope": "No Open Journey ink change; fresh actual and current target both show espresso, so no ink mismatch is claimed here"
+      },
+      "inherited_master_differences": "Text raster/size/position, page and card insets, photo scaling, navigation styling and shadow appearance differ from the prototype; fresh PNG is identical to held Q232, so these are not new geometry shifts"
+    },
+    {
+      "file": "scoped_masters_actuals.png",
+      "tile_size": [
+        430,
+        932
+      ],
+      "columns": 2,
+      "rows": 4,
+      "row_order": [
+        "j01_one__no_journey",
+        "g09_journeys__adam",
+        "g09b_journeys__adam_paused",
+        "g09c_journeys__adam_guardian_basic"
+      ],
+      "column_order": [
+        "current locked master",
+        "fresh actual"
+      ],
+      "captions_location": "Individual rows above; captions stored in JSON to avoid a font dependency"
+    }
+  ],
+  "all_exact_and_proven": true,
+  "all_six_fresh_pngs_equal_original_held_q232": true,
+  "visual_scope": "Bounded real-shadow/layout comparison and Q214 avatar/shadow proof only; no whole-master pixel match claimed; no new geometry shift because all six PNG bytes equal original held Q232"
+}

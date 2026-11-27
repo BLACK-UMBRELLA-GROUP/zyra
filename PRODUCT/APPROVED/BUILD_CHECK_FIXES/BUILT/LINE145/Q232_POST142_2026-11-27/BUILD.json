@@ -1,0 +1,24 @@
+{
+  "line": 145,
+  "question": 232,
+  "commit_sha": "0c2600c3568da65315310a2100528c9c2e4c3798",
+  "flutter_version": "3.44.2",
+  "build_mode": "protected Flutter widget-test Founder preview; logical430x932; real shadows",
+  "timestamp_utc": "2026-11-27T17:04:22.199760+00:00",
+  "capture_commands": [
+    "capture-j01.json",
+    "capture-g09.json",
+    "capture-g11-g12.json"
+  ],
+  "actual_capture_window_utc": [
+    "2026-11-27T16:49:19.387116+00:00",
+    "2026-11-27T16:49:57.512740+00:00"
+  ],
+  "source_hash_manifest": "INTEGRATED_SOURCE_MANIFEST.json",
+  "screenshots_manifest": "comparisons/SIX_FRESH_CAPTURE_MANIFEST.json",
+  "mock_vs_live": "Local preview sample state only; no live server, native build or phone delivery.",
+  "hosted_gate": "PASS: selector plus3required Flutter shards on46038671790",
+  "compiled_app_stored": false,
+  "source_tree_copy_stored": false,
+  "verified_utc": "2026-11-27T17:15:16.375818+00:00"
+}

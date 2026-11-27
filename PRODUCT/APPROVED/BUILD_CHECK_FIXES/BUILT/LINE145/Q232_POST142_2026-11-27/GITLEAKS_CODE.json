@@ -1,0 +1,12 @@
+{
+  "command": [
+    "gitleaks",
+    "detect",
+    "--source",
+    ".",
+    "--log-opts=origin/main..HEAD",
+    "--redact"
+  ],
+  "exit": 0,
+  "utc": "2026-11-27T17:02:57.638892+00:00"
+}

@@ -1,0 +1,246 @@
+{
+  "hits": 40,
+  "all_reviewed_false_positives": true,
+  "details": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2979,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10913,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10914,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "line": 125,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1988,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "line": 78,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "line": 92,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "line": 99,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+      "line": 585,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+      "line": 586,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+      "line": 587,
+      "kind": "money",
+      "classification": "Unchanged previously published app/test line; no new private material."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 104,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 284,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 298,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 1013,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 1060,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 1291,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 1383,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 1510,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 1512,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 1610,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "line": 2019,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 221,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 278,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 337,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 373,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 583,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 729,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 808,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 839,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 969,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 977,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 1102,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 1127,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 1140,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 1324,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 1396,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "line": 1423,
+      "kind": "money",
+      "classification": "PNG compressed bytes decoded as text by broad scanner; verified 430x932 approved screenshot, no document."
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_capacity_test.dart",
+      "line": 276,
+      "kind": "money",
+      "classification": "Dart positional record access matches the scanner currency heuristic; code only, no commercial data or business document."
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_capacity_test.dart",
+      "line": 280,
+      "kind": "money",
+      "classification": "Dart positional record access matches the scanner currency heuristic; code only, no commercial data or business document."
+    }
+  ]
+}

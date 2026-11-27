@@ -1,0 +1,22 @@
+{
+  "name": "strict-normal430",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/zyra_clearer_text_contrast_430_test.dart",
+    "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+    "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/tab1/Seeker_One,seeker/journey/Seeker_One,lock8_pages/tab1/Guardian_One,lock8_pages/guardian_seeker/Guardian_One,lock8_circle/guardian_circle/Guardian_One,line98_ended_430x932/ended/Seeker_One,line98_ended_430x932/ended_archive/Seeker_One,lock19_v3/guardian_family_identity/Guardian_Basic",
+    "--name",
+    "^(Guardian One|Family|Circle|Ended) |^Remaining routes.*(Journey|journey|Profile|profile|Hide|hide)|^Seeker.*(Journey|journey)"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:50:13.552399+00:00",
+  "finished_utc": "2026-11-27T16:53:47.922618+00:00",
+  "seconds": 214.37,
+  "exit": 0
+}

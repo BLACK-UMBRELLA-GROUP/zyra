@@ -1,0 +1,13 @@
+{
+  "name": "driver-check",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "check"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:47:36.239010+00:00",
+  "finished_utc": "2026-11-27T16:47:36.511905+00:00",
+  "seconds": 0.27,
+  "exit": 0
+}

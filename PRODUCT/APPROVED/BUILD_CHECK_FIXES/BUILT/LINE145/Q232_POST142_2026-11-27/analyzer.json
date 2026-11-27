@@ -1,0 +1,14 @@
+{
+  "name": "analyzer",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "analyze"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:47:36.555138+00:00",
+  "finished_utc": "2026-11-27T16:47:48.185771+00:00",
+  "seconds": 11.63,
+  "exit": 0
+}

@@ -1,0 +1,23 @@
+{
+  "name": "capture-g11-g12",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/visual/zyra_visual_regression_test.dart",
+    "--update-goldens",
+    "--dart-define=ZYRA_CAPTURE_CANDIDATES=true",
+    "--dart-define=ZYRA_VISUAL_CANDIDATE_DIRECTORY=/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line145/post142/golden-candidates",
+    "--name",
+    "Round 2 LOCK master (g11_seeker__adam_main|g12_seeker__yusuf_additional) \\(variant"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:49:45.227101+00:00",
+  "finished_utc": "2026-11-27T16:49:57.512740+00:00",
+  "seconds": 12.29,
+  "exit": 0
+}

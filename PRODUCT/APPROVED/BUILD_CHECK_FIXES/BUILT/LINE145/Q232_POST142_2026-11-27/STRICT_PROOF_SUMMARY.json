@@ -1,0 +1,70 @@
+{
+  "status": "pass",
+  "report_only": false,
+  "proof_scope": "explicit focused shell routes only",
+  "whole_app_coverage_credit": false,
+  "focused_viewport_proof": [
+    {
+      "group": "seeker",
+      "route_or_tab": "tab1",
+      "plan": "Seeker One",
+      "viewport": "430x932@1.0",
+      "text_frames": 4
+    },
+    {
+      "group": "seeker",
+      "route_or_tab": "journey",
+      "plan": "Seeker One",
+      "viewport": "430x932@1.0",
+      "text_frames": 324
+    },
+    {
+      "group": "lock8_pages",
+      "route_or_tab": "tab1",
+      "plan": "Guardian One",
+      "viewport": "430x932@1.0",
+      "text_frames": 2
+    },
+    {
+      "group": "lock8_pages",
+      "route_or_tab": "guardian_seeker",
+      "plan": "Guardian One",
+      "viewport": "430x932@1.0",
+      "text_frames": 4
+    },
+    {
+      "group": "lock8_circle",
+      "route_or_tab": "guardian_circle",
+      "plan": "Guardian One",
+      "viewport": "430x932@1.0",
+      "text_frames": 1
+    },
+    {
+      "group": "line98_ended_430x932",
+      "route_or_tab": "ended",
+      "plan": "Seeker One",
+      "viewport": "430x932@1.0",
+      "text_frames": 8
+    },
+    {
+      "group": "line98_ended_430x932",
+      "route_or_tab": "ended_archive",
+      "plan": "Seeker One",
+      "viewport": "430x932@1.0",
+      "text_frames": 2
+    },
+    {
+      "group": "lock19_v3",
+      "route_or_tab": "guardian_family_identity",
+      "plan": "Guardian Basic",
+      "viewport": "430x932@1.0",
+      "text_frames": 3
+    }
+  ],
+  "real_shadows": true,
+  "frames": 934,
+  "runs": 12340,
+  "painted_pixels": 11444526,
+  "coverage_gaps": [],
+  "failures": []
+}

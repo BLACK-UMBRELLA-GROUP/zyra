@@ -1,0 +1,21 @@
+{
+  "name": "capture-j01",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/visual/line129_current_capture_test.dart",
+    "--dart-define=ZYRA_LINE129_CAPTURE_DIR=build/line145/post142/j01",
+    "--plain-name",
+    "line 129 captures current Journey tab navigation"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:49:19.387116+00:00",
+  "finished_utc": "2026-11-27T16:49:31.920656+00:00",
+  "seconds": 12.53,
+  "exit": 0
+}

@@ -1,0 +1,44 @@
+{
+  "as_of_utc": "2026-11-27T17:15:16.596797+00:00",
+  "method": "Only token_count event fields in this owner and its named helper logs; no conversation content copied. Cumulative task counts at this snapshot.",
+  "sessions": [
+    {
+      "role": "owner",
+      "file": "rollout-2026-11-27T16-45-06-01a21de5-751e-7f11-8503-0df6442abb00.jsonl",
+      "usage": {
+        "timestamp": "2026-11-27T17:14:55.541Z",
+        "counts": {
+          "input_tokens": 18542985,
+          "cached_input_tokens": 18346112,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 72093,
+          "reasoning_output_tokens": 41829,
+          "total_tokens": 18615078
+        }
+      }
+    },
+    {
+      "role": "independent_review_helper",
+      "file": "rollout-2026-11-27T16-45-29-01a21de5-cfe2-76f3-ba49-59d8da473cdd.jsonl",
+      "usage": {
+        "timestamp": "2026-11-27T17:05:46.512Z",
+        "counts": {
+          "input_tokens": 9744631,
+          "cached_input_tokens": 9595136,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 30067,
+          "reasoning_output_tokens": 8935,
+          "total_tokens": 9774698
+        }
+      }
+    }
+  ],
+  "combined_counts": {
+    "input_tokens": 28287616,
+    "cached_input_tokens": 27941248,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 102160,
+    "reasoning_output_tokens": 50764,
+    "total_tokens": 28389776
+  }
+}

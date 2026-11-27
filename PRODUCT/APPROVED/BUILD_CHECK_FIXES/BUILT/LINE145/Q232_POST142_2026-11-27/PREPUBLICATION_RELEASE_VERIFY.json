@@ -1,0 +1,65 @@
+{
+  "utc": "2026-11-27T17:15:16.375818+00:00",
+  "source_ci_paired_baseline_clean": true,
+  "ownership_release_after_record_publication": true,
+  "preexisting_staged": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "index_sha256": "6deb49c9bb2ed18a25a1838be203ea68dc63f2ec8ce418d23667c4ab2ce9d179",
+      "index_matches_start": true,
+      "start_working_sha256": "3e40fe2f3e89ad102ed5eced81b834692443513e44c7842574e878014d7b50a0",
+      "current_working_sha256": "8804c55b249f3eeddb054df8a3602b366f39a4e12f5e470ac215bbc7750a880f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+      "index_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "index_matches_start": true,
+      "start_working_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "current_working_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+      "index_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "index_matches_start": true,
+      "start_working_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "current_working_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+      "index_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "index_matches_start": true,
+      "start_working_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "current_working_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+      "index_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "index_matches_start": true,
+      "start_working_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "current_working_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+      "index_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+      "index_matches_start": true,
+      "start_working_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+      "current_working_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "index_sha256": "ae91e39960c51f32646c2a0dd0d3548f11c2445d20180e186b2f892607ed1d16",
+      "index_matches_start": true,
+      "start_working_sha256": "ce9feda9638e1d4bb3d727b3268afb8161266b05945e5009141c0c9ceffad830",
+      "current_working_sha256": "e12b2561dce93bb2161d2be4e6a7da81f2eaf760d28e27536e3dfcc1a4aa9b4a"
+    }
+  ],
+  "line138_working_exact": true,
+  "preexisting_tracked_BUILT_PNGs": 1080,
+  "all_preexisting_png_hashes_exact": true,
+  "questions_owner_write_count": 0,
+  "concurrent_question_update": "Fable Q239 answered16:50UK; retained live bytes and initial staged snapshot.",
+  "failed_full_gates": 0,
+  "l49_start_utc": "2026-11-27T16:45:44.221544+00:00",
+  "local_hotspot_push_attempts_so_far": 1,
+  "failed_network_attempts": 0
+}

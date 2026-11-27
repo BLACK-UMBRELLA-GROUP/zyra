@@ -1,0 +1,24 @@
+{
+  "name": "focused",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/visual/lock24_tab_spacing_test.dart",
+    "test/visual/lock19_v3_family_acceptance_test.dart",
+    "test/visual/line145_capture_output_test.dart",
+    "test/zyra_guardian_journey_photo_gate_test.dart",
+    "test/global_app_surface_test.dart",
+    "test/zyra_guardian_capacity_test.dart",
+    "test/requests_guardians_lock2_shell_test.dart"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:48:02.833371+00:00",
+  "finished_utc": "2026-11-27T16:48:32.981821+00:00",
+  "seconds": 30.15,
+  "exit": 0
+}

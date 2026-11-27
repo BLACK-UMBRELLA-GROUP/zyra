@@ -1,0 +1,536 @@
+{
+  "started_utc": "2026-11-27T16:45:44.221544+00:00",
+  "head": "50347df3432195d9d4acfbcde255e592601b902c",
+  "branch": "main",
+  "free_bytes": 34556469248,
+  "candidate_base_checks": [
+    {
+      "path": "SOURCE/lib/data/zyra_guardian_capacity.dart",
+      "actual_sha256": "1cb29783b639a6709acfc5347382d23bcbc7c1aa0b81c415141937c84127cd91",
+      "expected": "1cb29783b639a6709acfc5347382d23bcbc7c1aa0b81c415141937c84127cd91",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_discussion_archive.dart",
+      "actual_sha256": "5b65c0e994c745d28c3e13b785143ccf37f6ee594e3f963cb8a811bc0b006977",
+      "expected": "5b65c0e994c745d28c3e13b785143ccf37f6ee594e3f963cb8a811bc0b006977",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_developer_focus_presets.dart",
+      "actual_sha256": "9dd05ddf55a340eed5095d269a89c318b6712643651decbb1f1222937f2e4234",
+      "expected": "9dd05ddf55a340eed5095d269a89c318b6712643651decbb1f1222937f2e4234",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_help_safety_preview.dart",
+      "actual_sha256": "e38545f1bec203be71361a333104b840dea28aff9de86c16d5c51273e50a0266",
+      "expected": "e38545f1bec203be71361a333104b840dea28aff9de86c16d5c51273e50a0266",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "actual_sha256": "d990a98abfd8a66f47d821545a89604ba3e486552dce7d6ee643c8fab1c3ba49",
+      "expected": "d990a98abfd8a66f47d821545a89604ba3e486552dce7d6ee643c8fab1c3ba49",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "actual_sha256": "65f08283ba35386cc0ff8a622e541e0dcd760df0bae5215a97b560536deb9b68",
+      "expected": "65f08283ba35386cc0ff8a622e541e0dcd760df0bae5215a97b560536deb9b68",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "actual_sha256": "65a11601c75895474a1f40d91bc17c7473a6b6b379bc842d0fb8070b5f16bed0",
+      "expected": "65a11601c75895474a1f40d91bc17c7473a6b6b379bc842d0fb8070b5f16bed0",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "actual_sha256": "8ced80d5d840ed59f815381c1fcef05e1c73d5a6ac5b668a10de90773a0e0982",
+      "expected": "8ced80d5d840ed59f815381c1fcef05e1c73d5a6ac5b668a10de90773a0e0982",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "actual_sha256": "5ad5f45fac347968b4cfd769b4a3a17466b5b2e3fc3765ba643dda3b46fa5598",
+      "expected": "5ad5f45fac347968b4cfd769b4a3a17466b5b2e3fc3765ba643dda3b46fa5598",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "actual_sha256": "b17e0c8c15b8552a5393412b12dbdfb2dc790dd4c5cbea626a8cf4f74f0fbc92",
+      "expected": "b17e0c8c15b8552a5393412b12dbdfb2dc790dd4c5cbea626a8cf4f74f0fbc92",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "actual_sha256": "f47fb7833c4bfa834775cd0ccd0838ea12945fc33feaef63efa8d0bd38308a50",
+      "expected": "f47fb7833c4bfa834775cd0ccd0838ea12945fc33feaef63efa8d0bd38308a50",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+      "actual_sha256": "f13706c4f38a55aad0dad78a8799e4cb6d93eea57aa64b521b338fa04da18759",
+      "expected": "f13706c4f38a55aad0dad78a8799e4cb6d93eea57aa64b521b338fa04da18759",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "actual_sha256": "32736b930b92024e5a27a9e40cc29f599f84adb46711de28ab4c9e087254315a",
+      "expected": "32736b930b92024e5a27a9e40cc29f599f84adb46711de28ab4c9e087254315a",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+      "actual_sha256": "565a5e10d382aeddfb39a50e82d081ede9c78e279723f6afbc56258aad5663c3",
+      "expected": "565a5e10d382aeddfb39a50e82d081ede9c78e279723f6afbc56258aad5663c3",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_colors.dart",
+      "actual_sha256": "8cd1a02b479bb7c6c01adb78a1b54be3027a9be2afdbb3f07bd18bd0566cd992",
+      "expected": "8cd1a02b479bb7c6c01adb78a1b54be3027a9be2afdbb3f07bd18bd0566cd992",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/floating_nav_bar.dart",
+      "actual_sha256": "4e8fd67acffb50d65f6cf40b21f5ff585c4ce112fc0e7ad6711e1659af88a54a",
+      "expected": "4e8fd67acffb50d65f6cf40b21f5ff585c4ce112fc0e7ad6711e1659af88a54a",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_floating_surface.dart",
+      "actual_sha256": "39f0640114c558b09c313ccb18d3efcd022fd491f7daf31c0925ab3e81c6bf50",
+      "expected": "39f0640114c558b09c313ccb18d3efcd022fd491f7daf31c0925ab3e81c6bf50",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "actual_sha256": "0021387a5d8dcce248d500622321b36e9aade8721aad8aecf67fc1343da386ab",
+      "expected": "0021387a5d8dcce248d500622321b36e9aade8721aad8aecf67fc1343da386ab",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_guardian_add_card.dart",
+      "actual_sha256": "a2c13de07ac06185bcfc96a41ad26ef5b29cbe46aa0092cfe44573efbc0e4826",
+      "expected": "a2c13de07ac06185bcfc96a41ad26ef5b29cbe46aa0092cfe44573efbc0e4826",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_my_zyra_navigation_card.dart",
+      "actual_sha256": "d26e38931c8c20cd1c7111e1925ff5e4d4e95f1aa41e5b1e17ac656ab746de27",
+      "expected": "d26e38931c8c20cd1c7111e1925ff5e4d4e95f1aa41e5b1e17ac656ab746de27",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_request_tab_pill.dart",
+      "actual_sha256": "1d15c9ccbe16d1290a186da737cb16e7478a67084713d358b9876c05c73aa684",
+      "expected": "1d15c9ccbe16d1290a186da737cb16e7478a67084713d358b9876c05c73aa684",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_seeker_avatar.dart",
+      "actual_sha256": "3f47b23b6dfe6accba383c32ae0a0f4bf4bd299842a278c21d5a95040eab7fd9",
+      "expected": "3f47b23b6dfe6accba383c32ae0a0f4bf4bd299842a278c21d5a95040eab7fd9",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/global_app_surface_test.dart",
+      "actual_sha256": "3d71efd66b11a9ab43bd70f91b6d76968c3db98cc0af84d48969bfba69999387",
+      "expected": "3d71efd66b11a9ab43bd70f91b6d76968c3db98cc0af84d48969bfba69999387",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "actual_sha256": "adcd38f9fb443e44eab8bf9fc5c29c1f7f4869c61eea24f1da723c4c3facee1d",
+      "expected": "adcd38f9fb443e44eab8bf9fc5c29c1f7f4869c61eea24f1da723c4c3facee1d",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/approved/manifest.json",
+      "actual_sha256": "3ad447bc88fb906e2d15d964c00fbc032aff56e51fad2ca512752c2fc2fd0543",
+      "expected": "3ad447bc88fb906e2d15d964c00fbc032aff56e51fad2ca512752c2fc2fd0543",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "actual_sha256": "340be2c560c878eee83c39ebaf5cf79e7821766f07a1e72d76195676ed9ef07d",
+      "expected": "340be2c560c878eee83c39ebaf5cf79e7821766f07a1e72d76195676ed9ef07d",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "actual_sha256": "c289900ea800d0c954f3e65db1fb6085668184f8f89857c514d3785e63909c8c",
+      "expected": "c289900ea800d0c954f3e65db1fb6085668184f8f89857c514d3785e63909c8c",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "actual_sha256": "b13fed6d354d06e811f9bb6c2973a52e5a1aef31f1ff773486b7f3dd648eac0c",
+      "expected": "b13fed6d354d06e811f9bb6c2973a52e5a1aef31f1ff773486b7f3dd648eac0c",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line114_card_surface_visual_test.dart",
+      "actual_sha256": "41847a33fdc3a223e28e73c8638fffa3becb10d6bd07a624a17067217a4b9ef0",
+      "expected": "41847a33fdc3a223e28e73c8638fffa3becb10d6bd07a624a17067217a4b9ef0",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line129_current_capture_test.dart",
+      "actual_sha256": null,
+      "expected": null,
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line145_capture_output.dart",
+      "actual_sha256": null,
+      "expected": null,
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line145_capture_output_test.dart",
+      "actual_sha256": null,
+      "expected": null,
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line97_welcome_back_visual_test.dart",
+      "actual_sha256": "d81dfd589cee79fc3e4b1d49bf1e6c0b4fb93908d31ec381883352b31519b1e5",
+      "expected": "d81dfd589cee79fc3e4b1d49bf1e6c0b4fb93908d31ec381883352b31519b1e5",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "actual_sha256": "f2e126cb5ec075447264064dfee914b568b39ef6b63bd6b3e211f408976270b5",
+      "expected": "f2e126cb5ec075447264064dfee914b568b39ef6b63bd6b3e211f408976270b5",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "actual_sha256": "5fd45f317d2b145de45504186a028a6033a4d5bc9b9d9cda5abc86097f38023a",
+      "expected": "5fd45f317d2b145de45504186a028a6033a4d5bc9b9d9cda5abc86097f38023a",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "actual_sha256": "b5edf6306a5b5d43d1a6b812c299c467082f713dc46e88ee20e5fe2c7c5524fc",
+      "expected": "b5edf6306a5b5d43d1a6b812c299c467082f713dc46e88ee20e5fe2c7c5524fc",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_capacity_test.dart",
+      "actual_sha256": "47752381cf2490ce7a602b21d0c79cde2250aa72190880989f41a120546b12e4",
+      "expected": "47752381cf2490ce7a602b21d0c79cde2250aa72190880989f41a120546b12e4",
+      "matches": true
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_journey_photo_gate_test.dart",
+      "actual_sha256": null,
+      "expected": null,
+      "matches": true
+    },
+    {
+      "path": "SYSTEM/tools/ui_gate/BASELINES/manifest.json",
+      "actual_sha256": "166c80c23b053f6050afb5994be22204864cf60d5fa0c8835b6658dd7a8acf50",
+      "expected": "166c80c23b053f6050afb5994be22204864cf60d5fa0c8835b6658dd7a8acf50",
+      "matches": true
+    }
+  ],
+  "preexisting_staged": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "index_sha256": "6deb49c9bb2ed18a25a1838be203ea68dc63f2ec8ce418d23667c4ab2ce9d179",
+      "working_sha256": "3e40fe2f3e89ad102ed5eced81b834692443513e44c7842574e878014d7b50a0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+      "index_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "working_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+      "index_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "working_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+      "index_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "working_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+      "index_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "working_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+      "index_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+      "working_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "index_sha256": "ae91e39960c51f32646c2a0dd0d3548f11c2445d20180e186b2f892607ed1d16",
+      "working_sha256": "ce9feda9638e1d4bb3d727b3268afb8161266b05945e5009141c0c9ceffad830"
+    }
+  ],
+  "scope_status": "",
+  "line": 145,
+  "question": 232,
+  "owner": "fresh line 145 owner; sole SOURCE owner",
+  "conversation": "new (started 16:45 UTC)",
+  "l49": {
+    "ownership_start_utc": "2026-11-27T16:45:44.221544+00:00",
+    "deadline_utc": "2026-11-27T22:45:44.221544+00:00",
+    "max_hours": 6,
+    "max_failed_full_gates": 3,
+    "failed_full_gates": 0
+  },
+  "start_pack_bytes": 20469,
+  "start_pack_invocation_correction": "Relative tool path caused safe-path refusal; corrected once to absolute script path, exit 0.",
+  "integration_utc": "2026-11-27T16:47:08.164097+00:00",
+  "patch_sha256": "d8270095215f756131708591baad70b3d507cedfddde33dee3858906407f9ea1",
+  "held_manifest_sha256": "3f3ad01a4e2603984796484c3707d010fc3eec8726880008a08e5bc24bb5f0db",
+  "paths": [
+    {
+      "path": "SOURCE/lib/data/zyra_guardian_capacity.dart",
+      "published_sha256": "1cb29783b639a6709acfc5347382d23bcbc7c1aa0b81c415141937c84127cd91",
+      "candidate_sha256": "33fae90d7df42043d8bbb547e01eaabb88f35ba821051e26c9556a8b60c74cb8",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_discussion_archive.dart",
+      "published_sha256": "5b65c0e994c745d28c3e13b785143ccf37f6ee594e3f963cb8a811bc0b006977",
+      "candidate_sha256": "3bc180c89fb81a0876f4cbed12415a1f614c914aa2b3a7b460eeedefb4bfa0bd",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_developer_focus_presets.dart",
+      "published_sha256": "9dd05ddf55a340eed5095d269a89c318b6712643651decbb1f1222937f2e4234",
+      "candidate_sha256": "b503e24b8f011e9ff4f79759a90931802ef508c058f1403c492b07dd009502e6",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_help_safety_preview.dart",
+      "published_sha256": "e38545f1bec203be71361a333104b840dea28aff9de86c16d5c51273e50a0266",
+      "candidate_sha256": "1526f0643681ce88af8329e2f7ccd96c9e55e0c577afed8e78435f08a9bcac23",
+      "held_Q232_output_matches": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "published_sha256": "d990a98abfd8a66f47d821545a89604ba3e486552dce7d6ee643c8fab1c3ba49",
+      "candidate_sha256": "b6e4b0f146a9a255271a89802f357ec073776c60a28739497a9f4874ef349e82",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "published_sha256": "65f08283ba35386cc0ff8a622e541e0dcd760df0bae5215a97b560536deb9b68",
+      "candidate_sha256": "f22322055c5afa2a802d2783215e7510d26bae43e216225a39e650bb17055b71",
+      "held_Q232_output_matches": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "published_sha256": "65a11601c75895474a1f40d91bc17c7473a6b6b379bc842d0fb8070b5f16bed0",
+      "candidate_sha256": "16b0e360e15a198f5410baffe40520d56c132fbce95df2726be00642dbe29599",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "published_sha256": "8ced80d5d840ed59f815381c1fcef05e1c73d5a6ac5b668a10de90773a0e0982",
+      "candidate_sha256": "bcf26d96ec928211fd854b4dbe9159e632e10145ccaa85fa1b539a908ef66fb2",
+      "held_Q232_output_matches": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "published_sha256": "5ad5f45fac347968b4cfd769b4a3a17466b5b2e3fc3765ba643dda3b46fa5598",
+      "candidate_sha256": "90f657cb85cadd06b4ff1a8e11f6c59731d3fa5d501423a7300b85a214c33b0a",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "published_sha256": "b17e0c8c15b8552a5393412b12dbdfb2dc790dd4c5cbea626a8cf4f74f0fbc92",
+      "candidate_sha256": "e22f0cad6eae565ded7fd5920f94ed6687cc2f74393f97f38c5177a734283e86",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "published_sha256": "f47fb7833c4bfa834775cd0ccd0838ea12945fc33feaef63efa8d0bd38308a50",
+      "candidate_sha256": "33882fb627e8d825f8647c889836d23d2609a78071bb9beee78236db4ece9079",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+      "published_sha256": "f13706c4f38a55aad0dad78a8799e4cb6d93eea57aa64b521b338fa04da18759",
+      "candidate_sha256": "2d8a6cbb1b596d3b188acd89845f04431bcb746241276b172df0d8e7bffa55b5",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "published_sha256": "32736b930b92024e5a27a9e40cc29f599f84adb46711de28ab4c9e087254315a",
+      "candidate_sha256": "101154c08a3ea2fce0b8083873c041a486a87cd708f77aa86fddb14f04955fda",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+      "published_sha256": "565a5e10d382aeddfb39a50e82d081ede9c78e279723f6afbc56258aad5663c3",
+      "candidate_sha256": "1d27b55ac5d03d853896d5ee55822f3d04b09a11b7641ae0d0ed035b58ef0ee1",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_colors.dart",
+      "published_sha256": "8cd1a02b479bb7c6c01adb78a1b54be3027a9be2afdbb3f07bd18bd0566cd992",
+      "candidate_sha256": "174dd7e58b1f59da7ce681f2c219380797859c6846be13f728697c449669419b",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/floating_nav_bar.dart",
+      "published_sha256": "4e8fd67acffb50d65f6cf40b21f5ff585c4ce112fc0e7ad6711e1659af88a54a",
+      "candidate_sha256": "d9f8bdc0c338068492743e6878394520264cee72093c41225bb96a164aaf225d",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_floating_surface.dart",
+      "published_sha256": "39f0640114c558b09c313ccb18d3efcd022fd491f7daf31c0925ab3e81c6bf50",
+      "candidate_sha256": "319acc5c285424ab9c49fff01ccc4f43bed2b936d85f67b06e394d46838b3fe5",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "published_sha256": "0021387a5d8dcce248d500622321b36e9aade8721aad8aecf67fc1343da386ab",
+      "candidate_sha256": "76a4c47b84e9cf87c6553ff8dc3094044ba8b649537e851b7ede1b40957b0b6b",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_guardian_add_card.dart",
+      "published_sha256": "a2c13de07ac06185bcfc96a41ad26ef5b29cbe46aa0092cfe44573efbc0e4826",
+      "candidate_sha256": "1cbfa8c6726a43c43c90a864398c6a179b9a814fc7b1d7b56e3b78d23c77ff60",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_my_zyra_navigation_card.dart",
+      "published_sha256": "d26e38931c8c20cd1c7111e1925ff5e4d4e95f1aa41e5b1e17ac656ab746de27",
+      "candidate_sha256": "2fd3a1d9afa9b3a798f7c1e0b2ce6142788a9f940a717ce420d4be45755b216a",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_request_tab_pill.dart",
+      "published_sha256": "1d15c9ccbe16d1290a186da737cb16e7478a67084713d358b9876c05c73aa684",
+      "candidate_sha256": "6cfd29f426a6c0280dcb770239e555ae1aa6caf08bc7cad83315f466a413e179",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_seeker_avatar.dart",
+      "published_sha256": "3f47b23b6dfe6accba383c32ae0a0f4bf4bd299842a278c21d5a95040eab7fd9",
+      "candidate_sha256": "10f17468101808fe77a87d5776931014d7eb1615ab8cdd5bd16bf3fbb3f7a4d6",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/global_app_surface_test.dart",
+      "published_sha256": "3d71efd66b11a9ab43bd70f91b6d76968c3db98cc0af84d48969bfba69999387",
+      "candidate_sha256": "7e1180e8642e5f082de1e0878a158f2f7708f0879a0ea7500a36fe360addf34e",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "published_sha256": "adcd38f9fb443e44eab8bf9fc5c29c1f7f4869c61eea24f1da723c4c3facee1d",
+      "candidate_sha256": "ed46e10911e7526bd027260fcf2cf4119ef65e09527288a667b1b3ab01f7a843",
+      "held_Q232_output_matches": false
+    },
+    {
+      "path": "SOURCE/test/visual/approved/manifest.json",
+      "published_sha256": "3ad447bc88fb906e2d15d964c00fbc032aff56e51fad2ca512752c2fc2fd0543",
+      "candidate_sha256": "ea57b5054c7ceb6025c1b4fec9759bc62c0e09d8e0ae97ce3ca91a62b7773bd3",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "published_sha256": "340be2c560c878eee83c39ebaf5cf79e7821766f07a1e72d76195676ed9ef07d",
+      "candidate_sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "published_sha256": "c289900ea800d0c954f3e65db1fb6085668184f8f89857c514d3785e63909c8c",
+      "candidate_sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "published_sha256": "b13fed6d354d06e811f9bb6c2973a52e5a1aef31f1ff773486b7f3dd648eac0c",
+      "candidate_sha256": "e4bc0c22c140a8488be0c93f4352f4dfc61593686b3952bf89f2f1d2a30187c7",
+      "held_Q232_output_matches": false
+    },
+    {
+      "path": "SOURCE/test/visual/line114_card_surface_visual_test.dart",
+      "published_sha256": "41847a33fdc3a223e28e73c8638fffa3becb10d6bd07a624a17067217a4b9ef0",
+      "candidate_sha256": "9fe434d7bd7f2e6d89adc382999d1259a76cd2b3d57e761f67674036f2df3f5d",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line129_current_capture_test.dart",
+      "published_sha256": null,
+      "candidate_sha256": "3b241e5ec69a821c270c20e7a62dd9c81ac332e5e20bf0739f3ab343946e0d79",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line145_capture_output.dart",
+      "published_sha256": null,
+      "candidate_sha256": "763d76d4e4426356c946d2d1d643cba26b56e9467cedaf198ce7de1b1c89f504",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line145_capture_output_test.dart",
+      "published_sha256": null,
+      "candidate_sha256": "8041782d2d9aa108ce9a6a0bdaa3291cc0d62ef205c26a6cf25dfd70de32ab09",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line97_welcome_back_visual_test.dart",
+      "published_sha256": "d81dfd589cee79fc3e4b1d49bf1e6c0b4fb93908d31ec381883352b31519b1e5",
+      "candidate_sha256": "e1e140999aef7c29802787c1634fcdfb365adefe2caae9093c7c0872c5998166",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "published_sha256": "f2e126cb5ec075447264064dfee914b568b39ef6b63bd6b3e211f408976270b5",
+      "candidate_sha256": "f7f8f0c027449f59d1d062cee56356f64dd0212ecaa9b0244533ce1b16c646b3",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "published_sha256": "5fd45f317d2b145de45504186a028a6033a4d5bc9b9d9cda5abc86097f38023a",
+      "candidate_sha256": "ded3fa71234d0bc2af245c034a971b96ad17353ec3c3c0459fd59dab228e9b54",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "published_sha256": "b5edf6306a5b5d43d1a6b812c299c467082f713dc46e88ee20e5fe2c7c5524fc",
+      "candidate_sha256": "e9435be6a82f6e1af7b7dd48374561de106b227da820e85b0d99b11f0b10fac3",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_capacity_test.dart",
+      "published_sha256": "47752381cf2490ce7a602b21d0c79cde2250aa72190880989f41a120546b12e4",
+      "candidate_sha256": "0e6842338f72be73cbc06b2ca39e14bc8056adcf526445c81abf2a2155b07853",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_journey_photo_gate_test.dart",
+      "published_sha256": null,
+      "candidate_sha256": "4d1019b34ccedffdedf7c5ab1983c466949b4db685bd1536277b5dc6ac8b97d2",
+      "held_Q232_output_matches": true
+    },
+    {
+      "path": "SYSTEM/tools/ui_gate/BASELINES/manifest.json",
+      "published_sha256": "166c80c23b053f6050afb5994be22204864cf60d5fa0c8835b6658dd7a8acf50",
+      "candidate_sha256": "3117654ccd8eef78a22e3de97234ae974fe41de5f5e4b54f446d1c725b301800",
+      "held_Q232_output_matches": true
+    }
+  ],
+  "source_index_clean_at_start": true,
+  "network_attempts": 0,
+  "existing_tracked_BUILT_PNG_count": 1080,
+  "note": "Historical 931 count was earlier scope; fresh tracked enumeration is 1080. All are guarded by per-path SHA256 in local initial receipt."
+}

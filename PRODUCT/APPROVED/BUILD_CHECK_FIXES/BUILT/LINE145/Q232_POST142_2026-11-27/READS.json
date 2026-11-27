@@ -1,0 +1,104 @@
+{
+  "start_pack_bytes": 20469,
+  "explicit_inputs": [
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/AGENTS.md",
+      "bytes": 16748,
+      "sha256": "2e37ec20b8872569d5154fb1c333d9b49d3c2c99381cbefd869680a53268ec12"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/README.md",
+      "bytes": 16076,
+      "sha256": "0b2b9fc954bd6511f45e0a58b20b3f02e653b2b9e76c1a0133c064a5e40fee46"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/BUILD_CHECK_FIXES/BRIEFS/FIX_BRIEF_2026-11-24_LINE129_FOLLOWUP.md",
+      "bytes": 6419,
+      "sha256": "975901d38d04597c5689a3be4146c47d1ceaa841616928bd246a38530299d8b8"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/BUILD_CHECK_FIXES/BRIEFS/FIX_BRIEF_2026-11-22_OPEN_CHECKS.md",
+      "bytes": 8678,
+      "sha256": "782f4e86ed3bb81e113a4dc05cf5bb14bef7de6e8cbc2fab10c97317da054721"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V9.md",
+      "bytes": 17784,
+      "sha256": "b2905f998c05430c40b8fb7bdf153e321d046345f366c51abbafef71178ca80b"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/APP_SPACING/RECORD/APP_SPACING_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 3756,
+      "sha256": "3a505a4992a6921376f698654596ea64d596b7362ed1b1cb060a4803ebbb289c"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 14263,
+      "sha256": "c9ca5b4c35fdad25e7d78ec3dfabdae1378fabe29ce28bb69a795c150e0aba46"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/PROFILE_TAB/RECORD/PROFILE_TAB_SPEC_CURRENT_VERSION_V5.md",
+      "bytes": 11187,
+      "sha256": "c07871e847b1784c02b3cda4eecaef0731129a7e3c8db767fccb7d11f6703c5c"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j01_one__no_journey.png",
+      "bytes": 1104273,
+      "sha256": "ba4bfef8e1e60290de682648f2895039ecac0fbecaf837d4211ac89c3d1af0fa"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+      "bytes": 847573,
+      "sha256": "fd14430a1c0b5646daff24b569378bc7d1865fcbc96a10b8eb3127798055b63b"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09b_journeys__adam_paused.png",
+      "bytes": 848720,
+      "sha256": "9c828f6136a6ba09fb503c564d7bff40332ca90743034c965cb6c3cd19cafdef"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "bytes": 845590,
+      "sha256": "913560834e0ae309096f80c923102879d9326c0f3e184030b0f7592004de7758"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p11_seeker_one__one_screen.png",
+      "bytes": 599561,
+      "sha256": "e6d6f57659bd5977d97afac3ecaa6477a36737d15eff8f20538dba1e54252574"
+    }
+  ],
+  "handover_inputs": [
+    {
+      "path": "/Users/shakeelahmad/Documents/Codex/2026-11-04/zyra-2026-11-04/line145-on142.jjmrst_n/HANDOVER.md",
+      "bytes": 3148,
+      "sha256": "5c8394fbd6d6cf5583c86edfe024a0d649d9c319a90225a3a74cf698ba90ec93"
+    },
+    {
+      "path": "/Users/shakeelahmad/Documents/Codex/2026-11-04/zyra-2026-11-04/line145-on142.jjmrst_n/LINE145-ON142-MANIFEST.json",
+      "bytes": 12030,
+      "sha256": "52590fc67c9770000289877916884087e34719b6c2c3b12509d13a340cd3efff"
+    },
+    {
+      "path": "/Users/shakeelahmad/Documents/Codex/2026-11-04/zyra-2026-11-04/line145-on142.jjmrst_n/LINE145-ON142.patch",
+      "bytes": 533965,
+      "sha256": "d8270095215f756131708591baad70b3d507cedfddde33dee3858906407f9ea1"
+    }
+  ],
+  "read_exceptions": [
+    "Explicit user requested lessons before work; full active V3 read 2026-11-27. Brief and AGENTS also read before start pack.",
+    "No whole MAP/register read. QUESTIONS queried by ID only; initial queue query printed header and rows1\u201313.",
+    "Relative start_pack script invocation caused safe-path refusal once; absolute path fixed it.",
+    "PNG helper attempt lacked Pillow; no dependency installed. Standard-library comparison is being used.",
+    "Public scanner money hits include Dart positional record access and random compressed PNG bytes; all source hits reviewed in PUBLIC_SOURCE_REVIEW.json."
+  ],
+  "scope": {
+    "source": 39,
+    "preexisting_staged": 7,
+    "tracked_BUILT_PNGs_guarded": 1080
+  },
+  "authority": "Founder GO; queue145; Q208/209/212/214/232; no new design",
+  "explicit_named_input_bytes": 4340628,
+  "tool_notes": [
+    "Prescribed protected flutter analyze performs default pub resolution and prints generic Downloading packages. No dependency file or selected version changed; no separate download/install command run."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "line": 145,
+  "source": "fresh protected captures under SOURCE/build/line145/post142",
+  "captures": [
+    {
+      "file": "actuals/j01_one__no_journey.png",
+      "bytes": 321438,
+      "sha256": "95d2bc095aa3f50e3875a78e6cd17d4f9e3bfa3c6bddb2540f2083a4edf25543",
+      "matches_original_Q232_capture_bytes": true
+    },
+    {
+      "file": "actuals/g09_journeys__adam.png",
+      "bytes": 465681,
+      "sha256": "a109634c035d46d10a2894feeafd58d00db46423ffd320ed8a3c2747e3aa41c5",
+      "matches_original_Q232_capture_bytes": true
+    },
+    {
+      "file": "actuals/g09b_journeys__adam_paused.png",
+      "bytes": 466854,
+      "sha256": "51e041956808ef0d25395df68384f39e7f4a6bb476dad90ed24967d1d2e48377",
+      "matches_original_Q232_capture_bytes": true
+    },
+    {
+      "file": "actuals/g09c_journeys__adam_guardian_basic.png",
+      "bytes": 463276,
+      "sha256": "ff233991d8874508e30936c91846172594fec6a9244865832387ccebc0258da1",
+      "matches_original_Q232_capture_bytes": true
+    },
+    {
+      "file": "actuals/g11_seeker__adam_main.png",
+      "bytes": 94447,
+      "sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+      "matches_original_Q232_capture_bytes": true
+    },
+    {
+      "file": "actuals/g12_seeker__yusuf_additional.png",
+      "bytes": 93596,
+      "sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+      "matches_original_Q232_capture_bytes": true
+    }
+  ]
+}

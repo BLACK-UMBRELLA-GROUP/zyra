@@ -1,0 +1,46 @@
+[
+  {
+    "name": "behavior-controls.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/behavior-controls.log"
+  },
+  {
+    "name": "golden-paired-manifests.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/golden-paired-manifests.log"
+  },
+  {
+    "name": "driver-check.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/driver-check.log"
+  },
+  {
+    "name": "strict-normal430.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/strict-normal430.log"
+  },
+  {
+    "name": "capture-j01.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/capture-j01.log"
+  },
+  {
+    "name": "capture-g09.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/capture-g09.log"
+  },
+  {
+    "name": "analyzer.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/analyzer.log"
+  },
+  {
+    "name": "ordinary-full.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/ordinary-full.log"
+  },
+  {
+    "name": "capture-g11-g12.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/capture-g11-g12.log"
+  },
+  {
+    "name": "INTEGRATION_CHECK.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/INTEGRATION_CHECK.log"
+  },
+  {
+    "name": "focused.log",
+    "retained_at": "SOURCE/build/line145/post142/logs/focused.log"
+  }
+]

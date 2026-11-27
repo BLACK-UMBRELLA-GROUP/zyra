@@ -1,0 +1,27 @@
+[
+  {
+    "path": ".github/workflows/zyra-ci.yml",
+    "expected_sha256": "9171caba0d3e044e311266e2dac44eda245907e07c8188c01dc561a18f2d354a",
+    "working_sha256": "9171caba0d3e044e311266e2dac44eda245907e07c8188c01dc561a18f2d354a"
+  },
+  {
+    "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+    "expected_sha256": "1c5e5a8ee5b426354f9df957cc3ed01a213bcfaa8f3da47c163744f95b921310",
+    "working_sha256": "1c5e5a8ee5b426354f9df957cc3ed01a213bcfaa8f3da47c163744f95b921310"
+  },
+  {
+    "path": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+    "expected_sha256": "ca7025b3a6ae8777596d8f6abe39492e9f5537865ac7b3d3b2a563805db5ad6a",
+    "working_sha256": "ca7025b3a6ae8777596d8f6abe39492e9f5537865ac7b3d3b2a563805db5ad6a"
+  },
+  {
+    "path": "SOURCE/test/visual/line144_help_safety_audit_test.dart",
+    "expected_sha256": "1e595e80d151cdeafb137e958248d6a64e3afe028b4540f4f1e07e40dec8d696",
+    "working_sha256": "1e595e80d151cdeafb137e958248d6a64e3afe028b4540f4f1e07e40dec8d696"
+  },
+  {
+    "path": "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart",
+    "expected_sha256": "a33f8d34e1a26656bf480f914f7669ec780bf42321d4654cdf151e5ef5c8c462",
+    "working_sha256": "a33f8d34e1a26656bf480f914f7669ec780bf42321d4654cdf151e5ef5c8c462"
+  }
+]

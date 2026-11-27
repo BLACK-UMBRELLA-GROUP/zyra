@@ -1,0 +1,108 @@
+{
+  "line": 145,
+  "reviewed_utc": "2026-11-27T16:53:45.647683+00:00",
+  "reviewer": "independent review_candidate helper",
+  "source_review": "PASS; exact in-memory 39-path reconstruction from 50347df3 matched every candidate SHA256; line140/142 ownership blocks and line144 tools retained",
+  "assertion_count_method": "Lexical expect(...) call counts in affected Dart files, before at50347df3 and after exact candidate; counts are not a test-run result",
+  "assertion_counts": [
+    {
+      "path": "SOURCE/test/global_app_surface_test.dart",
+      "before": 37,
+      "after": 37
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "before": 126,
+      "after": 126
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "before": 41,
+      "after": 41
+    },
+    {
+      "path": "SOURCE/test/visual/line114_card_surface_visual_test.dart",
+      "before": 11,
+      "after": 11
+    },
+    {
+      "path": "SOURCE/test/visual/line129_current_capture_test.dart",
+      "before": 0,
+      "after": 7
+    },
+    {
+      "path": "SOURCE/test/visual/line145_capture_output.dart",
+      "before": 0,
+      "after": 0
+    },
+    {
+      "path": "SOURCE/test/visual/line145_capture_output_test.dart",
+      "before": 0,
+      "after": 3
+    },
+    {
+      "path": "SOURCE/test/visual/line97_welcome_back_visual_test.dart",
+      "before": 41,
+      "after": 41
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "before": 60,
+      "after": 60
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "before": 74,
+      "after": 74
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "before": 49,
+      "after": 49
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_capacity_test.dart",
+      "before": 39,
+      "after": 43
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_journey_photo_gate_test.dart",
+      "before": 0,
+      "after": 4
+    }
+  ],
+  "existing_assertion_calls_retained": true,
+  "q214_fresh_comparison": "PASS; each fresh PNG exact held/approved bytes; 5252 significant avatar pixels, bbox174,135,255,216; maxRGBdelta3 outside radius42 centered215,176 with40px corner mask",
+  "six_capture_bytes": "All six fresh PNGs equal original held Q232; no new geometry shift",
+  "visual_scope": "Bounded real-shadow/layout comparison and Q214 avatar/shadow proof only; no whole-master pixel match claimed; no new geometry shift because all six PNG bytes equal original held Q232",
+  "line141_ink_observation": {
+    "actual_hex": "#2B2420",
+    "target_hex": "#2B2420",
+    "current_status": "QUESTION Q238",
+    "finding": "No ink mismatch visible in fresh g09/b/c; pending line141 checks remain that line; no fix performed here"
+  },
+  "owned_changes": "Scratch helper and this explicitly approved comparisons evidence directory only; no SOURCE/test/code/index/network writes",
+  "usage_count_only": {
+    "own_thread_id": "01a21de5-cfe2-76f3-ba49-59d8da473cdd",
+    "matching_own_log_files": 1,
+    "usage_snapshot": {
+      "timestamp": "2026-11-27T16:53:36.648Z",
+      "total_token_usage": {
+        "input_tokens": 6172127,
+        "cached_input_tokens": 6062976,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23313,
+        "reasoning_output_tokens": 5792,
+        "total_tokens": 6195440
+      },
+      "last_token_usage": {
+        "input_tokens": 182060,
+        "cached_input_tokens": 181760,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 248,
+        "reasoning_output_tokens": 206,
+        "total_tokens": 182308
+      }
+    }
+  }
+}

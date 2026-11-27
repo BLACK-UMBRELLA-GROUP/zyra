@@ -1,0 +1,17 @@
+{
+  "name": "ordinary-full",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:54:02.133194+00:00",
+  "finished_utc": "2026-11-27T17:02:40.525178+00:00",
+  "seconds": 518.39,
+  "exit": 0
+}

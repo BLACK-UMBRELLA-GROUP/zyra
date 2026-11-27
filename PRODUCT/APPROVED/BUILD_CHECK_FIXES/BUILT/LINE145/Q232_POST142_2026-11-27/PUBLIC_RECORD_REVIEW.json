@@ -1,0 +1,2397 @@
+{
+  "utc": "2026-11-27",
+  "files_checked": 57,
+  "scanner_exit": 1,
+  "hits": 397,
+  "all_reviewed_false_positives_or_unmodified_foreign_row": true,
+  "kind_counts": {
+    "money": 396,
+    "legal/company": 1
+  },
+  "details": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 554,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 594,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 905,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 1408,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 1418,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 1575,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 1634,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 2301,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 2653,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 2733,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 2840,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 4370,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 4548,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 4610,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 4677,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 5643,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 5675,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 6588,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 6652,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 7204,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 7402,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 7521,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 7539,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 7548,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 7840,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8012,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8056,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8061,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8086,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8282,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8454,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8579,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8592,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8690,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8976,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 8998,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9037,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9039,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9065,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9082,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9298,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9649,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9722,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9844,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9880,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 9891,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 10554,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 10885,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 10898,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09_journeys__adam.png",
+      "line": 11243,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 554,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 594,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 905,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 1408,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 1418,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 1575,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 1634,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 2301,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 2653,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 2733,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 2840,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 4370,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 4548,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 4610,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 4677,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 5272,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 5735,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 5747,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 6500,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 7294,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 7336,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 7846,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 8094,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 8105,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 8170,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 8357,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 8414,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 8642,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 8720,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 9160,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 9255,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 9480,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 9768,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 9800,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 10228,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 10356,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 10454,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 10548,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 10781,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 10855,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09b_journeys__adam_paused.png",
+      "line": 11412,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 554,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 594,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 905,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 1408,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 1418,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 1575,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 1634,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 2301,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 2653,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 2733,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 2840,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 4370,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 4548,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 4610,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 4677,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 5643,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 5675,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 6588,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 6652,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 7211,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 7237,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 7544,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 7823,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 7949,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 8332,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 8522,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 8615,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 9215,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 9302,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 9550,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 9553,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 9741,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 9749,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 10060,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 10711,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g09c_journeys__adam_guardian_basic.png",
+      "line": 10965,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 104,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 284,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 298,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 1013,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 1060,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 1291,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 1383,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 1510,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 1512,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 1610,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g11_seeker__adam_main.png",
+      "line": 2019,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 221,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 278,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 337,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 373,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 583,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 729,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 808,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 839,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 969,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 977,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 1102,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 1127,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 1140,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 1324,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 1396,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/g12_seeker__yusuf_additional.png",
+      "line": 1423,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 975,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 1003,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 1018,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 1262,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 2497,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 2748,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 3122,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 3460,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 3818,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 3887,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 4107,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 4573,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 4598,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 4702,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 4855,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 4977,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 5724,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/actuals/j01_one__no_journey.png",
+      "line": 7038,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 4,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 295,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 473,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 1398,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 1721,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 2035,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 2052,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 2544,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 3536,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 3744,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 3988,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 4057,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 4633,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09_journeys__adam_master_actual.png",
+      "line": 4655,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 4,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 295,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 473,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 1398,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 2106,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 2208,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 2267,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 3145,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 3545,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09b_journeys__adam_paused_master_actual.png",
+      "line": 4032,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 4,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 295,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 473,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 1398,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 1721,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 2035,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 2052,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 2544,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 2679,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 3187,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 3943,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 3952,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 4012,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 4039,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 4262,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 4321,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g09c_journeys__adam_guardian_basic_master_actual.png",
+      "line": 4775,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 529,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 812,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 1556,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 1578,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 1822,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 2225,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 2515,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 2842,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 2941,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 2963,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3072,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3093,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3353,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3358,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3397,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3413,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3429,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3484,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3581,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3750,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 3784,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 4117,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 4583,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_before_after_diff.png",
+      "line": 4673,
+      "kind": "legal/company",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_diff_raw.png",
+      "line": 356,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g11_seeker__adam_main_diff_raw.png",
+      "line": 392,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 228,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 279,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 283,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 380,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 1036,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 1459,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 1501,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 1542,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3080,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3156,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3171,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3342,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3369,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3383,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3515,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3573,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3640,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3871,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 3966,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 4013,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 4023,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 4077,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 4285,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 4448,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_before_after_diff.png",
+      "line": 4557,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_diff_raw.png",
+      "line": 204,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/g12_seeker__yusuf_additional_diff_x8.png",
+      "line": 385,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 4,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 115,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 122,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 804,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 923,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 1028,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 1390,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 1832,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 1836,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 1894,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 2254,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 2317,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/j01_one__no_journey_master_actual.png",
+      "line": 2628,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 529,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 812,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 1556,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 1578,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 1822,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 2225,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 2515,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 2842,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 2941,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 2963,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3072,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3093,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3353,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3358,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3397,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3413,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3429,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3484,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3581,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3750,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 3784,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 4117,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 4512,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 4533,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 4808,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 4842,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5178,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5224,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5353,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5386,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5453,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5551,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5573,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5618,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 5862,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 6044,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 6120,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 6236,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 6284,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 6291,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7105,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7332,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7757,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7776,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7832,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7842,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7854,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7900,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7946,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 7981,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8094,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8132,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8175,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8210,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8374,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8471,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8514,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8631,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8714,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 8981,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 9020,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 9047,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 9206,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 9262,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 9277,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 9334,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 9348,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/q214_before_after_diff.png",
+      "line": 9357,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 115,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 122,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 804,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 923,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 1028,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 1390,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 1832,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 1836,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 1894,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 2573,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 2886,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 3078,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 3201,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 3718,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 4325,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 4751,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 4759,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 4819,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 5428,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 5451,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 5569,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 5747,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 6101,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 6132,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 6994,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 7009,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 7877,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 8841,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 9148,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 9499,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 9685,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 9721,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 9828,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 9852,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 10263,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 12503,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 12504,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 12581,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 12676,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 12838,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 12922,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 13555,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 14559,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 15071,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 15155,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 15739,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 16851,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 16880,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/LINE145/Q232_POST142_2026-11-27/comparisons/scoped_masters_actuals.png",
+      "line": 17417,
+      "kind": "money",
+      "review": "Verified screenshot/comparison PNG compressed bytes matched a text heuristic; no document or credential."
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "line": 169,
+      "kind": "money",
+      "review": "Preexisting foreign queue row outside the row145-only edit; unchanged by this owner and excluded from publication."
+    }
+  ],
+  "retained_scan_log": "SOURCE/build/line145/post142/logs/public-records-scan.txt",
+  "scan_log_sha256": "115e57edc64d46d6e2aecf6fd52e67efd80e6ad97115115a94ed38d6942174c9"
+}

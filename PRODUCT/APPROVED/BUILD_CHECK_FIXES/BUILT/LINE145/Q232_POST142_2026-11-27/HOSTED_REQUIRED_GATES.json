@@ -1,0 +1,282 @@
+{
+  "line": 145,
+  "head_sha": "0c2600c3568da65315310a2100528c9c2e4c3798",
+  "run_id": 46038671790,
+  "run_attempt": 1,
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46038671790",
+  "observed_utc": "2026-11-27T17:15:15.603Z",
+  "required_gate_status": "pass",
+  "whole_workflow_status": "in_progress",
+  "whole_workflow_conclusion": null,
+  "required_jobs": [
+    {
+      "id": 140640716406,
+      "name": "Select Flutter tests",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Select affected tests or full suite shards",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        }
+      ]
+    },
+    {
+      "id": 140640891158,
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Set up Flutter 3.44.2",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Set up offline app configuration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Resolve dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Analyze",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Run the assigned Flutter tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        }
+      ]
+    },
+    {
+      "id": 140640891218,
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Set up Flutter 3.44.2",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Set up offline app configuration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Resolve dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Analyze",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Run the assigned Flutter tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        }
+      ]
+    },
+    {
+      "id": 140640891259,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Set up Flutter 3.44.2",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Set up offline app configuration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Resolve dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Analyze",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Run the assigned Flutter tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        }
+      ]
+    }
+  ],
+  "nonblocking_audit_snapshot": [
+    {
+      "id": 140640716782,
+      "name": "Full text audit (large-375-3)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 140640716801,
+      "name": "Full text audit (large-375-1)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140640716846,
+      "name": "Full text audit (large-375-4)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 140640716870,
+      "name": "Full text audit (normal-375)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140640716929,
+      "name": "Full text audit (large-375-2)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 140640716963,
+      "name": "Full text audit (normal-430)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140640717089,
+      "name": "Full text audit (large-430)",
+      "status": "in_progress",
+      "conclusion": null
+    }
+  ],
+  "authority": "User: mandatory hosted gates; opt-in whole-screen reports are not extra gates; record-only receipts do not require duplicate CI wait."
+}

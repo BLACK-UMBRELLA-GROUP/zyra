@@ -1,0 +1,249 @@
+{
+  "line": 145,
+  "accepted_head": "50347df3432195d9d4acfbcde255e592601b902c",
+  "approved_patch_sha256": "d8270095215f756131708591baad70b3d507cedfddde33dee3858906407f9ea1",
+  "exact_candidate_paths": 39,
+  "scoped_readme_paths": 1,
+  "paths": [
+    {
+      "path": "SOURCE/lib/data/zyra_guardian_capacity.dart",
+      "bytes": 3001,
+      "sha256": "33fae90d7df42043d8bbb547e01eaabb88f35ba821051e26c9556a8b60c74cb8",
+      "job": "Retains the selected plan and subtracts Basic free-place reservation from available Guardian One places; existing capacity admission remains unchanged."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_discussion_archive.dart",
+      "bytes": 7775,
+      "sha256": "3bc180c89fb81a0876f4cbed12415a1f614c914aa2b3a7b460eeedefb4bfa0bd",
+      "job": "Outlined archive/history presentation."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_developer_focus_presets.dart",
+      "bytes": 4657,
+      "sha256": "b503e24b8f011e9ff4f79759a90931802ef508c058f1403c492b07dd009502e6",
+      "job": "Outlined locked preview focus icons."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_help_safety_preview.dart",
+      "bytes": 23073,
+      "sha256": "1526f0643681ce88af8329e2f7ccd96c9e55e0c577afed8e78435f08a9bcac23",
+      "job": "Outlined history icon while preserving LOCK47 Pause and current Help actions."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "bytes": 29800,
+      "sha256": "b6e4b0f146a9a255271a89802f357ec073776c60a28739497a9f4874ef349e82",
+      "job": "Unclipped toast Stack places the mute notice above the open sheet (top -62, replacing bottom100)."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 449660,
+      "sha256": "f22322055c5afa2a802d2783215e7510d26bae43e216225a39e650bb17055b71",
+      "job": "Outlined history, unclipped shared shadows and permitted prepared Guardian Journey photo, retaining current account/role/Pause/Restart/offer guards."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "bytes": 14724,
+      "sha256": "16b0e360e15a198f5410baffe40520d56c132fbce95df2726be00642dbe29599",
+      "job": "Outlined Guardian action presentation."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "bytes": 47087,
+      "sha256": "bcf26d96ec928211fd854b4dbe9159e632e10145ccaa85fa1b539a908ef66fb2",
+      "job": "Main-only gold border retaining the native Make Main route and role authority."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "bytes": 78810,
+      "sha256": "90f657cb85cadd06b4ff1a8e11f6c59731d3fa5d501423a7300b85a214c33b0a",
+      "job": "Outlined history and goldOutline:true on the Guardian Journey photo surface; existing ink and admission retained."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "bytes": 23625,
+      "sha256": "e22f0cad6eae565ded7fd5920f94ed6687cc2f74393f97f38c5177a734283e86",
+      "job": "Adds optional goldOutline to the shared Journey photo surface."
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "bytes": 213866,
+      "sha256": "33882fb627e8d825f8647c889836d23d2609a78071bb9beee78236db4ece9079",
+      "job": "Outlined retained connection/history presentation."
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+      "bytes": 49229,
+      "sha256": "2d8a6cbb1b596d3b188acd89845f04431bcb746241276b172df0d8e7bffa55b5",
+      "job": "Outlined Past/Ended history icons in the existing sample presenters."
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "bytes": 24427,
+      "sha256": "101154c08a3ea2fce0b8083873c041a486a87cd708f77aa86fddb14f04955fda",
+      "job": "Outlined Ended Journeys empty-state history icon."
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+      "bytes": 43467,
+      "sha256": "1d27b55ac5d03d853896d5ee55822f3d04b09a11b7641ae0d0ed035b58ef0ee1",
+      "job": "Locked ivory/gold shared styling for relationship ChoiceChips."
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_colors.dart",
+      "bytes": 20523,
+      "sha256": "174dd7e58b1f59da7ce681f2c219380797859c6846be13f728697c449669419b",
+      "job": "Exact Q208 card shadow values and shared light-gold avatar placeholder fill token."
+    },
+    {
+      "path": "SOURCE/lib/widgets/floating_nav_bar.dart",
+      "bytes": 53168,
+      "sha256": "d9f8bdc0c338068492743e6878394520264cee72093c41225bb96a164aaf225d",
+      "job": "Locked inactive icon ink #7A6E62 and compact tab surface fill #F1EBDF."
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_floating_surface.dart",
+      "bytes": 3770,
+      "sha256": "319acc5c285424ab9c49fff01ccc4f43bed2b936d85f67b06e394d46838b3fe5",
+      "job": "Exact Q208 CSS-to-Flutter shared shadow conversion."
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "bytes": 15963,
+      "sha256": "76a4c47b84e9cf87c6553ff8dc3094044ba8b649537e851b7ede1b40957b0b6b",
+      "job": "Approved session-ending copy."
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_guardian_add_card.dart",
+      "bytes": 7700,
+      "sha256": "1cbfa8c6726a43c43c90a864398c6a179b9a814fc7b1d7b56e3b78d23c77ff60",
+      "job": "Uses foreground ink for the Guardian count link; capacity calculation is owned by zyra_guardian_capacity.dart."
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_my_zyra_navigation_card.dart",
+      "bytes": 6390,
+      "sha256": "2fd3a1d9afa9b3a798f7c1e0b2ce6142788a9f940a717ce420d4be45755b216a",
+      "job": "Outlined Ended Journeys navigation-card history icon."
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_request_tab_pill.dart",
+      "bytes": 2274,
+      "sha256": "6cfd29f426a6c0280dcb770239e555ae1aa6caf08bc7cad83315f466a413e179",
+      "job": "Shared ivory selected pill with gold border."
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_seeker_avatar.dart",
+      "bytes": 2150,
+      "sha256": "10f17468101808fe77a87d5776931014d7eb1615ab8cdd5bd16bf3fbb3f7a4d6",
+      "job": "Shared silhouette placeholder using shared surface token."
+    },
+    {
+      "path": "SOURCE/test/global_app_surface_test.dart",
+      "bytes": 6947,
+      "sha256": "7e1180e8642e5f082de1e0878a158f2f7708f0879a0ea7500a36fe360addf34e",
+      "job": "Extends the shared-surface source matcher to accept the shared avatarPlaceholderFill token; existing token alternatives remain."
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "bytes": 26739,
+      "sha256": "ed46e10911e7526bd027260fcf2cf4119ef65e09527288a667b1b3ab01f7a843",
+      "job": "Retains current Make Main/cancellation/stale-callback assertions and updates only the empty Past icon expectation."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/manifest.json",
+      "bytes": 186725,
+      "sha256": "ea57b5054c7ceb6025c1b4fec9759bc62c0e09d8e0ae97ce3ca91a62b7773bd3",
+      "job": "Paired g11/g12 hash and size provenance, retaining prior line126 metadata."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "bytes": 94447,
+      "sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+      "job": "Exact Q214 approved 430x932 golden screenshot."
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "bytes": 93596,
+      "sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+      "job": "Exact Q214 approved 430x932 golden screenshot."
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "bytes": 46994,
+      "sha256": "e4bc0c22c140a8488be0c93f4352f4dfc61593686b3952bf89f2f1d2a30187c7",
+      "job": "Real-shadow capture with repaint and finally restoration, preserving A1 and LOCK46/47 fixtures."
+    },
+    {
+      "path": "SOURCE/test/visual/line114_card_surface_visual_test.dart",
+      "bytes": 4827,
+      "sha256": "9fe434d7bd7f2e6d89adc382999d1259a76cd2b3d57e761f67674036f2df3f5d",
+      "job": "Locks Q208 shadow radii and Main Guardian gold-border assertions."
+    },
+    {
+      "path": "SOURCE/test/visual/line129_current_capture_test.dart",
+      "bytes": 5023,
+      "sha256": "3b241e5ec69a821c270c20e7a62dd9c81ac332e5e20bf0739f3ab343946e0d79",
+      "job": "Adds opt-in j01, Past requests, mute and Hide captures via its raw output define; invoked under build/line145 for this task."
+    },
+    {
+      "path": "SOURCE/test/visual/line145_capture_output.dart",
+      "bytes": 868,
+      "sha256": "763d76d4e4426356c946d2d1d643cba26b56e9467cedaf198ce7de1b1c89f504",
+      "job": "Implements build/line145 path validation and symlink rejection for family/Guardian Seeker evidence."
+    },
+    {
+      "path": "SOURCE/test/visual/line145_capture_output_test.dart",
+      "bytes": 737,
+      "sha256": "8041782d2d9aa108ce9a6a0bdaa3291cc0d62ef205c26a6cf25dfd70de32ab09",
+      "job": "Tests the empty/accepted ignored output path and rejects traversal, absolute and tracked-evidence paths."
+    },
+    {
+      "path": "SOURCE/test/visual/line97_welcome_back_visual_test.dart",
+      "bytes": 6777,
+      "sha256": "e1e140999aef7c29802787c1634fcdfb365adefe2caae9093c7c0872c5998166",
+      "job": "Updates the retained history-icon expectation."
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "bytes": 18499,
+      "sha256": "f7f8f0c027449f59d1d062cee56356f64dd0212ecaa9b0244533ce1b16c646b3",
+      "job": "Preserves family assertions and moves all screenshot writes to explicit opt-in guarded evidence paths."
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "bytes": 17481,
+      "sha256": "ded3fa71234d0bc2af245c034a971b96ad17353ec3c3c0459fd59dab228e9b54",
+      "job": "Asserts the Guardian Journey image is a prepared MemoryImage instead of direct AssetImage."
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "bytes": 10284,
+      "sha256": "e9435be6a82f6e1af7b7dd48374561de106b227da820e85b0d99b11f0b10fac3",
+      "job": "Preserves Guardian Main/Additional, native and Larger Text assertions and adds opt-in guarded evidence paths."
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_capacity_test.dart",
+      "bytes": 10249,
+      "sha256": "0e6842338f72be73cbc06b2ca39e14bc8056adcf526445c81abf2a2155b07853",
+      "job": "Adds Basic free-place reservation assertions and preserves existing capacity/admission checks."
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_journey_photo_gate_test.dart",
+      "bytes": 927,
+      "sha256": "4d1019b34ccedffdedf7c5ab1983c466949b4db685bd1536277b5dc6ac8b97d2",
+      "job": "Tests refusal of unprepared, denied and blocked Guardian Journey photos and allows a prepared MemoryImage through the normal gate."
+    },
+    {
+      "path": "SYSTEM/tools/ui_gate/BASELINES/manifest.json",
+      "bytes": 186754,
+      "sha256": "3117654ccd8eef78a22e3de97234ae974fe41de5f5e4b54f446d1c725b301800",
+      "job": "Paired g11/g12 hash and size provenance, retaining prior line126 metadata."
+    },
+    {
+      "path": "SOURCE/README.md",
+      "bytes": 16668,
+      "sha256": "c8032f9191a2978dbd6b30051e5ec4c37f3833cb06e261ff23c7c64b58fb89b8",
+      "job": "Run/behavior documentation required by public rule F."
+    }
+  ]
+}

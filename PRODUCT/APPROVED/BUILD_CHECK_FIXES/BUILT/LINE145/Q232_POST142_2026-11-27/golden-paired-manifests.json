@@ -1,0 +1,20 @@
+{
+  "name": "golden-paired-manifests",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/visual/zyra_visual_regression_test.dart",
+    "--name",
+    "g11_seeker__adam_main|g12_seeker__yusuf_additional|active approved manifests"
+  ],
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "started_utc": "2026-11-27T16:49:57.658325+00:00",
+  "finished_utc": "2026-11-27T16:50:03.227232+00:00",
+  "seconds": 5.57,
+  "exit": 0
+}
