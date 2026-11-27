@@ -1,0 +1,59 @@
+{
+  "head_sha": "62b6293987cd4e601f1db921c42a4797addd8c9a",
+  "run_id": 46027547689,
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46027547689",
+  "required_passed": true,
+  "checked_at": "2026-11-27T15:55:35.244Z",
+  "required_jobs": [
+    {
+      "id": 140602732254,
+      "name": "Select Flutter tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140602932081,
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140602932206,
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140602932297,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "reporting_audit_jobs": [
+    {
+      "id": 140602732550,
+      "name": "Full text audit (large-430)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140602732570,
+      "name": "Full text audit (normal-375)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140602732571,
+      "name": "Full text audit (normal-430)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140602732694,
+      "name": "Full text audit (large-375)",
+      "status": "in_progress",
+      "conclusion": null
+    }
+  ]
+}

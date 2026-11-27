@@ -1,0 +1,138 @@
+{
+  "patch_sha256": "53ab2c60e0d4d75f6eb724b8b870f1b28162029d392634890ece6ae5b5b93aff",
+  "mode": "protected Flutter 3.44.2 local Founder preview capture",
+  "viewport": "430x932@1.0, DPR 3",
+  "all_capture_contrast_assertions_passed": true,
+  "captures": [
+    {
+      "path": "SOURCE/build/line142/screens/o01.png",
+      "sha256": "45d9a6e28eefb7ca5288a9861537703713f72a3b584d521dc83f4f436aacae9e",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o02.png",
+      "sha256": "f782863da14d82f2af55e90268086d27cf88690f05bced952815c1a9b1657213",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o03.png",
+      "sha256": "58ef53370cc40ba82cda35a6f312bc06130b7e152ce223850b6a56c48fc6f97f",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o04.png",
+      "sha256": "016ac1a8e3e8c83b9f27afe9deb1bd60646ebabc60c10a0ccc55c695a413ace3",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o05.png",
+      "sha256": "3e3295d903876b300c742b7264b0e9cea4984c38e7bbc3d1496f929d2eb1e400",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o06.png",
+      "sha256": "d99ace9688915af77d8b72d04b6b2b6bc689c4e6859d0f8a165ce2a7ff56af64",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o07.png",
+      "sha256": "6992c2ee16b8e5cc396fc330d2e4ab9a304b87f95e07356d67499a042b1b58d9",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o08.png",
+      "sha256": "d863746c40368ca8f67901733784199ae3a772c9d211e9d0fd66e06e8b8507a3",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o09.png",
+      "sha256": "6ef47d5a6ef33b946d6bff771985a4f7879e46770ff02b2916d92295101671a5",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o10.png",
+      "sha256": "22678c7d745143f0080d3257d13e36461bdc3c38b1d305cd62626c3630c1b6d8",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o11.png",
+      "sha256": "7482481174d57da6425d51020d1ef47b27e8b9e7fadcdc2f324bb66cb811caef",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o12.png",
+      "sha256": "1377cbfffca45d60fc4e7631e36f3ce3b2126e83c3e09c8e9e4be6b1ccc94700",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o13.png",
+      "sha256": "6e54f9c4e5a9579bea14d9690f3e729ff72ac888b3cbc89754fd109727f5c858",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    },
+    {
+      "path": "SOURCE/build/line142/screens/o14.png",
+      "sha256": "02808046a3460d06e30c1cc17a5f06e3d1566ac8489139c1f7591e4e82097f69",
+      "png_size": [
+        1290,
+        2796
+      ],
+      "matches_previous_verified_capture": true
+    }
+  ],
+  "meaning": "Fresh integrated capture from this owner; all14 PNGs equal the independently reviewed preparation and prior scoped comparison. Existing ../screens and ../comparisons are hash-identical.",
+  "captured_after_lease": true,
+  "accepted_base_source": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "implementation_commit": "62b6293987cd4e601f1db921c42a4797addd8c9a"
+}

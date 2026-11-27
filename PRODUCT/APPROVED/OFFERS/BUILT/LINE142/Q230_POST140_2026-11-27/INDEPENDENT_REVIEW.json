@@ -1,0 +1,15 @@
+{
+  "source_verdict": "PASS: no blocking finding; all17 candidate hashes and all10 preservation hashes exact on integrated source",
+  "authority": "LOCK47 and Q217/Q218/Q230 ANSWERED",
+  "account_entry": "One local entry belongs to the account generation across both roles. Physical LOCK46 switches retain entry; second account starts fresh; retired callback cannot affect it.",
+  "fixtures": "Exactly2 Q230 ordinary fixture migrations cite LOCK47 and retain safety, navigation, stale-callback and geometry assertions. Existing line136 capture adjustment belongs to original Offers scope.",
+  "preserved": [
+    "LOCK44 manual Pause route and Seeker-only Delete CTA",
+    "LOCK46 actual physical profile switch",
+    "Q237 Report Done styling and A5 surfaces",
+    "Accepted A1-A4 fixtures, audit code and CI configuration"
+  ],
+  "publication_review": "All30 source public-check hits reviewed:7 approved UI amount strings/calculations,10 offline test/sentinel/amount expectations,13 technical tuple/spacing false positives;0 private-material findings.",
+  "reviewer_edits_or_test_runs": "none",
+  "visual": "All14 captures MATCH within authorized feature scope; existing shared typography/surfaces, existing Delete footer and o12 sample counters retained. Q217 sheet and Q218 complete in-app rules treatment pass."
+}

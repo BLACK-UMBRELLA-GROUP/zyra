@@ -1,0 +1,137 @@
+{
+  "lease_acquired": "2026-11-27T15:30:24.841154+00:00",
+  "head": "085d30c40189f2c81189c9c52a754c9409a72dca",
+  "index_entries": [
+    "100644 f1915859e9eb592f2db782df5889d66f3d06bb02 0\tPRODUCT/APPROVED/BUILD_QUEUE.md",
+    "100644 0935e25eeea8b6ffe3ce64b614fcbf9468606b71 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+    "100644 341b615843c7227166868b6f025c30baed513281 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+    "100644 0531f5ad6daa081e49990b9c03427b7b4a7f3291 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+    "100644 b890726e53fbb2c4fdc8bf5ebd27811996fcd5f3 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+    "100644 4e002f5d53b681c5bbccc6617181b7264555d3ea 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+    "100644 7b9d76e6b1b22dd40b24dd8824a52fb95a300c8a 0\tPRODUCT/APPROVED/QUESTIONS.md"
+  ],
+  "foreign_worktree": {
+    "PRODUCT/APPROVED/BUILD_QUEUE.md": "3a9f84870bfccde993fadb4983dc69344e6cb2645de13b499426dadb9eb29e66",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+    "PRODUCT/APPROVED/QUESTIONS.md": "675c626c71a78a7557247ad3ad481fc5c065b237a567a05786cd1ad396be0852"
+  },
+  "source_paths": [
+    {
+      "path": "SOURCE/README.md",
+      "d4_base_sha256": "c21455fb052ff8b15329d55a8585ac9baef47a8c0b3c48fa5243e5e6468b11dc",
+      "candidate_sha256": "0b2b9fc954bd6511f45e0a58b20b3f02e653b2b9e76c1a0133c064a5e40fee46",
+      "sealed_q230_candidate_sha256": "44035e6723c3ae6464df582187f512dc09abd9e64f8cf7a8cac95b53b59f29c6"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_help_safety_preview.dart",
+      "d4_base_sha256": "e7e3ed55b41c3220bb9f24a895eec15a9bb13a033a03908541dd33105fab88d6",
+      "candidate_sha256": "e38545f1bec203be71361a333104b840dea28aff9de86c16d5c51273e50a0266",
+      "sealed_q230_candidate_sha256": "e058d996a61b0d4249c4ce24cfb03d0415d775e97ac439ae059c34ddf8ba675f"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_membership_preview.dart",
+      "d4_base_sha256": "8049de240dba7250e11c0bce10041169c63bd5ae8db84a35a03f5c8f9b200423",
+      "candidate_sha256": "b681ee0d6b01f59fda8233dd89646ec9b6d57e4dade6a1c79c11205eec300914",
+      "sealed_q230_candidate_sha256": "b681ee0d6b01f59fda8233dd89646ec9b6d57e4dade6a1c79c11205eec300914"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_offers_preview.dart",
+      "d4_base_sha256": null,
+      "candidate_sha256": "db8c9a4c366bcaf87de2b4833cbcc6692c8921308800c331a33dc61a48020df5",
+      "sealed_q230_candidate_sha256": "db8c9a4c366bcaf87de2b4833cbcc6692c8921308800c331a33dc61a48020df5"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "d4_base_sha256": "e52ea189499754da93864e9f782863b385ea58cffbe0b5b4979e8aef7b318f97",
+      "candidate_sha256": "cab649d775ef06a2e112974f27ede06f90288488153e29ee499ea5c72c2f83c9",
+      "sealed_q230_candidate_sha256": "cab649d775ef06a2e112974f27ede06f90288488153e29ee499ea5c72c2f83c9"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "d4_base_sha256": "727b273f1d6620780fe984455327f4c7acc14ea2ec157af5cf3b6d0137170758",
+      "candidate_sha256": "65f08283ba35386cc0ff8a622e541e0dcd760df0bae5215a97b560536deb9b68",
+      "sealed_q230_candidate_sha256": "6ef9401b95583187a277f906601da653d4248ac42cd1f1b6a0b7fad19f456db9"
+    },
+    {
+      "path": "SOURCE/lib/models/zyra_developer_preview.dart",
+      "d4_base_sha256": "0a333ecbeab077445653497b9dc0899fa53e6355b407134556f1dff8b0f614ef",
+      "candidate_sha256": "21c3e870c0bd4acd39078d709a715751dbb99c89bab98a1a541c6bed9dccd914",
+      "sealed_q230_candidate_sha256": "997f08516a610ee4839a02617d1597bfc3c6d70cb541b20678c0f6ec61da9bd3"
+    },
+    {
+      "path": "SOURCE/lib/models/zyra_offers_preview.dart",
+      "d4_base_sha256": null,
+      "candidate_sha256": "3366ff7a01fab1beed2ed3ddbf3b14cc0082db5b39c0adfd474b6120763aea7f",
+      "sealed_q230_candidate_sha256": "3366ff7a01fab1beed2ed3ddbf3b14cc0082db5b39c0adfd474b6120763aea7f"
+    },
+    {
+      "path": "SOURCE/lib/state/zyra_developer_samples.dart",
+      "d4_base_sha256": "31df0a70b3481b57eb054b1c8b4d4d3da66afbc71a7cc6f6c4af97dde9ea1a80",
+      "candidate_sha256": "812b43af611cb1be90ef337c46e45445745f942e40035855f7aaa5cc7b8f5776",
+      "sealed_q230_candidate_sha256": "4ac858335225f716de969a081663f6a4549ce2cfb69a79161afdcf683e1b63f5"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_panel.dart",
+      "d4_base_sha256": "1d3d865c03f331a63a2341693af6e24fbb3db8d11a0a42a1c06a73ff663301fa",
+      "candidate_sha256": "7034a86c51dce37172940bba9ae79c650b5d41829be390cadccacf5d358b618a",
+      "sealed_q230_candidate_sha256": "f7fff3c2ce8e43abac1b94452991d0836961d6fb7d6db93d9509e777504e5cab"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_title.dart",
+      "d4_base_sha256": "b6bf3683abe10622d6722bdd0f294b69d42258fdcbff0b9e6f49e628f8dd5444",
+      "candidate_sha256": "772836c1ee6f07ac99449a99ebae7d6c8ac26aea30f19b1d38bd9f74e9614a24",
+      "sealed_q230_candidate_sha256": "71c922485213d3b1d3668200e313f9bc1a7399e33c37f8244996c566069f0450"
+    },
+    {
+      "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+      "d4_base_sha256": "430a5c11fbea804f3556ce521972c0f6fa5272ab38ade02475609e609dba840a",
+      "candidate_sha256": "e90c98a3b485b294ae5ec44b1f29bdfe1911857bf32a1fd8c103ce2ee53f9dd4",
+      "sealed_q230_candidate_sha256": "cf048baa0d4ba3d867a53005567dede1dc3bf2287c219b5a8f592f04add32188"
+    },
+    {
+      "path": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "d4_base_sha256": "3fbdb80b3eaecda473446b626ee1637bd9393312a80ce6e80f30b4fc42250ff7",
+      "candidate_sha256": "fba90971713462f1e9c04c76a078272a5cef091272393a7c773aebd76cf34e92",
+      "sealed_q230_candidate_sha256": "be69554edcf728f5ee8334bcd7f4fb71d4a9c50876c40824dfb6a61b03fdace0"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "d4_base_sha256": "79ca339ebf692f94c263434ce81dba7c3eb01cc42f744387b8c8a95a3537cbd8",
+      "candidate_sha256": "4615da92dc8414b4967685334044d46e95e7d63db7b76e1cf951c6a02941e9e8",
+      "sealed_q230_candidate_sha256": "7acaa06ad7e7b07ed225976b9237ed0150253e15af8b7682845c257d012f394e"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "d4_base_sha256": "d5068b05aa30e19456f71646fdd4e24da4da211bd88399990c312bd370029232",
+      "candidate_sha256": "b13fed6d354d06e811f9bb6c2973a52e5a1aef31f1ff773486b7f3dd648eac0c",
+      "sealed_q230_candidate_sha256": "891376449d4d8cbd1c8fbecc5c417a1519e5419a8715fb9d68d210dac8542d94"
+    },
+    {
+      "path": "SOURCE/test/visual/line136_membership_capture_test.dart",
+      "d4_base_sha256": "c41bae6236702d022c05e1785441b026086417ece57d82161dd1ff4c27c9059f",
+      "candidate_sha256": "1d142c76e1ee84df1f2dfdfc8a98fc4ca1c5d4fc9245733e5a9d0b3d97559940",
+      "sealed_q230_candidate_sha256": "1d142c76e1ee84df1f2dfdfc8a98fc4ca1c5d4fc9245733e5a9d0b3d97559940"
+    },
+    {
+      "path": "SOURCE/test/visual/line142_offers_preview_test.dart",
+      "d4_base_sha256": null,
+      "candidate_sha256": "865597d78e7188779db2356a07c3589e2d68addfa126e3c57158304719274b1f",
+      "sealed_q230_candidate_sha256": "e9f71077f49b7a7409754aac979598b8f4c5d85998bf0a270f46d9f180800fea"
+    }
+  ],
+  "patch_sha256": "53ab2c60e0d4d75f6eb724b8b870f1b28162029d392634890ece6ae5b5b93aff",
+  "failed_full_gate_rounds": 0,
+  "checked": "2026-11-27T15:44:20.862922+00:00",
+  "seventeen_candidate_hashes_exact": true,
+  "ten_explicit_preservation_hashes_exact": true,
+  "foreign_seven_index_entries_exact": true,
+  "foreign_seven_worktree_hashes_exact": true,
+  "final_checked": "2026-11-27T15:55:45.388703+00:00",
+  "final_foreign_seven_index_entries_exact": true,
+  "final_questions_and_five_line138_worktree_hashes_exact": true,
+  "queue_delta": "Only line142 Status WAITING to BUILT and task-note date2026-11-27; normalizing those cells reproduces exact intake SHA256"
+}

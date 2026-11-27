@@ -1,0 +1,109 @@
+{
+  "status": "BUILT Preview; Live: no",
+  "commit_sha": "62b6293987cd4e601f1db921c42a4797addd8c9a",
+  "accepted_base_source": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "accepted_record_head": "085d30c40189f2c81189c9c52a754c9409a72dca",
+  "flutter_version": "3.44.2",
+  "build_mode": "Protected Flutter preview widget tests; no native build",
+  "timestamp": "2026-11-27T15:55:45.370087+00:00",
+  "authority": [
+    "Continuing Founder GO",
+    "DR-ZYRA-379",
+    "LOCK47",
+    "Q217",
+    "Q218",
+    "Q230 ANSWERED",
+    "OA-ZYRA-371",
+    "AD-AIOS-114",
+    "AD-AIOS-115"
+  ],
+  "lease_acquired": "2026-11-27T15:30:24.841154+00:00",
+  "source_index_released": "2026-11-27T15:55:45.370087+00:00",
+  "L49_hours": 6,
+  "L49_failed_full_gate_limit": 3,
+  "failed_full_gate_rounds": 0,
+  "original_held_patch_sha256": "518c60824ad32bf71d757115873b0a07a42c1fe4a5c0071c201bba0d46bdb15c",
+  "prepared_patch_sha256": "53ab2c60e0d4d75f6eb724b8b870f1b28162029d392634890ece6ae5b5b93aff",
+  "start_pack_bytes": 16501,
+  "named_text_bytes": {
+    "PRODUCT/APPROVED/OFFERS/BRIEFS/BUILD_BRIEF_2026-11-23_V1.md": 2451,
+    "PRODUCT/APPROVED/OFFERS/RECORD/OFFERS_SPEC_CURRENT_VERSION_V1.md": 7439,
+    "PRODUCT/APPROVED/OFFERS/RECORD/LOCK_RECORD.md": 710
+  },
+  "conversation": "new; source lease begins15:30:24UTC",
+  "actual_token_count": "Unavailable; no estimate",
+  "startup_note": "User-required short lessons and current AGENTS read before pack; absolute-tool-path retry corrected start_pack refusal. Queue startup header read exceeded task-row-only need; no whole OA/decision register read.",
+  "migrations": [],
+  "live": false,
+  "phone_or_native_build": false,
+  "next_line_started": false,
+  "ordinary_summary": "10:50 +7975 ~248: All other tests passed!",
+  "required_hosted": {
+    "head_sha": "62b6293987cd4e601f1db921c42a4797addd8c9a",
+    "run_id": 46027547689,
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46027547689",
+    "required_passed": true,
+    "checked_at": "2026-11-27T15:55:35.244Z",
+    "required_jobs": [
+      {
+        "id": 140602732254,
+        "name": "Select Flutter tests",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140602932081,
+        "name": "Flutter checks (shard 1)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140602932206,
+        "name": "Flutter checks (shard 2)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140602932297,
+        "name": "Flutter checks (shard 0)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "reporting_audit_jobs": [
+      {
+        "id": 140602732550,
+        "name": "Full text audit (large-430)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 140602732570,
+        "name": "Full text audit (normal-375)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 140602732571,
+        "name": "Full text audit (normal-430)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 140602732694,
+        "name": "Full text audit (large-375)",
+        "status": "in_progress",
+        "conclusion": null
+      }
+    ]
+  },
+  "current_evidence": "Q230_POST140_2026-11-27",
+  "lease_seconds": 1520.529,
+  "map": {
+    "result": "MAP.md written: 456 documents, 70 without a header, 41 problems",
+    "prior_read_only_check": "456 documents with headers,70without,41problems;stale",
+    "manual_routes_preserved": true,
+    "commit": "Mixed MAP left unstaged",
+    "written_refusal": "Existing41 document-standard problems and70missing headers are outside this app line; no administrative repair or broad register commit."
+  }
+}

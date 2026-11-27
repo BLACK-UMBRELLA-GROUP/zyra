@@ -1,0 +1,142 @@
+{
+  "verdict": "No material Offers-specific visual defect found; all14 MATCH within approved scope, not pixel-identical to HTML masters.",
+  "scope": "All14whole-phone master/build pairs reviewed at430x932; o10lower rules checked atnative pixels. No code changes or tests by reviewer.",
+  "fresh_equals_reviewed_prepared": true,
+  "notes": {
+    "o01": "Seeker-only Pause card complete and correct. Existing fixed Delete footer / lower preexisting Delete content presentation differs from prototype master; no Offers-specific missing copy.",
+    "o02-o04": "Q217 sheet-only review; eligible amounts, timing, icon, Stay/Continue copy agree. Dimmed background is current LOCK42 and has no hearts.",
+    "o05-o09": "All five gift variants agree with locked gifts, names, amount copy and Thank you action.",
+    "o10": "Official rules fully visible above Enter; complete final Apple sentence and no Full terms/web link per Q218. No clipping found after inspecting lower rules at native resolution.",
+    "o11": "Entered receipt complete; Official rules collapse state and no Enter action agree.",
+    "o12": "Eid Needs you card agrees. Known underlying sample counters, Preferences pill and shared nav differ, already refused outside scope.",
+    "o13-o14": "Plan-only label agrees; current shared Profile/navigation/layout retained."
+  },
+  "frames": [
+    {
+      "id": "o01",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o01_delete__pause_card.png",
+      "master_sha256": "5ad9eb37381dce531e9d31408892960ee196649246267b3e8d9c677e108b3b9c",
+      "prepared_sha256": "45d9a6e28eefb7ca5288a9861537703713f72a3b584d521dc83f4f436aacae9e",
+      "fresh_sha256": "45d9a6e28eefb7ca5288a9861537703713f72a3b584d521dc83f4f436aacae9e",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o02",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o02_cancel__growth_3_months.png",
+      "master_sha256": "a82b85e0beda032bb05ecf94406339d04003ef282fe3cd2c195ea512fe135fa3",
+      "prepared_sha256": "f782863da14d82f2af55e90268086d27cf88690f05bced952815c1a9b1657213",
+      "fresh_sha256": "f782863da14d82f2af55e90268086d27cf88690f05bced952815c1a9b1657213",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o03",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o03_cancel__normal_1_month.png",
+      "master_sha256": "0fd69cfdd3927373070bed0c3105fd23756e30995f7804f2203ca7dd1cd05bcf",
+      "prepared_sha256": "58ef53370cc40ba82cda35a6f312bc06130b7e152ce223850b6a56c48fc6f97f",
+      "fresh_sha256": "58ef53370cc40ba82cda35a6f312bc06130b7e152ce223850b6a56c48fc6f97f",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o04",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o04_cancel__guardian_growth.png",
+      "master_sha256": "7d58b56d6d352f7619b588d0b9e72a26a1cae84732e34deefe4cc13744f8401a",
+      "prepared_sha256": "016ac1a8e3e8c83b9f27afe9deb1bd60646ebabc60c10a0ccc55c695a413ace3",
+      "fresh_sha256": "016ac1a8e3e8c83b9f27afe9deb1bd60646ebabc60c10a0ccc55c695a413ace3",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o05",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o05_eid__seeker_one_fitr.png",
+      "master_sha256": "5c695522b687952aa902c8c5273b9fa8e9202fd577dbd60bc65e5678d68bad8f",
+      "prepared_sha256": "3e3295d903876b300c742b7264b0e9cea4984c38e7bbc3d1496f929d2eb1e400",
+      "fresh_sha256": "3e3295d903876b300c742b7264b0e9cea4984c38e7bbc3d1496f929d2eb1e400",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o06",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o06_eid__seeker_one_adha.png",
+      "master_sha256": "1230844104ba8dfef20fe6bacbd9b640ccd191375024f152623b34710c93107b",
+      "prepared_sha256": "d99ace9688915af77d8b72d04b6b2b6bc689c4e6859d0f8a165ce2a7ff56af64",
+      "fresh_sha256": "d99ace9688915af77d8b72d04b6b2b6bc689c4e6859d0f8a165ce2a7ff56af64",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o07",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o07_eid__seeker_basic.png",
+      "master_sha256": "eff3059ad1b7a4ce8bb1ba83b365b6c95c6dfc37c554fb277e09d87dd6df7da1",
+      "prepared_sha256": "6992c2ee16b8e5cc396fc330d2e4ab9a304b87f95e07356d67499a042b1b58d9",
+      "fresh_sha256": "6992c2ee16b8e5cc396fc330d2e4ab9a304b87f95e07356d67499a042b1b58d9",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o08",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o08_eid__guardian_one.png",
+      "master_sha256": "9f4f981385dfa0115c0a81320e165d6c1c89037bc213b46d6434266837cb9a24",
+      "prepared_sha256": "d863746c40368ca8f67901733784199ae3a772c9d211e9d0fd66e06e8b8507a3",
+      "fresh_sha256": "d863746c40368ca8f67901733784199ae3a772c9d211e9d0fd66e06e8b8507a3",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o09",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o09_eid__guardian_basic.png",
+      "master_sha256": "8fae7586d517f98c6760d95bea5103c9fe7cc301b5155064d693ac81d672501e",
+      "prepared_sha256": "6ef47d5a6ef33b946d6bff771985a4f7879e46770ff02b2916d92295101671a5",
+      "fresh_sha256": "6ef47d5a6ef33b946d6bff771985a4f7879e46770ff02b2916d92295101671a5",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o10",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o10_ramadan__enter_rules.png",
+      "master_sha256": "d38b849cfa417f473240ec77352916f3376c2b3c1f8264aa0ae119a5458468e5",
+      "prepared_sha256": "22678c7d745143f0080d3257d13e36461bdc3c38b1d305cd62626c3630c1b6d8",
+      "fresh_sha256": "22678c7d745143f0080d3257d13e36461bdc3c38b1d305cd62626c3630c1b6d8",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o11",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o11_ramadan__entered.png",
+      "master_sha256": "3f71d9af52e4a869488115d74f6f422b3d9295254ee3c3a4c83730c8dac2ba0f",
+      "prepared_sha256": "7482481174d57da6425d51020d1ef47b27e8b9e7fadcdc2f324bb66cb811caef",
+      "fresh_sha256": "7482481174d57da6425d51020d1ef47b27e8b9e7fadcdc2f324bb66cb811caef",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o12",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o12_myzyra__eid_item.png",
+      "master_sha256": "9f9b95cef4842f26ae1da88b8dcc4e7321c97842ae735f69baf3500fb3161794",
+      "prepared_sha256": "1377cbfffca45d60fc4e7631e36f3ce3b2126e83c3e09c8e9e4be6b1ccc94700",
+      "fresh_sha256": "1377cbfffca45d60fc4e7631e36f3ce3b2126e83c3e09c8e9e4be6b1ccc94700",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o13",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o13_profile__seeker_header.png",
+      "master_sha256": "de6a2034965d5c4b7a05d5aada3f3173e6bf335a60292a38b3861d25082a41be",
+      "prepared_sha256": "6e54f9c4e5a9579bea14d9690f3e729ff72ac888b3cbc89754fd109727f5c858",
+      "fresh_sha256": "6e54f9c4e5a9579bea14d9690f3e729ff72ac888b3cbc89754fd109727f5c858",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    },
+    {
+      "id": "o14",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o14_profile__guardian_header.png",
+      "master_sha256": "3a4598fd506590cc4b2aa62566247da895ede94ae8093cf3e7fcc09e2f88de27",
+      "prepared_sha256": "02808046a3460d06e30c1cc17a5f06e3d1566ac8489139c1f7591e4e82097f69",
+      "fresh_sha256": "02808046a3460d06e30c1cc17a5f06e3d1566ac8489139c1f7591e4e82097f69",
+      "fresh_equals_reviewed_prepared": true,
+      "verdict": "MATCH within authorized Offers feature scope; inherited shared typography/surfaces retained"
+    }
+  ]
+}

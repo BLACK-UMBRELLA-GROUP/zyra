@@ -1,0 +1,48 @@
+{
+  "source_public_scan": {
+    "files": 17,
+    "exit": 1,
+    "hits": 30,
+    "disposition": {
+      "approved_UI_amounts": 7,
+      "public_offline_tests": 10,
+      "technical_tuple_and_spacing_false_positives": 13
+    },
+    "private_material_findings": 0
+  },
+  "candidate_secret_scan": {
+    "redacted": true,
+    "bytes": 62593,
+    "exit": 0,
+    "leaks": 0
+  },
+  "public_A_F": {
+    "A": "Candidate patch clean; committed history scan recorded before push",
+    "B": "Approved public preview implementation/tests and evidence only",
+    "C": "No roadmap row completed",
+    "D": "No version change",
+    "E": "Neutral record wording; locked UI wording unchanged",
+    "F": "SOURCE/README.md updated in implementation commit"
+  },
+  "secret_history": {
+    "pre_implementation_push": {
+      "exit": 0,
+      "commits": 1,
+      "bytes": 47546,
+      "leaks": 0
+    },
+    "post_implementation_push": {
+      "exit": 0,
+      "leaks": 0
+    }
+  },
+  "final_record_scan": {
+    "public_files": 14,
+    "owned_record_files": 12,
+    "owned_record_hits": 0,
+    "mixed_map_queue_hits": 7,
+    "disposition": "Existing route/title/index and unrelated queue references only; this owner changed queue Status/date only, and retained the handwritten MAP routes. No private document contents or material introduced.",
+    "record_secret_scan_exit": 0,
+    "record_secret_findings": 0
+  }
+}

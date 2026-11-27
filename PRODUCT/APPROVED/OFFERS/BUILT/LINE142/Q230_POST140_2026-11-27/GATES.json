@@ -1,0 +1,41 @@
+{
+  "protected_driver": {
+    "command": "node tooling/no_git_driver.mjs check",
+    "result": "PASS: pins5, inherited exec denial and nested denial"
+  },
+  "analyzer": {
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "result": "PASS: no issues,12.7s"
+  },
+  "offers_and_captures": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_LINE142_CAPTURE=true test/visual/line142_offers_preview_test.dart",
+    "result": "PASS:16cases,14fresh1290x2796captures,all14rendered-text assertions;12seconds test time",
+    "q230_regression": "Physical LOCK46 switch Seeker to Guardian to Seeker, unchanged login/generation, second account and stale callback isolation"
+  },
+  "affected_replay": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line126_remaining_routes_test.dart --name 'subscriptions and switch setup|membership review'",
+    "result": "PASS:6cases;2seconds"
+  },
+  "audit_controls": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/zyra_rendered_text_audit_controls_test.dart",
+    "result": "PASS:130cases;21seconds"
+  },
+  "ordinary_regression": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "compact"
+    ],
+    "started": "2026-11-27T15:32:51.858713+00:00",
+    "completed": "2026-11-27T15:43:44.489114+00:00",
+    "seconds": 652.629,
+    "exit_code": 0,
+    "summary": "10:50 +7975 ~248: All other tests passed!",
+    "result": "PASS"
+  },
+  "scope": "No new whole-app raster gate; four hosted full text audits are reporting only per SOURCE/README.md and workflow."
+}
