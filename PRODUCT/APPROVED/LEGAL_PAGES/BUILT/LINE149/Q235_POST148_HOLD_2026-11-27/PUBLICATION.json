@@ -1,0 +1,1584 @@
+{
+  "line": 149,
+  "state": "BUILT \u2014 Founder preview only",
+  "implementation_commit": "d9986c81b2222763bff5305bb9fecc26cec0196c",
+  "hosted": {
+    "run_id": 46077802166,
+    "head_sha": "d9986c81b2222763bff5305bb9fecc26cec0196c",
+    "branch": "main",
+    "event": "push",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46077802166",
+    "required_checks": [
+      {
+        "id": 140769678489,
+        "name": "Flutter checks (shard 2)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:43:26Z",
+        "completed_at": "2026-11-27T22:53:10Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769678510,
+        "name": "Flutter checks (shard 0)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:38:19Z",
+        "completed_at": "2026-11-27T22:47:20Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769678548,
+        "name": "Flutter checks (shard 1)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:43:06Z",
+        "completed_at": "2026-11-27T22:52:27Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "all_jobs": [
+      {
+        "id": 140769524441,
+        "name": "Select Flutter tests",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:50Z",
+        "completed_at": "2026-11-27T22:38:17Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Select affected tests or full suite shards",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524702,
+        "name": "Full text audit (normal-375-3)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:45:54Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524863,
+        "name": "Full text audit (normal-375-5)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:43:48Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524865,
+        "name": "Full text audit (large-375-2)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:44:15Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524903,
+        "name": "Full text audit (large-375-4)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:46:56Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524919,
+        "name": "Full text audit (large-375-3)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:44:46Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524936,
+        "name": "Full text audit (normal-375-4)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:43:59Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524940,
+        "name": "Full text audit (normal-430-3)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:44:37Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524942,
+        "name": "Full text audit (normal-430-5)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:44:37Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524956,
+        "name": "Full text audit (normal-430-4)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:43:04Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524966,
+        "name": "Full text audit (normal-430-1)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:44:31Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524971,
+        "name": "Full text audit (normal-430-2)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:43:25Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524993,
+        "name": "Full text audit (large-430-4)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:44:15Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524996,
+        "name": "Full text audit (normal-375-2)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:43:58Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769524998,
+        "name": "Full text audit (large-430-1)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:45:19Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769525020,
+        "name": "Full text audit (large-375-1)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:51:19Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769525054,
+        "name": "Full text audit (large-430-2)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:50Z",
+        "completed_at": "2026-11-27T22:44:26Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769525064,
+        "name": "Full text audit (large-430-3)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:48:41Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769525074,
+        "name": "Full text audit (normal-375-1)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:51Z",
+        "completed_at": "2026-11-27T22:45:19Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769525083,
+        "name": "Full text audit (large-430-5)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:37:50Z",
+        "completed_at": "2026-11-27T22:45:37Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run this audit setting and shard",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prepare audit report and record result",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload per-item raster report",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769678489,
+        "name": "Flutter checks (shard 2)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:43:26Z",
+        "completed_at": "2026-11-27T22:53:10Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769678510,
+        "name": "Flutter checks (shard 0)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:38:19Z",
+        "completed_at": "2026-11-27T22:47:20Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140769678548,
+        "name": "Flutter checks (shard 1)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:43:06Z",
+        "completed_at": "2026-11-27T22:52:27Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 140773685595,
+        "name": "Full text audit (strict union proof)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-27T22:51:21Z",
+        "completed_at": "2026-11-27T22:51:52Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Collect completed shard job timings",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prove all four complete corpus unions",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Upload strict union proof",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "failed_jobs": []
+  },
+  "checked_at": "2026-11-27T22:56:00.115153+00:00",
+  "no_duplicate_records_ci_wait": true,
+  "source_ci_clean": true,
+  "foreign_index_exact": 7,
+  "foreign_working_exact": 5,
+  "prior_evidence_exact": 24365,
+  "other_lines_implemented": [],
+  "line148": "QUESTION Q243 \u2014 held, not merged",
+  "line150": "untouched; coordinator owns phone delivery"
+}

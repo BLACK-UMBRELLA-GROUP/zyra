@@ -2,12 +2,12 @@
   "line": 149,
   "lock": 51,
   "base_commit": "7af4268181c6ba7620be27867259a0ac4cd37f8a",
-  "implementation_commit": "pending local gate and commit",
+  "implementation_commit": "d9986c81b2222763bff5305bb9fecc26cec0196c",
   "flutter_version": "3.44.2",
   "build_mode": "protected local widget tests; no native build",
-  "timestamp": "2026-11-27T22:35:45.414912+00:00",
-  "state": "local gates passed; exact candidate hosted checks pending",
-  "published": false,
+  "timestamp": "2026-11-27T22:56:00.115153+00:00",
+  "state": "BUILT \u2014 Founder preview only",
+  "published": true,
   "scope": "Founder preview; V365 sample legal text; local support",
   "ordinary": {
     "passed": 8112,
@@ -24,5 +24,8 @@
     "runs": 468,
     "failures": 0
   },
-  "failed_full_gate_runs": 0
+  "failed_full_gate_runs": 0,
+  "hosted_run": 46077802166,
+  "hosted_required": "3/3 success at exact implementation SHA",
+  "source_release": "2026-11-27T22:56:00.115153+00:00"
 }
