@@ -1,0 +1,46 @@
+{
+  "read_only": true,
+  "accepted_head": "0b50384a",
+  "held_manifest_sha256": "3d84ed52bdaa86003abc0fc8518006f5ebf0808c41893faf6e7e7d53194dc395",
+  "held_patch_sha256": "d440a4f190f5f8bfb3573ea205c1e2531ab9bc1ca6428a64ed4e2158bfb1c41b",
+  "held_patch_matches": true,
+  "held_candidates_verified": true,
+  "held_candidate_count": 18,
+  "preflight_manifest_sha256": "ef3800cd6f88c3deaf0e168e9a95bbdb5a1b7168a772ddeace3de51a6b8909c5",
+  "preflight_patch_sha256": "62aeaece752e730a4b2a718f0ef0d7c9ec936497f1639c6c75de01915ff679a2",
+  "preflight_candidates_verified": true,
+  "preflight_candidate_count": 21,
+  "accepted_base_drifts": [
+    {
+      "path": "SOURCE/README.md",
+      "accepted_head_sha256": "9541368aab310620c771a71d7841c7a7641e1aa3ccbe2b0820bb98a09c9caa5c",
+      "preflight_base_sha256": "0b2b9fc954bd6511f45e0a58b20b3f02e653b2b9e76c1a0133c064a5e40fee46"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "accepted_head_sha256": "f22322055c5afa2a802d2783215e7510d26bae43e216225a39e650bb17055b71",
+      "preflight_base_sha256": "65f08283ba35386cc0ff8a622e541e0dcd760df0bae5215a97b560536deb9b68"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+      "accepted_head_sha256": "2d8a6cbb1b596d3b188acd89845f04431bcb746241276b172df0d8e7bffa55b5",
+      "preflight_base_sha256": "f13706c4f38a55aad0dad78a8799e4cb6d93eea57aa64b521b338fa04da18759"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "accepted_head_sha256": "e4bc0c22c140a8488be0c93f4352f4dfc61593686b3952bf89f2f1d2a30187c7",
+      "preflight_base_sha256": "b13fed6d354d06e811f9bb6c2973a52e5a1aef31f1ff773486b7f3dd648eac0c"
+    }
+  ],
+  "readonly_apply_check_excluding_readme_exit": 0,
+  "readonly_apply_check_stderr": "",
+  "preserve": [
+    "line145 shell outlined History icons, both Clip.none Stacks, prepared Guardian permission and block photo check",
+    "line145 activity three outlined History icons",
+    "line145 BaselineHarness real-shadow recursive repaint and finally restore",
+    "current README line145 build-check and Q239 audit sections",
+    "current Q230 offerChoices/account-wide Ramadan ownership",
+    "all current text corpus, workflow and explicit newer fixtures; no application from preflight for unaffected paths"
+  ],
+  "q233_scope_review": "Only ninth upgrade row, actual Sent Scrollable reveal, and LOCK24 master-position count bar 4/12/10 geometry. Existing assertions kept."
+}

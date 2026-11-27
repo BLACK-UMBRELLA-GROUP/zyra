@@ -1,0 +1,16 @@
+{
+  "files_checked": 97,
+  "fable_checker_exit_code": 1,
+  "hits": 1787,
+  "dispositions": {
+    "tracked @ scale asset filename, not an address": 443,
+    "compressed PNG text matcher false positive; valid PNG and capture hashes retained": 1333,
+    "unchanged locked public app purchase-footer text; raw evidence retained": 2,
+    "foreign register row; exact current bytes preserved and excluded from commit": 9
+  },
+  "unreviewed_hits": [],
+  "gitleaks_records_exit_code": 0,
+  "gitleaks_records_findings": 0,
+  "source_scan": "21candidate files:0new public hits after13exact accepted-line dispositions; redacted owned-content Gitleaks clean. Candidate parked unchanged.",
+  "written_refusal": "No binary asset, raw report, foreign row, threshold, test fixture or app source altered to silence matching. Verified checksum labels were clarified in records only."
+}

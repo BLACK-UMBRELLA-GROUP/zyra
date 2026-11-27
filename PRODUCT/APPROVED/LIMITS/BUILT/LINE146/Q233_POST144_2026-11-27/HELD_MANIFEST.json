@@ -1,0 +1,202 @@
+{
+  "line": 146,
+  "lock": 48,
+  "question": 241,
+  "base_head": "0b50384af1d756bc6d580e9e24956a1005a12bdf",
+  "acquired_at": "2026-11-27T18:21:27.706638+00:00",
+  "parked_at": "2026-11-27T18:40:42.343612+00:00",
+  "patch_sha256": "167306318944461d491e2a478a2dd18693c8dc0dc140bd5432995f7f63909511",
+  "files": [
+    {
+      "path": "SOURCE/README.md",
+      "actual_base_sha256": "9541368aab310620c771a71d7841c7a7641e1aa3ccbe2b0820bb98a09c9caa5c",
+      "preflight_base_sha256": "0b2b9fc954bd6511f45e0a58b20b3f02e653b2b9e76c1a0133c064a5e40fee46",
+      "preflight_candidate_sha256": "ace155791fef12bfa4ef35e1493513b75739acf09b1c917d599f8779b3c3732a",
+      "integrated_sha256": "7ad7136830bcd9a012e092eb23cc4df5477617cfe886681faa123c14cb74d5db",
+      "reconciled_current_base": true,
+      "held_path": "worktree/SOURCE/README.md"
+    },
+    {
+      "path": "SOURCE/lib/data/zyra_seeker_basic_policy.dart",
+      "actual_base_sha256": "b93933e7142a17f1c28600fe7fe2900f47aa7acff1e5558e13636f3c84d70e71",
+      "preflight_base_sha256": "b93933e7142a17f1c28600fe7fe2900f47aa7acff1e5558e13636f3c84d70e71",
+      "preflight_candidate_sha256": "67a6ed930448aa00c6ab1b2596312fb43a25d3f42be998c31dbc9d5a26f570e1",
+      "integrated_sha256": "67a6ed930448aa00c6ab1b2596312fb43a25d3f42be998c31dbc9d5a26f570e1",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/data/zyra_seeker_basic_policy.dart"
+    },
+    {
+      "path": "SOURCE/lib/data/zyra_seeker_plan_limits.dart",
+      "actual_base_sha256": "5e0d0f66e592c554e63cb8353b79c488e894256dc00e84aa474e79dbbaf87036",
+      "preflight_base_sha256": "5e0d0f66e592c554e63cb8353b79c488e894256dc00e84aa474e79dbbaf87036",
+      "preflight_candidate_sha256": "381487acdd9449b38d13a44550466816c1d1c1f581cfe7d0dfadd0a4d82e05c1",
+      "integrated_sha256": "381487acdd9449b38d13a44550466816c1d1c1f581cfe7d0dfadd0a4d82e05c1",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/data/zyra_seeker_plan_limits.dart"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_full_profile_preview.dart",
+      "actual_base_sha256": "436ae57afb40fd25855068923221ecb6293b368a11d67b8869cd1523e1c17575",
+      "preflight_base_sha256": "436ae57afb40fd25855068923221ecb6293b368a11d67b8869cd1523e1c17575",
+      "preflight_candidate_sha256": "4f3dd522eb33892ca9751246e8c9741fde4ad99aaaff4ff94e3b6ecc96cbac7d",
+      "integrated_sha256": "4f3dd522eb33892ca9751246e8c9741fde4ad99aaaff4ff94e3b6ecc96cbac7d",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/dev/zyra_full_profile_preview.dart"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_limits_preview.dart",
+      "actual_base_sha256": null,
+      "preflight_base_sha256": null,
+      "preflight_candidate_sha256": "af08c5a3cf5d4fa02298d9a606d761ff02255818cf4bf1c5d0a6fc158581f1ba",
+      "integrated_sha256": "af08c5a3cf5d4fa02298d9a606d761ff02255818cf4bf1c5d0a6fc158581f1ba",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/dev/zyra_limits_preview.dart"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart",
+      "actual_base_sha256": "7e59e491a0fbf6c5e18af53db1a2c773b2127091c5325ba9e28c38525912348c",
+      "preflight_base_sha256": "7e59e491a0fbf6c5e18af53db1a2c773b2127091c5325ba9e28c38525912348c",
+      "preflight_candidate_sha256": "0943fb4393a71126d97dde59f8344283c5e0985c663102a56e19da7ad7bf41cc",
+      "integrated_sha256": "0943fb4393a71126d97dde59f8344283c5e0985c663102a56e19da7ad7bf41cc",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/dev/zyra_one_journey_browse_designs.dart"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "actual_base_sha256": "f22322055c5afa2a802d2783215e7510d26bae43e216225a39e650bb17055b71",
+      "preflight_base_sha256": "65f08283ba35386cc0ff8a622e541e0dcd760df0bae5215a97b560536deb9b68",
+      "preflight_candidate_sha256": "7d60a1048785fb9076716b3a7e721adb181a6462d92712240116193dd96f4710",
+      "integrated_sha256": "f68833a46d41090a2a84c046df5ff3aaa4c5099620511020fd6ab654c087b101",
+      "reconciled_current_base": true,
+      "held_path": "worktree/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+      "actual_base_sha256": "6bde8c4351da5ed0769fceb20e8b507efe58e13a72dd30d1c1b69dffad77ec14",
+      "preflight_base_sha256": "6bde8c4351da5ed0769fceb20e8b507efe58e13a72dd30d1c1b69dffad77ec14",
+      "preflight_candidate_sha256": "f67601ae608027c7d24f1c43e23b3ec5709fe95d322d96ec2407a854405c7c98",
+      "integrated_sha256": "f67601ae608027c7d24f1c43e23b3ec5709fe95d322d96ec2407a854405c7c98",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "actual_base_sha256": "e2b6a2273698cb26b3b184084798bc5dfda728a4096df26515e4dd323a8e7c14",
+      "preflight_base_sha256": "e2b6a2273698cb26b3b184084798bc5dfda728a4096df26515e4dd323a8e7c14",
+      "preflight_candidate_sha256": "7b6c3e41f02d2969a4f9c8137cca8e7dd74d013fa41131d9e64409cb41b612b0",
+      "integrated_sha256": "7b6c3e41f02d2969a4f9c8137cca8e7dd74d013fa41131d9e64409cb41b612b0",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/dev/zyra_view_request_draft_model.dart"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+      "actual_base_sha256": "2d8a6cbb1b596d3b188acd89845f04431bcb746241276b172df0d8e7bffa55b5",
+      "preflight_base_sha256": "f13706c4f38a55aad0dad78a8799e4cb6d93eea57aa64b521b338fa04da18759",
+      "preflight_candidate_sha256": "95745e5253124e3b72a3c0fb79415691034ec35776e5c6162d91b6ca32450c11",
+      "integrated_sha256": "19a71f334a298e8f824511895f77f93243afe092f398f10964c542ede10fd566",
+      "reconciled_current_base": true,
+      "held_path": "worktree/SOURCE/lib/screens/connections/zyra_sample_activity.dart"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "actual_base_sha256": "45ed70405774d2713c7e9e4919eccfcb988334b38f9caca1297934a1324a07b6",
+      "preflight_base_sha256": "45ed70405774d2713c7e9e4919eccfcb988334b38f9caca1297934a1324a07b6",
+      "preflight_candidate_sha256": "a47931c1a9bf24ccd695726d9113e552189b0ea91eba48e5eac48fef6c8810e9",
+      "integrated_sha256": "a47931c1a9bf24ccd695726d9113e552189b0ea91eba48e5eac48fef6c8810e9",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart"
+    },
+    {
+      "path": "SOURCE/lib/state/zyra_developer_samples.dart",
+      "actual_base_sha256": "812b43af611cb1be90ef337c46e45445745f942e40035855f7aaa5cc7b8f5776",
+      "preflight_base_sha256": "812b43af611cb1be90ef337c46e45445745f942e40035855f7aaa5cc7b8f5776",
+      "preflight_candidate_sha256": "d6d90badde7f0184ced073363942740411600d5b553db5594951f3ed7dd0a7f6",
+      "integrated_sha256": "d6d90badde7f0184ced073363942740411600d5b553db5594951f3ed7dd0a7f6",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/state/zyra_developer_samples.dart"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_browse_designs.dart",
+      "actual_base_sha256": "cc65c76c47f9ffc98c8006319f2d83051ed09e254ba2e70fb8ac8db909563554",
+      "preflight_base_sha256": "cc65c76c47f9ffc98c8006319f2d83051ed09e254ba2e70fb8ac8db909563554",
+      "preflight_candidate_sha256": "852a4cd35e54bab665631e759a2bd31c27d7ec9283e67ba4c9494fc6ca4aca7d",
+      "integrated_sha256": "852a4cd35e54bab665631e759a2bd31c27d7ec9283e67ba4c9494fc6ca4aca7d",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/lib/widgets/zyra_browse_designs.dart"
+    },
+    {
+      "path": "SOURCE/test/line146_limits_test.dart",
+      "actual_base_sha256": null,
+      "preflight_base_sha256": null,
+      "preflight_candidate_sha256": "0504cec31df3261a9f5e93a07a3cb1062cf230e83943e0d49fddce17b1db07c9",
+      "integrated_sha256": "0504cec31df3261a9f5e93a07a3cb1062cf230e83943e0d49fddce17b1db07c9",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/test/line146_limits_test.dart"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "actual_base_sha256": "4615da92dc8414b4967685334044d46e95e7d63db7b76e1cf951c6a02941e9e8",
+      "preflight_base_sha256": "4615da92dc8414b4967685334044d46e95e7d63db7b76e1cf951c6a02941e9e8",
+      "preflight_candidate_sha256": "dfbe7d879f23057098e7bb657f63adb517805e835157f87212e9f2dc87439c5f",
+      "integrated_sha256": "dfbe7d879f23057098e7bb657f63adb517805e835157f87212e9f2dc87439c5f",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/test/support/zyra_hidden_dev_controls_driver.dart"
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_widget_test.dart",
+      "actual_base_sha256": "3e719c31d74623fe825357f8c7cb165eade6ac3d56eb146e8a87efa9d264f81b",
+      "preflight_base_sha256": "3e719c31d74623fe825357f8c7cb165eade6ac3d56eb146e8a87efa9d264f81b",
+      "preflight_candidate_sha256": "492b06e856266652c5cf38aec5ca2f2a2150fa5fdd3983df7e163239a5ae3d97",
+      "integrated_sha256": "492b06e856266652c5cf38aec5ca2f2a2150fa5fdd3983df7e163239a5ae3d97",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/test/view_request_draft_widget_test.dart"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "actual_base_sha256": "e4bc0c22c140a8488be0c93f4352f4dfc61593686b3952bf89f2f1d2a30187c7",
+      "preflight_base_sha256": "b13fed6d354d06e811f9bb6c2973a52e5a1aef31f1ff773486b7f3dd648eac0c",
+      "preflight_candidate_sha256": "245f60885d92dc76753b72fbcb7b0daf9542a395f4de39845e8c6b1e6190e8ff",
+      "integrated_sha256": "2d5a282f519ecda047114b44df4045e06eedc2fc14782ccd877c193d5649f453",
+      "reconciled_current_base": true,
+      "held_path": "worktree/SOURCE/test/visual/baseline_capture_support.dart"
+    },
+    {
+      "path": "SOURCE/test/visual/line146_limits_capture_test.dart",
+      "actual_base_sha256": null,
+      "preflight_base_sha256": null,
+      "preflight_candidate_sha256": "9f1f0f046f6b267d1541727b698c2c05eb758d7ffbf27a24c8abc6caec987b5e",
+      "integrated_sha256": "9f1f0f046f6b267d1541727b698c2c05eb758d7ffbf27a24c8abc6caec987b5e",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/test/visual/line146_limits_capture_test.dart"
+    },
+    {
+      "path": "SOURCE/test/visual/lock24_tab_spacing_test.dart",
+      "actual_base_sha256": "c623230bd4fb0b20854c8b68e6542d8617f3bf214bf58b00d07902b2318b4698",
+      "preflight_base_sha256": "c623230bd4fb0b20854c8b68e6542d8617f3bf214bf58b00d07902b2318b4698",
+      "preflight_candidate_sha256": "56ce21cacfca8a7944c4d8bd7ec1b5131c494437ecfac0473fc32b973fea6d80",
+      "integrated_sha256": "56ce21cacfca8a7944c4d8bd7ec1b5131c494437ecfac0473fc32b973fea6d80",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/test/visual/lock24_tab_spacing_test.dart"
+    },
+    {
+      "path": "SOURCE/test/zyra_one_upgrade_fit_test.dart",
+      "actual_base_sha256": "56f1b0c438ff64968666e37d46e09410cc6880626e5ea5413afefa8e48814c4b",
+      "preflight_base_sha256": "56f1b0c438ff64968666e37d46e09410cc6880626e5ea5413afefa8e48814c4b",
+      "preflight_candidate_sha256": "3b2728b0d6744e8978288acfd65a20722cfead01fa5e09a9c185d3c467468e08",
+      "integrated_sha256": "3b2728b0d6744e8978288acfd65a20722cfead01fa5e09a9c185d3c467468e08",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/test/zyra_one_upgrade_fit_test.dart"
+    },
+    {
+      "path": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+      "actual_base_sha256": "e9cbc1f4b7aee2d9f828dd984785f4c898741cef7cddb7ac086c46cc88fe2e00",
+      "preflight_base_sha256": "e9cbc1f4b7aee2d9f828dd984785f4c898741cef7cddb7ac086c46cc88fe2e00",
+      "preflight_candidate_sha256": "5e2752cc09f99e9b2d35f388a7df3cd8b69142f00070e457b36ca66f30e1306f",
+      "integrated_sha256": "5e2752cc09f99e9b2d35f388a7df3cd8b69142f00070e457b36ca66f30e1306f",
+      "reconciled_current_base": false,
+      "held_path": "worktree/SOURCE/test/zyra_one_upgrade_page_test.dart"
+    }
+  ],
+  "reason": "required strict owned Seeker One upgrade purchase-footer contrast failure; thresholds/assertions retained",
+  "failed_full_gates": 1
+}

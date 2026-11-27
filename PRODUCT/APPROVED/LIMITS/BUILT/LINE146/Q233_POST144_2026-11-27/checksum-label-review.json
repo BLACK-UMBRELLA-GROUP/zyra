@@ -1,0 +1,152 @@
+{
+  "verdict": "record labels clarified; no source, checksum or auditor change",
+  "original_before_sha256": "6198f3acd589726e91dad67519bbd9a4fcbf9773e6d686952dbd5b171c05c419",
+  "false_positive_count": 29,
+  "verified_false_positives": [
+    {
+      "path": "SOURCE/lib/config/oauth_config.dart.example",
+      "original_record_line": 602,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_access_store.dart",
+      "original_record_line": 651,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_phone_access.dart",
+      "original_record_line": 704,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/lib/screens/auth_gate.dart",
+      "original_record_line": 751,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/lib/services/zyra_auth.dart",
+      "original_record_line": 835,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/lib/services/zyra_developer_access.dart",
+      "original_record_line": 842,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/supabase/migrations/20260718192519_optimize_rls_auth_uid_initplan.sql",
+      "original_record_line": 1142,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/supabase/migrations/20260726120300_restrict_ages_for_and_score_candidates_to_authenticated.sql",
+      "original_record_line": 1157,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/supabase/migrations/20260805233111_restrict_photo_object_gate_to_authenticated.sql",
+      "original_record_line": 1202,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/supabase/migrations/20260806193028_harden_revoke_truncate_from_anon_authenticated.sql",
+      "original_record_line": 1224,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/supabase/migrations/20260918075737_oa290_additional_guardian_journey_access.sql",
+      "original_record_line": 1345,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/supabase/production/RPC_ACCESS.md",
+      "original_record_line": 1386,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/lock15_quick_access_and_swipe_test.dart",
+      "original_record_line": 1664,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/one_journey_prior_compatibility_access_test.dart",
+      "original_record_line": 1720,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/supabase_publishable_auth_test.dart",
+      "original_record_line": 1787,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/visual/lock12_phone_access_capture_test.dart",
+      "original_record_line": 2044,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/zyra_auth_name_test.dart",
+      "original_record_line": 2125,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_access_test.dart",
+      "original_record_line": 2163,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_compatibility_access_store_test.dart",
+      "original_record_line": 2171,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/zyra_external_tester_access_test.dart",
+      "original_record_line": 2180,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "SOURCE/test/zyra_phone_access_lock12_test.dart",
+      "original_record_line": 2237,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/a11y_phone_access.png",
+      "original_record_line": 2485,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/BUILT/SCREENSHOTS/t10_my_zyra_quick_access.png",
+      "original_record_line": 2667,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/BUILT/SCREENSHOTS/tg08_my_zyra_quick_access.png",
+      "original_record_line": 2686,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/narrow_320_200_access_top.png",
+      "original_record_line": 2704,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/BUILT/V2/d03_guardian_tab_narrow_large_text_access.png",
+      "original_record_line": 3078,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/BUILT/V2/d03_guardian_tab_narrow_large_text_access_bottom.png",
+      "original_record_line": 3079,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/phone_access__normal.png",
+      "original_record_line": 3168,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/settings__phone_access_row.png",
+      "original_record_line": 3170,
+      "kind": "verified SHA256 of tracked file; no credential content"
+    }
+  ]
+}

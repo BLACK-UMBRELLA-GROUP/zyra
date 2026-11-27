@@ -1,0 +1,278 @@
+[
+  {
+    "driver": "normal",
+    "status": "fail",
+    "complete": true,
+    "frames": 1063,
+    "runs": 12100,
+    "raw_failures": 41,
+    "owned_upgrade_footer": 20,
+    "focus_proof": [
+      {
+        "group": "seeker",
+        "route_or_tab": "tab0",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.0",
+        "text_frames": 33
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "tab0",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.0",
+        "text_frames": 19
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "profile",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.0",
+        "text_frames": 6
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "requests",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.0",
+        "text_frames": 12
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "requests",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.0",
+        "text_frames": 12
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "introductions",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.0",
+        "text_frames": 2
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "ended_restart",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.0",
+        "text_frames": 2
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "one_upgrade",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.0",
+        "text_frames": 20
+      }
+    ],
+    "coverage_gaps": [],
+    "q240_exact_Details_text": 0
+  },
+  {
+    "driver": "normal-430",
+    "status": "fail",
+    "complete": true,
+    "frames": 744,
+    "runs": 8122,
+    "raw_failures": 12,
+    "owned_upgrade_footer": 5,
+    "focus_proof": [
+      {
+        "group": "seeker",
+        "route_or_tab": "tab0",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.0",
+        "text_frames": 11
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "tab0",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.0",
+        "text_frames": 9
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "profile",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.0",
+        "text_frames": 2
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "requests",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.0",
+        "text_frames": 12
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "requests",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.0",
+        "text_frames": 12
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "introductions",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.0",
+        "text_frames": 2
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "ended_restart",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.0",
+        "text_frames": 2
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "one_upgrade",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.0",
+        "text_frames": 5
+      }
+    ],
+    "coverage_gaps": [],
+    "q240_exact_Details_text": 0
+  },
+  {
+    "driver": "large-375",
+    "status": "pass",
+    "complete": true,
+    "frames": 1326,
+    "runs": 14029,
+    "raw_failures": 0,
+    "owned_upgrade_footer": 0,
+    "focus_proof": [
+      {
+        "group": "seeker",
+        "route_or_tab": "tab0",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.3",
+        "text_frames": 33
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "tab0",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.3",
+        "text_frames": 19
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "profile",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.3",
+        "text_frames": 6
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "requests",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.3",
+        "text_frames": 12
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "requests",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.3",
+        "text_frames": 12
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "introductions",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.3",
+        "text_frames": 2
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "ended_restart",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.3",
+        "text_frames": 6
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "one_upgrade",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.3",
+        "text_frames": 25
+      }
+    ],
+    "coverage_gaps": [],
+    "q240_exact_Details_text": 0
+  },
+  {
+    "driver": "large-430",
+    "status": "pass",
+    "complete": true,
+    "frames": 851,
+    "runs": 9599,
+    "raw_failures": 0,
+    "owned_upgrade_footer": 0,
+    "focus_proof": [
+      {
+        "group": "seeker",
+        "route_or_tab": "tab0",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.3",
+        "text_frames": 11
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "tab0",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.3",
+        "text_frames": 9
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "profile",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.3",
+        "text_frames": 2
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "requests",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.3",
+        "text_frames": 12
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "requests",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.3",
+        "text_frames": 12
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "introductions",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.3",
+        "text_frames": 2
+      },
+      {
+        "group": "seeker",
+        "route_or_tab": "ended_restart",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.3",
+        "text_frames": 2
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "one_upgrade",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.3",
+        "text_frames": 20
+      }
+    ],
+    "coverage_gaps": [],
+    "q240_exact_Details_text": 0
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "PRODUCT/APPROVED/QUESTIONS.md": {
+    "sha256": "ec8f6dc61fe8e02976b47cc610fe6dd2b435c6d13833a7dc3ba68037282f7cdc",
+    "row146": "| 146 | 2026-11-14 | 84 | After line 114, should the Photos grid retain the LOCK 29 V4 gold main-photo border and dashed gold Seeker Basic video border? | A: Carry the two locked borders through the shared tile; B: File the Founder-approved change to LOCK 29 V4 and the matching V194 reference. The spec rows Who can add and Photos page require gold borders. On 00691d0 the shared tile uses the standard solid border in both cases at 430 \u00d7 932 and 375 \u00d7 667. | Hold fresh host and phone delivery before Xcode. App and route checks can continue offline. The one Step 0 (iii) attempt is unused. OA-ZYRA-317, DR-ZYRA-352. | A \u2014 LOCK 29 V4 governs (ZYRA chat, 14 Nov). Line 114 removed only plain card outlines; its brief step 3 keeps gold \"where a lock already uses it as a signal\". Both Photos borders are such signals. Use the shared card fill and shadow from line 114, then add: main photo = solid gold border plus gold check (unchanged); Seeker Basic video space = 1 pt dashed border, journeyGold #A9792E at 50 % opacity (prototype V228, same as V194), radius unchanged. The solid border at commit 00691d0 is a fix inside line 84 | ANSWERED |",
+    "rows": 240,
+    "max": 240
+  },
+  "PRODUCT/APPROVED/BUILD_QUEUE.md": {
+    "sha256": "622b99fc7ef8fcb3012d75aee93ffd57aa7cae724151c64acb8f09b5386fb175",
+    "row146": "| 146 | 2026-11-24 | `PRODUCT/APPROVED/LIMITS/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md` | WAITING | 2026-11-27 | **LOCKed build** LOCK 48 Request and browsing limits (Founder 24 Nov, with Fable's advice; \"lock the browsing and request limits\"): sent requests waiting at once Seeker One 20 / Basic 5, received unlimited, introductions count once requested; \"Your requests are full\" sheet; Sent count line; Seeker Basic 25-every-4-hours bar and 25-reached card; One unlimited, no bar; upgrade page row 5 / 20. Replaces the old Basic Consider caps. Masters pr01\u2013pr03, rl01\u2013rl04. After 142. **Pre-flight 24 Nov (Codex, Founder relayed):** QUESTIONS 219 answered by Fable - judge only the LOCK 48 parts in pr01\u2013pr03/rl01\u2013rl02 (the Profiles card is line 135's); protected focused route and small-screen states added to the brief. No change of meaning. QUESTIONS 220 answered: seeded counts in tests and captures only; no new sample people or controls. **27 Nov Codex Q233:** exact candidate held; mandatory gates failed, novel13 separately verified against accepted source. See LIMITS/BUILT/LINE146/HANDOVER_2026-11-27.txt; SOURCE/index released, no implementation push. 27 Nov (Fable): Q233 ANSWERED - restart per that row in a new owner chat; waits for line 140. |",
+    "rows": 149,
+    "max": 149
+  }
+}

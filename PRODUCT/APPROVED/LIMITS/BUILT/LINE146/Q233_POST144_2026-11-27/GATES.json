@@ -1,0 +1,131 @@
+{
+  "analyzer": {
+    "result": "No issues found! (ran in 13.5s)",
+    "exit_code": 0,
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub"
+  },
+  "protected_driver": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS"
+  },
+  "gates": {
+    "focused": {
+      "final_result": "00:32 +178 ~23: All tests passed!",
+      "sha256": "1de97428bbd26149533883f07e9cd879cd5bf68a2bb01b3437a300c52f18b970",
+      "bytes": 31379,
+      "receipt": {
+        "name": "focused",
+        "command": [
+          "node",
+          "tooling/no_git_driver.mjs",
+          "flutter",
+          "test",
+          "--no-pub",
+          "--reporter",
+          "expanded",
+          "--dart-define=ZYRA_LINE146_CAPTURE=true",
+          "test/line146_limits_test.dart",
+          "test/visual/line146_limits_capture_test.dart",
+          "test/seeker_basic_policy_test.dart",
+          "test/seeker_membership_limits_test.dart",
+          "test/zyra_developer_samples_test.dart",
+          "test/view_request_draft_model_test.dart",
+          "test/view_request_draft_snapshot_test.dart",
+          "test/view_request_draft_past_requests_test.dart",
+          "test/zyra_one_upgrade_page_test.dart",
+          "test/zyra_pause_private_model_test.dart",
+          "test/zyra_pause_private_preview_state_test.dart",
+          "test/visual/line138_pause_private_capture_test.dart"
+        ],
+        "started_at": "2026-11-27T18:22:11.284767+00:00",
+        "seconds": 42.19,
+        "exit_code": 0,
+        "log": "focused.log"
+      }
+    },
+    "q233-smoke": {
+      "final_result": "00:28 +40 ~4: All tests passed!",
+      "sha256": "400067c1f5cc831f5536389b15fd8c258834b5c2c80321a721b083f7f5c1ab55",
+      "bytes": 8096,
+      "receipt": {
+        "name": "q233-smoke",
+        "command": [
+          "node",
+          "tooling/no_git_driver.mjs",
+          "flutter",
+          "test",
+          "--no-pub",
+          "--reporter",
+          "expanded",
+          "--name",
+          "Q194|Requests has three swipe pages and Introductions has Received/Past separately compact200|fresh whole-app real-font candidates are not approval_compact200_final|LOCK24|LOCK46|Ramadan entry follows|o01 Seeker Delete|Guardian Journey never",
+          "test/zyra_one_upgrade_fit_test.dart",
+          "test/view_request_draft_widget_test.dart",
+          "test/visual/lock24_tab_spacing_test.dart",
+          "test/visual/line140_profile_small_pages_capture_test.dart",
+          "test/visual/line142_offers_preview_test.dart",
+          "test/zyra_guardian_journey_photo_gate_test.dart"
+        ],
+        "started_at": "2026-11-27T18:23:13.564851+00:00",
+        "seconds": 34.57,
+        "exit_code": 0,
+        "log": "q233-smoke.log"
+      }
+    },
+    "replay": {
+      "final_result": "05:31 +120 -2: Some tests failed.",
+      "sha256": "728fe037f524ce4a4c8657eb30e5568d5293bd7488cea1b1b01180b7e5db0f4b",
+      "bytes": 126152,
+      "receipt": {
+        "name": "replay",
+        "command": [
+          "node",
+          "tooling/no_git_driver.mjs",
+          "flutter",
+          "test",
+          "--no-pub",
+          "--reporter",
+          "expanded",
+          "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+          "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/tab0/Seeker_One,basic_seeker/tab0/Seeker_Basic,seeker/profile/Seeker_One,seeker/requests/Seeker_One,basic_seeker/requests/Seeker_Basic,seeker/introductions/Seeker_One,seeker/ended_restart/Seeker_One,basic_seeker/one_upgrade/Seeker_Basic",
+          "--name",
+          "^(Seeker|Basic plans|Seekers|Membership) ",
+          "test/zyra_clearer_text_contrast_test.dart",
+          "test/zyra_clearer_text_contrast_430_test.dart",
+          "test/zyra_clearer_text_contrast_large_375_test.dart",
+          "test/zyra_clearer_text_contrast_large_430_test.dart"
+        ],
+        "started_at": "2026-11-27T18:23:41.421082+00:00",
+        "seconds": 346.92,
+        "exit_code": 1,
+        "log": "replay.log"
+      }
+    },
+    "ordinary": {
+      "final_result": "10:46 +8005 ~252: All tests passed!",
+      "sha256": "caade92a0964bb6dc1762d576726ef26df40dba41438e4b39db04961f7d33a4e",
+      "bytes": 1605070,
+      "receipt": {
+        "name": "ordinary",
+        "command": [
+          "node",
+          "tooling/no_git_driver.mjs",
+          "flutter",
+          "test",
+          "--no-pub",
+          "--reporter",
+          "expanded"
+        ],
+        "started_at": "2026-11-27T18:29:44.239550+00:00",
+        "seconds": 652.06,
+        "exit_code": 0,
+        "log": "ordinary.log"
+      }
+    }
+  },
+  "failed_full_gate_cycles": 1,
+  "hosted": "Not started: mandatory local owned replay failed; no implementation published. No duplicate CI wait for records-only commits.",
+  "result": "QUESTION Q241; strict failure retained"
+}

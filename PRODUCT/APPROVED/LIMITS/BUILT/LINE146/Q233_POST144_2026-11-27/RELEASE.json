@@ -1,0 +1,14 @@
+{
+  "released_at": "2026-11-27T18:40:43.888056+00:00",
+  "accepted_head": "0b50384af1d756bc6d580e9e24956a1005a12bdf",
+  "source_ci_exact_files": 2359,
+  "foreign_staged_exact": true,
+  "foreign_line138_exact": true,
+  "tracked_built_pngs_exact": 1141,
+  "held_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_POST144",
+  "patch_sha256": "167306318944461d491e2a478a2dd18693c8dc0dc140bd5432995f7f63909511",
+  "manifest_sha256": "f9eea434bfa6920d097e77d7086418bf1582184d6c2bbb638f2da808b60d3843",
+  "source_status": "clean",
+  "implementation_published": false,
+  "failed_full_gates": 1
+}

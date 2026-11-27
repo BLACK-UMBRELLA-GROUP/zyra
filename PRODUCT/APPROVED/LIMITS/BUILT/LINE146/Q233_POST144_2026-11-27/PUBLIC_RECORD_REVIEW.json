@@ -1,0 +1,13 @@
+{
+  "phase": "initial84-file check; final changed-record pass follows",
+  "files_checked": 84,
+  "total_hits": 1778,
+  "dispositions_by_kind": {
+    "tracked asset filename containing @ scale suffix; file path, not an address": 443,
+    "compressed PNG bytes interpreted as text; valid PNG signature and capture hash retained": 1333,
+    "unchanged locked public app purchase-footer UI in retained raw audit; Q239 same-category evidence pins the text hash": 2
+  },
+  "details_retained": "ignored held gate receipt record-public-first-hits.json plus original scan log",
+  "secret_scan": "After29 verified checksum-label false positives were represented as separate path/digest fields, unchanged checksum pairs and raw auditors retained; reformatted record scan has0 findings. No allowlist or threshold change.",
+  "written_refusal": "Do not rename accepted assets, alter raw UI evidence or change foreign rows to satisfy text matching on file names or binary PNG bytes."
+}

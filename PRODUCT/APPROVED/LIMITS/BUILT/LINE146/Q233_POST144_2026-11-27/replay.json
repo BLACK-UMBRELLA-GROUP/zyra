@@ -1,0 +1,24 @@
+{
+  "name": "replay",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+    "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/tab0/Seeker_One,basic_seeker/tab0/Seeker_Basic,seeker/profile/Seeker_One,seeker/requests/Seeker_One,basic_seeker/requests/Seeker_Basic,seeker/introductions/Seeker_One,seeker/ended_restart/Seeker_One,basic_seeker/one_upgrade/Seeker_Basic",
+    "--name",
+    "^(Seeker|Basic plans|Seekers|Membership) ",
+    "test/zyra_clearer_text_contrast_test.dart",
+    "test/zyra_clearer_text_contrast_430_test.dart",
+    "test/zyra_clearer_text_contrast_large_375_test.dart",
+    "test/zyra_clearer_text_contrast_large_430_test.dart"
+  ],
+  "started_at": "2026-11-27T18:23:41.421082+00:00",
+  "seconds": 346.92,
+  "exit_code": 1,
+  "log": "replay.log"
+}

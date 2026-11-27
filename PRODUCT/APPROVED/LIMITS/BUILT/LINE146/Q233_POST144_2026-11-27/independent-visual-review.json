@@ -1,0 +1,746 @@
+{
+  "review": "Independent visual and raw evidence review",
+  "line": 146,
+  "lock": 48,
+  "question_scope": [
+    219,
+    220,
+    233
+  ],
+  "as_of": "2026-11-27T18:27:33.913368+00:00",
+  "verdict": "PASS for LOCK48 new-parts content, control order, presence/absence and four-setting text fit; not whole-app or whole-master pixel parity",
+  "authority": [
+    "PRODUCT/APPROVED/LIMITS/RECORD/LIMITS_SPEC_CURRENT_VERSION_V1.md",
+    "PRODUCT/APPROVED/LIMITS/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md",
+    "QUESTIONS219 new-parts comparison and QUESTIONS220 test/capture seeds"
+  ],
+  "settings": [
+    {
+      "width": 430,
+      "height": 932,
+      "text_scale": 1.0
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "text_scale": 1.0
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "text_scale": 1.3
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "text_scale": 1.3
+    }
+  ],
+  "observations": [
+    {
+      "part": "pr01",
+      "verdict": "MATCH in Q219 scope",
+      "observation": "Basic count and refill time sit under Profiles; gold progress track is visible and the 12-of-25 fill is partial. Count/time remain complete at all four settings."
+    },
+    {
+      "part": "pr02",
+      "verdict": "MATCH in Q219 scope",
+      "observation": "25-of-25 full bar, search icon in a gold ring, locked heading/body and trial button appear in the card space. At compact Larger Text the title and trial label wrap to complete lines. No new-parts clipping or ellipsis observed."
+    },
+    {
+      "part": "pr03",
+      "verdict": "MATCH in Q219 scope",
+      "observation": "Seeker One has no browsing count bar and no 25-reached card even at the seeded view count of25. Current LOCK4V5 card remains the surrounding presentation."
+    },
+    {
+      "part": "rl01",
+      "verdict": "MATCH in Q219 scope",
+      "observation": "Gold send ring, full-request heading,20-waiting text, See sent requests and Not now appear over the current dimmed page. No Basic upgrade button appears."
+    },
+    {
+      "part": "rl02",
+      "verdict": "MATCH in Q219 scope",
+      "observation": "Full-request sheet has5-waiting text plus the20-waiting Seeker One sentence and all three locked buttons. Exact pixel bottom crops confirm Not now is fully visible at430normal,375normal and375Larger Text; tall inline preview truncation is not image clipping."
+    },
+    {
+      "part": "rl03",
+      "verdict": "MATCH in Q219 scope",
+      "observation": "The complete3 of20 requests waiting line appears below the tabs with the current Sent list."
+    },
+    {
+      "part": "rl04",
+      "verdict": "MATCH in Q219 scope",
+      "observation": "The complete5 of5 waiting line plus cancel-one suffix appears below the tabs. It wraps at compact widths/Larger Text without an ellipsis."
+    }
+  ],
+  "masters": [
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/MASTERS/pr01_basic__profiles_count.png",
+      "sha256": "1848c3dd303bcacd27ebe3213e7d23fa5a7a0f2c212111ff0f2d2316337ffa23"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/MASTERS/pr02_basic__25_seen.png",
+      "sha256": "639aa2190e89dfb5d06a000f6550b406c9364bc5d64d1e859583c3bed8240a86"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/MASTERS/pr03_one__no_count.png",
+      "sha256": "e3518ff301c6a2b67e3d44f5bea8bce76c5912fc0c83bc4b39094263c17201e3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/MASTERS/rl01_requests_full__one.png",
+      "sha256": "8f4f19803cf2e91ab69db79242aba534ad7a07f714f50439e91f0dc5dd83a267"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/MASTERS/rl02_requests_full__basic.png",
+      "sha256": "5a087a43a12bdd26c47477646a024b79d443e4db6bfb3ca1ffa501bdf78646a6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/MASTERS/rl03_sent__count.png",
+      "sha256": "e740175b9a84cf273574760ab497b6e6bf383fd31a2daf2275709fca7f4b4243"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/MASTERS/rl04_sent__basic_full.png",
+      "sha256": "68e4b7a17048b4c7ed8f605b5055cfe364d27b8b86d4933ead7987107b28836a"
+    }
+  ],
+  "capture_count": 32,
+  "capture_hashes": [
+    {
+      "path": "SOURCE/build/line146/screens/pr01_375_10.png",
+      "sha256": "f11f77d413fc9b9935ce91c3c6f28485399f08af8fb904dc584991d4b5e39bf0",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr01_375_13.png",
+      "sha256": "87e1bcc8352d9ae8b359b9c617749d8c4d76fd6121d65142dfb47ce87ca1c415",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr01_430_10.png",
+      "sha256": "583045bcc3614ee677e9c1e7aa051e2bf65dfd27c63eab899be826a5d3f4e8f3",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr01_430_13.png",
+      "sha256": "eb041f20d34e311fa7b216e4e1cab9ccb68dbaea183f094b332468a5aff22f83",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr02_375_10.png",
+      "sha256": "bbb379e99f024b450c852fb145e335606b44168e6a7d91ef49044271877dd00c",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr02_375_13.png",
+      "sha256": "8f797617a1d99f27ada16493e5cb892f2a760b23653150e148420a828c6c3930",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr02_430_10.png",
+      "sha256": "45c50194ceb9b6d45ed98e33a6a9287240d5ae9f6ed0d30e97520bebd59c74a0",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr02_430_13.png",
+      "sha256": "8428cb221d1cf2cf9fc10d0e99a9a2b9faf1cd06ab5e73ca9dbbe0369d37638f",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr02_bar_375_10.png",
+      "sha256": "bbb379e99f024b450c852fb145e335606b44168e6a7d91ef49044271877dd00c",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr02_bar_375_13.png",
+      "sha256": "8f797617a1d99f27ada16493e5cb892f2a760b23653150e148420a828c6c3930",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr02_bar_430_10.png",
+      "sha256": "45c50194ceb9b6d45ed98e33a6a9287240d5ae9f6ed0d30e97520bebd59c74a0",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr02_bar_430_13.png",
+      "sha256": "8428cb221d1cf2cf9fc10d0e99a9a2b9faf1cd06ab5e73ca9dbbe0369d37638f",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr03_375_10.png",
+      "sha256": "c27ed449c44bbcadabfa1add917692cb7fa01792911c4f96c33a286553b20f37",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr03_375_13.png",
+      "sha256": "0eec429bdc1c8235fa93cb6af2eeb6335723892598472dab8e83a2d8599dc71b",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr03_430_10.png",
+      "sha256": "8ebf83bdb9e48f284f5381c079793df82c69d417353d941abd57f47abba4e71c",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/pr03_430_13.png",
+      "sha256": "3fd3d2c3e72079b941f4a6e811df6448477270606a448d7376f582566cd3d10c",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl01_375_10.png",
+      "sha256": "223598e9731de8207589ebe01df7809523a7327feb0537a3d38ab8b41af2ef05",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl01_375_13.png",
+      "sha256": "8394678cf904c9c37fe0161b86a799b64729fa0012cdd8b5b5de578f7f53f6ab",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl01_430_10.png",
+      "sha256": "48517416714d29d7811d572946f6c1f5634e8790ad0f8baec0f438011614fe89",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl01_430_13.png",
+      "sha256": "37d27d944b0617bfe2b03592f0d2bf69fa3a17cb2c952a8b463322cc7be9f408",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl02_375_10.png",
+      "sha256": "879b8e1e85aa83e7ba7ff0dfad7ad73a4bf8d712b3199d5f5c560dc01a7fd655",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl02_375_13.png",
+      "sha256": "99f51688a0e13a4f2c089e01909610c49e4a783b34658c8eedb6adfe871189b8",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl02_430_10.png",
+      "sha256": "e1f42eb5aae715c2ac2fff8dad72fbfca7d88b0f1f6a7240ddd42a61e7b7e4a8",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl02_430_13.png",
+      "sha256": "30d6a0629b0fdb2cb01f81c3ade678e8d0fd8828fca5077443c7e1a2e674a2bb",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl03_375_10.png",
+      "sha256": "4f2b57021bf599604d855f4040e1730fd883be66b3c1502e33812ff03b3c868f",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl03_375_13.png",
+      "sha256": "8c33153553dd9e140d0061ec38019df271b076cc1f94668fc3b0cd233febba92",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl03_430_10.png",
+      "sha256": "319172a0151c678c89c1db73790c064cb96e52f6478d9e3b50f928cf093c84a1",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl03_430_13.png",
+      "sha256": "1cc9f432cc70a7da91ff4a9e22253070b2114f229396c4a77cbb55592bfa64e8",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl04_375_10.png",
+      "sha256": "4ac6205ea3b2b559d60e1d235c8b27167f90720c0c6fd198cd899f53436edfd8",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl04_375_13.png",
+      "sha256": "7e4127fdc6684cf95ea951e0859e804393cb62e4bf12b8ca19151063e9dd594d",
+      "pixel_width": 1125,
+      "pixel_height": 2001
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl04_430_10.png",
+      "sha256": "c558bb86de7e4100d4e883e459abadd0d7faa8ae7a1fc61ef7f30ccd935a5929",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rl04_430_13.png",
+      "sha256": "dde8e9bcec15ccefee6220d737f974701b42d1a79a67129b382ff11d15cb413b",
+      "pixel_width": 1290,
+      "pixel_height": 2796
+    }
+  ],
+  "pr02_duplicate_frame_checks": [
+    {
+      "setting": "375_10",
+      "pr02_bar_and_card_same_image": true
+    },
+    {
+      "setting": "375_13",
+      "pr02_bar_and_card_same_image": true
+    },
+    {
+      "setting": "430_10",
+      "pr02_bar_and_card_same_image": true
+    },
+    {
+      "setting": "430_13",
+      "pr02_bar_and_card_same_image": true
+    }
+  ],
+  "scoped_audit_count": 28,
+  "scoped_audit_failures": 0,
+  "retained_full_frame_audit_failures": 0,
+  "audits": [
+    {
+      "path": "SOURCE/build/line146/audit/pr01_375_10.json",
+      "sha256": "08daab6e3a108e4360cf83f8202b8c214445a4d9cbe74c7afa4cee1d5aaed15c",
+      "scoped_text": [
+        "12 of 25 profiles",
+        "more at 6:20 pm"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 17,
+      "painted_pixels": 8219,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr01_375_13.json",
+      "sha256": "b825ea4bb716c16b84b8a155dd203308f8c52543479750676cce63f17b1a027f",
+      "scoped_text": [
+        "12 of 25 profiles",
+        "more at 6:20 pm"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 16,
+      "painted_pixels": 10500,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr01_430_10.json",
+      "sha256": "bfcfed7a08c909386287d3a6077c5acd20a71e2336d01ad8aa0cf7aa88ca8176",
+      "scoped_text": [
+        "12 of 25 profiles",
+        "more at 6:20 pm"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 19,
+      "painted_pixels": 10421,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr01_430_13.json",
+      "sha256": "4357241ae31fcd7d36ac4320682640ad86ce90c9952bb70957475ff80e3d67b9",
+      "scoped_text": [
+        "12 of 25 profiles",
+        "more at 6:20 pm"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 19,
+      "painted_pixels": 15715,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr02_375_10.json",
+      "sha256": "0218ce75b52dc108e12d6abf12f25d09c1b57a7d65cc95fa47a30105d3c8c767",
+      "scoped_text": [
+        "You\u2019ve seen your 25 for now",
+        "More profiles at 6:20 pm. Seeker One has no limit.",
+        "Try Seeker One free for 14 days"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 6,
+      "painted_pixels": 6497,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr02_375_13.json",
+      "sha256": "24263a61991dfeada208971fb3bc3f8d65ab958b19c7bfb3ead7c66a87afb972",
+      "scoped_text": [
+        "You\u2019ve seen your 25 for now",
+        "More profiles at 6:20 pm. Seeker One has no limit.",
+        "Try Seeker One free for 14 days"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 6,
+      "painted_pixels": 10083,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr02_430_10.json",
+      "sha256": "780e8475ad524b7d10dfd0f0ee46f1b95148ec5d5533c071fece6e6d618f5baa",
+      "scoped_text": [
+        "You\u2019ve seen your 25 for now",
+        "More profiles at 6:20 pm. Seeker One has no limit.",
+        "Try Seeker One free for 14 days"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 6,
+      "painted_pixels": 6492,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr02_430_13.json",
+      "sha256": "48944f7b066e6c01c735c2fecd62fe8c4a873521fb2f2a2b544a8421abe2d1d7",
+      "scoped_text": [
+        "You\u2019ve seen your 25 for now",
+        "More profiles at 6:20 pm. Seeker One has no limit.",
+        "Try Seeker One free for 14 days"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 6,
+      "painted_pixels": 10050,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr02_bar_375_10.json",
+      "sha256": "e7c200b75d6be30f6f5d3a9498701bc9dbb60bc1b78851b92a16b55c09318743",
+      "scoped_text": [
+        "25 of 25 profiles",
+        "More at 6:20 pm"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 6,
+      "painted_pixels": 6497,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr02_bar_375_13.json",
+      "sha256": "615f7080cff18c27dc9a7a438260334bde2df6ce37d8ed9fdbb6107b7d552693",
+      "scoped_text": [
+        "25 of 25 profiles",
+        "More at 6:20 pm"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 6,
+      "painted_pixels": 10083,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr02_bar_430_10.json",
+      "sha256": "f98a49f85473db8c70fe58cfcae4e658df1a06c761d08b849b145bcd4fa6d49d",
+      "scoped_text": [
+        "25 of 25 profiles",
+        "More at 6:20 pm"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 6,
+      "painted_pixels": 6492,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/pr02_bar_430_13.json",
+      "sha256": "d127d6ec3e1c3938c6b2b7af662bbc25e329bf9e41739cade7186f993b0ddf6e",
+      "scoped_text": [
+        "25 of 25 profiles",
+        "More at 6:20 pm"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 6,
+      "painted_pixels": 10050,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl01_375_10.json",
+      "sha256": "b61ce6d7df96c39bcef1454fe9971d45620d23cd83ae2848547967b608eeaa9a",
+      "scoped_text": [
+        "Your requests are full",
+        "You have 20 requests waiting. To ask someone new, cancel one you\u2019ve sent.",
+        "See sent requests",
+        "Not now"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 4,
+      "painted_pixels": 5066,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl01_375_13.json",
+      "sha256": "d96e86a0f3dbb58ac343c68ede7a6288293937a3bdca2c194210dc506d9550f8",
+      "scoped_text": [
+        "Your requests are full",
+        "You have 20 requests waiting. To ask someone new, cancel one you\u2019ve sent.",
+        "See sent requests",
+        "Not now"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 4,
+      "painted_pixels": 7934,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl01_430_10.json",
+      "sha256": "84fea21a2ee88fdd2f4dc058d1601ffaea1f3ce0db016d2062c5cf8c66a587b2",
+      "scoped_text": [
+        "Your requests are full",
+        "You have 20 requests waiting. To ask someone new, cancel one you\u2019ve sent.",
+        "See sent requests",
+        "Not now"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 4,
+      "painted_pixels": 5022,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl01_430_13.json",
+      "sha256": "ecf607fa58bcecc2bdec331046c845f7971c8f4fde9c3efdb27b0450c1c1eb83",
+      "scoped_text": [
+        "Your requests are full",
+        "You have 20 requests waiting. To ask someone new, cancel one you\u2019ve sent.",
+        "See sent requests",
+        "Not now"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 4,
+      "painted_pixels": 7994,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl02_375_10.json",
+      "sha256": "0c68968846eb79d83dfabe186a335ca7d1694e1031ff3656026f616534190351",
+      "scoped_text": [
+        "Your requests are full",
+        "You have 5 requests waiting. To ask someone new, cancel one you\u2019ve sent. Seeker One lets you have 20 waiting.",
+        "See sent requests",
+        "See Seeker One",
+        "Not now"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 5,
+      "painted_pixels": 6959,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl02_375_13.json",
+      "sha256": "e4e776f0d810bdfaaea34f864264cb36be61c621a1d9ecb85aa8f6f10a816023",
+      "scoped_text": [
+        "Your requests are full",
+        "You have 5 requests waiting. To ask someone new, cancel one you\u2019ve sent. Seeker One lets you have 20 waiting.",
+        "See sent requests",
+        "See Seeker One",
+        "Not now"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 5,
+      "painted_pixels": 10911,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl02_430_10.json",
+      "sha256": "309d00a3d56e382b82207ec1be9bc1dd0f4018f707fc4ce76bc2398d9ed6406e",
+      "scoped_text": [
+        "Your requests are full",
+        "You have 5 requests waiting. To ask someone new, cancel one you\u2019ve sent. Seeker One lets you have 20 waiting.",
+        "See sent requests",
+        "See Seeker One",
+        "Not now"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 5,
+      "painted_pixels": 6903,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl02_430_13.json",
+      "sha256": "3f52497e3c35d3fb767333acfc926314c71e8962fba81e907dc6f5600875b0c7",
+      "scoped_text": [
+        "Your requests are full",
+        "You have 5 requests waiting. To ask someone new, cancel one you\u2019ve sent. Seeker One lets you have 20 waiting.",
+        "See sent requests",
+        "See Seeker One",
+        "Not now"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 5,
+      "painted_pixels": 11000,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl03_375_10.json",
+      "sha256": "fe9d7dbac6edfa1bde52bb1f30ea8af350c062f7ad193ea9b71aa6a9bb188b37",
+      "scoped_text": [
+        "3 of 20 requests waiting"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 14,
+      "painted_pixels": 8884,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl03_375_13.json",
+      "sha256": "7b73a5dc9f5970b62362ac176f321cfba7414eec1779941ee5faa6d64ddd6859",
+      "scoped_text": [
+        "3 of 20 requests waiting"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 14,
+      "painted_pixels": 13466,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl03_430_10.json",
+      "sha256": "64e964ad198c2e7360b6edc37400337f854b569d6b8661018a299c35ae95fb33",
+      "scoped_text": [
+        "3 of 20 requests waiting"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 14,
+      "painted_pixels": 8895,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl03_430_13.json",
+      "sha256": "6ae88f622c003586a05efb234b94412153a4dc5ae3b0226b953397a6e0bc6939",
+      "scoped_text": [
+        "3 of 20 requests waiting"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 14,
+      "painted_pixels": 13705,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl04_375_10.json",
+      "sha256": "d4db6068cbc9097c34e2ae84f240de702634e32e4e2e5223234035151b85b101",
+      "scoped_text": [
+        "5 of 5 requests waiting \u00b7 cancel one to ask someone new"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 14,
+      "painted_pixels": 9970,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl04_375_13.json",
+      "sha256": "fec513933f02eb91ab5a32e781fbd7a3df791d1e4115212c1fbb086f1b6dde80",
+      "scoped_text": [
+        "5 of 5 requests waiting \u00b7 cancel one to ask someone new"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 14,
+      "painted_pixels": 15127,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl04_430_10.json",
+      "sha256": "5f271b47d68d70c575ac8281628d3cbebeb6e493fdb04be7932dd52389e149f1",
+      "scoped_text": [
+        "5 of 5 requests waiting \u00b7 cancel one to ask someone new"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 14,
+      "painted_pixels": 9961,
+      "real_shadows": true
+    },
+    {
+      "path": "SOURCE/build/line146/audit/rl04_430_13.json",
+      "sha256": "8ab6c19ebe300d74410bf3079cd4360a50d2a39093e4b4ee1ce9c4568b94a5dc",
+      "scoped_text": [
+        "5 of 5 requests waiting \u00b7 cancel one to ask someone new"
+      ],
+      "scoped_failures": [],
+      "full_frame_failures": [],
+      "runs": 14,
+      "painted_pixels": 15378,
+      "real_shadows": true
+    }
+  ],
+  "capture_manifests": [
+    {
+      "path": "SOURCE/build/line146/screens/rows_line146_375_10.json",
+      "sha256": "47c165c5f1200c60fde29fafcdd57f53566ce3a8f4cfe6cd1d16daa3ee50dd2a",
+      "rows": 8,
+      "scope": "capture pixel dimensions and actual route/tab, not detailed element geometry"
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rows_line146_375_13.json",
+      "sha256": "687d1afd2baa108c1a5d60beb04f4f634a78a76dc1b07033f810ad622c24b399",
+      "rows": 8,
+      "scope": "capture pixel dimensions and actual route/tab, not detailed element geometry"
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rows_line146_430_10.json",
+      "sha256": "323fecd616af2a93d77541adf2fce2274d8a0dc71943a31c59def522098bb947",
+      "rows": 8,
+      "scope": "capture pixel dimensions and actual route/tab, not detailed element geometry"
+    },
+    {
+      "path": "SOURCE/build/line146/screens/rows_line146_430_13.json",
+      "sha256": "c440637c4804f50279b7053f99599adf70ab710ea20bace18dea5d278bfaf98c",
+      "rows": 8,
+      "scope": "capture pixel dimensions and actual route/tab, not detailed element geometry"
+    }
+  ],
+  "seeding": {
+    "pr01": "11 seeded views plus the first actual profile exposure makes12",
+    "pr02": "25 viewed seed",
+    "pr03": "25 viewed seed for One; no bar or limit card",
+    "rl01": "20 waiting seed",
+    "rl02": "5 waiting seed",
+    "rl03": "3 actual detached model requests",
+    "rl04": "3 actual detached model requests plus2 waiting seed"
+  },
+  "limits_and_written_refusals": [
+    "This review does not assert pixel-identical native typography/geometry to the static prototype; current shared native styles and the Q219 accepted current card/backdrop are retained.",
+    "At375x667 scale1.3 the existing Sent recipient name Amira Rahman is ellipsized in the surrounding list. The new count line is complete. Written refusal to alter unrelated recipient-row presentation under line146/Q219.",
+    "The four rows_line146 JSON files record image dimensions and routes, not element-level geometry. The protected LOCK24 geometry test belongs to the root gate receipt.",
+    "No touch interaction was performed by this helper; reachability assertions are inspected in the capture source and their actual execution belongs to the root focused gate receipt.",
+    "No source/index/register edits, Flutter run, package install, phone, server or real send was performed. Original capture/master files were read only; review derivatives are separate work files."
+  ]
+}

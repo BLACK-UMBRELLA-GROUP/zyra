@@ -1,0 +1,21 @@
+{
+  "as_of": "2026-11-27T18:22:12.420338+00:00",
+  "root_thread": "01a21e39-bc57-7b72-982f-5c9858e4144d",
+  "conversation": "new",
+  "started_at": "2026-11-27T18:17:09.995000+00:00",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "ultra",
+  "count_events": 21,
+  "actual_count_snapshot": {
+    "timestamp": "2026-11-27T18:21:54.268Z",
+    "total_token_usage": {
+      "input_tokens": 2089801,
+      "cached_input_tokens": 1956736,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 7531,
+      "reasoning_output_tokens": 1330,
+      "total_tokens": 2097332
+    }
+  },
+  "scope": "count metadata only; no messages read or saved"
+}

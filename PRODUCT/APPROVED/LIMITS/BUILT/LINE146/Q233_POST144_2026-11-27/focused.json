@@ -1,0 +1,29 @@
+{
+  "name": "focused",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--dart-define=ZYRA_LINE146_CAPTURE=true",
+    "test/line146_limits_test.dart",
+    "test/visual/line146_limits_capture_test.dart",
+    "test/seeker_basic_policy_test.dart",
+    "test/seeker_membership_limits_test.dart",
+    "test/zyra_developer_samples_test.dart",
+    "test/view_request_draft_model_test.dart",
+    "test/view_request_draft_snapshot_test.dart",
+    "test/view_request_draft_past_requests_test.dart",
+    "test/zyra_one_upgrade_page_test.dart",
+    "test/zyra_pause_private_model_test.dart",
+    "test/zyra_pause_private_preview_state_test.dart",
+    "test/visual/line138_pause_private_capture_test.dart"
+  ],
+  "started_at": "2026-11-27T18:22:11.284767+00:00",
+  "seconds": 42.19,
+  "exit_code": 0,
+  "log": "focused.log"
+}

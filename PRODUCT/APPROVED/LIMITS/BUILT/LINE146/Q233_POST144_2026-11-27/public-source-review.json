@@ -1,0 +1,85 @@
+{
+  "files_checked": 21,
+  "hits": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 3019,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 11195,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 11196,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 949,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 1440,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 1908,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 2347,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 2453,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 92,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 355,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 357,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 358,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    },
+    {
+      "path": "SOURCE/test/zyra_one_upgrade_fit_test.dart",
+      "line": 135,
+      "kind": "money",
+      "disposition": "exact accepted line; Dart tuple access or existing locked preview wording; unchanged by line146"
+    }
+  ],
+  "new_hits": 0,
+  "verdict": "PASS after accepted-line disposition"
+}

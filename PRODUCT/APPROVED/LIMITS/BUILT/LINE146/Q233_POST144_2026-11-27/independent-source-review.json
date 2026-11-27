@@ -1,0 +1,176 @@
+{
+  "reviewed_at": "2026-11-27T18:23:23.387337+00:00",
+  "reviewer": "independent read-only q233_audit",
+  "accepted_head": "0b50384af1d756bc6d580e9e24956a1005a12bdf",
+  "result": "PASS - no actionable source issue found",
+  "scope": {
+    "integrated_paths": 21,
+    "all_integrated_hashes_match": true,
+    "unexpected_before_source_ci_changes": [],
+    "new_source_paths": [
+      "SOURCE/lib/dev/zyra_limits_preview.dart",
+      "SOURCE/test/line146_limits_test.dart",
+      "SOURCE/test/visual/line146_limits_capture_test.dart"
+    ]
+  },
+  "preservation": {
+    "line145_accepted_added_blocks": {
+      "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": [
+        {
+          "accepted_line": 1193,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 3297,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 3301,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 4771,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 5711,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 5968,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 6709,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 6720,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 6850,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 6930,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 7195,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 9023,
+          "lines": 11,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 12454,
+          "lines": 18,
+          "retained_verbatim": true
+        }
+      ],
+      "SOURCE/lib/screens/connections/zyra_sample_activity.dart": [
+        {
+          "accepted_line": 588,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 745,
+          "lines": 1,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 1371,
+          "lines": 1,
+          "retained_verbatim": true
+        }
+      ],
+      "SOURCE/test/visual/baseline_capture_support.dart": [
+        {
+          "accepted_line": 1187,
+          "lines": 53,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 1242,
+          "lines": 20,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 1263,
+          "lines": 2,
+          "retained_verbatim": true
+        },
+        {
+          "accepted_line": 1266,
+          "lines": 4,
+          "retained_verbatim": true
+        }
+      ]
+    },
+    "line145_all_added_blocks_retained_verbatim": true,
+    "foreign_staged_count": 7,
+    "foreign_index_exact": true,
+    "foreign_line138_count": 5,
+    "foreign_line138_worktree_exact": true,
+    "tracked_built_png_count": 1141,
+    "tracked_built_png_hashes_exact": true,
+    "source_ci_unowned_paths_exact": true
+  },
+  "static_findings": [
+    {
+      "id": "LOCK48-policy",
+      "result": "pass",
+      "evidence": "One common waiting limits policy: Basic5 and One20. Count deduplicates pending outgoing model/sample IDs, includes restarts, ignores received and introductions until requested; cancellation, acceptance and expiry free space. Old Consider caps remain isolated to legacy callers."
+    },
+    {
+      "id": "LOCK44-Pause",
+      "result": "pass",
+      "evidence": "_toggleInvitation and _admitWaitingRequest both check current privacy.canSendRequest before capacity. Model and sample writers retain existing privacy admission. No Pause/current account removal in diff."
+    },
+    {
+      "id": "LOCK46-Restart",
+      "result": "pass",
+      "evidence": "Restart onRequest reads fresh account/route/revision/page/tab; repeats current _canRequestEndedRestart and _model.canRequestEndedJourney; calls _admitWaitingRequest(_tapContext) immediately before existing _act(write), with guard outside _act. Sample Restart checks current lease/foreground/present and admission before confirmation and immediately before writer."
+    },
+    {
+      "id": "Q230-Q237-Q239",
+      "result": "pass",
+      "evidence": "No unowned source or CI bytes changed; current Offers/Ramadan owner state and fixture offerChoices retained. Current Q237 controls, Q239 corpus/audit/workflow are untouched."
+    },
+    {
+      "id": "Q233-oracles",
+      "result": "pass",
+      "evidence": "New ninth upgrade row after Browse profiles, true Sent Scrollable reveal and reachability checks, Basic-only bar at 12pt below header /10pt before dots /4pt track with all other LOCK24 geometry checks retained. No assertion suppression or changed thresholds."
+    },
+    {
+      "id": "Q220-seeds",
+      "result": "pass",
+      "evidence": "Seed parameters live only in shell fixture and test drivers/captures. Production lib has no fixture constructor call or new preview controls/sample people/backend code."
+    },
+    {
+      "id": "LOCK48-UI-static",
+      "result": "pass, subject to rendered checks",
+      "evidence": "Bar, limit card, full sheet and Sent copy match locked values and texts; shared title, text, floating surface and Ivory sheet used. Button labels wrap. One has no bar. Static review cannot establish rendered pixel/contrast MATCH."
+    }
+  ],
+  "limitations": [
+    "No Flutter run by reviewer; root owns analyzer, focused/replay, captures, ordinary and hosted gates.",
+    "No pixel MATCH claim from static review; locked new-part visual comparisons require current captures."
+  ],
+  "actionable_issues": []
+}

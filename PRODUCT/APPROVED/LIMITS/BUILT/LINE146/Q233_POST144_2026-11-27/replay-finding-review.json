@@ -1,0 +1,308 @@
+{
+  "reviewed_at": "2026-11-27T18:29:50.169031+00:00",
+  "read_only": true,
+  "classification": "Historical category established from accepted exact-head raw evidence; exact current ratio/background not established as baseline. Current owned strict failure remains a gate failure.",
+  "current_owned_scope": "basic_seeker / Seeker Basic / one_upgrade, altered by LOCK48 ninth row",
+  "current_progress_snapshots": [
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line126-focused-contrast-normal-progress.json",
+      "snapshot_sha256": "063ad1575183b20f3bb4403d63862890e8e6d7472467b340071dfedcb8210c25",
+      "provenance": {
+        "head_sha": "",
+        "run_id": "",
+        "run_attempt": "",
+        "setting": "normal",
+        "status": "fail",
+        "report_complete": false,
+        "report_only": false,
+        "proof_scope": "explicit focused shell routes only"
+      },
+      "matching_owned_failure_records": 20,
+      "unique_ratios": [
+        4.491678474119953
+      ],
+      "unique_backgrounds": [
+        "#ffeadfcd"
+      ],
+      "representative": {
+        "group": "basic_seeker",
+        "state": "settled",
+        "viewport": "375x667@1.0",
+        "plan": "Seeker Basic",
+        "tab": 4,
+        "pages": [
+          "one_upgrade"
+        ],
+        "rendered_route": "one_upgrade",
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 0,
+        "font_size": 11.5,
+        "rendered_size": 11.5,
+        "weight": 400,
+        "source_ink": "#ff6e6257",
+        "parent_opacity": 1.0,
+        "contrast": 4.491678474119953,
+        "required_contrast": 4.5,
+        "contrast_pass": false,
+        "weight_pass": true,
+        "opacity_pass": true,
+        "sample": {
+          "x": 324,
+          "y": 518,
+          "background": "#ffeadfcd",
+          "nominal_ink": "#ff6e6257",
+          "background_alpha": 255,
+          "original_alpha": 255,
+          "solid_alpha": 255,
+          "original_glyph_delta": 5,
+          "opaque_patch_transmission": 255
+        },
+        "widget_path": [
+          "Text",
+          "Column",
+          "ZyraPurchaseFinePrint",
+          "Column",
+          "Padding",
+          "LayoutBuilder",
+          "MediaQuery",
+          "Padding",
+          "SafeArea",
+          "ZyraOneUpgradePage",
+          "Stack",
+          "PageStorage"
+        ],
+        "text_sha256": "76da0bf229b3892362da2033805993b5098ad0a2d2467e59fa4c1741fd101e48"
+      }
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line126-focused-contrast-normal-430-progress.json",
+      "snapshot_sha256": "e2345f46ce984ed5e0292c4134e5a334f137036afffd7e65b7d1b01711f462b4",
+      "provenance": {
+        "head_sha": "",
+        "run_id": "",
+        "run_attempt": "",
+        "setting": "normal-430",
+        "status": "fail",
+        "report_complete": false,
+        "report_only": false,
+        "proof_scope": "explicit focused shell routes only"
+      },
+      "matching_owned_failure_records": 5,
+      "unique_ratios": [
+        4.491678474119953
+      ],
+      "unique_backgrounds": [
+        "#ffeadfcd"
+      ],
+      "representative": {
+        "group": "basic_seeker",
+        "state": "settled",
+        "viewport": "430x932@1.0",
+        "plan": "Seeker Basic",
+        "tab": 4,
+        "pages": [
+          "one_upgrade"
+        ],
+        "rendered_route": "one_upgrade",
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 0,
+        "font_size": 11.5,
+        "rendered_size": 11.5,
+        "weight": 400,
+        "source_ink": "#ff6e6257",
+        "parent_opacity": 1.0,
+        "contrast": 4.491678474119953,
+        "required_contrast": 4.5,
+        "contrast_pass": false,
+        "weight_pass": true,
+        "opacity_pass": true,
+        "sample": {
+          "x": 173,
+          "y": 749,
+          "background": "#ffeadfcd",
+          "nominal_ink": "#ff6e6257",
+          "background_alpha": 255,
+          "original_alpha": 255,
+          "solid_alpha": 255,
+          "original_glyph_delta": 139,
+          "opaque_patch_transmission": 255
+        },
+        "widget_path": [
+          "Text",
+          "Column",
+          "ZyraPurchaseFinePrint",
+          "Column",
+          "Padding",
+          "LayoutBuilder",
+          "MediaQuery",
+          "Padding",
+          "SafeArea",
+          "ZyraOneUpgradePage",
+          "Stack",
+          "PageStorage"
+        ],
+        "text_sha256": "76da0bf229b3892362da2033805993b5098ad0a2d2467e59fa4c1741fd101e48"
+      }
+    }
+  ],
+  "accepted_historical_raw": [
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE144/2026-11-27_Q239_POST145/HOSTED/zyra-text-audit-normal-375-2-attempt-1/audit.json",
+      "sha256": "59203fbe47706cf90d29ca466785b89c11656d309e7a94b34adada5eb29e368a",
+      "published_artifact_audit_pin": "59203fbe47706cf90d29ca466785b89c11656d309e7a94b34adada5eb29e368a",
+      "published_pin_matches": true,
+      "artifact_id": 15222166072,
+      "provenance": {
+        "head_sha": "83f74fd74a436aac7bd153a26cd60499f70114fe",
+        "run_id": "46044884390",
+        "run_attempt": "1",
+        "setting": "normal",
+        "status": "fail",
+        "report_complete": true,
+        "report_only": true
+      },
+      "matching_failure_records": 15,
+      "unique_ratios": [
+        4.488964339054327
+      ],
+      "unique_backgrounds": [
+        "#ffeadfcc"
+      ],
+      "representative": {
+        "group": "basic_seeker",
+        "state": "settled",
+        "viewport": "375x667@1.0",
+        "plan": "Seeker Basic",
+        "tab": 4,
+        "pages": [
+          "one_upgrade"
+        ],
+        "rendered_route": "one_upgrade",
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 0,
+        "font_size": 11.5,
+        "rendered_size": 11.5,
+        "weight": 400,
+        "source_ink": "#ff6e6257",
+        "parent_opacity": 1.0,
+        "contrast": 4.488964339054327,
+        "required_contrast": 4.5,
+        "contrast_pass": false,
+        "weight_pass": true,
+        "opacity_pass": true,
+        "sample": {
+          "x": 274,
+          "y": 517,
+          "background": "#ffeadfcc",
+          "nominal_ink": "#ff6e6257",
+          "background_alpha": 255,
+          "original_alpha": 255,
+          "solid_alpha": 255,
+          "original_glyph_delta": 91,
+          "opaque_patch_transmission": 255
+        },
+        "widget_path": [
+          "Text",
+          "Column",
+          "ZyraPurchaseFinePrint",
+          "Column",
+          "Padding",
+          "LayoutBuilder",
+          "MediaQuery",
+          "Padding",
+          "SafeArea",
+          "ZyraOneUpgradePage",
+          "Stack",
+          "PageStorage"
+        ],
+        "text_sha256": "76da0bf229b3892362da2033805993b5098ad0a2d2467e59fa4c1741fd101e48"
+      }
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE144/2026-11-27_Q239_POST145/HOSTED/zyra-text-audit-normal-430-2-attempt-1/audit.json",
+      "sha256": "ec124b1cc6b05ac8562d196ff96a345beacaaf16fa207b288655f64c9085e304",
+      "published_artifact_audit_pin": "ec124b1cc6b05ac8562d196ff96a345beacaaf16fa207b288655f64c9085e304",
+      "published_pin_matches": true,
+      "artifact_id": 15222650503,
+      "provenance": {
+        "head_sha": "83f74fd74a436aac7bd153a26cd60499f70114fe",
+        "run_id": "46044884390",
+        "run_attempt": "1",
+        "setting": "normal-430",
+        "status": "fail",
+        "report_complete": true,
+        "report_only": true
+      },
+      "matching_failure_records": 5,
+      "unique_ratios": [
+        4.446715864114136
+      ],
+      "unique_backgrounds": [
+        "#ffe9decb"
+      ],
+      "representative": {
+        "group": "basic_seeker",
+        "state": "settled",
+        "viewport": "430x932@1.0",
+        "plan": "Seeker Basic",
+        "tab": 4,
+        "pages": [
+          "one_upgrade"
+        ],
+        "rendered_route": "one_upgrade",
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 0,
+        "font_size": 11.5,
+        "rendered_size": 11.5,
+        "weight": 400,
+        "source_ink": "#ff6e6257",
+        "parent_opacity": 1.0,
+        "contrast": 4.446715864114136,
+        "required_contrast": 4.5,
+        "contrast_pass": false,
+        "weight_pass": true,
+        "opacity_pass": true,
+        "sample": {
+          "x": 274,
+          "y": 748,
+          "background": "#ffe9decb",
+          "nominal_ink": "#ff6e6257",
+          "background_alpha": 255,
+          "original_alpha": 255,
+          "solid_alpha": 255,
+          "original_glyph_delta": 70,
+          "opaque_patch_transmission": 255
+        },
+        "widget_path": [
+          "Text",
+          "Column",
+          "ZyraPurchaseFinePrint",
+          "Column",
+          "Padding",
+          "LayoutBuilder",
+          "MediaQuery",
+          "Padding",
+          "SafeArea",
+          "ZyraOneUpgradePage",
+          "Stack",
+          "PageStorage"
+        ],
+        "text_sha256": "76da0bf229b3892362da2033805993b5098ad0a2d2467e59fa4c1741fd101e48"
+      }
+    }
+  ],
+  "historical_exact_value_search": {
+    "root": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE144/2026-11-27_Q239_POST145",
+    "json_files_checked": 157,
+    "exact_ratio": "4.491678474119953",
+    "matching_paths": []
+  },
+  "comparison": {
+    "same_group_route_plan_component_ink_threshold": true,
+    "same_text_hash": true,
+    "same_background_or_ratio": false
+  },
+  "decision": "Retain all raw failures. Do not waive current upgrade route, lower 4.5 threshold, infer pixel baseline from unchanged source, or change app colour/layout without approved scope. Root should complete required evidence and park if strict failure remains.",
+  "related_unowned": "basic_guardian reports same component but does not remove owned basic_seeker failure.",
+  "q240": "No Q240 title classification made by this diagnosis; footer evidence is independent."
+}

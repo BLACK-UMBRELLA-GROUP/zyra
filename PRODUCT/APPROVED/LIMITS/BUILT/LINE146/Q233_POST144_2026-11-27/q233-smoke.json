@@ -1,0 +1,24 @@
+{
+  "name": "q233-smoke",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--name",
+    "Q194|Requests has three swipe pages and Introductions has Received/Past separately compact200|fresh whole-app real-font candidates are not approval_compact200_final|LOCK24|LOCK46|Ramadan entry follows|o01 Seeker Delete|Guardian Journey never",
+    "test/zyra_one_upgrade_fit_test.dart",
+    "test/view_request_draft_widget_test.dart",
+    "test/visual/lock24_tab_spacing_test.dart",
+    "test/visual/line140_profile_small_pages_capture_test.dart",
+    "test/visual/line142_offers_preview_test.dart",
+    "test/zyra_guardian_journey_photo_gate_test.dart"
+  ],
+  "started_at": "2026-11-27T18:23:13.564851+00:00",
+  "seconds": 34.57,
+  "exit_code": 0,
+  "log": "q233-smoke.log"
+}

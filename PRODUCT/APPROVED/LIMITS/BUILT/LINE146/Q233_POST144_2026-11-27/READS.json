@@ -1,0 +1,39 @@
+{
+  "conversation": "new",
+  "start_pack_bytes": 18085,
+  "named_reads": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 16748,
+      "sha256": "2e37ec20b8872569d5154fb1c333d9b49d3c2c99381cbefd869680a53268ec12"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md",
+      "bytes": 4035,
+      "sha256": "2a94d1aca9e0c38be751b342caa9869e3b044b630ea0a60a2b94e0d0c46e05b6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/RECORD/LIMITS_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 4067,
+      "sha256": "5956938c888d9f09f5f52919fa20b43cee5b55530df7c93ed694249b33575724"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/RECORD/LOCK_RECORD.md",
+      "bytes": 668,
+      "sha256": "7dfa9610f74ac02d2d3f1f945813e8fa1efab3e963414befdf8ec4ab0fb44d84"
+    },
+    {
+      "path": "SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_RULES_CURRENT_VERSION_V1.md",
+      "bytes": 3785,
+      "sha256": "f474ec63003bbcd203511d6ac9a75eeb43f0d13dfdef2a9af6ae1e84b9eea7a8"
+    }
+  ],
+  "additional_authority": "Founder delegation; Q219, Q220, Q233 and Q240 exact rows; queue row146 and standing header only; implementation handover standard V4; original Q233 and accepted preflight handovers/manifests",
+  "prototype_read_scope": "V342 LIMITS implementation lines503-513,981 comparison row,1566-1575 full-sheet behavior; complete file hash recorded in masters manifest later",
+  "startup_disclosure": "Global supplied instruction required whole short lessons page; read it before queue start pack. Also read AGENTS and 5753 bytes of MAP task routes before start-pack; pack used thereafter. An accidental queue read requested first170 lines and output truncated; no decision registers opened whole.",
+  "format_check": {
+    "command": "node tooling/no_git_driver.mjs dart format --output=none --set-exit-if-changed <20 owned Dart paths>",
+    "result": "19 already formatted; upgrade page has one accepted pre-existing ternary-format difference only at current line195; format --output=show confirmed, no source written or changed",
+    "scope": "No formatting gate required by brief; accepted Q237 helper retained byte-for-byte."
+  }
+}
