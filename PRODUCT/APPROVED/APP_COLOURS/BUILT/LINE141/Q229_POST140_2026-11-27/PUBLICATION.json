@@ -1,0 +1,25 @@
+{
+  "created_at": "2026-11-27T15:05:26.402512+00:00",
+  "status": "QUESTION; record-only publication prepared; implementation held",
+  "record_commit": "1cc09a9931c893f3690a1a46cbdb5ba6257c10bc",
+  "paths_in_record_commit": 45,
+  "accepted_source_base": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "held_path": "SOURCE/build/held/LINE141/2026-11-27_Q229_POST140_GATES",
+  "held_patch_sha256": "af808e3e640d54390d74e72fe409cb86b37c6fff43289397daf94c08ab5f8d26",
+  "public_checks": {
+    "A": "Committed origin/main..HEAD history secret scan0findings; scoped source/new-file and final record scans0findings",
+    "B": "Public approved sample UI/test evidence;716false scanner matches independently classified708PNGbyte matches+8existing test titles",
+    "C": "No roadmap completion",
+    "D": "No version change",
+    "E": "Neutral wording",
+    "F": "README candidate held; accepted README restored"
+  },
+  "independent_reviews": "Source,12master comparisons,raster proof,held release,public records and log normalization clear for record-only publication",
+  "source_implementation_published": false,
+  "source_index_released": "2026-11-27T14:58:44.142183+00:00",
+  "foreign_staged_entries_preserved": 7,
+  "old_evidence_files_preserved": 2159,
+  "coordinator_actions": "Copy this task note into27Novdaily report; file one ForFablefollow-up underQ229 and setline141QUESTION. Existing queue/QUESTIONSworktree and staged blobs untouched. No next line by this owner.",
+  "push_state": "Not yet attempted at receipt creation; final chat/output publication receipt supplies actual pushed head and outcome",
+  "failed_push_connections": 0
+}
