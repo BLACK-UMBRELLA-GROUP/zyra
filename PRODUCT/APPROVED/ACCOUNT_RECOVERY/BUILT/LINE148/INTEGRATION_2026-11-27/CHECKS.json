@@ -1,0 +1,57 @@
+{
+  "accepted_baseline": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line137_help_support_capture_test.dart test/welcome_auth_failure_recovery_test.dart",
+    "cwd": "SOURCE",
+    "result": "6 passed / 4 skipped / 1 failed: accepted Seeker Help entry; Welcome tests pass locally",
+    "log": "accepted-baseline.log"
+  },
+  "analyzer": {
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "cwd": "SOURCE",
+    "result": "No issues found (7.9 seconds)",
+    "log": "analyzer.log"
+  },
+  "focused": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_LINE148_CAPTURE=true test/line121_signup_account_session_test.dart test/line121_signup_preview_widget_test.dart test/zyra_privacy_security_preview_test.dart test/zyra_privacy_sensitive_actions_shell_test.dart test/visual/line148_account_recovery_capture_test.dart",
+    "cwd": "SOURCE",
+    "result": "35 passed; six PNGs/nine audits,86 runs/zero failures; all15 hashes match isolate",
+    "log": "focused.log"
+  },
+  "ordinary": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded",
+    "cwd": "SOURCE",
+    "result": "14:37 +7957 ~244 -1: Some tests failed.",
+    "log": "ordinary.log",
+    "exit_code": 1,
+    "failed_tests": [
+      "04:58 +4893 ~160 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false [E]"
+    ]
+  },
+  "history_secret_scan": {
+    "command": "gitleaks detect --source . --log-opts='origin/main..HEAD' --redact --no-banner",
+    "result": "exit 0; no leaks",
+    "log": "history-secret-scan.log"
+  },
+  "candidate_secret_scan": {
+    "command": "gitleaks stdin --redact --no-banner < exact integrated patch",
+    "result": "exit 0; no leaks",
+    "log": "candidate-secret-scan.log"
+  },
+  "public_source": {
+    "command": "python3 fable_public_check.py <exact nine candidate paths>",
+    "result": "eight unchanged accepted-line matches reviewed; no added private content",
+    "log": "public-source.log"
+  },
+  "controls": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/line121_signup_preview_controller_test.dart test/zyra_rendered_text_audit_controls_test.dart",
+    "result": "139 passed (24 seconds)",
+    "log": "controls.log",
+    "exit_code": 0
+  },
+  "relevant_replay": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line126_remaining_routes_test.dart --name 'overview signInSecurity'",
+    "result": "4 passed; Seeker/Guardian Basic/One Sign-in & security overview fixtures",
+    "log": "relevant-replay.log",
+    "exit_code": 0
+  }
+}

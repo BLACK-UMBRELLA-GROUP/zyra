@@ -1,0 +1,140 @@
+{
+  "line": 148,
+  "lock": 50,
+  "question": 234,
+  "status": "HELD",
+  "held_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE148/2026-11-27_INTEGRATED_Q234",
+  "patch": "LINE148_INTEGRATED.patch",
+  "patch_sha256": "36651dae2ab9621f67887e04b181fe19666b0b8eca75d657f1cd219db7f1b155",
+  "base": "6631c2a2f3a4d18dc281077c6ce3390fbf366674",
+  "paths": [
+    {
+      "path": "SOURCE/README.md",
+      "accepted_sha256": "030c7e8ba448512e084a5245c67044bc9c0ffcf61e4f6da8afe7eb643f2c2522",
+      "candidate_sha256": "08ac0558d4175b84de359e709d94d67baec55b00b66d194cd3b0944cf7743e75"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "accepted_sha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea",
+      "candidate_sha256": "58574b98c22fb131b4dc80bc9175e493b3d0c4b44fdc6196ccded357d734b483"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_privacy_security_preview.dart",
+      "accepted_sha256": "304c3920921f514c547a242d658e719660fb85708edca924f8cee7d2333179aa",
+      "candidate_sha256": "431d4954825a97cede6b42998fb85cc1321d25f59601174983d31e5ba3e124a1"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_account_session.dart",
+      "accepted_sha256": "7fa80b6ba6aadb7206147e0c58182effae608e3c80e458e5661706cc5251f2f7",
+      "candidate_sha256": "c5b3999107fd1a73ecd5d1f7823232347cc16f2da58a8a0b773e725936e7eda4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "accepted_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+      "candidate_sha256": "953ec82b7b5687b4b1d2400ff0feb7995d5243e1143b9ffcd8085a1045113aa6"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview_controller.dart",
+      "accepted_sha256": "13fe47246cc4a7fc911c9ff705138d574b207b52e58ffbda919a26ed9530e89d",
+      "candidate_sha256": "0957b9f15e562cc1c23b9a50099e420f4c502368643360a93fdec8d7a70bc6b5"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_account_session_test.dart",
+      "accepted_sha256": "0600aa64f916ea035428b306adf50a23b373fbc62217ccfeba4bf5d2b312486b",
+      "candidate_sha256": "5ab615e356e85928fcb09223510538a59046a443b6993296dd08146b835c6c96"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_preview_widget_test.dart",
+      "accepted_sha256": "346e13cc5ed313c776bfe84cdcad5ce9f218d768972a64779fcb3d6bab2d9dec",
+      "candidate_sha256": "ddd0bb453f743dfc805293cf02c64d02975d0833ce11459977df767fd771f8bd"
+    },
+    {
+      "path": "SOURCE/test/visual/line148_account_recovery_capture_test.dart",
+      "accepted_sha256": null,
+      "candidate_sha256": "8ee4ffe227ac9716ca5922eea53563f30059113099324f5bf5a30dc0c442df2a"
+    }
+  ],
+  "original_patch_sha256": "541d9ca18fa1cfc16d5e48ae9b639abb3ecef6cef118eb275f910fcae7b014f6",
+  "release": {
+    "line": 148,
+    "status": "QUESTION",
+    "question": 234,
+    "lease_started_utc": "2026-11-27T09:34:23.779891+00:00",
+    "source_ci_released_utc": "2026-11-27T09:53:03.278925+00:00",
+    "accepted_head": "6631c2a2f3a4d18dc281077c6ce3390fbf366674",
+    "accepted_source_commit": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+    "source_status": "clean",
+    "protected_staged_entries": 7,
+    "protected_index_entries": "100644 f1915859e9eb592f2db782df5889d66f3d06bb02 0\tPRODUCT/APPROVED/BUILD_QUEUE.md\n100644 0935e25eeea8b6ffe3ce64b614fcbf9468606b71 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json\n100644 341b615843c7227166868b6f025c30baed513281 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md\n100644 0531f5ad6daa081e49990b9c03427b7b4a7f3291 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json\n100644 b890726e53fbb2c4fdc8bf5ebd27811996fcd5f3 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json\n100644 4e002f5d53b681c5bbccc6617181b7264555d3ea 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md\n100644 7b9d76e6b1b22dd40b24dd8824a52fb95a300c8a 0\tPRODUCT/APPROVED/QUESTIONS.md\n",
+    "protected_line138_working_files": {
+      "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f"
+    },
+    "protected_existing_built_pngs": 963,
+    "other_protected_working_evidence_hashes_unchanged": 1037,
+    "queue_and_questions": "only this line status/date and Q234 changed; working-tree only",
+    "implementation_commit": null,
+    "push_attempts": 0
+  },
+  "checks": {
+    "accepted_baseline": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line137_help_support_capture_test.dart test/welcome_auth_failure_recovery_test.dart",
+      "cwd": "SOURCE",
+      "result": "6 passed / 4 skipped / 1 failed: accepted Seeker Help entry; Welcome tests pass locally",
+      "log": "accepted-baseline.log"
+    },
+    "analyzer": {
+      "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+      "cwd": "SOURCE",
+      "result": "No issues found (7.9 seconds)",
+      "log": "analyzer.log"
+    },
+    "focused": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_LINE148_CAPTURE=true test/line121_signup_account_session_test.dart test/line121_signup_preview_widget_test.dart test/zyra_privacy_security_preview_test.dart test/zyra_privacy_sensitive_actions_shell_test.dart test/visual/line148_account_recovery_capture_test.dart",
+      "cwd": "SOURCE",
+      "result": "35 passed; six PNGs/nine audits,86 runs/zero failures; all15 hashes match isolate",
+      "log": "focused.log"
+    },
+    "ordinary": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded",
+      "cwd": "SOURCE",
+      "result": "14:37 +7957 ~244 -1: Some tests failed.",
+      "log": "ordinary.log",
+      "exit_code": 1,
+      "failed_tests": [
+        "04:58 +4893 ~160 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false [E]"
+      ]
+    },
+    "history_secret_scan": {
+      "command": "gitleaks detect --source . --log-opts='origin/main..HEAD' --redact --no-banner",
+      "result": "exit 0; no leaks",
+      "log": "history-secret-scan.log"
+    },
+    "candidate_secret_scan": {
+      "command": "gitleaks stdin --redact --no-banner < exact integrated patch",
+      "result": "exit 0; no leaks",
+      "log": "candidate-secret-scan.log"
+    },
+    "public_source": {
+      "command": "python3 fable_public_check.py <exact nine candidate paths>",
+      "result": "eight unchanged accepted-line matches reviewed; no added private content",
+      "log": "public-source.log"
+    },
+    "controls": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/line121_signup_preview_controller_test.dart test/zyra_rendered_text_audit_controls_test.dart",
+      "result": "139 passed (24 seconds)",
+      "log": "controls.log",
+      "exit_code": 0
+    },
+    "relevant_replay": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line126_remaining_routes_test.dart --name 'overview signInSecurity'",
+      "result": "4 passed; Seeker/Guardian Basic/One Sign-in & security overview fixtures",
+      "log": "relevant-replay.log",
+      "exit_code": 0
+    }
+  },
+  "refusal": "No failed gate waived, no assertion or coverage suppressed, and no Q228/Q229 repair outside this brief."
+}

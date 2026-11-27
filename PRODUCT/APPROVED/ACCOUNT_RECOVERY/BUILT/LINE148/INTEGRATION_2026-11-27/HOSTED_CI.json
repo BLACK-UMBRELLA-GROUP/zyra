@@ -1,0 +1,16 @@
+{
+  "repo": "BLACK-UMBRELLA-GROUP/zyra",
+  "run_id": 45958031712,
+  "head_sha": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "status": "completed",
+  "conclusion": "failure",
+  "required_flutter_shards": {
+    "0": "success",
+    "1": "failure",
+    "2": "failure"
+  },
+  "full_text_audit_jobs": "all four failure; advisory per accepted workflow",
+  "verified_utc": "2026-11-27T09:37:58.296862+00:00",
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/45958031712",
+  "source": "connected GitHub fetch_workflow_run_jobs and fetch GET run"
+}

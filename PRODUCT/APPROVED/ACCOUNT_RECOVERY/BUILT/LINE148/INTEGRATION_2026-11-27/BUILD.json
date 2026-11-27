@@ -1,0 +1,11 @@
+{
+  "line": 148,
+  "lock": 50,
+  "status": "QUESTION / held preview candidate",
+  "commit_sha": "6631c2a2f3a4d18dc281077c6ce3390fbf366674",
+  "candidate_patch_sha256": "36651dae2ab9621f67887e04b181fe19666b0b8eca75d657f1cd219db7f1b155",
+  "flutter_version": "3.44.2",
+  "build_mode": "protected Flutter widget tests; no native build",
+  "timestamp": "2026-11-27T09:53:03.278925+00:00",
+  "live": false
+}

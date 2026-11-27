@@ -1,0 +1,152 @@
+[
+  {
+    "path": "SOURCE/build/line148/screens/ar01_welcome__cant_sign_in.png",
+    "width": 1290,
+    "height": 2796,
+    "sha256": "2f8178c06d4a97d0cdc9c7b486c92ec0c883d56152e1db3a9f64426866dcf90f",
+    "category": "captures",
+    "integrated_sha256": "2f8178c06d4a97d0cdc9c7b486c92ec0c883d56152e1db3a9f64426866dcf90f",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/screens/ar01_welcome__cant_sign_in.png"
+  },
+  {
+    "path": "SOURCE/build/line148/screens/ar02_cant_sign_in__support.png",
+    "width": 1290,
+    "height": 2796,
+    "sha256": "17274ec0d1c1ea7bbe68cefbad7fe00dcd77bbf3ff67b0f1b08fd20aedd07a5f",
+    "category": "captures",
+    "integrated_sha256": "17274ec0d1c1ea7bbe68cefbad7fe00dcd77bbf3ff67b0f1b08fd20aedd07a5f",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/screens/ar02_cant_sign_in__support.png"
+  },
+  {
+    "path": "SOURCE/build/line148/screens/ar03_sign_in_security__backup.png",
+    "width": 1290,
+    "height": 2796,
+    "sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+    "category": "captures",
+    "integrated_sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/screens/ar03_sign_in_security__backup.png"
+  },
+  {
+    "path": "SOURCE/build/line148/screens/ar04_sign_in_security__backup_added.png",
+    "width": 1290,
+    "height": 2796,
+    "sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+    "category": "captures",
+    "integrated_sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/screens/ar04_sign_in_security__backup_added.png"
+  },
+  {
+    "path": "SOURCE/build/line148/screens/ps07_sign_in_one_device__with_backup.png",
+    "width": 1290,
+    "height": 2796,
+    "sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+    "category": "captures",
+    "integrated_sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png"
+  },
+  {
+    "path": "SOURCE/build/line148/screens/s03_welcome__android_google_first_with_recovery.png",
+    "width": 1290,
+    "height": 2796,
+    "sha256": "842fb05e92847f744c29ff4fcde8f05b35bc65a33cc2953231ea65c8e9b857cd",
+    "category": "captures",
+    "integrated_sha256": "842fb05e92847f744c29ff4fcde8f05b35bc65a33cc2953231ea65c8e9b857cd",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/ar01_welcome__cant_sign_in.json",
+    "runs": 6,
+    "failures": 0,
+    "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+    "category": "audits",
+    "integrated_sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/ar01_welcome__cant_sign_in.json"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/ar02_cant_sign_in__support.json",
+    "runs": 10,
+    "failures": 0,
+    "sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8",
+    "category": "audits",
+    "integrated_sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/ar02_cant_sign_in__support.json"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/ar02_larger_text_bottom.json",
+    "runs": 5,
+    "failures": 0,
+    "sha256": "a3206db3c69f09d13f760b33143acff971a856864c9a59f3940232a2ddc8267c",
+    "category": "audits",
+    "integrated_sha256": "a3206db3c69f09d13f760b33143acff971a856864c9a59f3940232a2ddc8267c",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/ar02_larger_text_bottom.json"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/ar02_larger_text_top.json",
+    "runs": 3,
+    "failures": 0,
+    "sha256": "8081481cf9e26e6d5b39057a047d6a4542ddc61cd8d832588b49a240a6beeac7",
+    "category": "audits",
+    "integrated_sha256": "8081481cf9e26e6d5b39057a047d6a4542ddc61cd8d832588b49a240a6beeac7",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/ar02_larger_text_top.json"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/ar03_sign_in_security__backup.json",
+    "runs": 17,
+    "failures": 0,
+    "sha256": "6abc6d4d03c6a27d410ed1bc9717f7c99f188fcfdcf8a8743a82c6d93c557fcf",
+    "category": "audits",
+    "integrated_sha256": "6abc6d4d03c6a27d410ed1bc9717f7c99f188fcfdcf8a8743a82c6d93c557fcf",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/ar03_sign_in_security__backup.json"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/ar04_google_larger_text.json",
+    "runs": 7,
+    "failures": 0,
+    "sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af",
+    "category": "audits",
+    "integrated_sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/ar04_google_larger_text.json"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/ar04_sign_in_security__backup_added.json",
+    "runs": 18,
+    "failures": 0,
+    "sha256": "98ee308abcdbd5317f2a99596df7df65e8e7ab62c1263cc4934a5a0f75d69848",
+    "category": "audits",
+    "integrated_sha256": "98ee308abcdbd5317f2a99596df7df65e8e7ab62c1263cc4934a5a0f75d69848",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/ar04_sign_in_security__backup_added.json"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/ps07_sign_in_one_device__with_backup.json",
+    "runs": 14,
+    "failures": 0,
+    "sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907",
+    "category": "audits",
+    "integrated_sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/ps07_sign_in_one_device__with_backup.json"
+  },
+  {
+    "path": "SOURCE/build/line148/audit/s03_welcome__android_google_first_with_recovery.json",
+    "runs": 6,
+    "failures": 0,
+    "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+    "category": "audits",
+    "integrated_sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+    "matches_isolate": true,
+    "saved_path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/INTEGRATION_2026-11-27/audit/s03_welcome__android_google_first_with_recovery.json"
+  }
+]

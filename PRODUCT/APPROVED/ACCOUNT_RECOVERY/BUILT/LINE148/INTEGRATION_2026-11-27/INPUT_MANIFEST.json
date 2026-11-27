@@ -1,0 +1,62 @@
+{
+  "line": 148,
+  "lock": 50,
+  "authority": [
+    "DR-ZYRA-385",
+    "LOCK50",
+    "OA-ZYRA-402"
+  ],
+  "start_pack_bytes": 20353,
+  "inputs": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 16748,
+      "sha256": "2e37ec20b8872569d5154fb1c333d9b49d3c2c99381cbefd869680a53268ec12"
+    },
+    {
+      "path": "SOURCE/README.md",
+      "bytes": 14808,
+      "sha256": "08ac0558d4175b84de359e709d94d67baec55b00b66d194cd3b0944cf7743e75"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md",
+      "bytes": 6303,
+      "sha256": "66e53882776257efe1bed8b9f6a146ff65815590fffaae43b3bc065c592867ef"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/RECORD/ACCOUNT_RECOVERY_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 2445,
+      "sha256": "11688e7719f7d7f061fd2aad5a903621661efc9d5e195b20f6086557288b948f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/RECORD/LOCK_RECORD.md",
+      "bytes": 320,
+      "sha256": "b8341002f6793f1b21638eaf9faa185a61c67dfd44fa0746b3880ab2796611df"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar01_welcome__cant_sign_in.png",
+      "bytes": 309085,
+      "sha256": "deecf7db5ba7801fa48f7fb35191e36284a36aefd1e7d718a06ae7b7f03ea863"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar02_cant_sign_in__support.png",
+      "bytes": 460945,
+      "sha256": "3d9948a5ee818608dd5bb2849994e46d336a1688a6538efa773510d3bce33fe3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar03_sign_in_security__backup.png",
+      "bytes": 1105689,
+      "sha256": "c551b8113148394e6f0625bc62d155e0ab15a39f9852230f8d77b625b430c321"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar04_sign_in_security__backup_added.png",
+      "bytes": 1102804,
+      "sha256": "82dd250b3d366d33be90b6c5ef6d04401c3d6dd544662bd0d4ac50a2d20b6686"
+    }
+  ],
+  "fixed_prototype": {
+    "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/BUSINESS/ZYRA/PROTOTYPE/ARCHIVE/ZYRA_PROTOTYPE_2026-11-24_V364.html",
+    "sha256": "0debbcb1981b92c3ea9cd38f9c73cae9efc6f76351b9029b1be39e0cb83386df",
+    "read_scope": "recovery and backup sign-in relevant sections"
+  }
+}

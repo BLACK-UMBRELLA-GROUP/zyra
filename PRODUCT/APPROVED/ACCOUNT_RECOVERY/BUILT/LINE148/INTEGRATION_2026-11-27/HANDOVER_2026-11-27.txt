@@ -1,0 +1,48 @@
+Line148 LOCK50 integration — QUESTION / held candidate, 27 November 2026
+
+Current state
+The scoped preview implementation passed its own checks and independent source/visual review, but it is not accepted or shipped. Q234 holds the exact candidate because accepted-source required CI remains red (Q228) and ordinary regression reproduces its Seeker Help entry failure. No implementation commit or push occurred. No new candidate-triggered failure was found in this run.
+
+Authority and inputs
+Founder continuing GO for line148 only; LOCK50, DR-ZYRA-385, OA-ZYRA-402. Built from ACCOUNT_RECOVERY/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md, RECORD/ACCOUNT_RECOVERY_SPEC_CURRENT_VERSION_V1.md, RECORD/LOCK_RECORD.md, masters ar01–ar04 and fixed prototype V364. INPUT_MANIFEST.json records hashes. Start pack printed20,353 bytes. The two discussion points remain as currently locked; neither was reopened or changed.
+
+Behavior measured in the held candidate
+The sample Welcome keeps its existing dark Apple/Google buttons and platform order, then offers Can't sign in?. Recovery uses the shared sign-up chevron, returns to Welcome without creating or advancing an account, and Contact support shows only the locked preview notice. Settings Sign-in & security adds BACKUP SIGN-IN between SIGN-IN and SIGNED-IN DEVICES, including the one-device state. It offers the opposite provider, marks Added locally in #326B4C and shows the locked notice. It adds no Face ID prompt. Existing sign-out confirmation remains.
+
+Changed source paths and jobs
+SOURCE/README.md — additive sample account recovery documentation.
+SOURCE/lib/dev/zyra_one_journey_concept_shell.dart — first-entry provider handoff and guarded Settings backup action; exact session signInProvider expression preserves line138 profilePaused/privateMode.
+SOURCE/lib/dev/zyra_privacy_security_preview.dart — backup section and mirrored provider display.
+SOURCE/lib/dev/zyra_request_account_session.dart — role-local provider and backup sample state.
+SOURCE/lib/dev/zyra_signup_preview.dart — Welcome entry and shared recovery presentation.
+SOURCE/lib/dev/zyra_signup_preview_controller.dart — local recovery navigation state.
+SOURCE/test/line121_signup_account_session_test.dart — account/provider lifetime checks.
+SOURCE/test/line121_signup_preview_widget_test.dart — platform, recovery and inactive-callback checks.
+SOURCE/test/visual/line148_account_recovery_capture_test.dart — actual sample Settings route, six captures, nine text audits and narrow Larger Text proof.
+SOURCE_MANIFEST.json records accepted/candidate hashes for all nine paths.
+
+Architecture, lifecycle and boundaries
+The existing local request account session owns primary provider and backup state per sample role. Only first entry adopts the sign-up provider; setup continuation preserves it. Fresh account/route guards prevent stale actions from mutating a new sample or retired route. Preview-only state is reset with the existing account lifecycle. The retired/live Welcome provider UI is unchanged. No real auth provider linking, support sending, recovery service, native build, installation, backend connection, migration or deployment was added.
+
+Checks and evidence
+Protected Flutter3.44.2 analyzer: no issues,7.9 seconds.
+Fresh current-checkout focused run:35 passed. The isolate previously reported47; that earlier result is not substituted for this run.
+Additional controller/rendered-text audit controls:139 passed,24 seconds.
+Relevant line126 Sign-in & security overview replay:4 passed, covering Seeker/Guardian Basic/One.
+Fresh six430x932@3x PNGs and nine audits: all15 hashes identical to the isolate;86 text runs,zero audit failures. Four masters plus Android and one-device receipts were independently visually reviewed. Larger Text recovery remains scrollable with Contact support reachable; the Google-member mirror is measured at375pt with2x text. CAPTURE_AUDIT_MANIFEST.json identifies saved files.
+Ordinary regression:7,957 passed /244 skipped /1 failed,14m37s. Only LOCK43 Seeker Help entry failed. Pre-integration accepted-source comparison:6 passed /4 skipped /1 failed, reproducing that same failure before this patch; Welcome passed locally. No full accepted-source suite pass is claimed.
+Connected GitHub verification: run45958031712 on accepted SOURCE b4dcadd2 remains failed in required Flutter shards1/2. Full-screen corpus jobs are advisory and were not used to replace the focused local gate. No assertion, coverage or threshold was suppressed, and Q228/Q229 fixtures were not repaired here.
+CHECKS.json gives exact commands/results. Full logs remain with the held manifest. Independent review found no new implementation or visual issue. This is a scoped native comparison, not a pixel-match claim. No approved master or earlier committed golden was edited.
+
+Public and preservation checks
+Exact integrated patch and existing origin/main..HEAD history secret scans passed. Eight source public-check matches are unchanged accepted lines, independently reviewed; no new private material was added. Final owned-record public/secret checks and preservation review are recorded separately before commit.
+The seven unrelated index entries remain exact, as do five LINE138 working files and963 previously existing built PNGs. Existing unrelated work is untouched. Only the line148 status/date and Q234 were changed in mixed queue/questions files; both remain working-tree only and are excluded from record commits.
+
+Held candidate and release
+Base HEAD6631c2a2f3a4d18dc281077c6ce3390fbf366674; accepted SOURCE b4dcadd2f6a6655aa66985e4e12141ad567433b2.
+Merged nine-path patch SHA25636651dae2ab9621f67887e04b181fe19666b0b8eca75d657f1cd219db7f1b155.
+Held at SOURCE/build/held/LINE148/2026-11-27_INTEGRATED_Q234, including logs, manifest and new source file. Original isolated patch541d9ca18fa1cfc16d5e48ae9b639abb3ecef6cef118eb275f910fcae7b014f6 remains intact at its supplied path. No source-tree backup was created.
+Sole SOURCE/CI lease09:34:23.779891–09:53:03.278925 UTC. Tracked SOURCE restored by plain accepted Git-object file writes; the new test moved into the held candidate. SOURCE was clean at release, and all foreign staged entries remained exact. RELEASE.json contains exact lease/hash receipts.
+
+Next owner and refusal
+Fable supplies one bounded accepted-base CI/fixture repair and restart route under Q234/Q228; a fresh line148 owner reapplies the sealed patch on the then-current accepted source and reruns the required checks. OA-ZYRA-402 retains real support/linking work for a separately authorized server line. Written refusal to ship failed gates, waive/suppress checks or extend this brief into another line. No next line dispatched: this owner was authorized only for148. The coordinator copies this task note to the daily report; no Group admin or Git writes were performed here. All new records are evidence/JSON/text, so no mapped governed document or MAP entry was added.

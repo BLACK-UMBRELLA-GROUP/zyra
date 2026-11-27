@@ -1,0 +1,13 @@
+{
+  "owned_text_public_scan": "PASS:0hits",
+  "owned_text_secret_scan": "PASS:0leaks",
+  "compressed_png_matcher_false_positives": 142,
+  "pre_existing_unrelated_queue_question_matches": 9,
+  "source_unchanged_accepted_line_matches": 8,
+  "disposition": "PNG matches are compressed binary, not text content; all source and mixed-register matches belong to unchanged accepted/foreign text. No new private material.",
+  "roadmap": "none completed",
+  "version_change": false,
+  "wording": "neutral documentation",
+  "readme": "candidate held; accepted README restored",
+  "push": "not attempted:required gates failed"
+}

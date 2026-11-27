@@ -1,0 +1,86 @@
+{
+  "line": 148,
+  "lock": 50,
+  "question": 234,
+  "reviewer": "independent lock50_review",
+  "reviewed_utc": "2026-11-27T09:56:37.854533+00:00",
+  "preservation_handover_result": "PASS",
+  "implementation_acceptance": "HOLD: no implementation commit/push; ordinary and accepted required hosted gates failed",
+  "checks": {
+    "source_clean": true,
+    "head_unchanged": true,
+    "seven_original_staged_entries_exact": true,
+    "five_line138_working_hashes_exact": true,
+    "other1037_protected_paths_exact": true,
+    "preexisting963_built_pngs_exact": true,
+    "queue_only148_status_date_delta": true,
+    "questions_onlyQ234_delta": true,
+    "Q234_worktree_only": true,
+    "held_patch_sha256_correct": true,
+    "held_patch_reconstructs_all9_candidate_hashes": true,
+    "all15_saved_evidence_hashes_exact": true,
+    "owned27_paths_match_records": true,
+    "owned_records_only_evidence_extensions": true,
+    "owned_files_under50MB": true
+  },
+  "counts": {
+    "original_staged_entries": 7,
+    "line138_working_files": 5,
+    "preexisting_built_pngs": 963,
+    "other_protected_paths": 1037,
+    "owned_records": 27,
+    "owned_PNGs": 6,
+    "owned_audits": 9,
+    "audit_runs": 86,
+    "audit_failures": 0
+  },
+  "held_patch_sha256": "36651dae2ab9621f67887e04b181fe19666b0b8eca75d657f1cd219db7f1b155",
+  "held_patch_reconstruction": [
+    {
+      "path": "SOURCE/README.md",
+      "held_patch_reconstructs_candidate_hash": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "held_patch_reconstructs_candidate_hash": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_privacy_security_preview.dart",
+      "held_patch_reconstructs_candidate_hash": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_account_session.dart",
+      "held_patch_reconstructs_candidate_hash": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "held_patch_reconstructs_candidate_hash": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview_controller.dart",
+      "held_patch_reconstructs_candidate_hash": true
+    },
+    {
+      "path": "SOURCE/test/line121_signup_account_session_test.dart",
+      "held_patch_reconstructs_candidate_hash": true
+    },
+    {
+      "path": "SOURCE/test/line121_signup_preview_widget_test.dart",
+      "held_patch_reconstructs_candidate_hash": true
+    },
+    {
+      "path": "SOURCE/test/visual/line148_account_recovery_capture_test.dart",
+      "held_patch_reconstructs_candidate_hash": true
+    }
+  ],
+  "lease": {
+    "start": "2026-11-27T09:34:23.779891+00:00",
+    "end": "2026-11-27T09:53:03.278925+00:00"
+  },
+  "handover_truth": "Accurately separates scope PASS from release QUESTION, current35 focused from prior47 isolate, ordinary7957pass/244skip/1accepted Help failure, controls139pass, relevant replay4pass, restored accepted source and no implementation push. Task note commit line is pending final record-only commit.",
+  "findings": [],
+  "limits": [
+    "Review is before the record-only commit; parent must verify final commit path scope and repeat protected index check.",
+    "No repo edits, git writes or Flutter runs performed by reviewer."
+  ]
+}

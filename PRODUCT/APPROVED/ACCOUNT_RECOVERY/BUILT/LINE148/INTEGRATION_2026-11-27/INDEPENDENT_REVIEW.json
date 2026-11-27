@@ -1,0 +1,82 @@
+{
+  "line": 148,
+  "lock": 50,
+  "reviewer": "independent lock50_review subagent",
+  "reviewed_utc": "2026-11-27T09:37:04.569853+00:00",
+  "scope_result": "PASS",
+  "release_result": "HOLD: root reports failed hosted CI on accepted b4dcadd2; ordinary gate pending",
+  "findings": [],
+  "reviewed_inputs": [
+    "ACCOUNT_RECOVERY current brief/spec/lock",
+    "ar01-ar04 masters",
+    "fixed V364 recovery section",
+    "LINE148.patch and isolate handover/manifests",
+    "all four isolate master captures",
+    "actual shared nine-file integrated diff"
+  ],
+  "integration_hashes_verified": true,
+  "protected_index_unchanged": true,
+  "observations": [
+    "Exact _accountData signedInWith provider expression preserves line138 profilePaused and privateMode.",
+    "First-entry signup adopts local provider; setup continuation preserves it. Backup state stays role-local in sample session.",
+    "Recovery page shared chevron returns Welcome, no progress or Skip, Contact support only local preview toast.",
+    "Welcome provider order and dark buttons retained; no retired member Welcome modifications.",
+    "Backup Added is locked green #326B4C and section remains before signed-in devices in one-device state.",
+    "Fresh callback guards and existing sign-out confirmation preserved; no new Face ID prompt.",
+    "No real auth linking, recovery or support send introduced.",
+    "Accepted baseline log independently inspected: Help stale action false fails before integration; four full focused replays opt out.",
+    "Shared protected focused log inspected: 35/35 passed; analyzer no issues.",
+    "Visually reviewed all six shared captures; all six PNGs and nine JSON audits hash-match isolate manifest exactly.",
+    "Eight public scan money hits are identical text already present in accepted HEAD; no candidate wording introduces these hits."
+  ],
+  "integrated_captures_reviewed": true,
+  "limits": [
+    "No Flutter or hosted CI commands run by independent reviewer; root owns protected checks.",
+    "Ordinary gate still running; known hosted red gate is a release blocker."
+  ],
+  "shared_capture_audit_hashes_match_isolate": true,
+  "captures_verified": 6,
+  "audits_verified": 9,
+  "public_source_hits": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2955,
+      "identical_line_exists_in_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10627,
+      "identical_line_exists_in_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10628,
+      "identical_line_exists_in_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 690,
+      "identical_line_exists_in_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 734,
+      "identical_line_exists_in_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 737,
+      "identical_line_exists_in_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 766,
+      "identical_line_exists_in_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 818,
+      "identical_line_exists_in_accepted_HEAD": true
+    }
+  ]
+}
