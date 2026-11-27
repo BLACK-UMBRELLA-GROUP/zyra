@@ -15,14 +15,16 @@ class ZyraMembershipPreviewRecord {
     required this.date,
     this.trial = false,
     this.freeFamilyPlaces = 1,
+    this.paidMonths = 0,
   });
 
   factory ZyraMembershipPreviewRecord.sample() =>
-      ZyraMembershipPreviewRecord(date: DateTime(2026, 12, 6));
+      ZyraMembershipPreviewRecord(date: DateTime(2026, 12, 6), paidMonths: 2);
 
   final DateTime date;
   final bool trial;
   final int freeFamilyPlaces;
+  final int paidMonths;
 
   String get dateLabel =>
       '${date.day} ${const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.month - 1]}';

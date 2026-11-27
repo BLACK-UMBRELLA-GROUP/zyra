@@ -242,12 +242,8 @@ void main() {
         tester.widget<Text>(_key('concept_profile_name')).style?.fontSize,
         24,
       );
-      expect(
-        find.text(
-          '${role.label.toUpperCase()} · ${role.guardian ? 'GUARDIAN' : 'SEEKER'}',
-        ),
-        findsOneWidget,
-      );
+      // LOCK 47 shows the plan name alone in the Profile header.
+      expect(find.text(role.label.toUpperCase()), findsOneWidget);
       expect(find.text('Your places'), findsOneWidget);
       expect(find.text('Membership'), findsOneWidget);
       expect(find.text(role.label), findsOneWidget);

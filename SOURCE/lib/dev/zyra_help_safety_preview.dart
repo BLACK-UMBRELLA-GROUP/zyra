@@ -5,6 +5,8 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_tap_feedback.dart';
 
+import 'zyra_offers_preview.dart';
+
 /// LOCK 37 presentation. The owning Founder shell supplies only sample state;
 /// no support message, report, export request or deletion leaves this widget.
 enum ZyraHelpSafetyScreen {
@@ -38,6 +40,7 @@ class ZyraHelpSafetyPreview extends StatefulWidget {
     required this.onDone,
     required this.onLegal,
     required this.onSubscriptions,
+    this.onPauseProfile,
   });
 
   final ZyraHelpSafetyScreen screen;
@@ -49,6 +52,7 @@ class ZyraHelpSafetyPreview extends StatefulWidget {
   final VoidCallback onOpenData, onOpenDelete, onRequestData, onDelete;
   final VoidCallback onClose, onDone, onSubscriptions;
   final ValueChanged<String> onLegal;
+  final VoidCallback? onPauseProfile;
 
   @override
   State<ZyraHelpSafetyPreview> createState() => _ZyraHelpSafetyPreviewState();
@@ -103,7 +107,14 @@ class _ZyraHelpSafetyPreviewState extends State<ZyraHelpSafetyPreview> {
                   style: ZyraText.pageTitle(),
                   key: ValueKey('help_safety_title_${screen.name}'),
                 ),
-                const SizedBox(height: 43),
+                SizedBox(
+                  height:
+                      screen == ZyraHelpSafetyScreen.delete &&
+                          !widget.guardian &&
+                          widget.onPauseProfile != null
+                      ? 25
+                      : 43,
+                ),
               ],
               Expanded(
                 child: ListView(
@@ -314,6 +325,13 @@ class _ZyraHelpSafetyPreviewState extends State<ZyraHelpSafetyPreview> {
   ];
 
   List<Widget> _delete() => [
+    if ((!widget.guardian, widget.onPauseProfile) case (
+      true,
+      final pause?,
+    )) ...[
+      ZyraPauseBeforeDeleteCard(onPause: pause),
+      const SizedBox(height: 32),
+    ],
     _section('WHAT HAPPENS'),
     _card([
       _fact(

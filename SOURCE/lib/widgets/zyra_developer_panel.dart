@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../data/zyra_journey_stages.dart';
 import '../models/zyra_developer_preview.dart';
 import '../models/zyra_error_state.dart';
+import '../models/zyra_offers_preview.dart';
 import '../state/zyra_developer_samples.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_motion.dart';
@@ -292,6 +293,43 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
             label: sample.label,
             onPressed: () => _previewAction(() => openSample(sample)),
           ),
+      ],
+      if (actions.onRetentionMode != null &&
+          actions.onEid != null &&
+          actions.onRamadan != null) ...[
+        const _SectionLabel('OFFERS'),
+        _DeveloperSelector(
+          id: 'retention_offer',
+          label: 'Offer mode',
+          labels: [for (final mode in ZyraRetentionMode.values) mode.label],
+          value: preview.offers.retentionMode.index,
+          max: preview.canActivate ? ZyraRetentionMode.values.length - 1 : -1,
+          stacked: true,
+          onChanged: (index) => _previewAction(
+            () => actions.onRetentionMode!(ZyraRetentionMode.values[index]),
+          ),
+        ),
+        _DeveloperSelector(
+          id: 'eid_gift',
+          label: 'Eid gift',
+          labels: [for (final eid in ZyraPreviewEid.values) eid.label],
+          value: preview.offers.eid.index,
+          max: preview.canActivate ? ZyraPreviewEid.values.length - 1 : -1,
+          stacked: true,
+          onChanged: (index) => _previewAction(
+            () => actions.onEid!(ZyraPreviewEid.values[index]),
+          ),
+        ),
+        _DeveloperSelector(
+          id: 'ramadan_draw',
+          label: 'Ramadan gift draw',
+          labels: const ['Off', 'On'],
+          value: preview.offers.ramadan ? 1 : 0,
+          max: preview.canActivate ? 1 : -1,
+          stacked: true,
+          onChanged: (index) =>
+              _previewAction(() => actions.onRamadan!(index == 1)),
+        ),
       ],
       const _SectionLabel('ERROR PAGES'),
       for (final error in const [

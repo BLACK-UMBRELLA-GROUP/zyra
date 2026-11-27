@@ -2,6 +2,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'zyra_error_state.dart';
+import 'zyra_offers_preview.dart';
 
 enum ZyraDeveloperViewAs {
   seekerOne('Seeker One', guardian: false, places: 3),
@@ -54,6 +55,7 @@ class ZyraDeveloperPreviewValues {
     this.selectedJourneyId,
     this.preset,
     this.notice = 0,
+    this.offers = const ZyraPreviewOfferChoices(),
   }) : assert(notice >= 0 && notice <= 6),
        assert(journeyPlaces >= 0 && journeyPlaces <= 3);
 
@@ -67,6 +69,7 @@ class ZyraDeveloperPreviewValues {
   final ZyraDeveloperPreset? preset;
   // 0: none, 1–5: email preview, 6: Welcome back.
   final int notice;
+  final ZyraPreviewOfferChoices offers;
 }
 
 /// The owning preview supplies already-guarded local actions. This value does
@@ -83,6 +86,9 @@ class ZyraDeveloperPreviewActions {
     this.onProfileSmallPage,
     required this.onNotice,
     required this.onError,
+    this.onRetentionMode,
+    this.onEid,
+    this.onRamadan,
   });
 
   final ValueChanged<ZyraDeveloperViewAs> onViewAs;
@@ -93,4 +99,7 @@ class ZyraDeveloperPreviewActions {
   final ValueChanged<ZyraProfileSmallPageSample>? onProfileSmallPage;
   final ValueChanged<int> onNotice;
   final ValueChanged<ZyraErrorKind> onError;
+  final ValueChanged<ZyraRetentionMode>? onRetentionMode;
+  final ValueChanged<ZyraPreviewEid>? onEid;
+  final ValueChanged<bool>? onRamadan;
 }

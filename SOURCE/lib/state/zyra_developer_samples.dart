@@ -8,6 +8,7 @@ import '../dev/zyra_browse_filter.dart';
 import '../dev/zyra_view_request_draft_model.dart';
 import '../models/seeker_profile.dart';
 import '../models/zyra_developer_preview.dart';
+import '../models/zyra_offers_preview.dart';
 import '../services/zyra_account_state.dart';
 
 enum ZyraDeveloperPast { none, mixed, samePerson }
@@ -149,6 +150,10 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   ZyraProfileSmallPageSample? _profileSmallPage;
   int _profileSmallPageEpoch = 0;
   int _notice = 0;
+  var _offers = const ZyraPreviewOfferChoices();
+
+  ZyraPreviewOfferChoices get offers =>
+      isAuthorized ? _offers : const ZyraPreviewOfferChoices();
   String? _selectedJourneyId;
   var _realEnded = 0;
   int? _realActive;
@@ -531,6 +536,24 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _changed();
   }
 
+  void setRetentionMode(ZyraRetentionMode value) {
+    if (!isAuthorized || _offers.retentionMode == value) return;
+    _offers = _offers.copyWith(retentionMode: value);
+    _changed();
+  }
+
+  void setEid(ZyraPreviewEid value) {
+    if (!isAuthorized || _offers.eid == value) return;
+    _offers = _offers.copyWith(eid: value);
+    _changed();
+  }
+
+  void setRamadan(bool value) {
+    if (!isAuthorized || _offers.ramadan == value) return;
+    _offers = _offers.copyWith(ramadan: value);
+    _changed();
+  }
+
   void setNotice(int value) {
     if (!isAuthorized ||
         viewAs?.guardian == true ||
@@ -615,6 +638,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _preset = null;
     _profileSmallPage = null;
     _notice = 0;
+    _offers = const ZyraPreviewOfferChoices();
     _selectedJourneyId = null;
   }
 

@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/zyra_guardian_circle_preview.dart';
 import 'package:zyra/main.dart' show ZyraApp;
 import 'package:zyra/dev/zyra_membership_preview.dart';
+import 'package:zyra/models/zyra_offers_preview.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/models/zyra_developer_preview.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
@@ -964,6 +965,7 @@ class BaselineHarness {
     Future<bool> Function()? confirmSensitiveAction,
     ZyraProfileSmallPageSample? profileSmallPageSample,
     Map<ZyraWalletRole, ZyraMembershipPreviewRecord?>? membershipRecords,
+    ZyraPreviewOfferChoices? offerChoices,
     List<NavigatorObserver> navigatorObservers = const [],
   }) async {
     this.guardian = guardian;
@@ -981,6 +983,7 @@ class BaselineHarness {
       confirmSensitiveAction: confirmSensitiveAction,
       profileSmallPageSample: profileSmallPageSample,
       membershipRecords: membershipRecords,
+      offerChoices: offerChoices,
     );
     final capacity = initialSeekerBasic ? 1 : 3;
     final defaultModel = receivedRequest

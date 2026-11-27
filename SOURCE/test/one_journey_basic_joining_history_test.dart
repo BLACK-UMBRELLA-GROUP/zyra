@@ -744,13 +744,19 @@ void main() {
       await tester.pumpAndSettle();
       expect(owner.latest.pages, ['membership', 'one_upgrade']);
       expect(launches, isEmpty);
+      expect(_key('retention_offer_sheet'), findsNothing);
       await returnZyraPreviewPage(tester);
       oldCancel();
       await tester.runAsync(() => Future<void>.delayed(Duration.zero));
       await tester.pumpAndSettle();
       expect(owner.latest.pages, ['membership']);
       expect(launches, isEmpty);
+      expect(_key('retention_offer_sheet'), findsNothing);
+      // LOCK 47 offers retention before a fresh paid Cancel opens Apple.
       await _tap(tester, cancel);
+      expect(_key('retention_offer_sheet'), findsOneWidget);
+      expect(launches, isEmpty);
+      await _tap(tester, _key('retention_offer_continue'));
       await tester.runAsync(() => Future<void>.delayed(Duration.zero));
       await tester.pumpAndSettle();
       expect(launches, ['https://apps.apple.com/account/subscriptions']);

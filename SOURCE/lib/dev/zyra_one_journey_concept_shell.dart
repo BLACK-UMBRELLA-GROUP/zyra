@@ -130,6 +130,8 @@ import 'zyra_guardian_family_preview.dart';
 import 'zyra_journey_peer_guardians_presentation.dart';
 import 'zyra_one_journey_account_presentation.dart';
 import 'zyra_membership_preview.dart';
+import 'zyra_offers_preview.dart';
+import '../models/zyra_offers_preview.dart';
 import 'zyra_one_journey_guardian_info_presentation.dart';
 import 'zyra_one_journey_switch_signup_preview.dart';
 import 'zyra_subscription_wallet_draft.dart';
@@ -163,6 +165,7 @@ class ZyraOneJourneyShellFixture {
     this.wallet,
     this.membershipPaymentHistory = ZyraMembershipPaymentHistory.paidBefore,
     this.membershipRecords,
+    this.offerChoices,
     this.activityExample,
     this.timeline,
     this.browseNextMotion = ZyraBrowseNextMotion.current,
@@ -195,6 +198,7 @@ class ZyraOneJourneyShellFixture {
   final ZyraSubscriptionWalletDraft? wallet;
   final ZyraMembershipPaymentHistory membershipPaymentHistory;
   final Map<ZyraWalletRole, ZyraMembershipPreviewRecord?>? membershipRecords;
+  final ZyraPreviewOfferChoices? offerChoices;
   final ZyraMyZyraActivityExample? activityExample;
   final ZyraDraftTimelinePreview Function(String subjectId)? timeline;
   final ZyraBrowseNextMotion browseNextMotion;
@@ -833,6 +837,8 @@ class _ZyraOneJourneyConceptShellState
         _developerStoreAttempts.clear();
         _developerLastView = null;
         _developerLastNotice = 0;
+        _acceptedRetentionOffers.clear();
+        _enteredRamadanDraw = false;
         _welcomeBackAt = _developerWelcomeBackBaseline;
         _developerWelcomeBackBaseline = null;
         _developerNavigation = bridge!.journeyNavigationEpoch;
@@ -875,6 +881,7 @@ class _ZyraOneJourneyConceptShellState
       samples.profileSmallPage,
       samples.profileSmallPageEpoch,
       samples.notice,
+      samples.offers,
       bridge.journeyNavigationEpoch,
       bridge.noticeNavigationEpoch,
       bridge.presetSelectionEpoch,
@@ -3119,6 +3126,8 @@ class _ZyraOneJourneyConceptShellState
           'membership',
           'one_upgrade',
           'membership_review',
+          'eid_gift_preview',
+          'ramadan_draw_preview',
           'subscriptions',
           'journey',
           'journey_options',
@@ -3529,6 +3538,7 @@ class _ZyraOneJourneyConceptShellState
       onBack: _bound(_back),
     ),
     'membership_review' => _membershipReviewView(),
+    'eid_gift_preview' || 'ramadan_draw_preview' => _offersView(),
     'subscriptions' => _subscriptionsView(),
     'bio' => _bio(),
     'bio_locked' => _journeyDisclosureLocked(bio: true),
@@ -7064,6 +7074,7 @@ class _ZyraOneJourneyConceptShellState
               _publishCheckpoint();
             })(),
             items: [
+              ..._seasonalOfferFocus(current),
               if (_signupIncomplete)
                 _signupFocus(
                   action(() {
@@ -8933,6 +8944,7 @@ class _ZyraOneJourneyConceptShellState
         'draft-guardian-hassan',
       ),
       circleFocus: [
+        if (page == 'my_zyra') ..._seasonalOfferFocus(fresh),
         if (_signupIncomplete)
           _signupFocus(
             _bound(() {
@@ -10334,6 +10346,203 @@ class _ZyraOneJourneyConceptShellState
       role: ZyraMembershipPreviewRecord.sample(),
   };
 
+  final _acceptedRetentionOffers =
+      <ZyraWalletRole, ({DateTime accepted, ZyraRetentionMode mode})>{};
+  // The shell's account generation owns one local entry across both roles.
+  bool _enteredRamadanDraw = false;
+
+  ZyraPreviewOfferChoices get _offerChoices =>
+      widget.fixture?.offerChoices ?? _developerSamples.offers;
+
+  bool get _ramadanDrawAvailable =>
+      _fixtureAccount ==
+          (ZyraAccountState.userId, ZyraAccountState.generation) &&
+      _offerChoices.ramadan;
+
+  ZyraMembershipPreviewRecord? get _currentOfferMembership =>
+      (widget.fixture?.membershipRecords ?? _membershipRecords)[_walletRole];
+
+  ZyraEidGiftPreview? get _eidGift {
+    final record = _currentOfferMembership;
+    final accepted = _acceptedRetentionOffers[_walletRole];
+    final gift = zyraEidGiftPreview(
+      eid: _offerChoices.eid,
+      guardian: _guardianRole,
+      one: _accountData.isOne,
+      paid:
+          _accountData.familyPlacePayer == null &&
+          record != null &&
+          !record.trial &&
+          record.paidMonths > 0,
+    );
+    if (gift?.appliesDiscount == true &&
+        accepted != null &&
+        ZyraRetentionOfferPreview(
+          mode: accepted.mode,
+          guardian: _guardianRole,
+        ).isActive(now: _previewNow, accepted: accepted.accepted)) {
+      return null;
+    }
+    return gift;
+  }
+
+  List<ZyraFocusItem> _seasonalOfferFocus(bool Function() fresh) => [
+    if (_eidGift != null)
+      ZyraFocusItem(
+        id: 'preview-eid-gift',
+        icon: Icons.check,
+        title: 'Eid Mubarak —\na gift from ZYRA',
+        detail: 'Open to see your Eid gift.',
+        actionLabel: 'See my gift',
+        actionKey: 'preview_open_eid_gift',
+        onAction: () {
+          if (fresh() && _eidGift != null) _open('eid_gift_preview');
+        },
+      ),
+    if (_ramadanDrawAvailable)
+      ZyraFocusItem(
+        id: 'preview-ramadan-draw',
+        icon: Icons.card_giftcard_outlined,
+        title: 'Ramadan gift draw',
+        detail:
+            'Enter once for a chance to win 6 months of ZYRA One. Free to enter.',
+        actionLabel: 'Enter',
+        actionKey: 'preview_open_ramadan_draw',
+        onAction: () {
+          if (fresh() && _ramadanDrawAvailable) _open('ramadan_draw_preview');
+        },
+      ),
+  ];
+
+  Widget _offersView() {
+    final current = _accountFreshGuard();
+    if (_page == 'eid_gift_preview') {
+      final gift = _eidGift;
+      if (gift == null) return _unavailable();
+      return ZyraEidGiftPreviewPage(
+        firstName: _accountData.name.trim().split(' ').first,
+        gift: gift,
+        onThanks: () {
+          if (current()) _back();
+        },
+      );
+    }
+    if (!_ramadanDrawAvailable) return _unavailable();
+    return ZyraRamadanDrawPreviewPage(
+      entered: _enteredRamadanDraw,
+      onEnter: () {
+        if (!current() || !_ramadanDrawAvailable || _enteredRamadanDraw) return;
+        _act(() => _enteredRamadanDraw = true);
+      },
+    );
+  }
+
+  Future<void> _cancelMembershipWithOffer(bool Function() current) async {
+    if (!current() || _ownedConfirmRoute != null) return;
+    final role = _walletRole;
+    final offer = ZyraRetentionOfferPreview(
+      mode: _offerChoices.retentionMode,
+      guardian: _guardianRole,
+    );
+    bool eligible() {
+      final record = _currentOfferMembership;
+      return _accountData.isOne &&
+          _accountData.familyPlacePayer == null &&
+          _offerChoices.retentionMode == offer.mode &&
+          record != null &&
+          offer.isEligible(
+            trial: record.trial,
+            paidMonths: record.paidMonths,
+            now: _previewNow,
+            lastAccepted: _acceptedRetentionOffers[role]?.accepted,
+          );
+    }
+
+    if (!eligible()) {
+      await _openAppleSubscriptions(current);
+      return;
+    }
+    final host = _tapContext;
+    final navigator = Navigator.of(host, rootNavigator: true);
+    var expectedStamp = _routeStamp;
+    final owner = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final originalPage = _page;
+    final originalTab = _tab;
+    final revision = _uiRevision;
+    final fresh = _accountFreshGuard(
+      expectedNavigatorStamp: () => expectedStamp,
+    );
+    var selected = false;
+    late final ModalBottomSheetRoute<bool> route;
+    route = ModalBottomSheetRoute<bool>(
+      capturedThemes: InheritedTheme.capture(from: host, to: navigator.context),
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: false,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      barrierLabel: MaterialLocalizations.of(host).modalBarrierDismissLabel,
+      modalBarrierColor: const Color(0x611E1610),
+      sheetAnimationStyle:
+          MediaQuery.disableAnimationsOf(host) ||
+              MediaQuery.accessibleNavigationOf(host)
+          ? AnimationStyle.noAnimation
+          : null,
+      builder: (context) {
+        bool admitted() =>
+            mounted &&
+            !selected &&
+            route.isCurrent &&
+            identical(_ownedConfirmRoute, route) &&
+            expectedStamp == _routeStamp &&
+            (widget.canActInOwnedDialog?.call() ?? _allowed) &&
+            owner == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+            revision == _uiRevision &&
+            originalPage == _page &&
+            originalTab == _tab &&
+            role == _walletRole;
+        void choose(bool stay) {
+          if (!admitted()) return;
+          selected = true;
+          navigator.pop(stay);
+          expectedStamp = _routeStamp;
+        }
+
+        return ZyraTapFeedback(
+          level: () => _accountSession.hapticLevel,
+          canAct: admitted,
+          child: ZyraRetentionPreviewSheet(
+            offer: offer,
+            onStay: () => choose(true),
+            onContinue: () => choose(false),
+          ),
+        );
+      },
+    );
+    _ownedConfirmRoute = route;
+    try {
+      final pending = navigator.push(route);
+      expectedStamp = _routeStamp;
+      final stayed = await pending;
+      await route.completed;
+      if (!fresh() || stayed == null) return;
+      if (!stayed) {
+        await _openAppleSubscriptions(fresh);
+      } else if (eligible()) {
+        _act(() {
+          _acceptedRetentionOffers[role] = (
+            accepted: _previewNow,
+            mode: offer.mode,
+          );
+          _notice =
+              'Thank you for staying. Your offer starts at your next renewal.';
+        });
+      }
+    } finally {
+      if (identical(_ownedConfirmRoute, route)) _ownedConfirmRoute = null;
+    }
+  }
+
   Widget _membershipView() {
     final fresh = _accountFreshGuard();
     bool allowed() => fresh();
@@ -10348,9 +10557,7 @@ class _ZyraOneJourneyConceptShellState
 
       return ZyraMembershipPreview(
         guardian: _guardianRole,
-        record:
-            (widget.fixture?.membershipRecords ??
-            _membershipRecords)[_walletRole],
+        record: _currentOfferMembership,
         unlocks: _compatibilityAccess.balance,
         familyPayer: payer,
         onUnlocks: () {
@@ -10369,7 +10576,7 @@ class _ZyraOneJourneyConceptShellState
             toast('ZYRA checks your Apple ID for earlier purchases.'),
         onCancel: () {
           if (allowed() && payer == null) {
-            unawaited(_openAppleSubscriptions(allowed));
+            unawaited(_cancelMembershipWithOffer(allowed));
           }
         },
       );
@@ -11931,6 +12138,13 @@ class _ZyraOneJourneyConceptShellState
       onSubscriptions: () {
         if (current()) unawaited(_openAppleSubscriptions(current));
       },
+      onPauseProfile: _guardianRole
+          ? null
+          : () {
+              if (current()) {
+                _accountDispatch(ZyraConceptAccountAction.visibility);
+              }
+            },
     );
   }
 

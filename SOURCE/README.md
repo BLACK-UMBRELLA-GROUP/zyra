@@ -166,9 +166,11 @@ trial wording. There is no new developer control or live purchase reader.
 
 Compatibility Unlocks and Compare plans open their existing pages. Family
 places, coverage information and Restore purchases use the approved shared
-preview toasts. Cancel membership uses the existing App Store subscriptions
-action. A Family-covered member sees an informational payer card without a
-Cancel action. Basic members retain the existing plans page.
+preview toasts. Cancel membership opens the LOCK 47 offer for an eligible
+sample account. Continue to cancel and ineligible accounts use the existing
+App Store subscriptions action. A Family-covered member sees an informational
+payer card without a Cancel action. Basic members retain the existing plans
+page.
 
 Focused behavior tests are `test/zyra_membership_preview_test.dart`; actual
 Profile routes, external-action mocks and rendered-text checks are in
@@ -176,6 +178,18 @@ Profile routes, external-action mocks and rendered-text checks are in
 captures and narrow-screen replay with `--dart-define=ZYRA_LINE136_CAPTURE=true`.
 The output stays under `build/line136/`. The as-built record is
 `../PRODUCT/APPROVED/MEMBERSHIP_PAGE/BUILT/LINE136/HANDOVER_2026-11-24.md`.
+
+## Founder preview Offers
+
+LOCK 47 adds the Pause card on Seeker Delete, a plan-only Profile header,
+Growth and Normal cancellation offers, and the four plan gifts in My ZYRA.
+The Developer panel selects the preview offer mode, Eid, and Ramadan state.
+Eid gifts and Ramadan entries are local samples. The Ramadan preview is off
+until selected. Continue to cancel opens App Store subscriptions.
+
+Replay `test/visual/line142_offers_preview_test.dart` through the protected
+driver. Enable the visual run with `--dart-define=ZYRA_LINE142_CAPTURE=true`.
+Captures are saved under `build/line142/screens/`.
 
 ## Founder preview Edit profile
 

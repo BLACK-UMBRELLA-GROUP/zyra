@@ -332,7 +332,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              '${data.membership.toUpperCase()} · ${data.guardian ? 'GUARDIAN' : 'SEEKER'}',
+              data.membership.toUpperCase(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: ZyraText.body(

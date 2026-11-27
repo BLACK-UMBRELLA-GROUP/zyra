@@ -209,7 +209,7 @@ void main() {
     });
     addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
     final h = harness(t, 'cancel');
-    await h.mount(tab: 4);
+    await h.mount(tab: 4, membershipRecords: const {});
     await h.tap('concept_membership');
     await h.tap('concept_cancel_membership');
     await t.runAsync(() async {

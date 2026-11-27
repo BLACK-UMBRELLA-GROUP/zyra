@@ -739,6 +739,7 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
         selectedJourneyId: _samples.selectedJourneyId,
         preset: _samples.preset,
         notice: _samples.notice,
+        offers: _samples.offers,
       ),
     );
   }
@@ -872,6 +873,9 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
             if (value < 0 || value > 6) return;
             owner?._bridge._requestNotice(() => _samples.setNotice(value));
           }),
+          onRetentionMode: preview(_samples.setRetentionMode),
+          onEid: preview(_samples.setEid),
+          onRamadan: preview(_samples.setRamadan),
           onError: allowed((kind) {
             if (owner != null) {
               _samples.clearProfileSmallPage();
