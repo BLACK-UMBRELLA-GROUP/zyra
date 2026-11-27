@@ -104,7 +104,7 @@ name matches add no private content. Details: PUBLIC_CHECK.json and
 HISTORY_SCAN_REVIEW.json.
 C: no roadmap row. D: no version change. E: neutral documentation.
 F: no app behaviour or normal run command change; replay route below.
-Commit: pending local record-only evidence commit. No implementation commit or push.
+Commit: ce1bbef88ef2feaa3ada6af0f8718f9a1d0c95f2, local record-only evidence. This document's containing receipt commit closes the note. No implementation commit or push.
 
 Exact commands (all run from SOURCE)
 node tooling/no_git_driver.mjs check
