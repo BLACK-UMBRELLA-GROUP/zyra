@@ -1,0 +1,189 @@
+{
+  "scanner_exit": 1,
+  "hits": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "line": 1004,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2979,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10912,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10913,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 10,
+      "kind": "email",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 79,
+      "kind": "email",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 548,
+      "kind": "email",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 269,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 276,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 278,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 313,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 315,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 362,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 405,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 533,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 534,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 551,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 564,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 586,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 651,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 685,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 370,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 371,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 446,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 463,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 465,
+      "kind": "money",
+      "exact_existing_line_in_accepted_source": true,
+      "review": "Dart record-field $1/$2 currency false positive or existing public help contact/app-price fixture; no private document introduced"
+    }
+  ],
+  "verdict": "26 reviewed existing-source matches; no new private material",
+  "A_history_scan": "Implementation remains held; records-only history scan is pending publication."
+}

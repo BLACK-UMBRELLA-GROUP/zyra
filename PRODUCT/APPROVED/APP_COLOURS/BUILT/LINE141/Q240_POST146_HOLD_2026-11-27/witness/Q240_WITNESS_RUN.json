@@ -1,0 +1,21 @@
+{
+  "started": "2026-11-27T18:51:00.979196+00:00",
+  "finished": "2026-11-27T18:51:56.189875+00:00",
+  "exit_code": 0,
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+    "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=lock19_v3_source/tab0/Seeker_One",
+    "--dart-define=Q240_PROOF_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/proof-pixels-q240",
+    "--name",
+    "^Family existing free-place invite survives role switch and preserves access facts",
+    "test/zyra_clearer_text_contrast_test.dart",
+    "--reporter",
+    "expanded"
+  ],
+  "cwd": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/proof-q240"
+}

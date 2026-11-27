@@ -1,0 +1,24 @@
+{
+  "cleaned": "2026-11-27T18:54:19.970765+00:00",
+  "operation": "ordinary same-filesystem rename; no deletion",
+  "moved_only": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/proof-q240",
+  "destination": "/Users/shakeelahmad/_to_delete/LINE141_Q240_PROOF_2026-11-27/proof-q240",
+  "proof_instrumentation_sha256": {
+    "lib/widgets/zyra_profile_details_page.dart": "0fb30a06f6d2a42668a407ddb47b210d7635be8de852780be18ebb49aee2d84d",
+    "lib/widgets/q240_paint_toggle.dart": "2972fee02d20ddc87857409271d0946e65fdcf130df4e4162a420c058dd64126",
+    "test/support/zyra_clearer_text_corpus.dart": "7a2e25ca0b8b849beda114143b1d40319cc61f6c859a16db400660338d7a8071",
+    "test/support/q240_visibility_proof.dart": "8a4581164aca649a1ab7eb1f1ef4215f294cc985d8fd95b831599984752872f7"
+  },
+  "source_inputs_still_match": {
+    "lib/widgets/zyra_profile_details_page.dart": true,
+    "lib/widgets/zyra_browse_designs.dart": true,
+    "lib/dev/zyra_full_profile_preview.dart": true,
+    "test/support/zyra_clearer_text_corpus.dart": true,
+    "test/support/zyra_rendered_text_contrast.dart": true,
+    "lib/theme/zyra_colors.dart": true
+  },
+  "no_instrumentation_in_repository": true,
+  "packaged_artifacts_kept": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/q240-witness-artifacts",
+  "raw_logs_and_pixel_controls_kept": true,
+  "package_manifest": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/Q240_WITNESS_PACKAGE_MANIFEST.json"
+}

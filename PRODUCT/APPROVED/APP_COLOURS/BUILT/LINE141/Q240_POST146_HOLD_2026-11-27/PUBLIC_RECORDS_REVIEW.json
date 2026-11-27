@@ -1,0 +1,132 @@
+{
+  "verdict": "CLEAR: no newly introduced private content or credential found; all 1549 public-check findings reviewed",
+  "reviewed": "2026-11-27T19:17:48.084970+00:00",
+  "scan_report": "public-records-full.txt",
+  "scan_report_sha256": "12ce6f916f1bf611ac8cf7e6ac39f330736ae0b37841abe37419da7c3bd778da",
+  "scan_summary": "Checked 109 file(s); 1549 hit(s) to review.",
+  "total_findings": 1549,
+  "classification_counts": {
+    "PNG_binary_interpretation": 1011,
+    "scaled_image_asset_names_misread_as_addresses": 443,
+    "owned_review_metadata_existing_app_disclosures_and_test_names": 86,
+    "unchanged_foreign_register_rows": 9
+  },
+  "PNG_validation": {
+    "files_with_hits": 36,
+    "signature_and_all_chunk_CRCS_valid": true,
+    "chunk_types": [
+      "IDAT",
+      "IEND",
+      "IHDR",
+      "sBIT",
+      "sRGB"
+    ],
+    "embedded_text_chunks": 0,
+    "decision": "Compressed screenshot and control-image bytes read as UTF-8 by the text scanner; no embedded textual document. All original raster imagery is retained."
+  },
+  "asset_filename_validation": {
+    "all443_hits_in_START_source_hash_entry_paths": true,
+    "all_end_in_scale_suffix_PNG": true,
+    "decision": "Asset scale suffixes are file naming conventions, not contact addresses."
+  },
+  "owned_text_validation": {
+    "handover_review_description_hits": 1,
+    "source_scan_review_explanation_hits": 26,
+    "complete_or_progress_raw_app_disclosure_JSON_hits": 4,
+    "existing_test_name_and_raw_app_disclosure_log_hits": 55,
+    "decision": "Existing public app purchase copy and test/verification descriptions, not internal commercial, legal, finance or personal documents. No app copy or raw failure was removed to silence the scan."
+  },
+  "foreign_register_validation": {
+    "all9_exact_in_before_snapshots": true,
+    "rows": [
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/BUILD_QUEUE.md",
+        "line": 169,
+        "row": 142,
+        "exact_before_snapshot_line": true
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/QUESTIONS.md",
+        "line": 60,
+        "row": 41,
+        "exact_before_snapshot_line": true
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/QUESTIONS.md",
+        "line": 88,
+        "row": 69,
+        "exact_before_snapshot_line": true
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/QUESTIONS.md",
+        "line": 91,
+        "row": 72,
+        "exact_before_snapshot_line": true
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/QUESTIONS.md",
+        "line": 105,
+        "row": 86,
+        "exact_before_snapshot_line": true
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/QUESTIONS.md",
+        "line": 141,
+        "row": 122,
+        "exact_before_snapshot_line": true
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/QUESTIONS.md",
+        "line": 238,
+        "row": 205,
+        "exact_before_snapshot_line": true
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/QUESTIONS.md",
+        "line": 240,
+        "row": 207,
+        "exact_before_snapshot_line": true
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/QUESTIONS.md",
+        "line": 244,
+        "row": 211,
+        "exact_before_snapshot_line": true
+      }
+    ],
+    "decision": "Pre-existing unowned queue/question content remains untouched; the only working changes are owned queue141 and new Q242 plus the concurrent authorized answer."
+  },
+  "secret_scan": {
+    "original49_hits_reviewed_in": "GITLEAKS_RECORDS_REVIEW.json",
+    "original_classification": "Verified SHA256 digests in two metadata maps; no credential",
+    "current_record_gitleaks_findings": 0,
+    "allowlist_or_suppression_added": false
+  },
+  "lossless_metadata_normalization": [
+    {
+      "published_path": "START.json",
+      "field": "source_hashes",
+      "entries": 2359,
+      "original_sha256": "dad3ec2cef621171d65ee92d4d28abfb60647ea4fa7193ddd6cde3172ec42213",
+      "published_sha256": "c9a9661b25e1acd01ee266054dbf1691a9378d4ede5eb32b3bfc91279dad6d65",
+      "reverse_to_original_bytes_exact": true
+    },
+    {
+      "published_path": "witness/Q240_WITNESS_INPUTS.json",
+      "field": "source_inputs_sha256",
+      "entries": 4163,
+      "original_sha256": "fc9ee2c9544e7b9ed138822f7560b26769d03f79d36be61b01f124a9b7050319",
+      "published_sha256": "a5612c75022109892a8e8a032b8aea35faa41cd8d9596554cf3caace95b02a6e",
+      "reverse_to_original_bytes_exact": true
+    }
+  ],
+  "evidence_preservation_after_normalization": {
+    "all16_raw_main_scan_report_hashes_exact": true,
+    "all54_original_raw_findings_retained": true,
+    "witness_files_byte_exact_excluding_one_normalized_input_metadata_file": 30,
+    "one_normalized_witness_input_losslessly_reversible": true,
+    "all_raster_PNGs_PROOF_logs_and_original_work_metadata_bytes_retained": true
+  },
+  "written_refusal": "OA-ZYRA-371: do not change raw observations, suppress the scanners, alter coverage/thresholds or edit foreign rows to obtain publication. The two metadata maps were formatted losslessly and re-scanned with zero secret findings.",
+  "reviewer_source_writes_or_test_runs": false
+}

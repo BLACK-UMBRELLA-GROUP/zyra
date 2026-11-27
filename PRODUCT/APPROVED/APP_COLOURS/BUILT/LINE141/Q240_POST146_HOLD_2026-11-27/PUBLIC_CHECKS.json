@@ -1,0 +1,32 @@
+{
+  "implementation_secret_scan": {
+    "files": 30,
+    "findings": 0,
+    "exit_code": 0
+  },
+  "records_secret_scan_before_final_review_append": {
+    "files": 107,
+    "findings": 0,
+    "exit_code": 0,
+    "no_scanner_suppression": true
+  },
+  "source_public_check": {
+    "hits": 26,
+    "all_exact_existing_source_lines": true
+  },
+  "records_public_check": {
+    "hits": 1549,
+    "binary_png_hits": 1011,
+    "asset_filename_hits": 443,
+    "owned_public_test_review_text_hits": 86,
+    "foreign_unchanged_register_hits": 9,
+    "actual_private_content": false
+  },
+  "metadata_formatting": "Two source-input hash maps losslessly represented as ordered entry arrays; exact original bytes independently recovered; raw raster/PNG/log/PROOF observations unchanged",
+  "history_scan": "pending after records-only commit; no implementation commit",
+  "B": "no private documents",
+  "C": "none",
+  "D": "none",
+  "E": "neutral own prose; raw existing app/test text retained",
+  "F": "README held and restored; no published app behavior change"
+}

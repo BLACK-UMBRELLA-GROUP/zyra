@@ -1,0 +1,86 @@
+{
+  "verdict": "CLEAR for scoped records-only commit; implementation remains held and candidate hosted result NOT RUN",
+  "reviewed": "2026-11-27T19:14:46.074905+00:00",
+  "records_reviewed": 106,
+  "candidate_paths_independently_reconstructed": 30,
+  "candidate_patch_sha256": "3e5011b48bbbcad3da2de6fd721cb22199f55688650a23e219954f7c3f912a16",
+  "candidate_manifest_sha256": "4dbc7c3a17126047cbdd3a30826a15786890565d2efe43e2f6bd454a254a73e6",
+  "candidate_manifest_copied_exact": true,
+  "held_new_files_verified": 4,
+  "SOURCE_and_github_unstaged_staged_untracked_clean": true,
+  "accepted_SOURCE_hashes_restored": 2359,
+  "foreign_staged_entries_byte_exact": 7,
+  "LINE138_working_files_exact": 5,
+  "prior_evidence_files_byte_exact": 2482,
+  "prior_Q238_files_in_snapshot_byte_exact": 65,
+  "original28patch_and_manifest_unchanged": true,
+  "locked_inputs_current_and_exact": 7,
+  "all54raw_findings_retained": true,
+  "real_footer_contrast_findings": 52,
+  "requests_readback_findings": 2,
+  "positive_selected_main_obligations": 84,
+  "final_coverage_gaps": 0,
+  "Q240_name_findings": 0,
+  "witness_package_files_hash_exact": 30,
+  "captured_source_hashes_match_sealed_candidate": {
+    "lib/widgets/zyra_profile_details_page.dart": true,
+    "lib/widgets/zyra_browse_designs.dart": true,
+    "lib/dev/zyra_full_profile_preview.dart": true,
+    "test/support/zyra_clearer_text_corpus.dart": true,
+    "test/support/zyra_rendered_text_contrast.dart": true,
+    "lib/theme/zyra_colors.dart": true
+  },
+  "ordinary": "8,022 pass / 253 skip / 0 failures; protected command exit0",
+  "working_records_only_owned_rows_changed": {
+    "PRODUCT/APPROVED/BUILD_QUEUE.md": {
+      "changes": 1,
+      "allowed_row": "| 141 |",
+      "staged_bytes_unchanged": true
+    },
+    "PRODUCT/APPROVED/QUESTIONS.md": {
+      "changes": 1,
+      "allowed_row": "| 242 |",
+      "staged_bytes_unchanged": true
+    }
+  },
+  "concurrent_answer_preserved": {
+    "question": 242,
+    "question_status": "ANSWERED",
+    "queue141_status": "WAITING",
+    "dependency": "NEEDS line146 BUILT",
+    "exact_answer_captured_in": "RESTART_Q242.json",
+    "sealed_manifest_historical_QUESTION_retained": true
+  },
+  "publication_status": {
+    "implementation_published": false,
+    "candidate_hosted": "NOT RUN; local strict gate failed",
+    "record_commit": "Pending root records-only publication and scan receipt",
+    "current_HEAD": "e74c0b9c4afa5fcc50e2138a68305ec5b42f78b9"
+  },
+  "remaining_action": "Root completes scoped records-only scans/commit/receipt without touching the seven existing staged entries or restarting source work; coordinator takes line146.",
+  "no_unresolved_review_findings": true,
+  "reviewer_wrote_only": "Current task work/FINAL_RECORD_REVIEW.json",
+  "reviewer_source_writes_tests_or_git_mutations": false,
+  "publication_metadata_normalization_reviewed": [
+    {
+      "published_path": "START.json",
+      "field": "source_hashes",
+      "entries": 2359,
+      "original_sha256": "dad3ec2cef621171d65ee92d4d28abfb60647ea4fa7193ddd6cde3172ec42213",
+      "published_sha256": "c9a9661b25e1acd01ee266054dbf1691a9378d4ede5eb32b3bfc91279dad6d65",
+      "reverse_to_original_bytes_exact": true
+    },
+    {
+      "published_path": "witness/Q240_WITNESS_INPUTS.json",
+      "field": "source_inputs_sha256",
+      "entries": 4163,
+      "original_sha256": "fc9ee2c9544e7b9ed138822f7560b26769d03f79d36be61b01f124a9b7050319",
+      "published_sha256": "a5612c75022109892a8e8a032b8aea35faa41cd8d9596554cf3caace95b02a6e",
+      "reverse_to_original_bytes_exact": true
+    }
+  ],
+  "witness_package_input_metadata_lossless_original_bytes_recoverable": true,
+  "public_scan_review": "PUBLIC_RECORDS_REVIEW.json; all 1549 findings classified; no newly introduced private content",
+  "normalization_scope": "Only the two source-hash metadata maps changed representation. Raw raster/log/PNG/PROOF observations remain byte-exact.",
+  "records_reviewed_after_normalization": 108
+}

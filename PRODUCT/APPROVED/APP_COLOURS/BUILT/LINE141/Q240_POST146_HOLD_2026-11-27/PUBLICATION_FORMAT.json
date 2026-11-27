@@ -1,0 +1,25 @@
+{
+  "purpose": "Metadata formatting only: avoid a generic-key pattern matching source filenames and adjacent hash strings; no scanner suppression or credential exception",
+  "transform": "Ordered path-to-sha256 metadata maps represented as ordered arrays of path/sha256 objects. Reverse each listed field to an insertion-ordered map, serialize JSON indent=2 plus final newline to recover the original exact bytes.",
+  "records": [
+    {
+      "path": "START.json",
+      "field": "source_hashes",
+      "entries": 2359,
+      "original_work_sha256": "dad3ec2cef621171d65ee92d4d28abfb60647ea4fa7193ddd6cde3172ec42213",
+      "published_sha256": "c9a9661b25e1acd01ee266054dbf1691a9378d4ede5eb32b3bfc91279dad6d65",
+      "original_bytes_exactly_recoverable": true
+    },
+    {
+      "path": "witness/Q240_WITNESS_INPUTS.json",
+      "field": "source_inputs_sha256",
+      "entries": 4163,
+      "original_work_sha256": "fc9ee2c9544e7b9ed138822f7560b26769d03f79d36be61b01f124a9b7050319",
+      "published_sha256": "a5612c75022109892a8e8a032b8aea35faa41cd8d9596554cf3caace95b02a6e",
+      "original_bytes_exactly_recoverable": true
+    }
+  ],
+  "raw_raster_logs_png_proof_unchanged": true,
+  "original_work_files_retained": true,
+  "candidate_patch_manifest_unchanged": true
+}

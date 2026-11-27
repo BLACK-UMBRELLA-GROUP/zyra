@@ -1,0 +1,51 @@
+LINE141 Q240 HANDOVER — 27 NOV 2026
+
+Current state: WAITING — NEEDS line 146 BUILT. Q242 is ANSWERED by Fable (Founder relay), observed during record review. The fixed gap is proven; this owner’s full mandatory gate failed. No implementation published. Preview only; live: no. SOURCE and index are released for coordinator line146. OA-ZYRA-371; Q229/Q238/Q240 and the Founder GO govern. Q242 supplies the bounded fresh-owner restart/test-tool route; the sealed failed-gate manifest retains its historical QUESTION status unchanged.
+
+Built from: APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-23_SMALL_SCREEN_FIT.md items1–9; APP_COLOURS_SPEC_CURRENT_VERSION_V9 Small-screen fit; LOCK_RECORD correction4; exact answered Q229/Q238/Q240; PROFILES_DETAILS_CARD_SPEC_CURRENT_VERSION_V5 Name row and both exact V5 masters. Locked input hashes are in LOCKED_INPUTS.json. Start pack printed19793bytes. Initial relative invocation refused because its script path retained parent components; corrected absolute command succeeded. The explicitly required initial lessons/AGENTS reads were separate. Conversation:new; exact chat-start and count-only token totals are unavailable through enabled tools; acquisition 2026-11-27T18:48:36.340267+00:00, six-hour deadline 2026-11-28T00:48:36.340267+00:00. No usage estimate invented.
+
+Implementation held: original28-path patch af808e3e640d54390d74e72fe409cb86b37c6fff43289397daf94c08ab5f8d26 verified, including all base/candidate hashes and lengths. Exact bounded Q238 hunks reconstructed all28 intents;27 changed files, existing Guardian tabs espresso alias already correct. Accepted142 Ramadan state,144 Q239 corpus/CI/README,145 History/outline/Pause/Report Done/shadows/photo/Main/Make Main/error-copy/test/paired-manifest work retained. Q240 adds one nonflex SizedBox(height:12) after Expanded identity block in shared ZyraProfileDetailsPage, before fact rows. Both production callers (ZyraBrowseDesigns and ZyraFullProfilePreview) therefore reserve the gap below name/byline. Existing photo sizing, scroll physics,28pt light espresso,ONE pill,tiles,contrast threshold and visibility classification are unchanged. Two focused test files and README complete the30 changed paths. File roles/paths/hashes are listed below and in CANDIDATE_MANIFEST.json.
+
+Data and state: caller-provided public profile/photo/byline are presentation inputs. Existing shell/navigation owns local samples and action guards. No new persistence, entitlement, server, account connection or production toggle. The geometry test varies data on actual production callers; its small photo stand-in is geometry-only and never visual evidence. Visual captures use prepared local sample images and actual navigation. Optional capture define writes review files only and is disabled in ordinary tests. No migration, native build, phone, install, server, live action or other queue line.
+
+Q240 proof: exact same Family test/group lock19_v3_source, tab0,settled375x667/1.0,frames0/1/2. All three actual frames have12.000000000000057pt name-block clearance; zero isolated title glyph support and zero same-frame title paint pixels inside any fact tile. All descender/overhang pixels retained. ON/OFF/restored ON controls have exact restoration, unchanged transforms/clock/scroll and no non-title change. Narrow strict proof exit0:1body/40frames/0raw findings/0gaps. Prior Q238 evidence remains byte-identical. Original PNGs and raw audit/logs plus exact unresized before/after and gap crops are in witness/. Temporary paint controls existed only in a disposable proof tree, moved to the single Mac _to_delete folder; no instrumentation in final repository SOURCE. A separate bounded430photo/no-photo differential proves identity moves up exactly6pt, tile top453pt unchanged,150pt avatar unchanged.
+
+Checks: protected analyzer clean12.9s; original387 focused checks plus24 meaningful actual-caller geometry cases pass411; original20 capture tests pass; after final formatting,24 geometry cases plus the separate actual-shell capture pass25. All14 named master pairs actually viewed by an independent reviewer: no actionable bounded correction4/Q240 mismatch, no whole-screen MATCH claim. Existing native/prototype and sample differences are retained in COMPARISON_REVIEW.json and are outside141; written refusal under OA-ZYRA-371 to invent redesign/copy fixes. Scoped candidate secret scan30files/1.16MB found0leaks; full source public scan26hits all exact existing accepted-source lines, reviewed as Dart record fields/public contact/existing app-price fixtures. Source review clear before any commit.
+
+Mandatory gate: the exact four-driver filtered replay retains the same84 selected obligations, no REPORT_ONLY, no suppression or threshold change. Complete raw reports and exact commands/times/exits are in main-replay/, RASTER_REVIEW.json and GATES.json. The 264 behavior bodies pass; two strict normal-setting teardowns fail. Across 7,232 frames / 84,665 text runs, 54 retained raw findings comprise 52 real footer contrast findings (20 Seeker, 32 Guardian) and two Requests readback errors. All 84 selected obligations have positive proof and zero final coverage gaps; zero Q240 name findings. Upgrade purchase footer in ZyraPurchaseFinePrint / ZyraOneUpgradePage measures4.491678474119953 against4.5 on #EADFCD for Seeker/Guardian Basic, matching the exact Q241 ink/background category; its widget/corpus/auditor are unchanged by141. Retained normal430 Requests coverage/readback observations are test-tool observations, not proven readability faults. They are kept and not waived. Separate actual Scan strict replay4pass/4proof tuples/40frames/0raw findings/0gaps. One ordinary regression: 10:08 +8022 ~253: All tests passed!. Ordinary command exit0. No second full gate attempt. No candidate hosted result: red local mandatory gate prevents implementation publication; accepted-source or records-only hosted results cannot stand in for it.
+
+Handoff: genuine bounded blocker, not a budget timeout. Q242 now authorizes a new owner after line146 is BUILT, on its new accepted base with a fresh six-hour budget and all named gates rerun. Only if the two Requests observations persist: first prove actual reached/settled frames; repair only a proven fixture discovery/settle/tuple omission with the A1 real scroll-owner helper and the same assertions. If reached visible text still fails readback, change nothing and file one ZYRA Claude question with the frames. RESTART_Q242.json records the exact answer. Do not change146 ink under141 or drop selected routes/counts to land. Exact candidate parked at SOURCE/build/held/LINE141/2026-11-27_Q240_GATES; patch SHA 3e5011b48bbbcad3da2de6fd721cb22199f55688650a23e219954f7c3f912a16; manifest SHA 4dbc7c3a17126047cbdd3a30826a15786890565d2efe43e2f6bd454a254a73e6. Restore completed only owned SOURCE through ordinary exact file operations; new files moved into held/new-files. Original28-path pack untouched. SOURCE/.github clean;7foreign staged entries byte-exact,5LINE138working files exact,2482 existing evidence files exact. Release 2026-11-27T19:11:10.104653+00:00. Coordinator takes146; this owner starts no next line.
+
+Public release: implementation remains held. Records-only commit/publication receipt is written separately; no duplicate CI wait on records-only commits. Seven mixed staged paths are excluded from owned commits; only the working queue141/Q242 filing is changed, with Fable’s concurrent answer and WAITING dependency preserved. Daily report task note is TASK_NOTE.txt for the receiver. A–F: A scoped candidate clear/history scan recorded with publication;B no private documents;C none;D none;E neutral record prose;F README change held with candidate.
+
+Owned candidate paths (not installed after release):
+SOURCE/README.md
+SOURCE/lib/dev/zyra_draft_local_code_page.dart
+SOURCE/lib/dev/zyra_help_safety_preview.dart
+SOURCE/lib/dev/zyra_one_journey_account_presentation.dart
+SOURCE/lib/dev/zyra_one_journey_concept_shell.dart
+SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart
+SOURCE/lib/dev/zyra_request_activity_presentation.dart
+SOURCE/lib/screens/profile/zyra_profile_video_trim_screen.dart
+SOURCE/lib/screens/settings/help_support_screen.dart
+SOURCE/lib/widgets/zyra_focus_dashboard.dart
+SOURCE/lib/widgets/zyra_full_screen_error.dart
+SOURCE/lib/widgets/zyra_profile_video_player.dart
+SOURCE/lib/widgets/zyra_reference_label.dart
+SOURCE/lib/widgets/zyra_state_widgets.dart
+SOURCE/test/full_screen_error_test.dart
+SOURCE/test/guardian_card_interaction_test.dart
+SOURCE/test/line141_small_screen_fit_test.dart
+SOURCE/test/one_journey_current_presentation_test.dart
+SOURCE/test/photo_gallery_add_page_test.dart
+SOURCE/test/profile_tab_monogram_contract_test.dart
+SOURCE/test/requests_guardians_lock2_shell_test.dart
+SOURCE/test/visual/lock19_guardian_card_capture_test.dart
+SOURCE/test/zyra_clearer_text_label_fit_test.dart
+SOURCE/test/zyra_request_activity_presentation_test.dart
+SOURCE/test/membership_wallet_visual_test.dart
+SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart
+SOURCE/test/auth_gate_recovery_test.dart
+SOURCE/lib/widgets/zyra_profile_details_page.dart
+SOURCE/test/line141_details_gap_test.dart
+SOURCE/test/visual/line141_details_master_capture_test.dart

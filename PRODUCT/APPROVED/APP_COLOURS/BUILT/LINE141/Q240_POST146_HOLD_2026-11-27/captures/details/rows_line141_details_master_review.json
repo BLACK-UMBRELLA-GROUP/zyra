@@ -1,0 +1,26 @@
+[
+  {
+    "role": "Seeker",
+    "area": "browse_and_requests",
+    "page": "profiles_tab",
+    "state": "details_card_photo",
+    "reached": "Actual default Founder preview Profiles details page, prepared local photo and actual shell navigation; Q240 12pt gap",
+    "file": "profiles_tab__details_card_photo.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "browse_and_requests",
+    "page": "profiles_tab",
+    "state": "details_card_no_photo",
+    "reached": "Bounded selected-profile photos=[] fixture using the current shared production Profiles caller and captured shell/nav configuration; no product route or layout override",
+    "file": "profiles_tab__details_card_no_photo.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  }
+]

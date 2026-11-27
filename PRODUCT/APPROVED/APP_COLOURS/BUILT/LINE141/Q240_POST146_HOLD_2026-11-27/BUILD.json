@@ -1,0 +1,11 @@
+{
+  "commit_sha": "e74c0b9c4afa5fcc50e2138a68305ec5b42f78b9",
+  "source_code_base": "83f74fd7",
+  "candidate_patch_sha256": "3e5011b48bbbcad3da2de6fd721cb22199f55688650a23e219954f7c3f912a16",
+  "implementation_committed": false,
+  "held_path": "SOURCE/build/held/LINE141/2026-11-27_Q240_GATES",
+  "flutter_version": "3.44.2",
+  "build_mode": "protected Flutter widget tests and real raster captures; no native delivery",
+  "timestamp": "2026-11-27T19:11:14.001724+00:00",
+  "live": false
+}

@@ -1,0 +1,205 @@
+{
+  "verdict": "PASS: both 430pt actual Profiles states move photo/name up exactly6pt, tiles stay fixed, 150pt photo rule unchanged",
+  "recorded": "2026-11-27T18:56:29.013793+00:00",
+  "scope": "One bounded 430x932 actual Profiles photo/no-photo before-gap capture diagnostic",
+  "authority": "Q240 <=6pt centering allowance; bounded root-requested disposable-tree diagnostic",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--dart-define=ZYRA_LINE141_DETAILS_REVIEW_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/captures/details-before-q240",
+    "test/visual/line141_details_master_capture_test.dart",
+    "--reporter",
+    "expanded"
+  ],
+  "command_cwd": "/Users/shakeelahmad/_to_delete/LINE141_Q240_PROOF_2026-11-27/proof-q240",
+  "command_exit_code": 0,
+  "comparison": [
+    {
+      "state": "details_card_no_photo",
+      "photo_present": false,
+      "name_vertical_shift_after_minus_before_pt": -6.0,
+      "avatar_vertical_shift_after_minus_before_pt": -6.0,
+      "fact_tile_vertical_shift_after_minus_before_pt": 0.0,
+      "avatar_size_pt": [
+        150.0,
+        150.0
+      ],
+      "name_to_tile_gap_before_pt": 45.0,
+      "name_to_tile_gap_after_pt": 51.0,
+      "before": {
+        "state": "details_card_no_photo",
+        "person_id": "draft-sara",
+        "logical_size": [
+          430,
+          932
+        ],
+        "device_pixel_ratio": 3,
+        "has_photo": false,
+        "name_rect": {
+          "left": 102.06201171875,
+          "top": 377.0,
+          "right": 275.1659851074219,
+          "bottom": 408.0,
+          "width": 173.10397338867188,
+          "height": 31.0
+        },
+        "first_tile_rect": {
+          "left": 36.0,
+          "top": 453.0,
+          "right": 210.0,
+          "bottom": 517.0,
+          "width": 174.0,
+          "height": 64.0
+        },
+        "visible_name_to_tile_gap": 45.0,
+        "avatar_rect": {
+          "left": 140.0,
+          "top": 215.0,
+          "right": 290.0,
+          "bottom": 365.0,
+          "width": 150.0,
+          "height": 150.0
+        }
+      },
+      "after": {
+        "state": "details_card_no_photo",
+        "person_id": "draft-sara",
+        "logical_size": [
+          430,
+          932
+        ],
+        "device_pixel_ratio": 3,
+        "has_photo": false,
+        "name_rect": {
+          "left": 102.06201171875,
+          "top": 371.0,
+          "right": 275.1659851074219,
+          "bottom": 402.0,
+          "width": 173.10397338867188,
+          "height": 31.0
+        },
+        "first_tile_rect": {
+          "left": 36.0,
+          "top": 453.0,
+          "right": 210.0,
+          "bottom": 517.0,
+          "width": 174.0,
+          "height": 64.0
+        },
+        "visible_name_to_tile_gap": 51.0,
+        "avatar_rect": {
+          "left": 140.0,
+          "top": 209.0,
+          "right": 290.0,
+          "bottom": 359.0,
+          "width": 150.0,
+          "height": 150.0
+        }
+      }
+    },
+    {
+      "state": "details_card_photo",
+      "photo_present": true,
+      "name_vertical_shift_after_minus_before_pt": -6.0,
+      "avatar_vertical_shift_after_minus_before_pt": -6.0,
+      "fact_tile_vertical_shift_after_minus_before_pt": 0.0,
+      "avatar_size_pt": [
+        150.0,
+        150.0
+      ],
+      "name_to_tile_gap_before_pt": 44.5,
+      "name_to_tile_gap_after_pt": 50.5,
+      "before": {
+        "state": "details_card_photo",
+        "person_id": "draft-sara",
+        "logical_size": [
+          430,
+          932
+        ],
+        "device_pixel_ratio": 3,
+        "has_photo": true,
+        "name_rect": {
+          "left": 102.06201171875,
+          "top": 377.5,
+          "right": 275.1659851074219,
+          "bottom": 408.5,
+          "width": 173.10397338867188,
+          "height": 31.0
+        },
+        "first_tile_rect": {
+          "left": 36.0,
+          "top": 453.0,
+          "right": 210.0,
+          "bottom": 517.0,
+          "width": 174.0,
+          "height": 64.0
+        },
+        "visible_name_to_tile_gap": 44.5,
+        "avatar_rect": {
+          "left": 140.0,
+          "top": 215.5,
+          "right": 290.0,
+          "bottom": 365.5,
+          "width": 150.0,
+          "height": 150.0
+        }
+      },
+      "after": {
+        "state": "details_card_photo",
+        "person_id": "draft-sara",
+        "logical_size": [
+          430,
+          932
+        ],
+        "device_pixel_ratio": 3,
+        "has_photo": true,
+        "name_rect": {
+          "left": 102.06201171875,
+          "top": 371.5,
+          "right": 275.1659851074219,
+          "bottom": 402.5,
+          "width": 173.10397338867188,
+          "height": 31.0
+        },
+        "first_tile_rect": {
+          "left": 36.0,
+          "top": 453.0,
+          "right": 210.0,
+          "bottom": 517.0,
+          "width": 174.0,
+          "height": 64.0
+        },
+        "visible_name_to_tile_gap": 50.5,
+        "avatar_rect": {
+          "left": 140.0,
+          "top": 209.5,
+          "right": 290.0,
+          "bottom": 359.5,
+          "width": 150.0,
+          "height": 150.0
+        }
+      }
+    }
+  ],
+  "before_geometry_sha256": "5b5cb26337bdd1aab4c73a63a005c619674f505f1892362900de0e7174fd6b20",
+  "after_geometry_sha256": "2ae27b1fd9a1e82b63d7608bf55d3146bd1a5217425b57e631f6f739138b509d",
+  "main_source_sha256_before": "8cd2ad4d554dd4dd2bbabbbb8ef1e180f7d53afeadf7fdbe1f398b102b717ab6",
+  "main_source_sha256_after": "8cd2ad4d554dd4dd2bbabbbb8ef1e180f7d53afeadf7fdbe1f398b102b717ab6",
+  "exact_disposable_change": {
+    "removed_hunk": "                      const SizedBox(height: 12),\n",
+    "following_anchor": "                      for (var row = 0; row < rows.length; row++) ...[",
+    "sha256_before": "0fb30a06f6d2a42668a407ddb47b210d7635be8de852780be18ebb49aee2d84d",
+    "sha256_after": "9fe3440c96996fd239433656fe86220ae24e870be8704a363155ecbc57863201"
+  },
+  "unused_instrumentation": "Prior paint-only Q240 Maryam title proxy remains in disposable copy; Sara production title path is returned unchanged and the proof hook is not invoked by this capture test.",
+  "capture_test_retained": "Existing disposable copy differs only by dart-format wrapping of the identical find.text expression; exact transformation verified; file retained without edits.",
+  "capture_test_sha256": "0986c76ca0c361440db457caed0fc44a6bc661c5ac475ffe803be673097082b8",
+  "original_witness_artifacts_unchanged": true,
+  "original_witness_artifact_files": 31,
+  "main_source_unchanged": true,
+  "final_after_captures_overwritten": false,
+  "disposable_tree_stays_in_to_delete": "/Users/shakeelahmad/_to_delete/LINE141_Q240_PROOF_2026-11-27/proof-q240"
+}

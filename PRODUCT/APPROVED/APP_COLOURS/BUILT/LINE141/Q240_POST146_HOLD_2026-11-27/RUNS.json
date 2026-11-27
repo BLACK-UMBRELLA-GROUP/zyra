@@ -1,0 +1,82 @@
+[
+  {
+    "name": "captures",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--dart-define=ZYRA_LOCK19_REVIEW_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/captures/guardian-card",
+      "--dart-define=ZYRA_LINE102_GUARDIAN_JOURNEYS_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/captures/guardian-journeys",
+      "test/visual/lock19_guardian_card_capture_test.dart",
+      "test/visual/lock8_v5_guardian_journeys_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "started": "2026-11-27T18:50:44.626989+00:00",
+    "finished": "2026-11-27T18:51:05.435400+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "main-replay",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+      "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/requests/Seeker_One,seeker/tab3/Seeker_One,seeker/tab4/Seeker_One,profiles_photos/profile/Seeker_One,profiles_photos/help_report_sent/Seeker_One,basic_seeker/requests/Seeker_Basic,basic_seeker/tab4/Seeker_Basic,basic_guardian/tab4/Guardian_Basic,basic_guardian/tab1/Guardian_Basic,lock8_pages/tab4/Guardian_One,lock8_pages/tab1/Guardian_One,lock19_v3/tab3/Seeker_One,lock19_v3/tab4/Guardian_One,lock19_v3/tab4/Guardian_Basic,lock15_1.0/tab2/Seeker_One,lock15_1.0/tab2/Seeker_Basic,lock15_1.0/tab2/Guardian_One,lock15_1.0/tab2/Guardian_Basic,lock15_2.0/tab2/Seeker_One,lock15_2.0/tab2/Guardian_One,lock35/tab4/Guardian_One",
+      "--name",
+      "^(Seeker|Basic plans|Guardian One|Family|Seekers|Safety|Phone|Focus) ",
+      "test/zyra_clearer_text_contrast_test.dart",
+      "test/zyra_clearer_text_contrast_430_test.dart",
+      "test/zyra_clearer_text_contrast_large_375_test.dart",
+      "test/zyra_clearer_text_contrast_large_430_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "started": "2026-11-27T18:51:05.435955+00:00",
+    "finished": "2026-11-27T19:00:08.122563+00:00",
+    "exit_code": 1
+  },
+  {
+    "name": "scan-replay",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+      "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=line126_entry_Seeker_Basic_scan/scan/Seeker_Basic",
+      "--name",
+      "^Coverage entries line126 Seeker Basic actual Scan entry",
+      "test/zyra_clearer_text_contrast_test.dart",
+      "test/zyra_clearer_text_contrast_430_test.dart",
+      "test/zyra_clearer_text_contrast_large_375_test.dart",
+      "test/zyra_clearer_text_contrast_large_430_test.dart",
+      "--reporter",
+      "expanded"
+    ],
+    "started": "2026-11-27T19:00:14.673600+00:00",
+    "finished": "2026-11-27T19:00:32.192790+00:00",
+    "exit_code": 0
+  },
+  {
+    "name": "ordinary",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded"
+    ],
+    "started": "2026-11-27T19:00:32.197576+00:00",
+    "finished": "2026-11-27T19:10:46.925578+00:00",
+    "exit_code": 0
+  }
+]

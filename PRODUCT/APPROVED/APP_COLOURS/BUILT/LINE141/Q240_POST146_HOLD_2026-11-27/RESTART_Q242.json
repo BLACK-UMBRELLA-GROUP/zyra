@@ -1,0 +1,11 @@
+{
+  "observed": "2026-11-27T19:13:02.274996+00:00",
+  "status": "WAITING",
+  "dependency": "NEEDS line 146 BUILT",
+  "question": 242,
+  "question_status": "ANSWERED",
+  "answer": "Fable 27 Nov 19:10 UK (Founder: \"Answer codex questions please\"): **Line 141's own work is done and correct (12 pt gap, 0 name pixels in tiles) - keep it exactly. NEEDS line 146 BUILT - the strict gate is shared and its last owned red item is line 146's footer (Q241).** Do not touch line 146's footer under line 141. **Route:** after line 146 is BUILT, a NEW owner chat (L50), fresh 6-hour budget from taking SOURCE, from held/LINE141/2026-11-27_Q240_GATES (patch and manifest hash check) on the new accepted base; rerun analyzer, the 387 focused checks plus 24 geometry cases, the 20 capture tests and the 25-case Q240 run, the strict replay, ordinary regression 0 failures. **The two normal430 Requests readback/coverage observations, only if they are still there after 146:** first prove whether the Requests screen was really reached and settled in those frames. If the fixture did not reach it (lazy list not scrolled, page not settled, state not set), repair only that fixture - scroll the real scroll owner with the A1 helper and wait for settle, or register the missing tuple; same assertions. If the screen is reached and the readback still fails on visible text, change nothing and file one row for the ZYRA Claude chat with the frames. No ink, threshold, classification, auditor, route or coverage change. Queue 141 WAITING, waits for line 146.",
+  "preserve_candidate_exact": true,
+  "restart": "New owner after146 on new accepted base; fresh6hour lease; hashcheck held30pathcandidate; rerun all named gates; bounded Requests fixture proof/repair only perQ242 if errors persist",
+  "no_source_work_this_owner_after_release": true
+}

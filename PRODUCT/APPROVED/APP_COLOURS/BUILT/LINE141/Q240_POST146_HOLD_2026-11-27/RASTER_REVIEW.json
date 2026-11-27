@@ -1,0 +1,532 @@
+{
+  "reviewer": "Independent held_integration_review subagent; read-only source/report review",
+  "recorded": "2026-11-27T19:01:43.094611+00:00",
+  "verdict": "STRICT REPLAY FAILED: 52 real purchase-footer contrast findings plus 2 Requests raster coverage/readback errors; Q240 name findings: 0.",
+  "question": 242,
+  "main_command_exactly_matches_published_Q229": true,
+  "main_command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+    "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/requests/Seeker_One,seeker/tab3/Seeker_One,seeker/tab4/Seeker_One,profiles_photos/profile/Seeker_One,profiles_photos/help_report_sent/Seeker_One,basic_seeker/requests/Seeker_Basic,basic_seeker/tab4/Seeker_Basic,basic_guardian/tab4/Guardian_Basic,basic_guardian/tab1/Guardian_Basic,lock8_pages/tab4/Guardian_One,lock8_pages/tab1/Guardian_One,lock19_v3/tab3/Seeker_One,lock19_v3/tab4/Guardian_One,lock19_v3/tab4/Guardian_Basic,lock15_1.0/tab2/Seeker_One,lock15_1.0/tab2/Seeker_Basic,lock15_1.0/tab2/Guardian_One,lock15_1.0/tab2/Guardian_Basic,lock15_2.0/tab2/Seeker_One,lock15_2.0/tab2/Guardian_One,lock35/tab4/Guardian_One",
+    "--name",
+    "^(Seeker|Basic plans|Guardian One|Family|Seekers|Safety|Phone|Focus) ",
+    "test/zyra_clearer_text_contrast_test.dart",
+    "test/zyra_clearer_text_contrast_430_test.dart",
+    "test/zyra_clearer_text_contrast_large_375_test.dart",
+    "test/zyra_clearer_text_contrast_large_430_test.dart",
+    "--reporter",
+    "expanded"
+  ],
+  "main_command_exit_code": 1,
+  "main_started": "2026-11-27T18:51:05.435955+00:00",
+  "main_finished": "2026-11-27T19:00:08.122563+00:00",
+  "behavior_tests_passed": 264,
+  "strict_teardown_failures": 2,
+  "settings": [
+    {
+      "setting": "normal",
+      "report_complete": true,
+      "status": "fail",
+      "frames": 1978,
+      "runs": 23509,
+      "raw_findings": 39,
+      "contrast_findings": 39,
+      "coverage_error_findings": 0,
+      "focused_obligations": 21,
+      "focused_obligations_with_text": 21,
+      "coverage_gaps": [],
+      "Q240_name_findings": 0,
+      "family_source_group_audited_states": 40,
+      "report_only": false,
+      "whole_app_coverage_credit": false,
+      "categories": [
+        {
+          "group": "basic_seeker",
+          "route": "one_upgrade",
+          "ink": "#ff6e6257",
+          "background": "#ffeadfcd",
+          "contrast": 4.491678474119953,
+          "threshold": 4.5,
+          "coverage_error": null,
+          "count": 15
+        },
+        {
+          "group": "basic_guardian",
+          "route": "one_upgrade",
+          "ink": "#ff6e6257",
+          "background": "#ffeadfcd",
+          "contrast": 4.491678474119953,
+          "threshold": 4.5,
+          "coverage_error": null,
+          "count": 21
+        },
+        {
+          "group": "lock15_1.0",
+          "route": "one_upgrade",
+          "ink": "#ff6e6257",
+          "background": "#ffeadfcd",
+          "contrast": 4.491678474119953,
+          "threshold": 4.5,
+          "coverage_error": null,
+          "count": 3
+        }
+      ],
+      "raw_path": "main-replay/line126-focused-contrast-normal.json",
+      "raw_sha256": "a4f2a7d53af0c36b2bdd9756bb94ada89afd06730638f234b1e62ffe9e025b6f",
+      "nontext_guard_observations_retained": [
+        {
+          "group": "lock19_v3",
+          "state": "expired retained Family accept",
+          "viewport": "375x667@1.0",
+          "plan": "Guardian Basic",
+          "pages": [
+            "guardian_family_offer"
+          ],
+          "proof_kind": "typed_nontext_guard_rejection",
+          "raster_or_route_credit": false,
+          "runs": 0,
+          "pixels": 0,
+          "presenter": "ZyraGuardianTabsPresentation(page:family_offer)",
+          "family_offer": null,
+          "authority": "zyra_one_journey_guardian_tabs.dart family_offer null branch; zyra_one_journey_concept_shell.dart _pendingGuardianFamilyOffer"
+        }
+      ]
+    },
+    {
+      "setting": "normal-430",
+      "report_complete": true,
+      "status": "fail",
+      "frames": 1182,
+      "runs": 14411,
+      "raw_findings": 15,
+      "contrast_findings": 13,
+      "coverage_error_findings": 2,
+      "focused_obligations": 21,
+      "focused_obligations_with_text": 21,
+      "coverage_gaps": [],
+      "Q240_name_findings": 0,
+      "family_source_group_audited_states": 18,
+      "report_only": false,
+      "whole_app_coverage_credit": false,
+      "categories": [
+        {
+          "group": "basic_seeker",
+          "route": "one_upgrade",
+          "ink": "#ff6e6257",
+          "background": "#ffeadfcd",
+          "contrast": 4.491678474119953,
+          "threshold": 4.5,
+          "coverage_error": null,
+          "count": 5
+        },
+        {
+          "group": "basic_seeker",
+          "route": "requests",
+          "ink": null,
+          "background": null,
+          "contrast": null,
+          "threshold": null,
+          "coverage_error": "Expected text-bearing fixture produced no visible text runs",
+          "count": 1
+        },
+        {
+          "group": "basic_seeker",
+          "route": "requests",
+          "ink": null,
+          "background": null,
+          "contrast": null,
+          "threshold": null,
+          "coverage_error": "Original painted scene changed or remained unstable during pixel readback; build=true; dirty=(RenderTransform); same_pixels=true",
+          "count": 1
+        },
+        {
+          "group": "basic_guardian",
+          "route": "one_upgrade",
+          "ink": "#ff6e6257",
+          "background": "#ffeadfcd",
+          "contrast": 4.491678474119953,
+          "threshold": 4.5,
+          "coverage_error": null,
+          "count": 7
+        },
+        {
+          "group": "lock15_1.0",
+          "route": "one_upgrade",
+          "ink": "#ff6e6257",
+          "background": "#ffeadfcd",
+          "contrast": 4.491678474119953,
+          "threshold": 4.5,
+          "coverage_error": null,
+          "count": 1
+        }
+      ],
+      "raw_path": "main-replay/line126-focused-contrast-normal-430.json",
+      "raw_sha256": "c77470c54d2a2fdd6b7a725532a966a7105e8c80c0c7c74383c8a3526e7485ef",
+      "nontext_guard_observations_retained": [
+        {
+          "group": "lock19_v3",
+          "state": "expired retained Family accept",
+          "viewport": "430x932@1.0",
+          "plan": "Guardian Basic",
+          "pages": [
+            "guardian_family_offer"
+          ],
+          "proof_kind": "typed_nontext_guard_rejection",
+          "raster_or_route_credit": false,
+          "runs": 0,
+          "pixels": 0,
+          "presenter": "ZyraGuardianTabsPresentation(page:family_offer)",
+          "family_offer": null,
+          "authority": "zyra_one_journey_guardian_tabs.dart family_offer null branch; zyra_one_journey_concept_shell.dart _pendingGuardianFamilyOffer"
+        }
+      ]
+    },
+    {
+      "setting": "large-375",
+      "report_complete": true,
+      "status": "pass",
+      "frames": 2474,
+      "runs": 26715,
+      "raw_findings": 0,
+      "contrast_findings": 0,
+      "coverage_error_findings": 0,
+      "focused_obligations": 21,
+      "focused_obligations_with_text": 21,
+      "coverage_gaps": [],
+      "Q240_name_findings": 0,
+      "family_source_group_audited_states": 50,
+      "report_only": false,
+      "whole_app_coverage_credit": false,
+      "categories": [],
+      "raw_path": "main-replay/line126-focused-contrast-large-375.json",
+      "raw_sha256": "5f97fe7dff81c3457dd00526892949f8d73fad72a7129fb308c79be8df903f05",
+      "nontext_guard_observations_retained": [
+        {
+          "group": "lock19_v3",
+          "state": "expired retained Family accept",
+          "viewport": "375x667@1.3",
+          "plan": "Guardian Basic",
+          "pages": [
+            "guardian_family_offer"
+          ],
+          "proof_kind": "typed_nontext_guard_rejection",
+          "raster_or_route_credit": false,
+          "runs": 0,
+          "pixels": 0,
+          "presenter": "ZyraGuardianTabsPresentation(page:family_offer)",
+          "family_offer": null,
+          "authority": "zyra_one_journey_guardian_tabs.dart family_offer null branch; zyra_one_journey_concept_shell.dart _pendingGuardianFamilyOffer"
+        }
+      ]
+    },
+    {
+      "setting": "large-430",
+      "report_complete": true,
+      "status": "pass",
+      "frames": 1598,
+      "runs": 20030,
+      "raw_findings": 0,
+      "contrast_findings": 0,
+      "coverage_error_findings": 0,
+      "focused_obligations": 21,
+      "focused_obligations_with_text": 21,
+      "coverage_gaps": [],
+      "Q240_name_findings": 0,
+      "family_source_group_audited_states": 26,
+      "report_only": false,
+      "whole_app_coverage_credit": false,
+      "categories": [],
+      "raw_path": "main-replay/line126-focused-contrast-large-430.json",
+      "raw_sha256": "b25199659765c969260075bf861a0a0a7c0551480b6b36bda75c15184bdac6ec",
+      "nontext_guard_observations_retained": [
+        {
+          "group": "lock19_v3",
+          "state": "expired retained Family accept",
+          "viewport": "430x932@1.3",
+          "plan": "Guardian Basic",
+          "pages": [
+            "guardian_family_offer"
+          ],
+          "proof_kind": "typed_nontext_guard_rejection",
+          "raster_or_route_credit": false,
+          "runs": 0,
+          "pixels": 0,
+          "presenter": "ZyraGuardianTabsPresentation(page:family_offer)",
+          "family_offer": null,
+          "authority": "zyra_one_journey_guardian_tabs.dart family_offer null branch; zyra_one_journey_concept_shell.dart _pendingGuardianFamilyOffer"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "frames": 7232,
+    "runs": 84665,
+    "raw_findings": 54,
+    "contrast_findings": 52,
+    "coverage_error_findings": 2,
+    "focused_obligations": 84,
+    "focused_obligations_with_text": 84
+  },
+  "selected_coverage": "All 84 selected main obligations have real text frames; 0 final coverage gaps. This does not waive the 2 per-frame coverage errors or any real contrast failure and earns no whole-app coverage credit.",
+  "Q241_classification": {
+    "actual_widget": "ZyraPurchaseFinePrint inside ZyraOneUpgradePage",
+    "source_widget_path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart:104",
+    "source_ink_path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart:115",
+    "source_owner_path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart:215",
+    "source_role_selection_path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:3529",
+    "source_ink": "#6E6257",
+    "actual_background": "#EADFCD",
+    "measured_contrast": 4.491678474119953,
+    "unchanged_threshold": 4.5,
+    "seeker_offer_observations": 20,
+    "guardian_offer_observations": 32,
+    "same_widget_and_actual_background": true,
+    "decision": "Accepted-source Q241 category, outside line 141 scope. Do not change ink here; retain all 52 observations for line 146 / its fresh Q241 owner. No exact-baseline pass claim."
+  },
+  "requests_readback_classification": {
+    "setting": "normal-430",
+    "plan": "Seeker Basic",
+    "state": "basic_plans/requests/pending_3_sent",
+    "observations": [
+      {
+        "group": "basic_seeker",
+        "state": "basic_plans/requests/pending_3_sent",
+        "viewport": "430x932@1.0",
+        "plan": "Seeker Basic",
+        "tab": 2,
+        "pages": [
+          "requests"
+        ],
+        "rendered_route": "requests",
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 0,
+        "runs": 0,
+        "pixels": 0,
+        "exempt_pixels": 0,
+        "modal_backdrop_exempt_pixels": 0,
+        "failures": 1,
+        "cache_hit": false,
+        "raster_images": 2,
+        "geometric_occlusion_aa_pixels": 0,
+        "coverage_error": "Expected text-bearing fixture produced no visible text runs"
+      },
+      {
+        "group": "basic_seeker",
+        "state": "basic_plans/requests/pending_3_sent",
+        "viewport": "430x932@1.0",
+        "plan": "Seeker Basic",
+        "tab": 2,
+        "pages": [
+          "requests"
+        ],
+        "rendered_route": "requests",
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 0,
+        "runs": 0,
+        "pixels": 0,
+        "exempt_pixels": 0,
+        "modal_backdrop_exempt_pixels": 0,
+        "failures": 1,
+        "cache_hit": false,
+        "raster_images": 2,
+        "geometric_occlusion_aa_pixels": 0,
+        "coverage_error": "Original painted scene changed or remained unstable during pixel readback; build=true; dirty=(RenderTransform); same_pixels=true"
+      }
+    ],
+    "decision": "Two unwaived per-frame coverage/readback tool errors with 0 runs / 0 pixels, not a demonstrated product contrast fault. Original dirty RenderTransform / same_pixels diagnostic retained; no invented fixture fix or suppression."
+  },
+  "Q240_classification": {
+    "name_raw_findings": 0,
+    "same_three_frame_visible_pixel_proof": "Separate Q240 controlled pixel proof; current main Family source group includes real measurements. No new proof run by this reviewer.",
+    "decision": "Name-gap correction passes its bounded proof; this does not make the failed strict replay green."
+  },
+  "scan_separate": {
+    "command_exit_code": 0,
+    "behavior_tests_passed": 4,
+    "settings": [
+      {
+        "setting": "normal",
+        "status": "pass",
+        "frames": 13,
+        "runs": 185,
+        "raw_findings": 0,
+        "focused_obligations": 1,
+        "coverage_gaps": [],
+        "report_only": false
+      },
+      {
+        "setting": "normal-430",
+        "status": "pass",
+        "frames": 7,
+        "runs": 95,
+        "raw_findings": 0,
+        "focused_obligations": 1,
+        "coverage_gaps": [],
+        "report_only": false
+      },
+      {
+        "setting": "large-375",
+        "status": "pass",
+        "frames": 13,
+        "runs": 155,
+        "raw_findings": 0,
+        "focused_obligations": 1,
+        "coverage_gaps": [],
+        "report_only": false
+      },
+      {
+        "setting": "large-430",
+        "status": "pass",
+        "frames": 7,
+        "runs": 95,
+        "raw_findings": 0,
+        "focused_obligations": 1,
+        "coverage_gaps": [],
+        "report_only": false
+      }
+    ],
+    "totals": {
+      "frames": 40,
+      "runs": 530,
+      "raw_findings": 0,
+      "focused_obligations": 4
+    }
+  },
+  "protected_unchanged_inputs": [
+    {
+      "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+      "sha256": "19479c2e6b53a50a0ac7b94dd3e055402501a16276bf2f8c039aadf2646d7b94",
+      "matches_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "sha256": "ca7025b3a6ae8777596d8f6abe39492e9f5537865ac7b3d3b2a563805db5ad6a",
+      "matches_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_contrast_test.dart",
+      "sha256": "c5707d71e35b21d95e5b088d56b75060644731c2794999a344e5a208c2d23ecc",
+      "matches_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_contrast_430_test.dart",
+      "sha256": "0a95f65048dc680b8011016f3c31bc18247308904ba4aaca64615117fbbfe76f",
+      "matches_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart",
+      "sha256": "e8f70c554318857487a9a147317c2e0b4cf8ac26c316f81bbec5dd7bbbecedca",
+      "matches_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart",
+      "sha256": "dc08cace45947a388e31c091538d52bbb84c4036edc11e37f689d8eecd7ab9f8",
+      "matches_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+      "sha256": "4184e19a6ed5d338929c65987f198fcedcb8156a94b9d01dde0c237de4058bcc",
+      "matches_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "sha256": "45ed70405774d2713c7e9e4919eccfcb988334b38f9caca1297934a1324a07b6",
+      "matches_accepted_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_colors.dart",
+      "sha256": "174dd7e58b1f59da7ce681f2c219380797859c6846be13f728697c449669419b",
+      "matches_accepted_HEAD": true
+    }
+  ],
+  "raw_evidence": [
+    {
+      "path": "main-replay/line126-focused-contrast-normal.json",
+      "sha256": "a4f2a7d53af0c36b2bdd9756bb94ada89afd06730638f234b1e62ffe9e025b6f",
+      "progress_snapshot": false
+    },
+    {
+      "path": "main-replay/line126-focused-contrast-normal-progress.json",
+      "sha256": "cebf1672d2a95d1e111b146b02df9a6720b90556a934c8d56bdb82f611468f63",
+      "progress_snapshot": true
+    },
+    {
+      "path": "scan-replay/line126-focused-contrast-normal.json",
+      "sha256": "c3755d366feb7a04a602c34a2b4a20a314d4c6c3c417472f9561be8b4e69b830",
+      "progress_snapshot": false
+    },
+    {
+      "path": "scan-replay/line126-focused-contrast-normal-progress.json",
+      "sha256": "7aa4e9c66bacabdc8c4828f93eb11ee3dabde73483d8be93665aafd57ac838ec",
+      "progress_snapshot": true
+    },
+    {
+      "path": "main-replay/line126-focused-contrast-normal-430.json",
+      "sha256": "c77470c54d2a2fdd6b7a725532a966a7105e8c80c0c7c74383c8a3526e7485ef",
+      "progress_snapshot": false
+    },
+    {
+      "path": "main-replay/line126-focused-contrast-normal-430-progress.json",
+      "sha256": "26b35230ed1dc44167fe33f3ee7d7a020315bf5eca542c5ad5943465bbecf191",
+      "progress_snapshot": true
+    },
+    {
+      "path": "scan-replay/line126-focused-contrast-normal-430.json",
+      "sha256": "e3bb86a42127b6b55e505276b1e8aff676fd4e031997a3197d8a21f5f7cb723b",
+      "progress_snapshot": false
+    },
+    {
+      "path": "scan-replay/line126-focused-contrast-normal-430-progress.json",
+      "sha256": "610ad203b884882536259f96d03397f9909a854ea0795b2b0f34afc073d5fbaa",
+      "progress_snapshot": true
+    },
+    {
+      "path": "main-replay/line126-focused-contrast-large-375.json",
+      "sha256": "5f97fe7dff81c3457dd00526892949f8d73fad72a7129fb308c79be8df903f05",
+      "progress_snapshot": false
+    },
+    {
+      "path": "main-replay/line126-focused-contrast-large-375-progress.json",
+      "sha256": "ed9d96891dd938b56741dabd5fabb59c8316dc5d0c62ac7f7ce7ebd99322f418",
+      "progress_snapshot": true
+    },
+    {
+      "path": "scan-replay/line126-focused-contrast-large-375.json",
+      "sha256": "94f554bb16aa4a12ad5c3e9ef751e3683d89db5532e0b5606a58bf04e2c81bfc",
+      "progress_snapshot": false
+    },
+    {
+      "path": "scan-replay/line126-focused-contrast-large-375-progress.json",
+      "sha256": "29f2b6842d07e7bf169f94bddf4f524908808063a64fede399db1fb624a3151a",
+      "progress_snapshot": true
+    },
+    {
+      "path": "main-replay/line126-focused-contrast-large-430.json",
+      "sha256": "b25199659765c969260075bf861a0a0a7c0551480b6b36bda75c15184bdac6ec",
+      "progress_snapshot": false
+    },
+    {
+      "path": "main-replay/line126-focused-contrast-large-430-progress.json",
+      "sha256": "f10ad1e0a1c919b22d7ad63a86bb1865d05fe16726a18169639deb146a969599",
+      "progress_snapshot": true
+    },
+    {
+      "path": "scan-replay/line126-focused-contrast-large-430.json",
+      "sha256": "d71dd6317ceebeac4c70797c3a0b4d521519da8743471e2838389654ba31dcc3",
+      "progress_snapshot": false
+    },
+    {
+      "path": "scan-replay/line126-focused-contrast-large-430-progress.json",
+      "sha256": "c50c9ce1e8d3c1cd245f29f755e693ad0da22e33fd5b0f7203eceb5fdb10a21f",
+      "progress_snapshot": true
+    }
+  ],
+  "original_observations": "Original Q238, Q229 and current main / scan raw reports retained; no alteration, reclassification as pass, threshold lowering, route exclusion or coverage count change. Progress JSON files are kept but were not used as final counts.",
+  "written_refusal": "OA-ZYRA-371 / Q242: do not publish failed line 141 implementation or borrow line 146 ink authority; park the exact candidate and release SOURCE. Both coverage errors remain recorded alongside all 52 real findings.",
+  "tests_run_by_reviewer": false,
+  "source_modified_by_reviewer": false
+}

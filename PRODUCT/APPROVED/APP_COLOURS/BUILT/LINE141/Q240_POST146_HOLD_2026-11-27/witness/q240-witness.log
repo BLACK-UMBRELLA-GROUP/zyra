@@ -1,0 +1,17 @@
+00:00 +0: loading /Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/proof-q240/test/zyra_clearer_text_contrast_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: Family (setUpAll)
+00:00 +0: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1 frames, 0 failures; lock19_v3_source 375x667@1.0
+LINE126 raster 3 frames, 0 failures; lock19_v3_source 375x667@1.0
+LINE126 raster 6 frames, 0 failures; lock19_v3_source 375x667@1.0
+LINE126 raster 11 frames, 0 failures; lock19_v3_source 375x667@1.0
+LINE126 raster 23 frames, 0 failures; lock19_v3_source 375x667@1.0
+Q240 FRAME 0 gap=12.000000000000057 glyphInsideTiles=0 namePaintInsideTiles=0 inside=1605 outside=6 restored=0 control=1611
+Q240 FRAME 1 gap=12.000000000000057 glyphInsideTiles=0 namePaintInsideTiles=0 inside=1605 outside=6 restored=0 control=1611
+Q240 FRAME 2 gap=12.000000000000057 glyphInsideTiles=0 namePaintInsideTiles=0 inside=1605 outside=6 restored=0 control=1611
+LINE126 raster 31 frames, 0 failures; lock19_v3_source 375x667@1.0
+LINE126 raster 40 frames, 0 failures; lock19_v3_source 375x667@1.0
+00:36 +1: Family (tearDownAll)
+00:36 +1: (tearDownAll)
+00:36 +1: All tests passed!

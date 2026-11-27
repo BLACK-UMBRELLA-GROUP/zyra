@@ -1,0 +1,17 @@
+{
+  "source_index_released": "2026-11-27T19:11:10.104653+00:00",
+  "SOURCE_clean": true,
+  "github_clean": true,
+  "foreign_staged_entries": 7,
+  "foreign_staged_snapshot_exact": true,
+  "line138_working_files_exact": 5,
+  "old_evidence_exact": 2482,
+  "held_path": "SOURCE/build/held/LINE141/2026-11-27_Q240_GATES",
+  "paths": 30,
+  "held_patch_sha256": "3e5011b48bbbcad3da2de6fd721cb22199f55688650a23e219954f7c3f912a16",
+  "held_manifest_sha256": "4dbc7c3a17126047cbdd3a30826a15786890565d2efe43e2f6bd454a254a73e6",
+  "accepted_head": "e74c0b9c4afa5fcc50e2138a68305ec5b42f78b9",
+  "failed_full_gate_rounds": 1,
+  "implementation_published": false,
+  "coordinator_next": 146
+}

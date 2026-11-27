@@ -1,0 +1,17 @@
+{
+  "started": "2026-11-27T18:55:50.567893+00:00",
+  "finished": "2026-11-27T18:56:17.709112+00:00",
+  "exit_code": 0,
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--dart-define=ZYRA_LINE141_DETAILS_REVIEW_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q240-post-146-hold-fresh-ultra/work/captures/details-before-q240",
+    "test/visual/line141_details_master_capture_test.dart",
+    "--reporter",
+    "expanded"
+  ],
+  "cwd": "/Users/shakeelahmad/_to_delete/LINE141_Q240_PROOF_2026-11-27/proof-q240"
+}
