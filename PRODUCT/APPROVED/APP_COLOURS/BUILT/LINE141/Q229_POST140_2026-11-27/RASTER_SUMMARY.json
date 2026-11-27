@@ -1,0 +1,20 @@
+[
+  {
+    "group": "main-replay",
+    "frames": 7224,
+    "runs": 84698,
+    "raw_findings": 6,
+    "proof_tuples": 84,
+    "all_coverage_complete": true,
+    "all_strict": true
+  },
+  {
+    "group": "scan-replay",
+    "frames": 40,
+    "runs": 542,
+    "raw_findings": 0,
+    "proof_tuples": 4,
+    "all_coverage_complete": true,
+    "all_strict": true
+  }
+]

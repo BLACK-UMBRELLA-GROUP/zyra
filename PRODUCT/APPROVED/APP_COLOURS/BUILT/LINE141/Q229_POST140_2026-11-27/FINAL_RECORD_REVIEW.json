@@ -1,0 +1,165 @@
+{
+  "verdict": "CLEAR for record-only publication; implementation gate remains failed",
+  "record_file_count": 44,
+  "claims_checked": [
+    "HANDOVER_2026-11-27.txt",
+    "TASK_NOTE_2026-11-27.txt",
+    "BUILD.json",
+    "GATES.json",
+    "QUESTION_FOR_FABLE.txt"
+  ],
+  "validated_results": {
+    "analyzer": "clean8.5s",
+    "focused": "387passed",
+    "capture_tests": "20passed;12named PNGs",
+    "main": "264passed/1raw teardown failure;7224frames/84698runs;84positive selected tuples/0coverage gaps/6raw observations",
+    "scan": "4passed;40frames/542runs;4positive selected tuples/0coverage gaps/0raw observations",
+    "ordinary": "7962passed/248skipped/0failed",
+    "accepted_d4_witness": "34frames/488runs/3raw observations/0coverage gaps;bodypass/teardownfail;initial wrong-case diagnostic disclosed and corrected once"
+  },
+  "all88positive_selected_tuple_counts_independently_match_actual_frames": true,
+  "public_review": {
+    "scanner_files": 44,
+    "hits": 716,
+    "binary_png_regex_hits": 708,
+    "png_count": 12,
+    "all_png_signatures_valid": true,
+    "all_pngs_match_prior_evidence_SHA256": true,
+    "all_pngs_match_COMPARISON_SHA256": true,
+    "no_png_text_metadata": true,
+    "text_hits": [
+      {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q229_POST140_2026-11-27/logs/captures.txt",
+        "line": 11,
+        "accepted_test_title_exact_match": true,
+        "currency_amount_present": false,
+        "classification": "Existing approved Flutter test title; scanner matches an ordinary word in its name."
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q229_POST140_2026-11-27/logs/captures.txt",
+        "line": 12,
+        "accepted_test_title_exact_match": true,
+        "currency_amount_present": false,
+        "classification": "Existing approved Flutter test title; scanner matches an ordinary word in its name."
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q229_POST140_2026-11-27/logs/captures.txt",
+        "line": 13,
+        "accepted_test_title_exact_match": true,
+        "currency_amount_present": false,
+        "classification": "Existing approved Flutter test title; scanner matches an ordinary word in its name."
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q229_POST140_2026-11-27/logs/captures.txt",
+        "line": 14,
+        "accepted_test_title_exact_match": true,
+        "currency_amount_present": false,
+        "classification": "Existing approved Flutter test title; scanner matches an ordinary word in its name."
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q229_POST140_2026-11-27/logs/captures.txt",
+        "line": 15,
+        "accepted_test_title_exact_match": true,
+        "currency_amount_present": false,
+        "classification": "Existing approved Flutter test title; scanner matches an ordinary word in its name."
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q229_POST140_2026-11-27/logs/captures.txt",
+        "line": 16,
+        "accepted_test_title_exact_match": true,
+        "currency_amount_present": false,
+        "classification": "Existing approved Flutter test title; scanner matches an ordinary word in its name."
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q229_POST140_2026-11-27/logs/captures.txt",
+        "line": 17,
+        "accepted_test_title_exact_match": true,
+        "currency_amount_present": false,
+        "classification": "Existing approved Flutter test title; scanner matches an ordinary word in its name."
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q229_POST140_2026-11-27/logs/captures.txt",
+        "line": 18,
+        "accepted_test_title_exact_match": true,
+        "currency_amount_present": false,
+        "classification": "Existing approved Flutter test title; scanner matches an ordinary word in its name."
+      }
+    ],
+    "source_scanner_hits": "22prior reviewed unchanged accepted-source lines; no new private business material identified",
+    "secret_scan": {
+      "record_report_findings": 0,
+      "record_log_confirms_no_leaks": true,
+      "new_source_files_independent_scans": "Both exit0/0findings earlier"
+    }
+  },
+  "preservation": {
+    "source_and_github_clean": true,
+    "entire_index_matches_lease": true,
+    "seven_foreign_working_hashes_exact": true,
+    "old_evidence_files": 2159,
+    "old_evidence_hashes_exact": true
+  },
+  "held": {
+    "paths": 28,
+    "base": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+    "patch_sha256_matches": true,
+    "prior_independent_28path_replay": "passed; see HELD_RELEASE_REVIEW.json"
+  },
+  "record_corrections_confirmed": {
+    "stale_verification_pending_text_removed": true,
+    "final_failed_verdict_recorded": true,
+    "actual_release_recorded": true
+  },
+  "limits": [
+    "No waiver or implementation publication approval.",
+    "ForFable follow-up and queue/daily-report filing are explicitly delegated to preserve foreign staged files.",
+    "Incidental unrelated pre-existing brief EOF whitespace is outside scope; owner records written refusal under OA-ZYRA-371.",
+    "No tests rerun and no source/index/repo record mutation by reviewer."
+  ],
+  "remaining_actionable_record_findings": [],
+  "snapshot_sha256": {
+    "HANDOVER_2026-11-27.txt": "384c355be1663d76dd18624da1f327a19ad2af99936932a878ae0825e6577c7f",
+    "QUESTION_FOR_FABLE.txt": "f4c6d09dbdb0c93fab092afa5cb1aeabe9d0dc9fc9a9d7019804f8833477cad6",
+    "TASK_NOTE_2026-11-27.txt": "ec68a558efd7a58808cd25a72769babecfb0f60a7567bdc657ed272f630da648",
+    "GATES.json": "3c1eb9d0a3663fd074ad79e67d5dbc4cac9072816a7e186092ad972c20fe2709",
+    "BUILD.json": "76a6dca87c83d136f7e3f1760945eb897b13483f938c92deade9ebc9fc9ecc80"
+  },
+  "published_log_normalization_review": {
+    "checks": [
+      {
+        "log": "analyzer",
+        "published_equals_only_trailing_space_tab_transform": true,
+        "whitespace_tokens_unchanged": true,
+        "raw_line_count": 2,
+        "published_line_count": 2,
+        "changed_lines": 1,
+        "raw_sha256": "3938edd828919dbf957fa6501dab6b9a582f21e43ef15c0dfc5e257fd23d425b",
+        "published_sha256": "d817bb22dfbccf76ccb5e25071f394ac4f7b1a64dee3d8dd3413f16380a6725e"
+      },
+      {
+        "log": "main-replay",
+        "published_equals_only_trailing_space_tab_transform": true,
+        "whitespace_tokens_unchanged": true,
+        "raw_line_count": 1149,
+        "published_line_count": 1149,
+        "changed_lines": 2,
+        "raw_sha256": "aae27bbad72ea547c635fdd50d3da516cf5c7e43bee7eb5a5b3e2eff6b2e572f",
+        "published_sha256": "eccaca75490946d9be123ff117ad674700f865cb2c4577e5276d13af5326169a"
+      },
+      {
+        "log": "accepted-witness",
+        "published_equals_only_trailing_space_tab_transform": true,
+        "whitespace_tokens_unchanged": true,
+        "raw_line_count": 105,
+        "published_line_count": 105,
+        "changed_lines": 2,
+        "raw_sha256": "21c43697fa4513ac3ba805293fec96fe52c927aea3c5bdc2bdc051a776005b14",
+        "published_sha256": "20b5a1d3368dda7a6c36cad43913b6950ef1cb99ce73d52efd2c75af754c0208"
+      }
+    ],
+    "metadata": "Trailing spaces/tabs trimmed only from copied log lines; substantive output unchanged. Original command logs remain in owner workspace.",
+    "all_exact": true,
+    "measurement_changes": false,
+    "source_or_image_changes": false
+  }
+}

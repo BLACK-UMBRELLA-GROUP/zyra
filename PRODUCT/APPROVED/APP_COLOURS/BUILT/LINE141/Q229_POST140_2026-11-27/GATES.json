@@ -1,0 +1,138 @@
+{
+  "analyzer": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exit_code": 0,
+    "seconds": 8.5
+  },
+  "focused": {
+    "exit_code": 0,
+    "passed": 387,
+    "seconds": 49,
+    "files": [
+      "line141_small_screen_fit_test",
+      "full_screen_error_test",
+      "guardian_card_interaction_test",
+      "one_journey_current_presentation_test",
+      "photo_gallery_add_page_test",
+      "profile_tab_monogram_contract_test",
+      "requests_guardians_lock2_shell_test",
+      "zyra_clearer_text_label_fit_test",
+      "zyra_request_activity_presentation_test",
+      "membership_wallet_visual_test",
+      "auth_gate_recovery_test",
+      "zyra_rendered_text_audit_controls_test"
+    ]
+  },
+  "runs": [
+    {
+      "name": "captures",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_LOCK19_REVIEW_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/captures/guardian-card",
+        "--dart-define=ZYRA_LINE102_GUARDIAN_JOURNEYS_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/captures/guardian-journeys",
+        "test/visual/lock19_guardian_card_capture_test.dart",
+        "test/visual/lock8_v5_guardian_journeys_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T14:39:31.507143+00:00",
+      "exit_code": 0,
+      "finished": "2026-11-27T14:39:51.653080+00:00"
+    },
+    {
+      "name": "main-replay",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/requests/Seeker_One,seeker/tab3/Seeker_One,seeker/tab4/Seeker_One,profiles_photos/profile/Seeker_One,profiles_photos/help_report_sent/Seeker_One,basic_seeker/requests/Seeker_Basic,basic_seeker/tab4/Seeker_Basic,basic_guardian/tab4/Guardian_Basic,basic_guardian/tab1/Guardian_Basic,lock8_pages/tab4/Guardian_One,lock8_pages/tab1/Guardian_One,lock19_v3/tab3/Seeker_One,lock19_v3/tab4/Guardian_One,lock19_v3/tab4/Guardian_Basic,lock15_1.0/tab2/Seeker_One,lock15_1.0/tab2/Seeker_Basic,lock15_1.0/tab2/Guardian_One,lock15_1.0/tab2/Guardian_Basic,lock15_2.0/tab2/Seeker_One,lock15_2.0/tab2/Guardian_One,lock35/tab4/Guardian_One",
+        "--name",
+        "^(Seeker|Basic plans|Guardian One|Family|Seekers|Safety|Phone|Focus) ",
+        "test/zyra_clearer_text_contrast_test.dart",
+        "test/zyra_clearer_text_contrast_430_test.dart",
+        "test/zyra_clearer_text_contrast_large_375_test.dart",
+        "test/zyra_clearer_text_contrast_large_430_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T14:39:51.653570+00:00",
+      "exit_code": 1,
+      "finished": "2026-11-27T14:49:35.653900+00:00"
+    },
+    {
+      "name": "scan-replay",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=line126_entry_Seeker_Basic_scan/scan/Seeker_Basic",
+        "--name",
+        "^Coverage entries line126 Seeker Basic actual Scan entry",
+        "test/zyra_clearer_text_contrast_test.dart",
+        "test/zyra_clearer_text_contrast_430_test.dart",
+        "test/zyra_clearer_text_contrast_large_375_test.dart",
+        "test/zyra_clearer_text_contrast_large_430_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T14:49:35.666422+00:00",
+      "exit_code": 0,
+      "finished": "2026-11-27T14:49:55.029233+00:00"
+    },
+    {
+      "name": "ordinary",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T14:49:55.035178+00:00",
+      "exit_code": 0,
+      "finished": "2026-11-27T14:58:06.238502+00:00"
+    }
+  ],
+  "rendered_summary": [
+    {
+      "group": "main-replay",
+      "frames": 7224,
+      "runs": 84698,
+      "raw_findings": 6,
+      "proof_tuples": 84,
+      "all_coverage_complete": true,
+      "all_strict": true
+    },
+    {
+      "group": "scan-replay",
+      "frames": 40,
+      "runs": 542,
+      "raw_findings": 0,
+      "proof_tuples": 4,
+      "all_coverage_complete": true,
+      "all_strict": true
+    }
+  ],
+  "ordinary_final_line": "08:06 +7962 ~248: All tests passed!",
+  "failed_full_gate_rounds": 1,
+  "mandatory_verdict": "FAILED:6 retained raw observations in normal375 replay; selected coverage complete; no waiver",
+  "published_log_normalization": "Trailing spaces/tabs trimmed only from copied log lines; substantive output unchanged. Original command logs remain in owner workspace."
+}

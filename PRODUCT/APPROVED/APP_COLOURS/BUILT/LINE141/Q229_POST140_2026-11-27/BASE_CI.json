@@ -1,0 +1,57 @@
+{
+  "observed_at": "2026-11-27T14:55:33.744Z",
+  "head": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "run_id": 46014516756,
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46014516756",
+  "jobs": [
+    {
+      "id": 140558104855,
+      "name": "Select Flutter tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140558105133,
+      "name": "Full text audit (normal-375)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 140558105167,
+      "name": "Full text audit (large-375)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 140558105313,
+      "name": "Full text audit (large-430)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 140558105442,
+      "name": "Full text audit (normal-430)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 140558377795,
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140558377930,
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140558377935,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "note": "Required baseline CI separated from optional reporting-only full-corpus observations. No optional repair or baseline waiver."
+}

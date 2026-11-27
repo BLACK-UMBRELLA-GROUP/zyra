@@ -1,0 +1,47 @@
+ZYRA line141 — LOCK14 V9 correction4, Q229 restart — 27 November 2026
+Status: QUESTION — Q229 raster follow-up. Candidate is not BUILT or published. Founder preview only. Live: no.
+Authority: continuing Founder GO; Q229 recorded answer and accepted Q228/Q237 baseline; OA-ZYRA-371, AD-AIOS-114, AD-AIOS-115, OA-AIOS-406. Built from the absolute small-screen brief, APP_COLOURS V9 Small-screen fit row and 23Nov22:30KSA LOCK record, fixed V325 reference and named Guardian masters. No new design decision.
+
+Behavior: full reading names wrap at word boundaries; Guardian access separates Stage n of8 and stage name, stacks View above Chat below400pt and lets existing card/scroll layout grow; four quick-access columns remain equal with approved syllable breaks; Profile actions retain wrapping; No sound badge uses white on78% espresso; Open Journey uses espresso on existing gold; Scan caption uses #4F443A; reference identifiers do not split at hyphens and retain original accessible text.
+
+State/data/boundaries: changes are presentation and faithful fixtures only. The existing shell owns local sample state, navigation, Guardian permissions and action admission. Existing Founder admission, LOCK44 pause/private guard, LOCK46 places/invite and native Make Main boundary remain intact. References add invisible word joiners only to displayed text; semantics retain original characters. No persistence schema, migration, external service, new entitlement or live connection. No phone/native build or next line.
+
+Integration: verified actual sealed 28-path patch SHA21189c34f187857b09deb0223c0a36108ccc043a8101de2708ad33898d6d4a38 (MANIFEST held_patch_sha256 correct; original patch_sha256 is historical).64 exact hunks. Six drifted files rebuilt from current HEADd4c25483 using their exact locked hunks, preserving both README sections, canonical Help/Q237 Report Sent Done and unchanged Contact Done, all LOCK46 behavior/tests and founderMakeMain, and parked compact Profile viewport-scroll repair. The22unchanged bases reproduce all sealed candidate hashes. No duplicate A1–A4 repair or corpus/CI/threshold change.
+
+Verification completed; mandatory main replay remains failed. Exact commands, times, results and source hashes are recorded in BUILD.json and GATES.json. Only record publication remains pending. Final screenshot evidence is limited to12named correction4 master comparisons at430×932@3x. Native/prototype rendering differences must be explicit; no full-screen pixel parity or Founder acceptance claimed. Focused replay grants selected route/plan/viewport coverage only, with strict raw contrast assertions and no whole-app coverage credit. Full optional corpus observations do not block SOURCE after required gates. Required baseline CI run46014516756 has3/3Flutter shards green; its4optional full-corpus jobs failed and are recorded without broad repair.
+
+Handoff: preserve seven foreign staged blobs/working files and all2159preexisting evidence files. Leave mixed queue/QUESTIONS status/date worktree unchanged for coordinator. This owner supplies its task note for the coordinator's27Nov daily report and line141 status update; no broad admin sweep. Actual lease acquired2026-11-27T14:37:04.583937+00:00; L49 six-hour deadline20:37:04.583937+00:00 or three failed full-gate rounds. SOURCE/index release is recorded below and in RELEASE.json; record-only commits follow.
+
+Written refusals under OA-ZYRA-371: do not expand correction4 into unrelated layout/copy revisions, suppress assertions, lower contrast or coverage thresholds, use REPORT_ONLY, claim full corpus coverage or publish an unpassed mandatory gate. Any actual blocker is batched once and parked/released under L49.
+
+Final measured checks
+Analyzer clean8.5s; focused387passed49s; capture suite20passed and12named fresh430x932@3xcomparisons independently reviewed. Main strict replay264passed plus1raw teardown failure,7224frames/84698runs,all84selected tuples positive and0coverage gaps; six observations in one normal375title category. Other3settings strict0raw. Exact real Scan strict4passed,40frames/542runs,4tuples,0gaps/0raw. 08:06 +7962 ~248: All tests passed!
+Exact commands/times/results are in GATES.json and logs. No REPORT_ONLY or gate change; no whole-app coverage credit.
+
+Blocking category
+Profiles details Maryam Hussain name28pt/w200,full-opacity espresso source measures1.3083445 versus3.0 at375x667/1.0,three scroll frames duplicated across2Family groups. Direct renderer/model/theme/swipe/raw auditor are unchanged. RASTER_FINDING_REVIEW.json records exact prior matching observations and narrow accepted-base evidence; actual product-versus-audit cause unresolved. This does not waive the current mandatory failure. QUESTION_FOR_FABLE.txt is the single bounded follow-up; coordinator files it without altering the preserved seven foreign staged paths. Q229 itself remains ANSWERED.
+Fresh post-release diagnostic on exact accepted d4c25483 is recorded separately in ACCEPTED_WITNESS.json; this is a narrow witness, not an accepted full-suite failure or blanket baseline claim.
+
+SOURCE/index release
+{
+  "source_index_released": "2026-11-27T14:58:44.142183+00:00",
+  "head": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "held_path": "SOURCE/build/held/LINE141/2026-11-27_Q229_POST140_GATES",
+  "held_patch_sha256": "af808e3e640d54390d74e72fe409cb86b37c6fff43289397daf94c08ab5f8d26",
+  "paths": 28,
+  "SOURCE_clean": true,
+  "github_clean": true,
+  "foreign_staged_entries": 7,
+  "foreign_index_and_working_exact": true,
+  "old_evidence_exact": 2159,
+  "failed_full_gate_rounds": 1,
+  "no_implementation_commit_or_push": true
+}
+SOURCE/.github clean at accepted head; index contains only the7original foreign entries, all working bytes and2159old evidence files exact. Mixed queue/QUESTIONS unchanged for coordinator. Candidate28paths are sealed with actual current-base hashes. One failed full-gate round; no repeat or budget overrun. No implementation commit/push. Record-only publication follows after independent record/public/preservation checks; exact record commit and push receipt are reported in TASK_NOTE and final output.
+
+Candidate file roles
+Account presentation and request activity presentation own wrapping names/actions; Guardian cards plus shell own separated stageName presentation; Guardian tabs own Open Journey ink; focus dashboard owns equal-width label fitting; local code page owns Scan caption ink; video player/trim own shared badge background; shared reference label plus error/state/Help consumers preserve identifier display/semantics. Remaining owned files are faithful wrapping/reference/geometry/scroll/shadow fixtures. Exact28paths/hashes are in INTEGRATION.json and current held MANIFEST. No candidate file is installed in SOURCE after release.
+Restart only after Fable supplies the bounded repair route, in a fresh owner chat, from current held28path patch af808e3e…f8d26. Rebuild any newly drifted file from its LOCK rather than forcing. Fable owns document acceptance and the coordinator owns the single question/status/daily-report filing.
+
+Incidental formatting observation
+A read-only broad whitespace check found a pre-existing trailing blank line in PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-22_CLEARER_TEXT.md. Written refusal under OA-ZYRA-371: leave this unrelated brief and all foreign work untouched; it is outside this implementation and does not affect its gate.

@@ -1,0 +1,286 @@
+{
+  "snapshot": "progress report; final current result belongs to owner",
+  "current_report": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line126-focused-contrast-normal-progress.json",
+  "current_failures": 6,
+  "current_failure_matches_prior_main": [
+    {
+      "group": "lock19_v3_source",
+      "scroll_frame": 0,
+      "matches_old_exact_measurement_fields": true
+    },
+    {
+      "group": "lock19_v3_source",
+      "scroll_frame": 1,
+      "matches_old_exact_measurement_fields": true
+    },
+    {
+      "group": "lock19_v3_source",
+      "scroll_frame": 2,
+      "matches_old_exact_measurement_fields": true
+    },
+    {
+      "group": "lock19_v3",
+      "scroll_frame": 0,
+      "matches_old_exact_measurement_fields": true
+    },
+    {
+      "group": "lock19_v3",
+      "scroll_frame": 1,
+      "matches_old_exact_measurement_fields": true
+    },
+    {
+      "group": "lock19_v3",
+      "scroll_frame": 2,
+      "matches_old_exact_measurement_fields": true
+    }
+  ],
+  "all_six_match_prior_main_exact_measurement_fields": true,
+  "presenter_source": {
+    "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+    "line": 206,
+    "description": "Flexible Text identity, Syne heading28/weight200, reached through ZyraBrowseDesigns details face"
+  },
+  "prior_isolated_baseline": {
+    "raw_report_exists": true,
+    "path": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-family-caption-report.json",
+    "sha256": "05fe0b6b4483c7e2839827c129ed25ca201487c92528f9ce76f87cd44c553718",
+    "report_only": false,
+    "matching_title_findings": [
+      {
+        "group": "lock19_v3_source",
+        "state": "settled",
+        "viewport": "375x667@1.0",
+        "plan": "Seeker One",
+        "tab": 0,
+        "pages": [],
+        "rendered_route": null,
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 0,
+        "runs": 16,
+        "pixels": 8759,
+        "exempt_pixels": 0,
+        "modal_backdrop_exempt_pixels": 0,
+        "failures": 1,
+        "cache_hit": false,
+        "raster_images": 85,
+        "geometric_occlusion_aa_pixels": 3,
+        "text": "Maryam Hussain",
+        "font_size": 28.0,
+        "rendered_size": 28.0,
+        "weight": 200,
+        "source_ink": "#ff2b2420",
+        "parent_opacity": 1.0,
+        "initials": false,
+        "contrast": 1.3083445123333874,
+        "required_contrast": 3.0,
+        "contrast_pass": false,
+        "weight_pass": true,
+        "opacity_pass": true,
+        "sample": {
+          "x": 102,
+          "y": 283,
+          "background": "#fff8f3ea",
+          "nominal_ink": "#ffdbd6ce",
+          "background_alpha": 255,
+          "original_alpha": 255,
+          "solid_alpha": 255,
+          "original_glyph_delta": 5,
+          "opaque_patch_transmission": 37
+        },
+        "widget_path": [
+          "Text",
+          "Flexible",
+          "Row",
+          "Column",
+          "Center",
+          "Expanded",
+          "Column",
+          "Padding",
+          "IntrinsicHeight",
+          "ConstrainedBox",
+          "_SingleChildViewport",
+          "IgnorePointer"
+        ]
+      },
+      {
+        "group": "lock19_v3_source",
+        "state": "settled",
+        "viewport": "375x667@1.0",
+        "plan": "Seeker One",
+        "tab": 0,
+        "pages": [],
+        "rendered_route": null,
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 1,
+        "runs": 16,
+        "pixels": 8759,
+        "exempt_pixels": 0,
+        "modal_backdrop_exempt_pixels": 0,
+        "failures": 1,
+        "cache_hit": true,
+        "raster_images": 4,
+        "geometric_occlusion_aa_pixels": 3,
+        "text": "Maryam Hussain",
+        "font_size": 28.0,
+        "rendered_size": 28.0,
+        "weight": 200,
+        "source_ink": "#ff2b2420",
+        "parent_opacity": 1.0,
+        "initials": false,
+        "contrast": 1.3083445123333874,
+        "required_contrast": 3.0,
+        "contrast_pass": false,
+        "weight_pass": true,
+        "opacity_pass": true,
+        "sample": {
+          "x": 102,
+          "y": 283,
+          "background": "#fff8f3ea",
+          "nominal_ink": "#ffdbd6ce",
+          "background_alpha": 255,
+          "original_alpha": 255,
+          "solid_alpha": 255,
+          "original_glyph_delta": 5,
+          "opaque_patch_transmission": 37
+        },
+        "widget_path": [
+          "Text",
+          "Flexible",
+          "Row",
+          "Column",
+          "Center",
+          "Expanded",
+          "Column",
+          "Padding",
+          "IntrinsicHeight",
+          "ConstrainedBox",
+          "_SingleChildViewport",
+          "IgnorePointer"
+        ]
+      },
+      {
+        "group": "lock19_v3_source",
+        "state": "settled",
+        "viewport": "375x667@1.0",
+        "plan": "Seeker One",
+        "tab": 0,
+        "pages": [],
+        "rendered_route": null,
+        "proof_kind": "shell_navigation",
+        "scroll_frame": 2,
+        "runs": 17,
+        "pixels": 9641,
+        "exempt_pixels": 0,
+        "modal_backdrop_exempt_pixels": 0,
+        "failures": 1,
+        "cache_hit": false,
+        "raster_images": 85,
+        "geometric_occlusion_aa_pixels": 0,
+        "text": "Maryam Hussain",
+        "font_size": 28.0,
+        "rendered_size": 28.0,
+        "weight": 200,
+        "source_ink": "#ff2b2420",
+        "parent_opacity": 1.0,
+        "initials": false,
+        "contrast": 1.3083445123333874,
+        "required_contrast": 3.0,
+        "contrast_pass": false,
+        "weight_pass": true,
+        "opacity_pass": true,
+        "sample": {
+          "x": 101,
+          "y": 188,
+          "background": "#fff8f3ea",
+          "nominal_ink": "#ffdbd6ce",
+          "background_alpha": 255,
+          "original_alpha": 255,
+          "solid_alpha": 255,
+          "original_glyph_delta": 2,
+          "opaque_patch_transmission": 37
+        },
+        "widget_path": [
+          "Text",
+          "Flexible",
+          "Row",
+          "Column",
+          "Center",
+          "Expanded",
+          "Column",
+          "Padding",
+          "IntrinsicHeight",
+          "ConstrainedBox",
+          "_SingleChildViewport",
+          "IgnorePointer"
+        ]
+      }
+    ],
+    "status": "fail",
+    "driver": "normal"
+  },
+  "source_hashes": [
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "live_sha256": "031c8f7cf8d80d2be442624d1d4e3a95430460eb6176269e29d01f3799ac3980",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_browse_designs.dart",
+      "live_sha256": "cc65c76c47f9ffc98c8006319f2d83051ed09e254ba2e70fb8ac8db909563554",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "live_sha256": "e2b6a2273698cb26b3b184084798bc5dfda728a4096df26515e4dd323a8e7c14",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": true
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_text.dart",
+      "live_sha256": "82ef4dfb41692b624ea8674b7cf369a3b7aa4fd511d7334f5de943eeab77c5e4",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": true
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_colors.dart",
+      "live_sha256": "8cd1a02b479bb7c6c01adb78a1b54be3027a9be2afdbb3f07bd18bd0566cd992",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_swipe_track.dart",
+      "live_sha256": "626bc2b0f8e8d70677793b75d21f68f61f8d96fcd9c4d7333281bcadab3af5b7",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "live_sha256": "f2e126cb5ec075447264064dfee914b568b39ef6b63bd6b3e211f408976270b5",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": true
+    },
+    {
+      "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+      "live_sha256": "c52565978bd6d9405805764badb3c54958aa89d8d49c1253cb8d515f3d46f79e",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": false
+    },
+    {
+      "path": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "live_sha256": "a6694908bb945be048390ef443fe9f492ae9a770a363d36bc46476e998394e66",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": true
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "live_sha256": "d5068b05aa30e19456f71646fdd4e24da4da211bd88399990c312bd370029232",
+      "live_matches_accepted_HEAD": true,
+      "accepted_HEAD_matches_prior_b4dcadd2": false
+    }
+  ],
+  "assessment": "Previously reproduced exact title/contrast category on prior accepted b4dcadd2, with unchanged direct production/auditor paths today. No direct line141 edit to this title, its layout, ink or model. Candidate effects elsewhere and changed A1/A3 harness mean this is not a fresh exact-current-HEAD runtime reproduction; no blanket baseline or pass credit. The raw audit models later compositing paint, so source espresso alone cannot explain or waive the low nominal-ink measurement. Exact product-versus-audit cause not established read-only.",
+  "question_if_final_failure_persists": "For Fable: give one bounded restart/repair route for six retained strict raster observations of the Profiles details name at 375x667 scale1.0 in the two Family fixtures: 28pt/w200, full-opacity espresso source ink measures1.3083445 against required3.0 after composition. The exact category was reproduced on prior accepted b4dcadd2 and recurs now; its presenter/model/theme/swipe source and raw raster auditor are unchanged. Please establish whether later app paint/overlap or the audit treatment is responsible, then authorize only that bounded product or test-tool repair while preserving every raw contrast and selected-coverage assertion. Current mandatory replay remains failed; no baseline waiver, threshold change, suppression or broader colour repair is requested.",
+  "mutations": "Scratch review JSON only; no tests, source or index mutations."
+}

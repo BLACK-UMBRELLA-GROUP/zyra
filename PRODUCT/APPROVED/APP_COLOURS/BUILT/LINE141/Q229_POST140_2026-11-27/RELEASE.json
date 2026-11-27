@@ -1,0 +1,14 @@
+{
+  "source_index_released": "2026-11-27T14:58:44.142183+00:00",
+  "head": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "held_path": "SOURCE/build/held/LINE141/2026-11-27_Q229_POST140_GATES",
+  "held_patch_sha256": "af808e3e640d54390d74e72fe409cb86b37c6fff43289397daf94c08ab5f8d26",
+  "paths": 28,
+  "SOURCE_clean": true,
+  "github_clean": true,
+  "foreign_staged_entries": 7,
+  "foreign_index_and_working_exact": true,
+  "old_evidence_exact": 2159,
+  "failed_full_gate_rounds": 1,
+  "no_implementation_commit_or_push": true
+}

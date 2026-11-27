@@ -1,0 +1,1202 @@
+{
+  "reviewer": "independent replay_scope agent",
+  "reviewed_at": "2026-11-27T14:56:03.722589+00:00",
+  "verdict": "FAIL: mandatory main focused raster gate failed; no waiver",
+  "excluded_stale_sidecar": "line126-focused-contrast-q237-captures.json is not part of this run",
+  "groups": [
+    {
+      "name": "main-replay",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/requests/Seeker_One,seeker/tab3/Seeker_One,seeker/tab4/Seeker_One,profiles_photos/profile/Seeker_One,profiles_photos/help_report_sent/Seeker_One,basic_seeker/requests/Seeker_Basic,basic_seeker/tab4/Seeker_Basic,basic_guardian/tab4/Guardian_Basic,basic_guardian/tab1/Guardian_Basic,lock8_pages/tab4/Guardian_One,lock8_pages/tab1/Guardian_One,lock19_v3/tab3/Seeker_One,lock19_v3/tab4/Guardian_One,lock19_v3/tab4/Guardian_Basic,lock15_1.0/tab2/Seeker_One,lock15_1.0/tab2/Seeker_Basic,lock15_1.0/tab2/Guardian_One,lock15_1.0/tab2/Guardian_Basic,lock15_2.0/tab2/Seeker_One,lock15_2.0/tab2/Guardian_One,lock35/tab4/Guardian_One",
+        "--name",
+        "^(Seeker|Basic plans|Guardian One|Family|Seekers|Safety|Phone|Focus) ",
+        "test/zyra_clearer_text_contrast_test.dart",
+        "test/zyra_clearer_text_contrast_430_test.dart",
+        "test/zyra_clearer_text_contrast_large_375_test.dart",
+        "test/zyra_clearer_text_contrast_large_430_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "selected_requirement_count": 21,
+      "selected_tuples": 84,
+      "all_selected_tuples_have_positive_text_runs_and_pixels": true,
+      "frames": 7224,
+      "runs": 84698,
+      "painted_pixels": 96828299,
+      "raw_findings": 6,
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/main-replay.log",
+      "log_sha256": "aae27bbad72ea547c635fdd50d3da516cf5c7e43bee7eb5a5b3e2eff6b2e572f",
+      "log_counts": {
+        "passed": 264,
+        "failed": 1,
+        "failure_kind": "normal375 tearDownAll raw-contrast assertion",
+        "protected_exit_code": 1
+      },
+      "reports": [
+        {
+          "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/main-replay-reports/line126-focused-contrast-normal.json",
+          "sha256": "8ce9a6756ecbc334d8684667ceca70ab585476ef7b57f2d117024208dc421aaf",
+          "driver": "normal",
+          "viewport": "375x667@1.0",
+          "status": "fail",
+          "strict": true,
+          "whole_app_coverage_credit": false,
+          "coverage_gaps": [],
+          "frames": 1975,
+          "runs": 23532,
+          "painted_pixels": 21166607,
+          "selected_proof_count": 21,
+          "selected_proofs": [
+            {
+              "group": "seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 12,
+              "contributing_frames_match": true,
+              "runs": 86,
+              "pixels": 54864
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 60,
+              "pixels": 34511
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 94,
+              "pixels": 52086
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "profile",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 8,
+              "contributing_frames_match": true,
+              "runs": 110,
+              "pixels": 60658
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "help_report_sent",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 37,
+              "pixels": 40196
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 12,
+              "contributing_frames_match": true,
+              "runs": 99,
+              "pixels": 56065
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 27,
+              "contributing_frames_match": true,
+              "runs": 423,
+              "pixels": 236943
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 7,
+              "contributing_frames_match": true,
+              "runs": 98,
+              "pixels": 59416
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab1",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 54,
+              "pixels": 45912
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 28,
+              "pixels": 16732
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab1",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 18,
+              "pixels": 15660
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 1,
+              "contributing_frames_match": true,
+              "runs": 22,
+              "pixels": 10809
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 8,
+              "contributing_frames_match": true,
+              "runs": 112,
+              "pixels": 67048
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 56,
+              "pixels": 33952
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 181,
+              "contributing_frames_match": true,
+              "runs": 2345,
+              "pixels": 1545860
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 45,
+              "pixels": 27228
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 45,
+              "contributing_frames_match": true,
+              "runs": 569,
+              "pixels": 548428
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 123,
+              "pixels": 114756
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 18,
+              "contributing_frames_match": true,
+              "runs": 270,
+              "pixels": 162526
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 105,
+              "pixels": 108879
+            },
+            {
+              "group": "lock35",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 28,
+              "pixels": 16732
+            }
+          ],
+          "raw_findings": [
+            {
+              "group": "lock19_v3_source",
+              "state": "settled",
+              "viewport": "375x667@1.0",
+              "plan": "Seeker One",
+              "tab": 0,
+              "rendered_route": null,
+              "scroll_frame": 0,
+              "text": "Maryam Hussain",
+              "font_size": 28.0,
+              "weight": 200,
+              "source_ink": "#ff2b2420",
+              "parent_opacity": 1.0,
+              "contrast": 1.3083445123333874,
+              "required_contrast": 3.0
+            },
+            {
+              "group": "lock19_v3_source",
+              "state": "settled",
+              "viewport": "375x667@1.0",
+              "plan": "Seeker One",
+              "tab": 0,
+              "rendered_route": null,
+              "scroll_frame": 1,
+              "text": "Maryam Hussain",
+              "font_size": 28.0,
+              "weight": 200,
+              "source_ink": "#ff2b2420",
+              "parent_opacity": 1.0,
+              "contrast": 1.3083445123333874,
+              "required_contrast": 3.0
+            },
+            {
+              "group": "lock19_v3_source",
+              "state": "settled",
+              "viewport": "375x667@1.0",
+              "plan": "Seeker One",
+              "tab": 0,
+              "rendered_route": null,
+              "scroll_frame": 2,
+              "text": "Maryam Hussain",
+              "font_size": 28.0,
+              "weight": 200,
+              "source_ink": "#ff2b2420",
+              "parent_opacity": 1.0,
+              "contrast": 1.3083445123333874,
+              "required_contrast": 3.0
+            },
+            {
+              "group": "lock19_v3",
+              "state": "settled",
+              "viewport": "375x667@1.0",
+              "plan": "Seeker One",
+              "tab": 0,
+              "rendered_route": null,
+              "scroll_frame": 0,
+              "text": "Maryam Hussain",
+              "font_size": 28.0,
+              "weight": 200,
+              "source_ink": "#ff2b2420",
+              "parent_opacity": 1.0,
+              "contrast": 1.3083445123333874,
+              "required_contrast": 3.0
+            },
+            {
+              "group": "lock19_v3",
+              "state": "settled",
+              "viewport": "375x667@1.0",
+              "plan": "Seeker One",
+              "tab": 0,
+              "rendered_route": null,
+              "scroll_frame": 1,
+              "text": "Maryam Hussain",
+              "font_size": 28.0,
+              "weight": 200,
+              "source_ink": "#ff2b2420",
+              "parent_opacity": 1.0,
+              "contrast": 1.3083445123333874,
+              "required_contrast": 3.0
+            },
+            {
+              "group": "lock19_v3",
+              "state": "settled",
+              "viewport": "375x667@1.0",
+              "plan": "Seeker One",
+              "tab": 0,
+              "rendered_route": null,
+              "scroll_frame": 2,
+              "text": "Maryam Hussain",
+              "font_size": 28.0,
+              "weight": 200,
+              "source_ink": "#ff2b2420",
+              "parent_opacity": 1.0,
+              "contrast": 1.3083445123333874,
+              "required_contrast": 3.0
+            }
+          ]
+        },
+        {
+          "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/main-replay-reports/line126-focused-contrast-normal-430.json",
+          "sha256": "b900823e397cc2d0d7f0695b1a452fd1d4c3fa1e610b652f1984fd3a605736a1",
+          "driver": "normal-430",
+          "viewport": "430x932@1.0",
+          "status": "pass",
+          "strict": true,
+          "whole_app_coverage_credit": false,
+          "coverage_gaps": [],
+          "frames": 1181,
+          "runs": 14407,
+          "painted_pixels": 12296752,
+          "selected_proof_count": 21,
+          "selected_proofs": [
+            {
+              "group": "seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 12,
+              "contributing_frames_match": true,
+              "runs": 86,
+              "pixels": 54866
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 60,
+              "pixels": 34515
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 34,
+              "pixels": 19660
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "profile",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 42,
+              "pixels": 22612
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "help_report_sent",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 1,
+              "contributing_frames_match": true,
+              "runs": 13,
+              "pixels": 14095
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 12,
+              "contributing_frames_match": true,
+              "runs": 99,
+              "pixels": 56145
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 153,
+              "pixels": 89526
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 7,
+              "contributing_frames_match": true,
+              "runs": 98,
+              "pixels": 59416
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab1",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 54,
+              "pixels": 45804
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 28,
+              "pixels": 16732
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab1",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 18,
+              "pixels": 15588
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 1,
+              "contributing_frames_match": true,
+              "runs": 22,
+              "pixels": 10800
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 8,
+              "contributing_frames_match": true,
+              "runs": 112,
+              "pixels": 67048
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 56,
+              "pixels": 33952
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 69,
+              "contributing_frames_match": true,
+              "runs": 1016,
+              "pixels": 628571
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 45,
+              "pixels": 27555
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 17,
+              "contributing_frames_match": true,
+              "runs": 259,
+              "pixels": 229254
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 51,
+              "pixels": 45384
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 90,
+              "pixels": 55350
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 51,
+              "pixels": 44604
+            },
+            {
+              "group": "lock35",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 28,
+              "pixels": 16732
+            }
+          ],
+          "raw_findings": []
+        },
+        {
+          "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/main-replay-reports/line126-focused-contrast-large-375.json",
+          "sha256": "0c6ca7d6fbc8df22b9d90a0c0c5895880905fc87bba9140eb543128c62ec192a",
+          "driver": "large-375",
+          "viewport": "375x667@1.3",
+          "status": "pass",
+          "strict": true,
+          "whole_app_coverage_credit": false,
+          "coverage_gaps": [],
+          "frames": 2471,
+          "runs": 26743,
+          "painted_pixels": 34602192,
+          "selected_proof_count": 21,
+          "selected_proofs": [
+            {
+              "group": "seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 16,
+              "contributing_frames_match": true,
+              "runs": 126,
+              "pixels": 116318
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 168,
+              "pixels": 143245
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 80,
+              "pixels": 68818
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "profile",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 8,
+              "contributing_frames_match": true,
+              "runs": 94,
+              "pixels": 68902
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "help_report_sent",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 30,
+              "pixels": 45253
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 16,
+              "contributing_frames_match": true,
+              "runs": 139,
+              "pixels": 117810
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 27,
+              "contributing_frames_match": true,
+              "runs": 360,
+              "pixels": 312345
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 21,
+              "contributing_frames_match": true,
+              "runs": 266,
+              "pixels": 221550
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab1",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 54,
+              "pixels": 70584
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 76,
+              "pixels": 62336
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab1",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 18,
+              "pixels": 24074
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 62,
+              "pixels": 44346
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 24,
+              "contributing_frames_match": true,
+              "runs": 306,
+              "pixels": 249380
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 12,
+              "contributing_frames_match": true,
+              "runs": 152,
+              "pixels": 126600
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 181,
+              "contributing_frames_match": true,
+              "runs": 2154,
+              "pixels": 2246425
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 102,
+              "pixels": 105555
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 51,
+              "contributing_frames_match": true,
+              "runs": 524,
+              "pixels": 862514
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 90,
+              "pixels": 158925
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 18,
+              "contributing_frames_match": true,
+              "runs": 212,
+              "pixels": 217388
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 96,
+              "pixels": 161268
+            },
+            {
+              "group": "lock35",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 76,
+              "pixels": 62336
+            }
+          ],
+          "raw_findings": []
+        },
+        {
+          "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/main-replay-reports/line126-focused-contrast-large-430.json",
+          "sha256": "cc378b37f07437ff427e49784f93dec0df6a9badb0b6fbef720688e890d07bfd",
+          "driver": "large-430",
+          "viewport": "430x932@1.3",
+          "status": "pass",
+          "strict": true,
+          "whole_app_coverage_credit": false,
+          "coverage_gaps": [],
+          "frames": 1597,
+          "runs": 20016,
+          "painted_pixels": 28762748,
+          "selected_proof_count": 21,
+          "selected_proofs": [
+            {
+              "group": "seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 12,
+              "contributing_frames_match": true,
+              "runs": 86,
+              "pixels": 84352
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 60,
+              "pixels": 52514
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 34,
+              "pixels": 30210
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "profile",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 42,
+              "pixels": 34222
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "help_report_sent",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 1,
+              "contributing_frames_match": true,
+              "runs": 13,
+              "pixels": 21906
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 12,
+              "contributing_frames_match": true,
+              "runs": 99,
+              "pixels": 85842
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 153,
+              "pixels": 137808
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 7,
+              "contributing_frames_match": true,
+              "runs": 98,
+              "pixels": 91021
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab1",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 54,
+              "pixels": 70476
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 28,
+              "pixels": 25606
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab1",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 18,
+              "pixels": 24018
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 1,
+              "contributing_frames_match": true,
+              "runs": 22,
+              "pixels": 16420
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 8,
+              "contributing_frames_match": true,
+              "runs": 112,
+              "pixels": 102448
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 56,
+              "pixels": 52012
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 69,
+              "contributing_frames_match": true,
+              "runs": 1016,
+              "pixels": 983910
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 3,
+              "contributing_frames_match": true,
+              "runs": 45,
+              "pixels": 43287
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 45,
+              "contributing_frames_match": true,
+              "runs": 662,
+              "pixels": 959015
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 150,
+              "pixels": 205572
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 6,
+              "contributing_frames_match": true,
+              "runs": 90,
+              "pixels": 87228
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 9,
+              "contributing_frames_match": true,
+              "runs": 129,
+              "pixels": 198328
+            },
+            {
+              "group": "lock35",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 2,
+              "contributing_frames_match": true,
+              "runs": 28,
+              "pixels": 25606
+            }
+          ],
+          "raw_findings": []
+        }
+      ]
+    },
+    {
+      "name": "scan-replay",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=line126_entry_Seeker_Basic_scan/scan/Seeker_Basic",
+        "--name",
+        "^Coverage entries line126 Seeker Basic actual Scan entry",
+        "test/zyra_clearer_text_contrast_test.dart",
+        "test/zyra_clearer_text_contrast_430_test.dart",
+        "test/zyra_clearer_text_contrast_large_375_test.dart",
+        "test/zyra_clearer_text_contrast_large_430_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "selected_requirement_count": 1,
+      "selected_tuples": 4,
+      "all_selected_tuples_have_positive_text_runs_and_pixels": true,
+      "frames": 40,
+      "runs": 542,
+      "painted_pixels": 320139,
+      "raw_findings": 0,
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/scan-replay.log",
+      "log_sha256": "721e6522ed9b043c948af267205b698d66bb12ad2ae388a406f142f36c03bab0",
+      "log_counts": {
+        "passed": 4,
+        "failed": 0,
+        "protected_exit_code": 0,
+        "correction": "Saved log supports4passed, not8."
+      },
+      "reports": [
+        {
+          "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/scan-replay-reports/line126-focused-contrast-normal.json",
+          "sha256": "10ee26dfea81a51f2856eb0dc80ecc0be6153d0bd2104fefb0c78f5e1ce6727f",
+          "driver": "normal",
+          "viewport": "375x667@1.0",
+          "status": "pass",
+          "strict": true,
+          "whole_app_coverage_credit": false,
+          "coverage_gaps": [],
+          "frames": 13,
+          "runs": 191,
+          "painted_pixels": 96590,
+          "selected_proof_count": 1,
+          "selected_proofs": [
+            {
+              "group": "line126_entry_Seeker_Basic_scan",
+              "route_or_tab": "scan",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 44,
+              "pixels": 15368
+            }
+          ],
+          "raw_findings": []
+        },
+        {
+          "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/scan-replay-reports/line126-focused-contrast-normal-430.json",
+          "sha256": "88180a40f0b9890abd40c6f32c1a115175d4edc4a9a02970c77196b11faca137",
+          "driver": "normal-430",
+          "viewport": "430x932@1.0",
+          "status": "pass",
+          "strict": true,
+          "whole_app_coverage_credit": false,
+          "coverage_gaps": [],
+          "frames": 7,
+          "runs": 95,
+          "painted_pixels": 44292,
+          "selected_proof_count": 1,
+          "selected_proofs": [
+            {
+              "group": "line126_entry_Seeker_Basic_scan",
+              "route_or_tab": "scan",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 44,
+              "pixels": 15600
+            }
+          ],
+          "raw_findings": []
+        },
+        {
+          "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/scan-replay-reports/line126-focused-contrast-large-375.json",
+          "sha256": "9732faf41ac93632bae5525607382918701f44063e32094cf4b81154e152d019",
+          "driver": "large-375",
+          "viewport": "375x667@1.3",
+          "status": "pass",
+          "strict": true,
+          "whole_app_coverage_credit": false,
+          "coverage_gaps": [],
+          "frames": 13,
+          "runs": 161,
+          "painted_pixels": 112203,
+          "selected_proof_count": 1,
+          "selected_proofs": [
+            {
+              "group": "line126_entry_Seeker_Basic_scan",
+              "route_or_tab": "scan",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 44,
+              "pixels": 23864
+            }
+          ],
+          "raw_findings": []
+        },
+        {
+          "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q229-post-140-restart-fresh-ultra/work/scan-replay-reports/line126-focused-contrast-large-430.json",
+          "sha256": "63d2c0ab12e51e43a8bfd2f1ec358ac70fa4edce4fa7a3bbfc3203760dfd982c",
+          "driver": "large-430",
+          "viewport": "430x932@1.3",
+          "status": "pass",
+          "strict": true,
+          "whole_app_coverage_credit": false,
+          "coverage_gaps": [],
+          "frames": 7,
+          "runs": 95,
+          "painted_pixels": 67054,
+          "selected_proof_count": 1,
+          "selected_proofs": [
+            {
+              "group": "line126_entry_Seeker_Basic_scan",
+              "route_or_tab": "scan",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 4,
+              "contributing_frames_match": true,
+              "runs": 44,
+              "pixels": 23680
+            }
+          ],
+          "raw_findings": []
+        }
+      ]
+    }
+  ],
+  "conclusions": [
+    "Main21requirements x4settings=84valid selected tuples; Scan1requirement x4settings=4valid selected tuples. All exact declared requirements match the actual proof and every text_frames count matches contributing shell-navigation frames with positive runs and pixels.",
+    "All8reports retain strict assertions, empty coverage gaps and no whole-app coverage credit.",
+    "Main gate fails on6raw Maryam Hussain observations at375x667@1.0, contrast1.3083445123333874 against3.0;3frames each in lock19_v3_source and lock19_v3. Other3main settings and all4Scan settings have0rawfindings.",
+    "A predating category cannot waive this mandatory main focused gate. Accepted-source witness must be recorded separately; it does not convert this candidate gate into a pass.",
+    "Stale q237-captures sidecars excluded. No test or source mutation, no test execution."
+  ]
+}

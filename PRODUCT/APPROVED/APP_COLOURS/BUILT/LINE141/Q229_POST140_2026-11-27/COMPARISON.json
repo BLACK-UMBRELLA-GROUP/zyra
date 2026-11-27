@@ -1,0 +1,172 @@
+{
+  "reviewer": "Independent read-only visual_review subagent; all12pairs actually viewed",
+  "result": "No actionable correction4 mismatch",
+  "screens": [
+    {
+      "master": "k02",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k02_access__hassan_2_journeys.png",
+      "master_sha256": "168b7c712b042fe0ac7b1c6e7da77339db657daaf0aa527deffb65b4824bd48f",
+      "capture_path": "captures/guardian-card/main_card_2_active_journeys.png",
+      "sha256": "b6945d547d548fa282681bc3702d2378c3db47ec10fb3c2e0d3b4f52d66c7c7a",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "k03",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k03_access__hassan_3_journeys.png",
+      "master_sha256": "7994995af0a7e3be4a1a4b63fdb552d09b80d03b9930ce1c3542635cc96af02b",
+      "capture_path": "captures/guardian-card/main_card_3_active_journeys.png",
+      "sha256": "e732c5f3cbbc8d502ad022ad5ff41d25eefb28294fa9ca04783088e40284dafb",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "k06",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k06_access__ibrahim_chat_locked.png",
+      "master_sha256": "c428b5edd30cab81229f4925cc14711043e789e70e576266445d4716f3135994",
+      "capture_path": "captures/guardian-card/additional_basic_card.png",
+      "sha256": "f6784385ac9f4c49010ac875cec77af977ab4228c56f54e7a536c6082e26f870",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "k10",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k10_sheet__price_no_family.png",
+      "master_sha256": "b72dac2093f0f5b69a05652314980aee54dd452c3cbdf92ea5e446162df83687",
+      "capture_path": "captures/guardian-card/k10_sheet__price_no_family.png",
+      "sha256": "dc219006191f369bc69fbfc385117c007c792d53c3d47bc19b702c6eb3bd8b8d",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "k13",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k13_sheet__price_family_full.png",
+      "master_sha256": "2ea2120b4cb9c27128fb7288a85f912e9085c90d3ac2a3d62aa6197ff3f95c08",
+      "capture_path": "captures/guardian-card/k13_sheet__price_family_full.png",
+      "sha256": "7b05530e5d40ae44d23e60b2d56b82693b94564f33f838bbc2073d3c512a2a9b",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "k14",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k14_sheet__invite_sent.png",
+      "master_sha256": "3655b946ba751e8b750c7df003fb85de54ca52d35d43c192ea5dfa405dec242a",
+      "capture_path": "captures/guardian-card/k14_sheet__invite_sent.png",
+      "sha256": "c72f734cb166d58c0c3dc9e0aff1b85a5dcd78473c56e76ba5df26d8b31f9ce6",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "k15",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k15_access__ibrahim_invited.png",
+      "master_sha256": "0b42a0fea50ebfce5743dc1e7f063ab248e2e7301b09255a4c83b5db29072d2c",
+      "capture_path": "captures/guardian-card/additional_guardian_family_invited.png",
+      "sha256": "3259685a505ef0805da517aed5f0fb770b163d80fdd871c73faafb65b6b1dc9a",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "k16",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k16_access__ibrahim_accepted_chat_off.png",
+      "master_sha256": "72001f5c0bcdbd7a96f95da4adbc6269ae6751139800ca2231bc802d976863f1",
+      "capture_path": "captures/guardian-card/additional_guardian_family_accepted.png",
+      "sha256": "44cb0efbfc57b13e3131e152a48002fe6668b07a98c8e3d6cd9d1381b4a011d9",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "k18",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k18_basic__access_1_journey.png",
+      "master_sha256": "895526116fd3e8de34d9f0ffebb40cc9d175f994ce2488db81cb7d7764edb8e2",
+      "capture_path": "captures/guardian-card/seeker_basic_guardian_card.png",
+      "sha256": "eba0d8f2320df8381fc7e42bddaab675711ae46884ffbda6fb1e8ae355f43304",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "g09",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+      "master_sha256": "fd14430a1c0b5646daff24b569378bc7d1865fcbc96a10b8eb3127798055b63b",
+      "capture_path": "captures/guardian-journeys/g09_journeys__adam.png",
+      "sha256": "3ecac7de69b08265ba7dc36b9888c3f31cf17bb89fd9ac24c64abda759294104",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "g09b",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09b_journeys__adam_paused.png",
+      "master_sha256": "9c828f6136a6ba09fb503c564d7bff40332ca90743034c965cb6c3cd19cafdef",
+      "capture_path": "captures/guardian-journeys/g09b_journeys__adam_paused.png",
+      "sha256": "88b6f192715382a38e3c88c3444b4b396b55ae08f374da23a8cffffa88ab9d97",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    },
+    {
+      "master": "g09c",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "master_sha256": "913560834e0ae309096f80c923102879d9326c0f3e184030b0f7592004de7758",
+      "capture_path": "captures/guardian-journeys/g09c_journeys__adam_guardian_basic.png",
+      "sha256": "9997863dea3cf13339eb54a810e9be397a2c566ca54049b7471b1e160aa47bd4",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "same_as_prior_capture": true,
+      "scope": "LOCK14 V9 correction4 only; no whole-screen pixel parity claim"
+    }
+  ],
+  "observations": [
+    "Two-line stage number/name are complete; View/Chat remain horizontal at430pt and focused geometry tests enforce stacking below400pt.",
+    "Espresso Open Journey on existing gold is readable in all3states; photos/navigation/real shadows are visible."
+  ],
+  "known_unchanged_differences": [
+    "Native font metrics, spacing/navigation and shadow rendering differ from prototype exports.",
+    "k10/k13/k14 sheets sit higher and are translucent.",
+    "k14 has existing14-day vs master7-day expiry copy and sample toast."
+  ],
+  "written_refusal": "OA-ZYRA-371: do not broaden line141 to change unrelated locked layouts/copy."
+}

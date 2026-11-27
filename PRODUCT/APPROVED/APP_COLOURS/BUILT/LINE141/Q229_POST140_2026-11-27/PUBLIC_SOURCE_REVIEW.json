@@ -1,0 +1,224 @@
+{
+  "accepted_head": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "read_only_repo": true,
+  "scanner_hit_count": 22,
+  "all_hit_lines_unchanged": true,
+  "hits": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "live_line": 1004,
+      "accepted_line": 1008,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "81ecc23ead4e5719cc047bde996cafe09e9e626dbad19b851923dc28a16e0182",
+      "classification": "accepted locked UI sample strings"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "live_line": 2972,
+      "accepted_line": 2972,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "43ce68bc397ce53879c280a1ec36430304c158bb812387c74b217a242d729f9f",
+      "classification": "accepted locked UI sample strings"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "live_line": 10697,
+      "accepted_line": 10698,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "2c20d8feb99937b46f186d4f27448508e9cd63e27895ca175622c4e5445fa327",
+      "classification": "accepted locked UI sample strings"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "live_line": 10698,
+      "accepted_line": 10699,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "9b988ca2d033a44d5969f56ef99aa30b668684acc0f463c4b7dbf9f8ce21e11c",
+      "classification": "accepted locked UI sample strings"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "live_line": 1987,
+      "accepted_line": 1987,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "f2cab1532e3b6631d592d949aa56fbfe2fe529712232bcc3b379dc154b26840f",
+      "classification": "accepted locked UI sample strings"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "live_line": 10,
+      "accepted_line": 9,
+      "scanner_tag": "email",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "1c9cb51e068710e39c30ab8d945e4e0aaec504a6e59f85e4a26cdbcb30a677b5",
+      "classification": "existing public support routing"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "live_line": 79,
+      "accepted_line": 78,
+      "scanner_tag": "email",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "432f0d29c5a28c2a93fdc0bc1bc83115ff4bfce0a181670135d9f33a7b54475a",
+      "classification": "existing public support routing"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "live_line": 548,
+      "accepted_line": 546,
+      "scanner_tag": "email",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "acda611b58c906cc97c6020e6aec5c25bb07369f17c6be826a5ef9bd1beffa8c",
+      "classification": "existing public support routing"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "live_line": 269,
+      "accepted_line": 269,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "d1987331de1090f18e24eff4c8134902d1288d1c59fae083ed9131422eacd8a6",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "live_line": 276,
+      "accepted_line": 276,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "88c208b1af9f2dc0f361fac4ee86e5b88cc0da4e677bfe280dfcb0083d1f1ea2",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "live_line": 278,
+      "accepted_line": 278,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "8b169330a6bcd8846ee988263b9518fd756cc07945213c92482703a10e31f5b9",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "live_line": 313,
+      "accepted_line": 313,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "e1a30970f08aca6cf81688cc1a5dd2c2e81f73f48a8e118d26039b357c3378f7",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "live_line": 315,
+      "accepted_line": 315,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "b75511712e0e5729fafd8b0ac3f9a113a1d1f159bc55f3e7398ee0ae3fcbfbbf",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "live_line": 362,
+      "accepted_line": 362,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "6dda8898e836e2bb6fb221b1010479d1717ac0d2df4f275993394ee3a2ef9300",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "live_line": 405,
+      "accepted_line": 405,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "6dda8898e836e2bb6fb221b1010479d1717ac0d2df4f275993394ee3a2ef9300",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "live_line": 533,
+      "accepted_line": 518,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "10ad2c3f1375dd3a7ee50efd9cc0661f8aa25ffa37a5d38b126cac34b81ede67",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "live_line": 534,
+      "accepted_line": 519,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "b62cf8bb3c140f38e8b3244a5e27b6a68c6ba3aaa4e7333b909d389da2d1c71b",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "live_line": 551,
+      "accepted_line": 536,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "1442d85cdbaa91343d0a24d1c62fc5552992c177fe1d1c737427904ebcbd27c8",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "live_line": 564,
+      "accepted_line": 549,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "367f7d21fdd11685815453ce4be74e3b9096289de9299759a956f425b0b7a981",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "live_line": 586,
+      "accepted_line": 571,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "a013bb6395e56a43430e1beb0812dcc684a6be27699037e982b56d6e85ace70c",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "live_line": 651,
+      "accepted_line": 636,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "8cf6cc587558baf3aabd8e19dac03178f3e828e350ee061406264c4373ec18ab",
+      "classification": "accepted visual fixture assertions"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "live_line": 685,
+      "accepted_line": 670,
+      "scanner_tag": "money",
+      "unchanged_in_accepted_head": true,
+      "line_sha256": "148d226f8daa2da761e7f0bd4e6e44f12833dfda49dcb1ce7b5108f94b5c9ae5",
+      "classification": "accepted visual fixture assertions"
+    }
+  ],
+  "new_file_secret_scans": [
+    {
+      "path": "SOURCE/lib/widgets/zyra_reference_label.dart",
+      "sha256": "e94544f52a2458d277b659709830a89b405530dc5cb4486927841e93b4e66c74",
+      "scanner": "gitleaks stdin default rules, redact100",
+      "exit_code": 0,
+      "finding_count": 0
+    },
+    {
+      "path": "SOURCE/test/line141_small_screen_fit_test.dart",
+      "sha256": "15d1367c9c3dca162832872c03c3aff6bbdf521846f1728fdba621fe1fc114a9",
+      "scanner": "gitleaks stdin default rules, redact100",
+      "exit_code": 0,
+      "finding_count": 0
+    }
+  ],
+  "manual_new_file_review": "Both new files contain only a text widget and synthetic focused test fixtures; no credential material found.",
+  "result": "clear"
+}

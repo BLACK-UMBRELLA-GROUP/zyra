@@ -1,0 +1,248 @@
+{
+  "base": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "patch_sha256": "af808e3e640d54390d74e72fe409cb86b37c6fff43289397daf94c08ab5f8d26",
+  "patch_sha256_matches_manifest": true,
+  "paths": 28,
+  "unique_paths": 28,
+  "exact_manifest_path_set": true,
+  "all_replay_checks_pass": true,
+  "files": [
+    {
+      "path": "SOURCE/README.md",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_local_code_page.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_help_safety_preview.dart",
+      "hunks": 3,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "hunks": 7,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/zyra_profile_video_trim_screen.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "hunks": 6,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_video_player.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_reference_label.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_state_widgets.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/full_screen_error_test.dart",
+      "hunks": 3,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/guardian_card_interaction_test.dart",
+      "hunks": 6,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/line141_small_screen_fit_test.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/photo_gallery_add_page_test.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_label_fit_test.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/zyra_request_activity_presentation_test.dart",
+      "hunks": 6,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "hunks": 2,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    },
+    {
+      "path": "SOURCE/test/auth_gate_recovery_test.dart",
+      "hunks": 1,
+      "exact_context": true,
+      "before_hash_match": true,
+      "candidate_hash_match": true,
+      "live_restored_to_base_or_absent_new_file": true
+    }
+  ],
+  "source_status": [],
+  "github_status": [],
+  "source_clean": true,
+  "github_clean": true,
+  "full_index_matches_lease": true,
+  "foreign_staged_count": 7,
+  "foreign_index_mismatches": [],
+  "foreign_worktree_hash_mismatches": [],
+  "old_evidence_count": 2159,
+  "old_evidence_hash_mismatches": [],
+  "source_index_released": "2026-11-27T14:58:44.142183+00:00",
+  "result": "clear",
+  "review_method": "Read-only git object replay in memory, live file SHA256s and tracked/nonignored status; scratch JSON only. No tests or source/index mutation."
+}
