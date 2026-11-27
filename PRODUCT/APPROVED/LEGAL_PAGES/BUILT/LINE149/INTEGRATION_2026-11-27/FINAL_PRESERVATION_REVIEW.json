@@ -1,0 +1,38 @@
+{
+  "line": 149,
+  "question": 235,
+  "verdict": "PASS",
+  "recorded_utc": "2026-11-27T10:13:17.809361+00:00",
+  "reviewer": "visual_review subagent / independent final preservation review",
+  "scope": "Read-only file hashing and record/log consistency; no Git, tests, shared writes, or live-index verification. Owner independently checks live index.",
+  "verified": {
+    "accepted_source_ci_hashes": 2347,
+    "existing_evidence_hashes": 1829,
+    "existing_built_pngs": 969,
+    "protected_line138_working_files": 5,
+    "fresh_capture_audit_pairs": 14,
+    "audit_runs_from_actual_json": 241,
+    "audit_failures_from_actual_json": 0,
+    "held_log_hashes": 6,
+    "moved_new_files": 3,
+    "source_manifest_paths": 15,
+    "held_patch_sha256": "801ea0d1f1acd84ffc0868f28538e602e4f6799f7387d6007e10c03642c69a7e",
+    "queue_change_only_line149": true,
+    "questions_change_only_Q235": true,
+    "recorded_index_entries_intake_equals_release": true
+  },
+  "outcome_consistency": {
+    "status": "QUESTION / Q235 OPEN",
+    "focused": "180 passed / 0 failed",
+    "affected_routes": "16 passed / 0 failed",
+    "ordinary": "7959 passed / 244 skipped / 1 same accepted Help failure in 8m38s",
+    "baseline": "6 passed / 4 skipped / 1 same Help failure",
+    "lease_utc": [
+      "2026-11-27T09:58:52.684099+00:00",
+      "2026-11-27T10:11:12.845447+00:00"
+    ],
+    "implementation_commit": null,
+    "push_attempts": 0
+  },
+  "findings": []
+}

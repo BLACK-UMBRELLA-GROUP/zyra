@@ -1,0 +1,12 @@
+{
+  "line": 149,
+  "question": 235,
+  "queue_change": "Only line149 status/date and appended note; all other bytes preserved",
+  "questions_change": "Q235 inserted after234; all other bytes preserved",
+  "queue_and_questions": "Working-tree only; excluded from owned record commit",
+  "baseline": {
+    "queue_sha_before_line149": "9a77c9ea43e4404777e5305fa562a135b2cc699d7e566348e29c06f92b779433",
+    "questions_sha_without_Q235": "52595ce397673ebea14e9f051d4243a452ff191add6a4c12fb7c58c065c7aa30",
+    "line149_original_row": "| 149 | 2026-11-25 | `PRODUCT/APPROVED/LEGAL_PAGES/BRIEFS/BUILD_BRIEF_2026-11-25_V1.md` | WAITING | | **LOCKed build** LOCK 51 Legal pages (Founder 25 Nov clickable \"Lock and queue\"): one in-app reader for Privacy policy, Terms of use, How photos are kept safe \u2014 section chips, all-sections sheet, In short, Read next; opens from Privacy & data and every purchase-button legal link. Sample text only (wording parked). Masters lg00\u2013lg06. After 148 (order only). **Pre-flight OK 25 Nov 05:44 UK** (question check): brief corrected, no change of meaning - Needs line, LOCK record, master names, item 3 = all six LOCK 38 buy screens (b01\u2013b08), no-master reasons, test route (S44), navigation, wording, states and sizes (fixed text; 375 / Larger Text), earlier tests; \"After 148\" order only. |"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "line": 149,
+  "command": "patch --dry-run --batch --fuzz=0 -p1 -i <held LINE149_INTEGRATED.patch>",
+  "exit_code": 0,
+  "source_after": "clean",
+  "candidate_patch_sha256": "801ea0d1f1acd84ffc0868f28538e602e4f6799f7387d6007e10c03642c69a7e",
+  "scope": "Reapplication only; no patch applied and no SOURCE write."
+}

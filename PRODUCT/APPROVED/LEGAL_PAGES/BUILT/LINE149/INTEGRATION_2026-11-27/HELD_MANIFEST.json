@@ -1,0 +1,102 @@
+{
+  "line": 149,
+  "lock": 51,
+  "question": 235,
+  "status": "QUESTION / held",
+  "head": "4ed97269f6b048e8c5bcf277537fbb5ef6b15a9c",
+  "integrated_patch_sha256": "801ea0d1f1acd84ffc0868f28538e602e4f6799f7387d6007e10c03642c69a7e",
+  "sealed_patch_sha256": "32e218d74741e610d43bff8b19779b17615190ac15412adb624ded17b190f730",
+  "candidate_files": [
+    {
+      "path": "SOURCE/README.md",
+      "base_sha256": "030c7e8ba448512e084a5245c67044bc9c0ffcf61e4f6da8afe7eb643f2c2522",
+      "integrated_sha256": "05f9e50435d50ead97aa0b471ec399ac2c9ce4f84459183cd72a46edc8789d32"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "base_sha256": "cb8149939a389f4d34cc83b8a5fc4b2298adb9095c5fa9b8948f717e792e9964",
+      "integrated_sha256": "a65e34facd784c1a9a8f5f471f4ae7174766b48bde95d3da5372df0745e38d48"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart",
+      "base_sha256": "f5a7df71b0a9a22201696898f85c861dfe81702a96723f87a5f1fe3126a79a81",
+      "integrated_sha256": "6955cf993a936a5ea02d19c6fcaadb8e60b6c589df6852d0ffc0a3b792bee12b"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_legal_preview_content.dart",
+      "base_sha256": null,
+      "integrated_sha256": "aabe03342a7ca0715eace0863f7487382681d34ac3654872a95a7fb382aa4c69"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_legal_reader_preview.dart",
+      "base_sha256": null,
+      "integrated_sha256": "57928c7fd4a6a7b1a8de0a701afbc6949786e0a79d8f302e07c35f786738a783"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "base_sha256": "d990a98abfd8a66f47d821545a89604ba3e486552dce7d6ee643c8fab1c3ba49",
+      "integrated_sha256": "c91c5f59a3d93c90431472e8e903f89738194ff449aa2dd5e8d2b1704ea45c08"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "base_sha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea",
+      "integrated_sha256": "dde8de3bc386e9b375fbf7a24fca8c953727f1acd0e103e7a45f2b85d6d2c940"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "base_sha256": "bb95d92f93bccf2bdf4b69bfff4666cfae2f466c627f9d51f99f3e8a27d5a2fd",
+      "integrated_sha256": "e30b73a899b269de5a30e113f7f2bed28e998e8e658ac5efdb1df5bb23dbbd46"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "base_sha256": "460381d8569d41b466ad7dc65e3fe1366bab5f37d3efcb29ffd3da4c3ddfda37",
+      "integrated_sha256": "fa98688fc81589881982ae6d8c6ac65d0fc540c5df3928bb176a1a9dcac64770"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "base_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+      "integrated_sha256": "12d0c4f9d0ee08977c0219039cfd265bfdb703638d90d47fbbcf16208efbfc0f"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "base_sha256": "63a764f657c006efb1a912f536260e11ce055626d7b42fbb25bc74de7c66862e",
+      "integrated_sha256": "723ddb8c45e5f5ad66091b732267b60d3810c82f5abcf8184cebdad9bae4b16b"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+      "base_sha256": "dccf45ad1a9c97e5ceadfdb13d7ec5d948a353cad77cc78ab2093f3eb73a6b6d",
+      "integrated_sha256": "7fa427ace0f1c30b7a0d45f3a2ab9ec308ba09f2d5b2ffd025a2f1aea3d5ac84"
+    },
+    {
+      "path": "SOURCE/test/founder_launch_review_test.dart",
+      "base_sha256": "3536e4f83bf8a20f66db783d0161d97bc628b9e481e770b3a0b88c68123ff9f0",
+      "integrated_sha256": "5f0993a1820b2237686f7eabe9d5502fbfc5fd57ff5e905c4ae877a3213223a9"
+    },
+    {
+      "path": "SOURCE/test/purchase_wording_preview_test.dart",
+      "base_sha256": "7a4090657ec3682c2a4a21e1ba6781b297beda31a7bae222c73f49591a287b93",
+      "integrated_sha256": "3ea2d42dad28c3e01e4b29fc08849add1e824a4207e9ddbddb04b9766e861c7b"
+    },
+    {
+      "path": "SOURCE/test/visual/line149_legal_reader_capture_test.dart",
+      "base_sha256": null,
+      "integrated_sha256": "36ab07dc268e3835b93e7478432cafe3af8b1ffb841c18b7cea781b19fe9a979"
+    }
+  ],
+  "logs": {
+    "logs/build149_baseline.log": "542951656d4eab579c5445b2f9254834144d007be66b533ec729e4fcbbea7088",
+    "logs/build149_ordinary.log": "9d54ccac054d57714881fb06a3c0ea59c9f6238510d3a4e9611eaf4a6867b501",
+    "logs/build149_analyze.log": "5d286c54a9a8e984c5e9d9d4fb9955fcfac423faaf9461add4a57f5f8fdfa884",
+    "logs/build149_focused.log": "9ab0f54942dab7fd7259af273bf5a6050dac195723ea40ed828345016b7ede6e",
+    "logs/build149_replay.log": "44f732d908ef497354002934c698bc25f176b94864d2c04bbdb1cfcc3eee8c43",
+    "logs/build149_driver.log": "2f6531b564ccf2e8acbdfd1c0de442711621838a37885ca3a2fd8f8957b3acd9"
+  },
+  "new_files": {
+    "NEW_FILES/SOURCE/test/visual/line149_legal_reader_capture_test.dart": "36ab07dc268e3835b93e7478432cafe3af8b1ffb841c18b7cea781b19fe9a979",
+    "NEW_FILES/SOURCE/lib/dev/zyra_legal_reader_preview.dart": "57928c7fd4a6a7b1a8de0a701afbc6949786e0a79d8f302e07c35f786738a783",
+    "NEW_FILES/SOURCE/lib/dev/zyra_legal_preview_content.dart": "aabe03342a7ca0715eace0863f7487382681d34ac3654872a95a7fb382aa4c69"
+  },
+  "fresh_evidence": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27",
+  "ordinary": "7959 passed /244 skipped /1 accepted Q228 Help fixture failure;8m38s",
+  "reapply": "Reconcile authorized Q235/Q228 baseline repair first; fresh owner uses exact patch against then-current accepted SOURCE; no full-corpus suppression."
+}

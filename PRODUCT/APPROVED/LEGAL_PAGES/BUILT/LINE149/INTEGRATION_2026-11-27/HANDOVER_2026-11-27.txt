@@ -1,0 +1,39 @@
+Line149 LOCK51 / DR-ZYRA-386 — integration verification, 27 Nov 2026
+
+Status: QUESTION — Q235. Exact candidate held; no implementation commit or push. Accepted SOURCE and .github released clean.
+
+Authority and scope
+Built from PRODUCT/APPROVED/LEGAL_PAGES/BRIEFS/BUILD_BRIEF_2026-11-25_V1.md, RECORD/LEGAL_PAGES_SPEC_CURRENT_VERSION_V1.md, RECORD/LOCK_RECORD.md, lg00-lg06 and fixed V365 LEGAL sample table. Local Founder preview only; wording remains sample. No real legal draft, server, public website, link sending, support submission, native build or phone delivery. DR-ZYRA-386; related deferred live work OA-ZYRA-402 remains separate.
+
+Behavior and boundaries
+One reader presents Privacy policy, Terms of use and How photos are kept safe (18/15/6 sections) from one bundled source per document. Privacy & data READ rows and the shared Terms/Privacy links on all six LOCK38 purchase surfaces open it. Title, Last updated and chips remain fixed; chips and the all-sections sheet jump to a section, and selection follows reading. Read next swaps the document in the same route. One back gesture returns to the original entry. Signed-in support opens existing local Contact support; sign-up retains its locked preview notice. Restore purchases keeps its notice. Web addresses are plain text.
+
+The reader owns its scroll controllers, selected section and document; the preview owner retains permission/lifetime guards. Admission requires current route/account; retained ownership permits the document sheet/support transition while preventing stale account callbacks. No persistence, migration, backend client, event or new developer toggle.
+
+Integration
+The sealed patch SHA256 is 32e218d74741e610d43bff8b19779b17615190ac15412adb624ded17b190f730. Base SOURCE is accepted b4dcadd2, under intake record HEAD 4ed97269. All source hunks used exact unique context. The README legal section was inserted after the retained LOCK44 section; its obsolete Help-summary notice sentence was corrected after independent review. The concept shell keeps accepted LOCK44/Q225 Pause and Private logic. Exact 15 paths and hashes are in SOURCE_MANIFEST.json; integrated patch SHA256 801ea0d1f1acd84ffc0868f28538e602e4f6799f7387d6007e10c03642c69a7e.
+
+Files and responsibilities
+- SOURCE/lib/dev/zyra_legal_preview_content.dart: bundled sample documents and section data.
+- SOURCE/lib/dev/zyra_legal_reader_preview.dart: reader route, chips, sheet, scroll selection, Read next and support transition.
+- SOURCE/lib/widgets/zyra_purchase_fine_print.dart: optional document callbacks and unchanged Restore notice.
+- SOURCE/lib/dev/zyra_one_journey_concept_shell.dart and circle_topics_state: current owner admission and legal-row actions.
+- SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart, zyra_guardian_before_pay_preview.dart, zyra_one_journey_guardian_cards.dart, zyra_one_journey_guardian_family_sheet.dart, zyra_signup_preview.dart and SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart: the six existing purchase surfaces.
+- SOURCE/test/purchase_wording_preview_test.dart and founder_launch_review_test.dart: migrate retired pop-up expectations and preserve stale callback coverage.
+- SOURCE/test/visual/line149_legal_reader_capture_test.dart: navigation, iOS edge swipe, seven states and compact Larger Text captures/audits.
+- SOURCE/README.md: local sample reader and protected verification route.
+
+Verification
+Protected driver pin/exec-denial proof passed. Whole-project analyzer: no issues, 12.3 s. Focused run: 180 passed, comprising 50 LOCK51 checks plus 130 audit controls. Affected line126 routes: 16 passed. Fourteen fresh PNG/audit pairs exactly match the sealed isolate; 241 rendered runs, 0 failures. States cover430x932 / 1.0 and 375x667 / 1.3. All chip/sheet/end/Read next interactions, both roles, six purchase surfaces, support notice and one actual widget iOS swipe are checked. Pixel identity with prototype is not claimed: native LOCK37 controls, Poppins raster/wrapping and shared shadows are preserved. Independent static and visual reviews passed; one README accuracy correction applied.
+
+Accepted-source comparison before integration: 6 passed / 4 skipped / 1 failed, reproducing Q228 Seeker Help discovery at line137_help_support_capture_test.dart:147 / BaselineHarness.tapFinder:1082. Welcome passed locally. Connected GitHub recheck confirms accepted CI 45958031712 Flutter shards 1/2 remain failed. Q229 and Q231-Q234 remain separately recorded; no extra full-corpus driver, scope waiver or baseline patch was added. Ordinary regression: 7,959 passed / 244 skipped / 1 failed in 8m38s; only the accepted Q228 Help fixture reproduced before integration. Final independent public/secret and preservation reviews passed before the record commit. The public scanner reviewed 42 records and both register files; raw findings were classified as evidence path/prose or PNG binary artifacts. The 32 raw gitleaks findings on evidence SHA-256 fields were individually verified against exact public-file hashes: zero actual secrets or unresolved findings. No allowlist, suppression or gate waiver was added. Final receipt-only additions have their own scoped check.
+
+Next owner
+Fable supplies one bounded accepted-source repair and restart route under Q235/Q228. Do not publish failed gates, suppress assertions, broaden this brief or call the local candidate BUILT. A fresh owner must reapply the exact held patch on its then-current accepted source and rerun named gates after the repair route is authorized. Real wording and hosted pages remain separate later work.
+
+Release and preservation
+SOURCE/.github released clean at 2026-11-27T10:11:12.845447+00:00 after one full gate. All 2,347 accepted tracked SOURCE/CI hashes, seven foreign staged entries, five line138 working hashes and 1,829 existing evidence hashes (969 PNGs) are exact. Queue149 is QUESTION and Q235 OPEN, working-tree only. Exact held location: SOURCE/build/held/LINE149/2026-11-27_INTEGRATED_Q235; includes integrated patch, manifest, logs and the three moved new files. Forward dry-run at fuzz zero passes against restored accepted SOURCE; it did not apply the patch. RELEASE.json and REGISTER_DELTA_REVIEW.json contain receipts. Record-only commit reference is in TASK_NOTE_2026-11-27.txt; no source push.
+
+Startup and review scope
+start_pack.py printed 21,121 bytes. Additional startup reads were the current AGENTS (16,748 bytes), the safe startup-script source (12,719 bytes), and the full short lessons page explicitly required by the user (25,386 bytes). Other reads were the brief-named LOCK/spec/masters and fixed V365 sample table, SOURCE README/driver/tests, candidate manifests, scoped queue/question and prior line148 release evidence. An initial queue/question regex overmatched older context; subsequent selectors were narrowed to exact rows. This did not authorize extra changes.
+The current AGENTS size is above the standing 16 KB target. Written refusal to edit standing governance in this implementation line; Fable owns that existing size correction. Per-task token counts are not exposed by the available tools and are not estimated. This is one new line-owner chat; independent source/public and visual subagents performed read-only review, and the owner alone edited shared SOURCE or ran tests/Git. No other queue line was started.
