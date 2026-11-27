@@ -1,0 +1,198 @@
+{
+  "line126-focused-contrast-large-375.json": {
+    "sha256": "388dee4676dda861c304c4d6bff1e682b4e343dd4ddb11ccf1fe772292741a09",
+    "failure_count": 38,
+    "coverage_gaps": [],
+    "focused_viewport_proof": [
+      {
+        "group": "profiles_photos",
+        "route_or_tab": "safety",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.3",
+        "text_frames": 18
+      },
+      {
+        "group": "profiles_photos",
+        "route_or_tab": "help_report_sent",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.3",
+        "text_frames": 3
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "one_upgrade",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.3",
+        "text_frames": 25
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "compatibility_store",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.3",
+        "text_frames": 9
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "guardian_invite",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.3",
+        "text_frames": 9
+      },
+      {
+        "group": "basic_guardian",
+        "route_or_tab": "one_upgrade",
+        "plan": "Guardian Basic",
+        "viewport": "375x667@1.3",
+        "text_frames": 35
+      }
+    ]
+  },
+  "line126-focused-contrast-large-430.json": {
+    "sha256": "bcb442e3af5a403e4db42e9ee5578c4181a7d89161373398cce33e05a66807da",
+    "failure_count": 10,
+    "coverage_gaps": [],
+    "focused_viewport_proof": [
+      {
+        "group": "profiles_photos",
+        "route_or_tab": "safety",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.3",
+        "text_frames": 6
+      },
+      {
+        "group": "profiles_photos",
+        "route_or_tab": "help_report_sent",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.3",
+        "text_frames": 1
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "one_upgrade",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.3",
+        "text_frames": 15
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "compatibility_store",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.3",
+        "text_frames": 3
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "guardian_invite",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.3",
+        "text_frames": 3
+      },
+      {
+        "group": "basic_guardian",
+        "route_or_tab": "one_upgrade",
+        "plan": "Guardian Basic",
+        "viewport": "430x932@1.3",
+        "text_frames": 21
+      }
+    ]
+  },
+  "line126-focused-contrast-normal-430.json": {
+    "sha256": "f1f6376c3387b77469eb4b79a3f88f9ebe33cc8cc2290da6e0b7f9d3ca65f571",
+    "failure_count": 10,
+    "coverage_gaps": [],
+    "focused_viewport_proof": [
+      {
+        "group": "profiles_photos",
+        "route_or_tab": "safety",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.0",
+        "text_frames": 6
+      },
+      {
+        "group": "profiles_photos",
+        "route_or_tab": "help_report_sent",
+        "plan": "Seeker One",
+        "viewport": "430x932@1.0",
+        "text_frames": 1
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "one_upgrade",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.0",
+        "text_frames": 5
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "compatibility_store",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.0",
+        "text_frames": 3
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "guardian_invite",
+        "plan": "Seeker Basic",
+        "viewport": "430x932@1.0",
+        "text_frames": 3
+      },
+      {
+        "group": "basic_guardian",
+        "route_or_tab": "one_upgrade",
+        "plan": "Guardian Basic",
+        "viewport": "430x932@1.0",
+        "text_frames": 7
+      }
+    ]
+  },
+  "line126-focused-contrast-normal.json": {
+    "sha256": "032de79b8dfb167993479e2af45c4192523844a4b73779a3645973c993d34cc3",
+    "failure_count": 16,
+    "coverage_gaps": [],
+    "focused_viewport_proof": [
+      {
+        "group": "profiles_photos",
+        "route_or_tab": "safety",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.0",
+        "text_frames": 18
+      },
+      {
+        "group": "profiles_photos",
+        "route_or_tab": "help_report_sent",
+        "plan": "Seeker One",
+        "viewport": "375x667@1.0",
+        "text_frames": 3
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "one_upgrade",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.0",
+        "text_frames": 15
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "compatibility_store",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.0",
+        "text_frames": 3
+      },
+      {
+        "group": "basic_seeker",
+        "route_or_tab": "guardian_invite",
+        "plan": "Seeker Basic",
+        "viewport": "375x667@1.0",
+        "text_frames": 9
+      },
+      {
+        "group": "basic_guardian",
+        "route_or_tab": "one_upgrade",
+        "plan": "Guardian Basic",
+        "viewport": "375x667@1.0",
+        "text_frames": 21
+      }
+    ]
+  }
+}

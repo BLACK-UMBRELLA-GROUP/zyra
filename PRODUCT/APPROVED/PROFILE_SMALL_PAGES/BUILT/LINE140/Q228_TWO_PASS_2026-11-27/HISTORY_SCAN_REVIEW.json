@@ -1,0 +1,234 @@
+{
+  "scan_exit": 1,
+  "reported_findings": 32,
+  "path": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+  "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+  "rule": "generic-api-key",
+  "reviewed_entries": [
+    {
+      "line": 138,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/logs/candidate-auth-suite-final.txt",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 168,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/APP_COLOURS/BUILT/a11y_phone_access.png",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 460,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/FIRST_TOUR/BUILT/SCREENSHOTS/t10_my_zyra_quick_access.png",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 479,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/FIRST_TOUR/BUILT/SCREENSHOTS/tg08_my_zyra_quick_access.png",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 523,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/narrow_320_200_access_top.png",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 925,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/LIMITS/BUILT/LINE146/PUBLIC_SECRET_REVIEW.JSON",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 1134,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/PAGE_DOTS/BUILT/V2/d03_guardian_tab_narrow_large_text_access.png",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 1135,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/PAGE_DOTS/BUILT/V2/d03_guardian_tab_narrow_large_text_access_bottom.png",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 1323,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/phone_access__normal.png",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 1325,
+      "rule": "generic-api-key",
+      "json_key": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/settings__phone_access_row.png",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 2452,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/lib/config/oauth_config.dart.example",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 2501,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/lib/dev/zyra_draft_compatibility_access_store.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 2553,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/lib/dev/zyra_one_journey_phone_access.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 2598,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/lib/screens/auth_gate.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 2682,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/lib/services/zyra_auth.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 2689,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/lib/services/zyra_developer_access.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 2989,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/supabase/migrations/20260718192519_optimize_rls_auth_uid_initplan.sql",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3004,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/supabase/migrations/20260726120300_restrict_ages_for_and_score_candidates_to_authenticated.sql",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3049,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/supabase/migrations/20260805233111_restrict_photo_object_gate_to_authenticated.sql",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3071,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/supabase/migrations/20260806193028_harden_revoke_truncate_from_anon_authenticated.sql",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3192,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/supabase/migrations/20260918075737_oa290_additional_guardian_journey_access.sql",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3233,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/supabase/production/RPC_ACCESS.md",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3511,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/lock15_quick_access_and_swipe_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3567,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/one_journey_prior_compatibility_access_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3634,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/supabase_publishable_auth_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3885,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/visual/lock12_phone_access_capture_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3961,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/zyra_additional_guardian_journey_access_migration_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 3966,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/zyra_auth_name_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 4004,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/zyra_developer_access_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 4012,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/zyra_draft_compatibility_access_store_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 4021,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/zyra_external_tester_access_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    },
+    {
+      "line": 4077,
+      "rule": "generic-api-key",
+      "json_key": "SOURCE/test/zyra_phone_access_lock12_test.dart",
+      "hex64_value": true,
+      "matches_git_blob_sha256": true
+    }
+  ],
+  "classification": "32 scanner matches are file SHA-256 evidence/source digests, each verified against its exact Git blob; no credential. Raw scan remains exit1; no suppression or publication waiver."
+}

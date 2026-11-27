@@ -1,0 +1,31 @@
+{
+  "independent_review": "PASS; no actionable patch or close-out finding",
+  "strict_gate": "FAIL; accepted-base contrast",
+  "part_b": "UNTOUCHED",
+  "threshold_changes": false,
+  "source_or_workflow_changes_after_restore": false,
+  "source_scan_review": {
+    "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+    "line": 903,
+    "finding": "money",
+    "disposition": "unchanged Dart record field accessor; not financial content"
+  },
+  "owned_diff_secret_scan_exit": 0,
+  "record_public_scan": {
+    "files": 10,
+    "hits": 0
+  },
+  "history_secret_scan": {
+    "exit": 1,
+    "reported": 32,
+    "classification": "all32 file SHA-256 digest false positives in prior line149 manifest; exact Git-blob provenance verified",
+    "suppressed": false,
+    "push_waiver": false
+  },
+  "record_secret_scan_exit": 0,
+  "all_written_path_public_scan": {
+    "files": 29,
+    "hits": 12,
+    "review": "9 unchanged foreign queue/Questions matches; 3 routine test-name matches in ignored ordinary log; no hit in new Q237/line140 row or owned records"
+  }
+}

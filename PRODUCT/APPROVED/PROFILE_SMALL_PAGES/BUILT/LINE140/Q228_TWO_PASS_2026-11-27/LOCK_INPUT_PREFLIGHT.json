@@ -1,0 +1,82 @@
+{
+  "review": "Independent read-only review viewed all eleven native masters and read complete brief/spec/LOCK_RECORD. No pack gap. Q222 addendum states present. Part B not applied.",
+  "masters": {
+    "ls01_your_places.png": {
+      "sha256": "a7b622a31926b2b43a32debca4370aade0114d182393655deb946fd87d32e4b0",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls02_switch_profile.png": {
+      "sha256": "45ed1e556bd56661fdad020620777dd627239a3202bb031bf4fe4c15755f9131",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls03_invite_someone.png": {
+      "sha256": "6a595b18e772f34254cf4ea21eb2c31fd2fc198413337d9b9a821ba3343dd1a0",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls04_request_restart.png": {
+      "sha256": "51c922f6109d212731a6b5f674ec754da0fc66586f7597b2b013ca9a8cb31c38",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls05_make_main_sheet.png": {
+      "sha256": "bda00aaa350001349fe4b8d714be1b8955bce171c1b64984ddb153eba3ee03b3",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls06_guardian_your_places.png": {
+      "sha256": "1b9270d694733b4cd7c1613b00ae10476177baa429b59ddafe010b0c6c081476",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls07_guardian_invite.png": {
+      "sha256": "1a1713ae40b6883cc59ea17d07b9bae4d889bef8e9c47f067b106c50e496b3f4",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls08_switch_profile__seeker_only.png": {
+      "sha256": "2008fc412d172510dc3b9f580f57757cf2aabd50f8797eea825e9753fd9cc685",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls09_switch_profile__guardian_only.png": {
+      "sha256": "a6c5cde079bb8a8510efee174b994f2a3fd4d7ba99629f8aebda19fbf9858fc9",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls10_guardian_your_places__basic.png": {
+      "sha256": "c048cd35130e6917a4ace7c2fd8b28a5cd346c5e05e014f3fc8c13b94bc65ef5",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    },
+    "ls11_guardian_your_places__no_seekers.png": {
+      "sha256": "e2f4f5bc1b9fd53e2c16f36c8e054334087667c0811cc8c9194e525baf0795e5",
+      "native_pixels": [
+        1290,
+        2796
+      ]
+    }
+  }
+}

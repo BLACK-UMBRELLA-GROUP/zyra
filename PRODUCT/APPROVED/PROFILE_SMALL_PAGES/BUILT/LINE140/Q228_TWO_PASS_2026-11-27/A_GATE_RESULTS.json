@@ -1,0 +1,50 @@
+{
+  "analyzer": {
+    "exit": 0,
+    "seconds": 8.0
+  },
+  "focused": {
+    "exit": 0,
+    "passed": 176,
+    "failed": 0,
+    "flavor": "offline-ci",
+    "Help_capture": true,
+    "audit_controls": 130
+  },
+  "local_recovery": {
+    "exit": 0,
+    "passed": 20,
+    "skipped": 4
+  },
+  "strict_replay": {
+    "exit": 1,
+    "passed_bodies": 12,
+    "failed_teardowns": 4,
+    "frames": 654,
+    "runs": 9631,
+    "coverage_tuples": 24,
+    "coverage_gaps": 0,
+    "contrast_observations": 74,
+    "counts_by_label": {
+      "Request a Journey": 16,
+      "Done": 8,
+      "Unlocks billing caption": 12,
+      "Guardian Family place helper": 14,
+      "disabled Continue to Apple": 24
+    }
+  },
+  "ordinary": {
+    "passed": 7951,
+    "skipped": 244,
+    "failed": 0,
+    "final_line": "09:29 +7951 ~244: All tests passed!",
+    "exit": 0
+  },
+  "hosted": "No A commit exists because strict local replay is red; latest accepted-source hosted run 45988180670 is failure",
+  "part_b": "UNTOUCHED",
+  "release_utc": "2026-11-27T11:53:08.308016+00:00",
+  "source_ci_clean_after_release": true,
+  "failed_full_gate_runs": 1,
+  "implementation_commit": null,
+  "implementation_push_attempts": 0
+}
