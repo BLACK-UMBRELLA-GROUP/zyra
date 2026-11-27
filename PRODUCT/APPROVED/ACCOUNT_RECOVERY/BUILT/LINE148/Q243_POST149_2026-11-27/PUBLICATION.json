@@ -1,0 +1,27 @@
+{
+  "records_commit": "b7fcbca6e7828f2f8569c35a1031b8cf79035548",
+  "pushed": true,
+  "remote_tracking_delta": [
+    0,
+    0
+  ],
+  "published_utc": "2026-11-27T23:23:05.450461+00:00",
+  "post_push_history_scan_exit": 0,
+  "network_push_attempts": 1,
+  "implementation_commit": null,
+  "line": 148,
+  "status": "QUESTION",
+  "question": 244,
+  "closure": "records-only;strict app gate FAILED;candidate not published",
+  "source_ci_clean": true,
+  "held_patch_sha256": "6a279548560c543b4f02cc2b8e554b50da537d2cc0204cfec6de5484b80c194f",
+  "foreign_staged_snapshots_exact": 7,
+  "line138_working_exact": 5,
+  "prior_BUILT_exact": 3169,
+  "only_queue_row_published": 148,
+  "only_question_row_published": 244,
+  "source_ci_diff_from_accepted": "none",
+  "hosted_candidate": "NOT_RUN;failed local gate;no duplicate CI wait on records-only",
+  "history_pre_push": "33actual content/file digests;0credentials;redacted raw/review retained",
+  "metadata_update": "This publication attestation is recorded in the follow-up records commit;its hash is available from Git history."
+}

@@ -1,0 +1,207 @@
+{
+  "scanner_exit": 1,
+  "findings": 33,
+  "actual_digest_matches": 33,
+  "confirmed_credentials": 0,
+  "entries": [
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 309,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 640,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 641,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 670,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1074,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1252,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1255,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1336,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1391,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1415,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1758,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1768,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1769,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1773,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1774,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1776,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1882,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1888,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1934,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1940,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1942,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1945,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1979,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1981,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1985,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1988,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1991,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 1997,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 2307,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 2332,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 2599,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 2623,
+      "actual_digest_proven": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PRESERVATION_BASELINE.json",
+      "rule": "generic-api-key",
+      "start_line": 2785,
+      "actual_digest_proven": true
+    }
+  ],
+  "verdict": "PASS;no credential finding"
+}
