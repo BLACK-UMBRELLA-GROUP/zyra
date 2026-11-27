@@ -1,0 +1,145 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/line121_signup_preview_controller_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +8: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +9: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal Rect
+00:00 +10: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: equal RRect
+00:01 +11: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: Clip.none Rect
+00:01 +12: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: Clip.none Path
+00:01 +13: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: changed Rect
+00:01 +14: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: changed RRect
+00:01 +15: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: resolved clip guard: unknown active Path
+00:01 +16: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: exact zero-alpha excludes the entire opacity object: animated=false
+00:01 +17: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: exact zero-alpha excludes the entire opacity object: animated=true
+00:01 +18: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: unknown zero-opacity subclass self-paint stays conservative
+00:01 +19: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual Chip slot admission: hidden avatar
+00:01 +20: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual Chip slot admission: hidden delete
+00:01 +21: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual Chip slot admission: weak label
+00:01 +22: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual Chip slot admission: visible avatar
+00:01 +23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual Chip slot admission: visible delete
+00:01 +24: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual phone native response during raster readback: changed=false
+00:02 +25: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual phone native response during raster readback: changed=true
+00:02 +26: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual SDK BoxDecoration clip: equal rectangle
+00:02 +27: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual SDK BoxDecoration clip: equal rounded rectangle
+00:02 +28: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual SDK BoxDecoration clip: equal circle
+00:02 +29: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual SDK BoxDecoration clip: changed radius
+00:02 +30: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual SDK BoxDecoration clip: rectangle to circle
+00:03 +31: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual SDK BoxDecoration clip: circle to rectangle
+00:03 +32: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual SDK BoxDecoration clip: unknown decoration
+00:03 +33: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: same scene
+00:03 +34: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: warm same scene
+00:03 +35: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: changed text
+00:03 +36: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: changed foreground
+00:03 +37: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: changed alignment
+00:03 +38: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: changed backdrop
+00:03 +39: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: changed backdrop without observer
+00:03 +40: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: direct backdrop
+00:03 +41: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: cold cleanup
+00:03 +42: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual mid-readback notification: warm cleanup
+00:03 +43: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: visible persistently dirty paint cannot receive scene or cache credit
+00:03 +44: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: sliver paint admission retains admitted overflow and audits revealed cache text
+00:03 +45: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: OverlayPortal onstage text retains conservative paint traversal
+00:03 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Q192 actual dialog keeps foreground strict and exempts only its backdrop
+00:03 +47: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Q192 actual sheet keeps foreground strict and exempts only its backdrop
+00:03 +48: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Q192 a transparent dialog barrier grants no dim exemption
+00:04 +49: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Q192 actual inline location barrier exempts its earlier sibling only
+00:04 +50: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Q191 one overflow-visible word cannot pass as a fitted single line
+00:04 +51: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Q192 rectangular barrier clipping does not exempt exposed text
+00:04 +52: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Q192 rounded barrier clipping does not exempt exposed text
+00:04 +53: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Q191 fractional letter-spacing bearings preserve an exact fitted advance
+00:04 +54: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: transparent capture boundary: black text over white parent
+00:04 +55: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: transparent capture boundary: white text over black parent
+00:04 +56: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: later painted translucent white veil lowers actual ink contrast
+00:04 +57: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: occluded thin text cannot borrow another node visible glyphs
+00:04 +58: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: a separately painted node shadow stays in the real background
+00:04 +59: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: mixed RichText ink, backgrounds, ligatures and graphemes isolate
+00:04 +60: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: word-break gate spans separate colored RichText runs
+00:04 +61: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: explicit visible syllable hyphen is accepted by word-break gate
+00:04 +62: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: original foreground shader fails closed as unsupported
+00:05 +63: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: ancestor ColorFiltered fails closed as unsupported
+00:05 +64: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: colorizing srcIn mask fails closed before glyph visibility
+00:05 +65: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: original foreground stroke paint fails closed
+00:05 +66: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: original foreground multiply paint fails closed
+00:05 +67: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: opaque gold circle edge does not dilute remaining visible ink
+00:05 +68: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: uniform faint dstIn mask 0.05 remains contrast tested
+00:05 +69: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: uniform faint dstIn mask 0.00392156862745098 remains contrast tested
+00:05 +70: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: generic faint shader edge is not an opaque-geometry exemption
+00:05 +71: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: cache distinguishes black text on black from black-covered text
+00:05 +72: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: split-span combining mark receives its own visible ink audit
+00:05 +73: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 12.5 summary on pale card retains nominal secondary ink
+00:05 +74: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: strict 4.5 boundary 4.498958743458361
+00:05 +75: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: strict 4.5 boundary 4.5000349651688705
+00:05 +76: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: 24pt boundary 24.0 w400 Color(alpha: 1.0000, red: 0.5804, green: 0.5804, blue: 0.5804, colorSpace: ColorSpace.sRGB)
+00:05 +77: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: 24pt boundary 23.99 w400 Color(alpha: 1.0000, red: 0.5804, green: 0.5804, blue: 0.5804, colorSpace: ColorSpace.sRGB)
+00:05 +78: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: 24pt boundary 23.99 w700 Color(alpha: 1.0000, red: 0.5804, green: 0.5804, blue: 0.5804, colorSpace: ColorSpace.sRGB)
+00:05 +79: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: 24pt boundary 19.0 w700 Color(alpha: 1.0000, red: 0.5804, green: 0.5804, blue: 0.5804, colorSpace: ColorSpace.sRGB)
+00:05 +80: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: 24pt boundary 24.0 w400 Color(alpha: 1.0000, red: 0.5843, green: 0.5843, blue: 0.5843, colorSpace: ColorSpace.sRGB)
+00:05 +81: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: ONE artwork in an actual monogram child stays ordinary small text
+00:05 +82: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: provider G at 15pt is ordinary small text
+00:05 +83: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual person initial uses 3 to 1 on its controlled gold background
+00:05 +84: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 8 w200 narrow and descender glyphs
+00:05 +85: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 8 w300 narrow and descender glyphs
+00:05 +86: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 8 w400 narrow and descender glyphs
+00:05 +87: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 8 w500 narrow and descender glyphs
+00:05 +88: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 10 w200 narrow and descender glyphs
+00:06 +89: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 10 w300 narrow and descender glyphs
+00:06 +90: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 10 w400 narrow and descender glyphs
+00:06 +91: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 10 w500 narrow and descender glyphs
+00:06 +92: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 12 w200 narrow and descender glyphs
+00:06 +93: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 12 w300 narrow and descender glyphs
+00:06 +94: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 12 w400 narrow and descender glyphs
+00:06 +95: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 12 w500 narrow and descender glyphs
+00:06 +96: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 14 w200 narrow and descender glyphs
+00:06 +97: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 14 w300 narrow and descender glyphs
+00:06 +98: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 14 w400 narrow and descender glyphs
+00:06 +99: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: Poppins 14 w500 narrow and descender glyphs
+00:06 +100: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual footer fade band respects clipping=false and foreground
+00:06 +101: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: actual footer fade band respects clipping=true and foreground
+00:06 +102: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: known footer fade does not exempt unrelated non-scrolling text
+00:06 +103: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration (setUpAll)
+00:06 +103: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration LOCK22 V4 actual Settings and Edit profile routes at 1.0
+00:10 +104: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration LOCK22 V4 actual Settings and Edit profile routes at 2.0
+00:12 +105: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration Settings retains every row action guardian=false smooth=false
+00:15 +106: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration Settings retains every row action guardian=false smooth=true
+00:18 +107: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration Settings retains every row action guardian=true smooth=false
+00:19 +108: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration Settings retains every row action guardian=true smooth=true
+00:22 +109: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration unkeyed responsive scrolls restore their exact child slots
+00:22 +110: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration real compatibility reader restores real page without sentinel
+00:22 +111: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration unkeyed restoration rejects a changed type path
+00:22 +112: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration unkeyed restoration rejects a changed key path
+00:22 +113: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration unkeyed restoration rejects a changed cardinality path
+00:22 +114: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: preserve
+00:22 +115: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: editable
+00:22 +116: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: filled
+00:22 +117: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: app-controller
+00:22 +118: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: app-key
+00:22 +119: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: hint
+00:22 +120: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: focused
+00:22 +121: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration nested scroll chrome keeps ownership: preserve
+00:22 +122: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration nested scroll chrome keeps ownership: outer-controller
+00:22 +123: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration nested scroll chrome keeps ownership: app-key
+00:22 +124: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration editable restoration identity: preserve
+00:22 +125: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration editable restoration identity: controller
+00:22 +126: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration editable restoration identity: explicit-focus
+00:22 +127: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration editable restoration identity: focused-generated
+00:22 +128: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration initial raster audit requires presentation readiness=true
+00:22 +129: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration initial raster audit requires presentation readiness=false
+00:22 +130: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration cold image first frame covers the actual closed action tray
+00:23 +131: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration failed image first frame cannot become passing raster proof
+00:23 +132: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration mounted cached PageView image settles before audit capture
+00:23 +133: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration cached image first-frame error rejects before any raster proof
+00:23 +134: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration cached image readiness stays four-pass bounded and disposes listeners
+00:23 +135: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration actual nested native notifier during once-only readiness settles before capture
+00:24 +136: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration layout-mounted unresolved image rejects before capture without readiness retry
+00:24 +137: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration pending async notifier builds before sliver raster layout
+00:24 +138: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration a nested forced scaler cannot claim a canonical tuple
+00:25 +139: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration (tearDownAll)
+00:25 +139: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: (tearDownAll)
+00:25 +139: All tests passed!

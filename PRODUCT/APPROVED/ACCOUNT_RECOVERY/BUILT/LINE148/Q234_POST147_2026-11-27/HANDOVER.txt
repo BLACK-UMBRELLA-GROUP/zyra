@@ -1,0 +1,45 @@
+Line 148 / LOCK 50 — Q243 hold after line 147
+27 November 2026
+
+Current state
+The sample recovery implementation is held and has not been published. At 375 × 667 with 2.0 text, sample Welcome overflows vertically by 71 pixels on both iPhone and Android. A controlled comparison using the accepted Welcome and controller from HEAD reproduces 41 pixels on each platform. The accepted failure does not waive the candidate failure. Q243 asks the ZYRA Claude chat for a bounded locked correction and restart route. The ordinary suite was already running when Q243 was filed and completed with the same two failures. SOURCE and CI are restored to the accepted state and released.
+
+Authority and inputs
+Founder GO covers line 148 only. Q234 is answered. Governing references are LOCK 50, DR-ZYRA-385, OA-ZYRA-402 and OA-ZYRA-371. Inputs are ACCOUNT_RECOVERY/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md, RECORD/ACCOUNT_RECOVERY_SPEC_CURRENT_VERSION_V1.md, RECORD/LOCK_RECORD.md, masters ar01–ar04 and the brief’s fixed V364 prototype reference. The absolute-path start pack passed and printed 20,353 bytes. Conversation: new, started 21:53:34 UK; SOURCE taken at 21:54:35.778457 UTC. Accepted HEAD is e3943f2a698490dbacb81eef8e81a14ef6c15647. START.json records the original Q234 and newer preflight hash verification; SOURCE_MANIFEST.json records every accepted/candidate hash.
+
+Behavior built in the held candidate
+Sample Welcome keeps the existing primary provider buttons and platform order, then offers Can’t sign in?. Recovery uses the shared sign-up chevron and returns to Welcome without entering or creating an account. Contact support stays on the page and shows exactly “Opens the support form — no sign-in needed”, without a full stop.
+Sign-in & security adds BACKUP SIGN-IN between SIGN-IN and SIGNED-IN DEVICES, including the one-device state. It offers the other provider, mirrors Apple/Google copy and toasts, aligns the row with shared Settings rows and uses #326B4C for Added.
+The existing sample request-account session owns primary provider and backup state per role. First entry adopts the selected provider; setup continuation preserves it. The shell’s fresh guard and the session’s role/primary-provider check reject former, duplicate, cross-role and retired-route callbacks. Actual Switch profile proof preserves Seeker Added while Guardian starts clean; a retained Seeker callback cannot add a Guardian backup. Backup does not invoke native confirmation. Existing sign-out confirmation remains.
+No real auth, provider linking, support sending, backend connection, phone action, native build, live route, download or migration was added. The retired real Welcome remains unchanged. Accepted line 147 owner/foreground/Main/Additional/Circle behavior and accepted 141 Details gap, 145 prepared photo/history and 146 Limits/Q241 remain unchanged.
+
+Owned files
+SOURCE/README.md — documents the sample behavior and focused proof.
+SOURCE/lib/dev/zyra_one_journey_concept_shell.dart — provider handoff, overview provider and guarded backup callback only.
+SOURCE/lib/dev/zyra_privacy_security_preview.dart — mirrored backup row and Added state.
+SOURCE/lib/dev/zyra_request_account_session.dart — role-local provider and backup lifetime.
+SOURCE/lib/dev/zyra_signup_preview.dart — recovery presentation and visit guards.
+SOURCE/lib/dev/zyra_signup_preview_controller.dart — local recovery navigation.
+SOURCE/test/line121_signup_account_session_test.dart — provider/session lifetime assertions.
+SOURCE/test/line121_signup_preview_widget_test.dart — platform, recovery and stale callback assertions.
+SOURCE/test/visual/line148_account_recovery_capture_test.dart — original captures, device states and narrow Larger Text proof.
+SOURCE/test/visual/line148_lock50_rebase_proof_test.dart — focused six-size/platform/provider proof and actual Switch profile; retains both failing Welcome cases.
+ZYRA_LINE148_CAPTURE defaults false and emits only local test evidence when enabled. No release product toggle was added. The diagnostic overflow capture is separate from the gate and explicitly labelled DIAGNOSTIC_ONLY_NOT_GATE.
+
+Measured checks
+Protected analyzer: clean, 9.6 seconds. Original focused suite: 35 passed. Controller/audit controls: 139 passed. Relevant line 126 overview: 4 passed, covering Seeker/Guardian Basic/One at 430 × 932 / 1.0. Line 147 preservation: 39 passed. Ask my Guardians/Main/Additional/Circle smoke: 3 passed, with mocked request counts unchanged.
+Six fresh 430 × 932 @3x captures and nine audit reports measure 86 text runs with zero findings. All nine JSON hashes match the earlier Q234 proof; three security PNGs also match exactly. The other three PNGs have small real pixel differences, quantified in the independent comparison rather than attributed to an unproven cause.
+Supplemental proof: 23 passed / 2 failed. The standard 375/430 at 1.0/1.3 combinations pass. The 2.0 stress setting fails only for Welcome at 375 × 667 on both platforms, before its raster audit. The reached states produced 54 reports / 535 runs / zero findings; this does not imply that the unrendered failed Welcome states passed. Original independent 375 / 2.0 recovery proof still passes. Accepted comparison: two failures, each 41 pixels.
+Initial supplemental logs are retained. The new fixture initially checked Welcome while the support SnackBar remained active. The final fixture waits the SnackBar’s own duration and 500 ms exit animation, asserts it disappeared and keeps every original navigation/hit-test assertion. This was a fixture correction; no app code changed.
+Exact commands and raw logs are in CHECKS.json and logs/. No candidate is hosted, so accepted-source CI is not substituted for a candidate result. BASE_HOSTED_CI.json is explicitly an accepted record-HEAD snapshot. No full-screen hosted audit was added as a line 148 gate.
+
+Visual comparison and limits
+comparison/ contains four native-size master/build pairs, actual differences and independent reviews. Required brief exceptions are preserved: prototype pill omitted, shared chevron, shared row alignment and green Added. Accepted typography, wordmark, button surfaces/shadows, LOCK 40 device geometry and text wrapping differ from the prototype masters. These differences are recorded honestly; full pixel MATCH is not claimed. OA-ZYRA-371 records refusal to invent shared-style or wording changes to force equality.
+
+Next owner, trace and preservation
+Q243 belongs to the ZYRA Claude chat. It requests one bounded correction and fresh-owner restart route, keeping wordmark/content/platform order and every assertion. OA-ZYRA-402 keeps real recovery support and provider linking with separately authorized server work. No other line is built here. The coordinator may start 149 after the release receipt.
+Exact held location: SOURCE/build/held/LINE148/2026-11-27_Q243_POST147. The ten-path patch is sealed; HELD_MANIFEST.json records its SHA-256 and accepted/candidate hashes. Original held packs, masters, PNGs and raw reports remain intact. Seven foreign staged snapshots, five line 138 working files and all 2,943 prior evidence files are verified exact. Queue/questions remain mixed working-tree files and are excluded from records commits. No governed document or MAP entry was added; these are owned proof artifacts. The coordinator copies TASK_NOTE to the daily report; this owner performed no Group admin writes.
+
+Final regression, release and publication
+Ordinary regression completed in 9m08s: 8,122 passed / 253 skipped / 2 failed. Both failures are the recorded 375 × 667 / 2.0 Welcome overflows. Four diagnostic frames preserve the actual accepted/candidate errors and geometry; neither diagnostic is a gate pass. Accepted record HEAD e3943f2a required hosted selector and all three ordinary shards passed in run46073085488. This is not a hosted result for the unpublished candidate.
+SOURCE and CI restored and released at 2026-11-27T22:10:02.318929+00:00. All seven foreign staged snapshots, five line138 working files and 2,943 prior evidence files are exact. Ten-path held patch SHA256 df44e1069dd0641fcf252c9b4f72f01335a948f5f42110d613c81968edc9ca56; held manifest SHA256 bae8a518646c1a107c2223307f93c659fd5127b276237cc07603f20765c7ee9f. No implementation was committed or pushed. Only owned hold records are eligible for publication. TASK_NOTE and PUBLICATION.json record the records-only commit after it exists.

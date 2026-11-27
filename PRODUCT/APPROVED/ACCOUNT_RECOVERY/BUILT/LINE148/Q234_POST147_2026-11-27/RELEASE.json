@@ -1,0 +1,20 @@
+{
+  "line": 148,
+  "status": "QUESTION",
+  "question": 243,
+  "accepted_head": "e3943f2a698490dbacb81eef8e81a14ef6c15647",
+  "lease_started_utc": "2026-11-27T21:54:35.778457+00:00",
+  "source_ci_released_utc": "2026-11-27T22:10:02.318929+00:00",
+  "source_status": "clean",
+  "ci_status": "unchanged",
+  "protected_staged_entries": 7,
+  "protected_line138_working_files": 5,
+  "prior_evidence_files_exact": 2943,
+  "candidate_patch_sha256": "df44e1069dd0641fcf252c9b4f72f01335a948f5f42110d613c81968edc9ca56",
+  "candidate_paths": 10,
+  "implementation_commit": null,
+  "implementation_pushes": 0,
+  "ordinary": "8122 passed /253 skipped /2 failed;9m08s;only375text2 Welcome iOS/Android71px",
+  "next": "Coordinator may start149;this owner does no other line",
+  "held_manifest_sha256": "bae8a518646c1a107c2223307f93c659fd5127b276237cc07603f20765c7ee9f"
+}

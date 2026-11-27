@@ -1,0 +1,62 @@
+{
+  "analyzer": {
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "result": "No issues found,9.6s",
+    "exit_code": 0
+  },
+  "focused": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_LINE148_CAPTURE=true test/line121_signup_account_session_test.dart test/line121_signup_preview_widget_test.dart test/zyra_privacy_security_preview_test.dart test/zyra_privacy_sensitive_actions_shell_test.dart test/visual/line148_account_recovery_capture_test.dart",
+    "result": "35 passed;6PNGs,9raster reports,86runs,0findings",
+    "exit_code": 0
+  },
+  "controls": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/line121_signup_preview_controller_test.dart test/zyra_rendered_text_audit_controls_test.dart",
+    "result": "139 passed",
+    "exit_code": 0
+  },
+  "replay": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line126_remaining_routes_test.dart --name 'overview signInSecurity'",
+    "result": "4 passed;Seeker/Guardian Basic/One at430x932/1.0",
+    "exit_code": 0
+  },
+  "preservation147": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/line147_admission_test.dart test/line147_family_introduction_test.dart",
+    "result": "39 passed;current owner/role/foreground/Main/Circle",
+    "exit_code": 0
+  },
+  "ask_circle147": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/zyra_developer_panel_entry_test.dart --name 'LOCK 49'",
+    "result": "3 passed;sample Ask/Main/Additional/Circle attachment;mock request counts unchanged",
+    "exit_code": 0
+  },
+  "six_size_proof": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_LINE148_CAPTURE=true test/visual/line148_lock50_rebase_proof_test.dart",
+    "log": "rebase-size-proof-final.log",
+    "result": "23 passed,2 failed;Welcome iOS/Android375x667text2.0 RenderFlex bottom overflow71px;54raster reports535runs0findings;actual Switch profile/stale cross-role callback passes",
+    "exit_code": 1
+  },
+  "accepted_comparison": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line148_welcome_baseline_probe_test.dart",
+    "result": "2 failed;accepted Git-object signup/controller Welcome same375text2 renders41px overflow;exact candidate files restored afterwards",
+    "exit_code": 1
+  },
+  "ordinary": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded",
+    "result": "8122 passed /253 skipped /2 failed,9m08s;only Welcome iOS/Android375x667 text2.0 RenderFlex71px",
+    "exit_code": 1
+  },
+  "fixture_timing": {
+    "result": "Initial supplemental runs retained;new test returned from support page before default4sSnackBar expired. Final waits actual SnackBar.duration+500ms,assertsSnackBar absent,retains hitTestable assertion. No app change."
+  },
+  "scope": "Founder sample only;no real support/provider linking/auth/native/phone/backend operation;strict thresholds/assertions unchanged;four fullscreen corpus jobs not added as gate",
+  "overflow_diagnostics": {
+    "status": "DIAGNOSTIC_ONLY_NOT_GATE",
+    "candidate": "2 saved1125x2001 frames,71px overflow each",
+    "accepted": "2 saved1125x2001 frames,41px overflow each",
+    "process_exit_codes": [
+      1,
+      1
+    ],
+    "note": "Strict fixture errors retained;the diagnostics are not counted as passing gates"
+  }
+}

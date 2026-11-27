@@ -1,0 +1,33 @@
+{
+  "head": "e3943f2a698490dbacb81eef8e81a14ef6c15647",
+  "run_id": 46073085488,
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46073085488",
+  "candidate_published": false,
+  "description": "Accepted record HEAD only; not a result for held line148 candidate. All required ordinary checks pass. No extra hosted audit gate imposed.",
+  "jobs": [
+    {
+      "id": 140754398931,
+      "name": "Select Flutter tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140754556228,
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140754556282,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140754556494,
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}

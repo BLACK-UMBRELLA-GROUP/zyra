@@ -1,0 +1,352 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: LOCK50 Welcome and recovery iOS_375_text100
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery iOS_375_text100
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: LOCK50 Welcome and recovery iOS_375_text100 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery iOS_375_text100
+  
+00:01 +0 -1: LOCK50 Welcome and recovery android_375_text100
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery android_375_text100
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -2: LOCK50 Welcome and recovery android_375_text100 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery android_375_text100
+  
+00:01 +0 -2: LOCK50 Apple backup 375_text100
+00:02 +1 -2: LOCK50 Google backup 375_text100
+00:02 +2 -2: LOCK50 Welcome and recovery iOS_375_text130
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery iOS_375_text130
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +2 -3: LOCK50 Welcome and recovery iOS_375_text130 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery iOS_375_text130
+  
+00:03 +2 -3: LOCK50 Welcome and recovery android_375_text130
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery android_375_text130
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +2 -4: LOCK50 Welcome and recovery android_375_text130 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery android_375_text130
+  
+00:03 +2 -4: LOCK50 Apple backup 375_text130
+00:04 +3 -4: LOCK50 Google backup 375_text130
+00:04 +4 -4: LOCK50 Welcome and recovery iOS_375_text200
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 71 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      BaselineHarness.flush (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:915:5)
+<asynchronous suspension>
+#5      BaselineHarness.mountPresentation (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:946:5)
+<asynchronous suspension>
+#6      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:88:9)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart line 915
+The test description was:
+  LOCK50 Welcome and recovery iOS_375_text200
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +4 -5: LOCK50 Welcome and recovery iOS_375_text200 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery iOS_375_text200
+  
+00:04 +4 -5: LOCK50 Welcome and recovery android_375_text200
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 71 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      BaselineHarness.flush (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:915:5)
+<asynchronous suspension>
+#5      BaselineHarness.mountPresentation (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:946:5)
+<asynchronous suspension>
+#6      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:88:9)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart line 915
+The test description was:
+  LOCK50 Welcome and recovery android_375_text200
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +4 -6: LOCK50 Welcome and recovery android_375_text200 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery android_375_text200
+  
+00:05 +4 -6: LOCK50 Apple backup 375_text200
+00:05 +5 -6: LOCK50 Google backup 375_text200
+00:06 +6 -6: LOCK50 Welcome and recovery iOS_430_text100
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery iOS_430_text100
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +6 -7: LOCK50 Welcome and recovery iOS_430_text100 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery iOS_430_text100
+  
+00:06 +6 -7: LOCK50 Welcome and recovery android_430_text100
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery android_430_text100
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:07 +6 -8: LOCK50 Welcome and recovery android_430_text100 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery android_430_text100
+  
+00:07 +6 -8: LOCK50 Apple backup 430_text100
+00:07 +7 -8: LOCK50 Google backup 430_text100
+00:08 +8 -8: LOCK50 Welcome and recovery iOS_430_text130
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery iOS_430_text130
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:08 +8 -9: LOCK50 Welcome and recovery iOS_430_text130 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery iOS_430_text130
+  
+00:08 +8 -9: LOCK50 Welcome and recovery android_430_text130
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery android_430_text130
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:09 +8 -10: LOCK50 Welcome and recovery android_430_text130 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery android_430_text130
+  
+00:09 +8 -10: LOCK50 Apple backup 430_text130
+00:09 +9 -10: LOCK50 Google backup 430_text130
+00:10 +10 -10: LOCK50 Welcome and recovery iOS_430_text200
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery iOS_430_text200
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:11 +10 -11: LOCK50 Welcome and recovery iOS_430_text200 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery iOS_430_text200
+  
+00:11 +10 -11: LOCK50 Welcome and recovery android_430_text200
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'signup_open_recovery'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:153:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 153
+The test description was:
+  LOCK50 Welcome and recovery android_430_text200
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:11 +10 -12: LOCK50 Welcome and recovery android_430_text200 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery android_430_text200
+  
+00:11 +10 -12: LOCK50 Apple backup 430_text200
+00:12 +11 -12: LOCK50 Google backup 430_text200
+00:13 +12 -12: LOCK50 backup stays with its role across LOCK46 Switch profile
+00:13 +13 -12: (tearDownAll)
+00:13 +13 -12: Some tests failed.
+
+Failing tests:
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart: LOCK50 Welcome and recovery android_375_text100
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart: LOCK50 Welcome and recovery android_375_text130
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart: LOCK50 Welcome and recovery android_375_text200
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart: LOCK50 Welcome and recovery android_430_text100
+  ... and 8 more

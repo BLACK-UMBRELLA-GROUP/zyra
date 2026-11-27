@@ -1,0 +1,107 @@
+{
+  "original_findings": [
+    {
+      "rule": "generic-api-key",
+      "source_line": 291,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 622,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 623,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 652,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 1056,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 1234,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 1237,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 1318,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 1373,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 1397,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 1739,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 1745,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 2063,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 2088,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 2355,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 2379,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    },
+    {
+      "rule": "generic-api-key",
+      "source_line": 2541,
+      "classification": "SHA256 of previously existing evidence file,not a credential",
+      "hash_verified_against_file": true
+    }
+  ],
+  "correction": "Same path/SHA256 data represented as explicit records instead of filename-to-hash assignments;no scanner rule or threshold changed"
+}

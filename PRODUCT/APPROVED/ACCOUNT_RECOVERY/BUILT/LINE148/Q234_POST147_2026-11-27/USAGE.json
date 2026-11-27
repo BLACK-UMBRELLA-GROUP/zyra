@@ -1,0 +1,13 @@
+{
+  "metric": "current_thread_count_only",
+  "scope": "root cumulative token counter snapshot;helpers excluded;no estimate",
+  "as_of_utc": "2026-11-27T22:13:20.998648+00:00",
+  "latest": {
+    "input_tokens": 12912192,
+    "cached_input_tokens": 12752256,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 50617,
+    "reasoning_output_tokens": 19127,
+    "total_tokens": 12962809
+  }
+}

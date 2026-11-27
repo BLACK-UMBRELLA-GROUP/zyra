@@ -1,0 +1,328 @@
+{
+  "line": 148,
+  "lock": 50,
+  "question": 234,
+  "reviewed_utc": "2026-11-27T21:58:03.391681+00:00",
+  "scope_security_result": "PASS: no actionable implementation/security finding in exact integrated SOURCE diff.",
+  "whole_page_pixel_match": false,
+  "files_mutated": "Only this work/visual-review evidence; no SOURCE/index/queue/original evidence mutation.",
+  "input_hashes": {
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar01_welcome__cant_sign_in.png": "deecf7db5ba7801fa48f7fb35191e36284a36aefd1e7d718a06ae7b7f03ea863",
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/screens/ar01_welcome__cant_sign_in.png": "0cec6603bcdf4ef109237fb3d09cf1dc8609d0875eb2f85d9aa9a0b8f7205de6",
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar02_cant_sign_in__support.png": "3d9948a5ee818608dd5bb2849994e46d336a1688a6538efa773510d3bce33fe3",
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/screens/ar02_cant_sign_in__support.png": "99310f60117d68f103ca2f421d25c99effb97ddb4669ed2e167f5d6efd9fb6dd",
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar03_sign_in_security__backup.png": "c551b8113148394e6f0625bc62d155e0ab15a39f9852230f8d77b625b430c321",
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/screens/ar03_sign_in_security__backup.png": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar04_sign_in_security__backup_added.png": "82dd250b3d366d33be90b6c5ef6d04401c3d6dd544662bd0d4ac50a2d20b6686",
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/screens/ar04_sign_in_security__backup_added.png": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be"
+  },
+  "comparisons": [
+    {
+      "state": "ar01_welcome__cant_sign_in",
+      "master": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar01_welcome__cant_sign_in.png",
+      "built": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/screens/ar01_welcome__cant_sign_in.png",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "pixel_comparison": {
+        "changed_pixels": 1608251,
+        "changed_pixel_fraction": 0.4458891994100099,
+        "changed_rows": 2796,
+        "bbox": [
+          0,
+          0,
+          1290,
+          2796
+        ],
+        "max_channel_delta": 212,
+        "mean_channel_delta": 3.2466906627407925,
+        "decoded_pixels_equal": false,
+        "byte_hash_equal": false
+      },
+      "path": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-148-q234-post-147-fresh-ultra/work/visual-review/ar01_welcome__cant_sign_in__master_build.png",
+      "sha256": "da4d3ceddda78a43ad673e7a80ee517ce56a2f66d3be0465c6f6790f30edcec8",
+      "layout": "Left: raw master; right: fresh built capture; native pixels preserved; 48px comparison header and 12px gap only."
+    },
+    {
+      "state": "ar02_cant_sign_in__support",
+      "master": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar02_cant_sign_in__support.png",
+      "built": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/screens/ar02_cant_sign_in__support.png",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "pixel_comparison": {
+        "changed_pixels": 2239632,
+        "changed_pixel_fraction": 0.6209402135941711,
+        "changed_rows": 2796,
+        "bbox": [
+          0,
+          0,
+          1290,
+          2796
+        ],
+        "max_channel_delta": 210,
+        "mean_channel_delta": 6.074321220237105,
+        "decoded_pixels_equal": false,
+        "byte_hash_equal": false
+      },
+      "path": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-148-q234-post-147-fresh-ultra/work/visual-review/ar02_cant_sign_in__support__master_build.png",
+      "sha256": "0ce901e6c9bf06f80575f24ed972ae308b9d7c604eee8b21850daab10f69e146",
+      "layout": "Left: raw master; right: fresh built capture; native pixels preserved; 48px comparison header and 12px gap only."
+    },
+    {
+      "state": "ar03_sign_in_security__backup",
+      "master": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar03_sign_in_security__backup.png",
+      "built": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/screens/ar03_sign_in_security__backup.png",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "pixel_comparison": {
+        "changed_pixels": 3586806,
+        "changed_pixel_fraction": 0.994445553448448,
+        "changed_rows": 2796,
+        "bbox": [
+          0,
+          0,
+          1290,
+          2796
+        ],
+        "max_channel_delta": 211,
+        "mean_channel_delta": 10.267178749265286,
+        "decoded_pixels_equal": false,
+        "byte_hash_equal": false
+      },
+      "path": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-148-q234-post-147-fresh-ultra/work/visual-review/ar03_sign_in_security__backup__master_build.png",
+      "sha256": "9366a8b530237b703a48c9bc14ef8cf254d69968e2c744cd8c1eaeef372efcf7",
+      "layout": "Left: raw master; right: fresh built capture; native pixels preserved; 48px comparison header and 12px gap only."
+    },
+    {
+      "state": "ar04_sign_in_security__backup_added",
+      "master": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar04_sign_in_security__backup_added.png",
+      "built": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/screens/ar04_sign_in_security__backup_added.png",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "pixel_comparison": {
+        "changed_pixels": 3587128,
+        "changed_pixel_fraction": 0.99453482827073,
+        "changed_rows": 2796,
+        "bbox": [
+          0,
+          0,
+          1290,
+          2796
+        ],
+        "max_channel_delta": 211,
+        "mean_channel_delta": 10.08160751516563,
+        "decoded_pixels_equal": false,
+        "byte_hash_equal": false
+      },
+      "path": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-148-q234-post-147-fresh-ultra/work/visual-review/ar04_sign_in_security__backup_added__master_build.png",
+      "sha256": "2c37f9cd1a1f475a3d940f119ffe56c2292dc9a521c097aecb9a78fbde4f8d23",
+      "layout": "Left: raw master; right: fresh built capture; native pixels preserved; 48px comparison header and 12px gap only."
+    }
+  ],
+  "fresh_vs_prior": [
+    {
+      "state": "ar01_welcome__cant_sign_in",
+      "fresh_sha256": "0cec6603bcdf4ef109237fb3d09cf1dc8609d0875eb2f85d9aa9a0b8f7205de6",
+      "prior_sha256": "2f8178c06d4a97d0cdc9c7b486c92ec0c883d56152e1db3a9f64426866dcf90f",
+      "changed_pixels": 234148,
+      "changed_pixel_fraction": 0.06491776735314014,
+      "changed_rows": 510,
+      "bbox": [
+        0,
+        2085,
+        1290,
+        2595
+      ],
+      "max_channel_delta": 3,
+      "mean_channel_delta": 0.04782870878663872,
+      "decoded_pixels_equal": false,
+      "byte_hash_equal": false
+    },
+    {
+      "state": "ar02_cant_sign_in__support",
+      "fresh_sha256": "99310f60117d68f103ca2f421d25c99effb97ddb4669ed2e167f5d6efd9fb6dd",
+      "prior_sha256": "17274ec0d1c1ea7bbe68cefbad7fe00dcd77bbf3ff67b0f1b08fd20aedd07a5f",
+      "changed_pixels": 515979,
+      "changed_pixel_fraction": 0.143055694181056,
+      "changed_rows": 1102,
+      "bbox": [
+        0,
+        627,
+        1290,
+        2783
+      ],
+      "max_channel_delta": 6,
+      "mean_channel_delta": 0.09472904259684377,
+      "decoded_pixels_equal": false,
+      "byte_hash_equal": false
+    },
+    {
+      "state": "ar03_sign_in_security__backup",
+      "fresh_sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+      "prior_sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+      "changed_pixels": 0,
+      "changed_pixel_fraction": 0.0,
+      "changed_rows": 0,
+      "bbox": null,
+      "max_channel_delta": 0,
+      "mean_channel_delta": 0.0,
+      "decoded_pixels_equal": true,
+      "byte_hash_equal": true
+    },
+    {
+      "state": "ar04_sign_in_security__backup_added",
+      "fresh_sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+      "prior_sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+      "changed_pixels": 0,
+      "changed_pixel_fraction": 0.0,
+      "changed_rows": 0,
+      "bbox": null,
+      "max_channel_delta": 0,
+      "mean_channel_delta": 0.0,
+      "decoded_pixels_equal": true,
+      "byte_hash_equal": true
+    },
+    {
+      "state": "ps07_sign_in_one_device__with_backup",
+      "fresh_sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+      "prior_sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+      "changed_pixels": 0,
+      "changed_pixel_fraction": 0.0,
+      "changed_rows": 0,
+      "bbox": null,
+      "max_channel_delta": 0,
+      "mean_channel_delta": 0.0,
+      "decoded_pixels_equal": true,
+      "byte_hash_equal": true
+    },
+    {
+      "state": "s03_welcome__android_google_first_with_recovery",
+      "fresh_sha256": "96f6c37e88ffd9d685c0aabd004de9117bf41cae8f6b7c1b73f6161a123001dc",
+      "prior_sha256": "842fb05e92847f744c29ff4fcde8f05b35bc65a33cc2953231ea65c8e9b857cd",
+      "changed_pixels": 234148,
+      "changed_pixel_fraction": 0.06491776735314014,
+      "changed_rows": 510,
+      "bbox": [
+        0,
+        2085,
+        1290,
+        2595
+      ],
+      "max_channel_delta": 3,
+      "mean_channel_delta": 0.04782870878663872,
+      "decoded_pixels_equal": false,
+      "byte_hash_equal": false
+    }
+  ],
+  "required_master_exceptions": [
+    "ar01: prototype-only platform pill omitted. Existing primary provider buttons and platform order preserved.",
+    "ar02: shared sign-up chevron size and position used per brief; master has its own smaller chevron.",
+    "ar03: backup label aligns with shared Settings row labels; prototype button padding is not copied.",
+    "ar04: Added uses #326B4C green per spec; master blanket grey is superseded by brief/spec."
+  ],
+  "observed_shared_style_differences": [
+    "ar01: existing app wordmark weight, provider icons, typography, button shadows/spacing differ from prototype master.",
+    "ar02: shared app typography/line wraps, card width, dividers and shadows differ from prototype master.",
+    "ar03/ar04: existing LOCK40 heading/font/surface/device-row geometry and footer ink differ; backup explanatory note wraps to two lines in app, one line in master."
+  ],
+  "preservation_review": [
+    "Exact shell diff consists of first-entry sign-in provider, account overview provider, captured primary provider and backup callback only.",
+    "_accountFreshGuard remains byte-for-byte unchanged, captures account/generation, UI revision, guardian role, page/tab, route stamp/current host.",
+    "addBackupSignIn verifies current session and primary provider, role-local storage and duplicate rejection.",
+    "Accepted147 current Main, Ask my Guardians, Circle attachment and foreground/owner guards untouched.",
+    "Accepted141 fixed Details gap,145 photo/history,146 Limits/Q241 and retired real Welcome untouched.",
+    "No backend/native authorization, support form, network linking, phone install or live route added.",
+    "Sign-out native confirmation retained."
+  ],
+  "review_limits": [
+    "No Flutter or hosted CI run by independent reviewer; root owns execution gates.",
+    "Visual comparisons are per-master observations, not a claim of full pixel MATCH.",
+    "No shared-style correction invented; accepted shared components are preserved."
+  ],
+  "written_refusal": "OA-ZYRA-371: do not restyle accepted shared components or alter wording outside LOCK50 to force prototype pixel equality; report all observed differences for design review.",
+  "fresh_audit_review": {
+    "reports": 9,
+    "runs": 86,
+    "failures": 0,
+    "all_prior_hashes_identical": true,
+    "items": [
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/ar01_welcome__cant_sign_in.json",
+        "runs": 6,
+        "failures": 0,
+        "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+        "prior_hash_identical": true
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/ar02_cant_sign_in__support.json",
+        "runs": 10,
+        "failures": 0,
+        "sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8",
+        "prior_hash_identical": true
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/ar02_larger_text_bottom.json",
+        "runs": 5,
+        "failures": 0,
+        "sha256": "a3206db3c69f09d13f760b33143acff971a856864c9a59f3940232a2ddc8267c",
+        "prior_hash_identical": true
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/ar02_larger_text_top.json",
+        "runs": 3,
+        "failures": 0,
+        "sha256": "8081481cf9e26e6d5b39057a047d6a4542ddc61cd8d832588b49a240a6beeac7",
+        "prior_hash_identical": true
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/ar03_sign_in_security__backup.json",
+        "runs": 17,
+        "failures": 0,
+        "sha256": "6abc6d4d03c6a27d410ed1bc9717f7c99f188fcfdcf8a8743a82c6d93c557fcf",
+        "prior_hash_identical": true
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/ar04_google_larger_text.json",
+        "runs": 7,
+        "failures": 0,
+        "sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af",
+        "prior_hash_identical": true
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/ar04_sign_in_security__backup_added.json",
+        "runs": 18,
+        "failures": 0,
+        "sha256": "98ee308abcdbd5317f2a99596df7df65e8e7ab62c1263cc4934a5a0f75d69848",
+        "prior_hash_identical": true
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/ps07_sign_in_one_device__with_backup.json",
+        "runs": 14,
+        "failures": 0,
+        "sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907",
+        "prior_hash_identical": true
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line148/audit/s03_welcome__android_google_first_with_recovery.json",
+        "runs": 6,
+        "failures": 0,
+        "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+        "prior_hash_identical": true
+      }
+    ]
+  },
+  "fresh_vs_prior_observation": "Three PNGs have actual low-amplitude decoded pixel differences; security ar03/ar04/ps07 are pixel- and byte-identical. Fresh/prior layout and text look the same; shadow/surface cause is an inference, not proven. All nine text audit reports are byte-identical.",
+  "held_hashes_verified": {
+    "original_patch": "36651dae2ab9621f67887e04b181fe19666b0b8eca75d657f1cd219db7f1b155",
+    "original_manifest": "d795d924da4e90a933fb534e5844085e32e375e6f1e5d3a4ad0045a4953861c7",
+    "newer_patch": "68e596db0f0ebb3320e1eeb5d6fd0000a3f50dfe0e160b097b600aad7fe3ce2e",
+    "newer_manifest": "0663f5b1b31e29ec921f1cd724efeeb765011adb31b6ac4904e1d6a00b7e7814"
+  }
+}

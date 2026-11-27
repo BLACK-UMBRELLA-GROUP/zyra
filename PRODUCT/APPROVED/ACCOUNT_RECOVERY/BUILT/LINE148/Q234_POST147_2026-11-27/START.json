@@ -1,0 +1,97 @@
+{
+  "lease_started_utc": "2026-11-27T21:54:35.778457+00:00",
+  "head": "e3943f2a698490dbacb81eef8e81a14ef6c15647",
+  "index_entries": [
+    "100644 f1915859e9eb592f2db782df5889d66f3d06bb02 0\tPRODUCT/APPROVED/BUILD_QUEUE.md",
+    "100644 0935e25eeea8b6ffe3ce64b614fcbf9468606b71 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+    "100644 341b615843c7227166868b6f025c30baed513281 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+    "100644 0531f5ad6daa081e49990b9c03427b7b4a7f3291 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+    "100644 b890726e53fbb2c4fdc8bf5ebd27811996fcd5f3 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+    "100644 4e002f5d53b681c5bbccc6617181b7264555d3ea 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+    "100644 7b9d76e6b1b22dd40b24dd8824a52fb95a300c8a 0\tPRODUCT/APPROVED/QUESTIONS.md"
+  ],
+  "line138": {
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f"
+  },
+  "source_before": [
+    {
+      "path": "SOURCE/README.md",
+      "baseline_sha256": "c21455fb052ff8b15329d55a8585ac9baef47a8c0b3c48fa5243e5e6468b11dc",
+      "candidate_sha256": "c533c32904848dc7529d76ff40fa14145f4f67048fec935e3d4c64e15571e1b6",
+      "held_q234_matches": false,
+      "actual_sha256": "0527de4a9af2ef2b23c1d97a5100f4bb97a0b3ad7e3f03fef6ed7c25f7c66bb7",
+      "baseline_matches": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "baseline_sha256": "727b273f1d6620780fe984455327f4c7acc14ea2ec157af5cf3b6d0137170758",
+      "candidate_sha256": "5e5dc17a788e8969123042fa6af47b1cc93b70682e6df3e3a4826690de449141",
+      "held_q234_matches": false,
+      "actual_sha256": "0741f0cc1ea5a44b992915187367b5626c1bab43ec5c1fd47a6b2d66f357c3d1",
+      "baseline_matches": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_privacy_security_preview.dart",
+      "baseline_sha256": "304c3920921f514c547a242d658e719660fb85708edca924f8cee7d2333179aa",
+      "candidate_sha256": "431d4954825a97cede6b42998fb85cc1321d25f59601174983d31e5ba3e124a1",
+      "held_q234_matches": true,
+      "actual_sha256": "304c3920921f514c547a242d658e719660fb85708edca924f8cee7d2333179aa",
+      "baseline_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_account_session.dart",
+      "baseline_sha256": "7fa80b6ba6aadb7206147e0c58182effae608e3c80e458e5661706cc5251f2f7",
+      "candidate_sha256": "c5b3999107fd1a73ecd5d1f7823232347cc16f2da58a8a0b773e725936e7eda4",
+      "held_q234_matches": true,
+      "actual_sha256": "7fa80b6ba6aadb7206147e0c58182effae608e3c80e458e5661706cc5251f2f7",
+      "baseline_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "baseline_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+      "candidate_sha256": "953ec82b7b5687b4b1d2400ff0feb7995d5243e1143b9ffcd8085a1045113aa6",
+      "held_q234_matches": true,
+      "actual_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+      "baseline_matches": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview_controller.dart",
+      "baseline_sha256": "13fe47246cc4a7fc911c9ff705138d574b207b52e58ffbda919a26ed9530e89d",
+      "candidate_sha256": "0957b9f15e562cc1c23b9a50099e420f4c502368643360a93fdec8d7a70bc6b5",
+      "held_q234_matches": true,
+      "actual_sha256": "13fe47246cc4a7fc911c9ff705138d574b207b52e58ffbda919a26ed9530e89d",
+      "baseline_matches": true
+    },
+    {
+      "path": "SOURCE/test/line121_signup_account_session_test.dart",
+      "baseline_sha256": "0600aa64f916ea035428b306adf50a23b373fbc62217ccfeba4bf5d2b312486b",
+      "candidate_sha256": "5ab615e356e85928fcb09223510538a59046a443b6993296dd08146b835c6c96",
+      "held_q234_matches": true,
+      "actual_sha256": "0600aa64f916ea035428b306adf50a23b373fbc62217ccfeba4bf5d2b312486b",
+      "baseline_matches": true
+    },
+    {
+      "path": "SOURCE/test/line121_signup_preview_widget_test.dart",
+      "baseline_sha256": "346e13cc5ed313c776bfe84cdcad5ce9f218d768972a64779fcb3d6bab2d9dec",
+      "candidate_sha256": "ddd0bb453f743dfc805293cf02c64d02975d0833ce11459977df767fd771f8bd",
+      "held_q234_matches": true,
+      "actual_sha256": "346e13cc5ed313c776bfe84cdcad5ce9f218d768972a64779fcb3d6bab2d9dec",
+      "baseline_matches": true
+    },
+    {
+      "path": "SOURCE/test/visual/line148_account_recovery_capture_test.dart",
+      "baseline_sha256": null,
+      "candidate_sha256": "8ee4ffe227ac9716ca5922eea53563f30059113099324f5bf5a30dc0c442df2a",
+      "held_q234_matches": true,
+      "actual_sha256": null,
+      "baseline_matches": true
+    }
+  ],
+  "original_held_manifest_sha256": "d795d924da4e90a933fb534e5844085e32e375e6f1e5d3a4ad0045a4953861c7",
+  "preflight_manifest_sha256": "0663f5b1b31e29ec921f1cd724efeeb765011adb31b6ac4904e1d6a00b7e7814",
+  "prior_evidence_count": 2943
+}

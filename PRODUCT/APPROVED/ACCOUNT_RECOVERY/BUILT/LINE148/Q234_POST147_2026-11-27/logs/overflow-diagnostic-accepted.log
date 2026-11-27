@@ -1,0 +1,54 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_welcome_baseline_probe_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow iOS accepted
+DIAGNOSTIC_ONLY_NOT_GATE {"status":"DIAGNOSTIC_ONLY_NOT_GATE","source_label":"accepted","platform":"iOS","viewport":{"width":375,"height":667,"text_scale":2},"safe_padding":{"top":20,"bottom":0},"real_shadows":true,"mount_failed":true,"mount_failure":"Expected: null\n  Actual: FlutterError:<A RenderFlex overflowed by 41 pixels on the bottom.>\n","mount_failure_stack":"#0      fail (package:matcher/src/expect/expect.dart:187:31)\n#1      _expect (package:matcher/src/expect/expect.dart:182:3)\n#2      expect (package:matcher/src/expect/expect.dart:65:3)\n#3      expect (package:flutter_test/src/widget_tester.dart:473:18)\n#4      BaselineHarness.flush (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:915:5)\n<asynchronous suspension>\n#5      BaselineHarness.mountPresentation (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:946:5)\n<asynchronous suspension>\n#6      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_welcome_baseline_probe_test.dart:67:9)\n<asynchronous suspension>\n#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n#9      StackZoneSpecification._registerCallback.<anonymous closure> (package:stack_trace/src/stack_zone_specification.dart:114:42)\n<asynchronous suspension>\n","controller_step":"welcome","rects":{"signup_welcome":{"left":20.0,"top":62.0,"right":355.0,"bottom":633.0,"width":335.0,"height":571.0},"signup_apple":{"left":20.0,"top":373.0,"right":355.0,"bottom":477.0,"width":335.0,"height":104.0},"signup_google":{"left":20.0,"top":489.0,"right":355.0,"bottom":593.0,"width":335.0,"height":104.0},"signup_open_recovery":null},"no_gate_pass_claim":true,"png":"build/line148/overflow_accepted/welcome_iOS.png","png_width":1125,"png_height":2001}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a painting debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllPaintingVarsUnset.<anonymous closure> (package:flutter/src/painting/debug.dart:203:7)
+#1      debugAssertAllPaintingVarsUnset (package:flutter/src/painting/debug.dart:206:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2006:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2524:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1973:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow iOS accepted
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow iOS accepted [E]
+  Test failed. See exception logs above.
+  The test description was: DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow iOS accepted
+  
+00:00 +0 -1: DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow android accepted
+DIAGNOSTIC_ONLY_NOT_GATE {"status":"DIAGNOSTIC_ONLY_NOT_GATE","source_label":"accepted","platform":"android","viewport":{"width":375,"height":667,"text_scale":2},"safe_padding":{"top":20,"bottom":0},"real_shadows":true,"mount_failed":true,"mount_failure":"Expected: null\n  Actual: FlutterError:<A RenderFlex overflowed by 41 pixels on the bottom.>\n","mount_failure_stack":"#0      fail (package:matcher/src/expect/expect.dart:187:31)\n#1      _expect (package:matcher/src/expect/expect.dart:182:3)\n#2      expect (package:matcher/src/expect/expect.dart:65:3)\n#3      expect (package:flutter_test/src/widget_tester.dart:473:18)\n#4      BaselineHarness.flush (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:915:5)\n<asynchronous suspension>\n#5      BaselineHarness.mountPresentation (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:946:5)\n<asynchronous suspension>\n#6      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_welcome_baseline_probe_test.dart:67:9)\n<asynchronous suspension>\n#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n#9      StackZoneSpecification._registerCallback.<anonymous closure> (package:stack_trace/src/stack_zone_specification.dart:114:42)\n<asynchronous suspension>\n","controller_step":"welcome","rects":{"signup_welcome":{"left":20.0,"top":62.0,"right":355.0,"bottom":633.0,"width":335.0,"height":571.0},"signup_apple":{"left":20.0,"top":489.0,"right":355.0,"bottom":593.0,"width":335.0,"height":104.0},"signup_google":{"left":20.0,"top":373.0,"right":355.0,"bottom":477.0,"width":335.0,"height":104.0},"signup_open_recovery":null},"no_gate_pass_claim":true,"png":"build/line148/overflow_accepted/welcome_android.png","png_width":1125,"png_height":2001}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a painting debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllPaintingVarsUnset.<anonymous closure> (package:flutter/src/painting/debug.dart:203:7)
+#1      debugAssertAllPaintingVarsUnset (package:flutter/src/painting/debug.dart:206:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2006:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2524:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1973:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow android accepted
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -2: DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow android accepted [E]
+  Test failed. See exception logs above.
+  The test description was: DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow android accepted
+  
+00:00 +0 -2: (tearDownAll)
+00:00 +0 -2: Some tests failed.
+
+Failing tests:
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_welcome_baseline_probe_test.dart: DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow android accepted
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_welcome_baseline_probe_test.dart: DIAGNOSTIC_ONLY_NOT_GATE Welcome overflow iOS accepted

@@ -1,0 +1,622 @@
+{
+  "line": 148,
+  "status": "QUESTION",
+  "question": 243,
+  "files": [
+    {
+      "path": "BASE_HOSTED_CI.json",
+      "bytes": 927,
+      "sha256": "0da72a28cc6ae58cc849883d6320c89473f5e5b7fed3b2d2ce31108c39201e9f"
+    },
+    {
+      "path": "BUILD.json",
+      "bytes": 3202,
+      "sha256": "8df5318fbef6a1c35db33283a9578b6548dd1696ef2dbb9c3f8e40ccd9428481"
+    },
+    {
+      "path": "CAPTURES.json",
+      "bytes": 2921,
+      "sha256": "b12b6c60129a7209602f1fa6d991e56573dd41959e6b3db6cfa4aadb2af3dcc6"
+    },
+    {
+      "path": "CHECKS.json",
+      "bytes": 3584,
+      "sha256": "c2edd3ee54f5e31c52a7459bc39af9bcbf958e95653c3ba04b301898901713c0"
+    },
+    {
+      "path": "FINAL_INDEPENDENT_REVIEW.json",
+      "bytes": 670,
+      "sha256": "cb49cd5f82f197b490c0319b65ea8a8a858b0870fdd3af48fc3e6cd129ee64db"
+    },
+    {
+      "path": "HANDOVER.txt",
+      "bytes": 8458,
+      "sha256": "b62ffa2431cc6960b8ba565cc60830ec841186869fa7d5fa2ded6361e9905939"
+    },
+    {
+      "path": "HASH_SCAN_REVIEW.json",
+      "bytes": 3612,
+      "sha256": "79bf86cd5c52226f0814ceb4c244e42499c42246a6562ee3868eb0f04259792d"
+    },
+    {
+      "path": "HELD_MANIFEST.json",
+      "bytes": 4013,
+      "sha256": "bae8a518646c1a107c2223307f93c659fd5127b276237cc07603f20765c7ee9f"
+    },
+    {
+      "path": "INTEGRATION.json",
+      "bytes": 2447,
+      "sha256": "c4dd7530ed46c59c33b7812dfa36c48404f8265264767d52ca56c6f93b5745db"
+    },
+    {
+      "path": "PRIOR_EVIDENCE_HASHES.json",
+      "bytes": 583001,
+      "sha256": "035b6e8c28bc46e79b0111cd8630075337e9ea247cd6d7ee33bd009db31e3acd"
+    },
+    {
+      "path": "PUBLIC_REVIEW.json",
+      "bytes": 153905,
+      "sha256": "3fe3970e40759b77943edd37c3c8c11cf8476e903266f4fafcf05a6bac9d70a8"
+    },
+    {
+      "path": "QUESTION_FOR_ZYRA_CLAUDE.txt",
+      "bytes": 529,
+      "sha256": "f25727785128158b83dd6555ca08be2ed3a5cb3db69189dc517d3ccb74f4f798"
+    },
+    {
+      "path": "RELEASE.json",
+      "bytes": 855,
+      "sha256": "21906ac67a41d0ddd9a29b2f574b6cea4dad554def5791aed6face25d0623987"
+    },
+    {
+      "path": "SOURCE_MANIFEST.json",
+      "bytes": 2421,
+      "sha256": "18482b9e71bd0dbd836e539e18f8a18f9c12ac0e138b9fda61f285c4643bdb16"
+    },
+    {
+      "path": "START.json",
+      "bytes": 5575,
+      "sha256": "1f6838507fd10d8484dded7b6ff3a89c033dd32ee9688760a9b9968939e744d2"
+    },
+    {
+      "path": "TASK_NOTE.txt",
+      "bytes": 1158,
+      "sha256": "0a18d8e68bc5e2b8d01530ae49ac09045bd7492e7338b29057c8a053f3046142"
+    },
+    {
+      "path": "USAGE.json",
+      "bytes": 393,
+      "sha256": "d3e9792e0eb59da6cd336a0ea25f07e19e8e82a737ec915e64c3a8849f9a4233"
+    },
+    {
+      "path": "WRITTEN_REFUSALS.json",
+      "bytes": 692,
+      "sha256": "04875224acd6a7dc581e22d3638502c4a858a891287d199daad0bb9e2e08707f"
+    },
+    {
+      "path": "audit/ar01_welcome__cant_sign_in.json",
+      "bytes": 223,
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a"
+    },
+    {
+      "path": "audit/ar02_cant_sign_in__support.json",
+      "bytes": 225,
+      "sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8"
+    },
+    {
+      "path": "audit/ar02_larger_text_bottom.json",
+      "bytes": 224,
+      "sha256": "a3206db3c69f09d13f760b33143acff971a856864c9a59f3940232a2ddc8267c"
+    },
+    {
+      "path": "audit/ar02_larger_text_top.json",
+      "bytes": 225,
+      "sha256": "8081481cf9e26e6d5b39057a047d6a4542ddc61cd8d832588b49a240a6beeac7"
+    },
+    {
+      "path": "audit/ar03_sign_in_security__backup.json",
+      "bytes": 226,
+      "sha256": "6abc6d4d03c6a27d410ed1bc9717f7c99f188fcfdcf8a8743a82c6d93c557fcf"
+    },
+    {
+      "path": "audit/ar04_google_larger_text.json",
+      "bytes": 225,
+      "sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af"
+    },
+    {
+      "path": "audit/ar04_sign_in_security__backup_added.json",
+      "bytes": 226,
+      "sha256": "98ee308abcdbd5317f2a99596df7df65e8e7ab62c1263cc4934a5a0f75d69848"
+    },
+    {
+      "path": "audit/ps07_sign_in_one_device__with_backup.json",
+      "bytes": 226,
+      "sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_after_375_text100.json",
+      "bytes": 226,
+      "sha256": "a2b618300aca80bf4f7be986b908d7bb24477b857927cd10c69687ace639dbe7"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_after_375_text130.json",
+      "bytes": 226,
+      "sha256": "6c624185dbcfb40a0b4b79184022135d752c115ae69ef43e42dc41439a7edbb6"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_after_375_text200.json",
+      "bytes": 225,
+      "sha256": "8ee63c82bd991973646f54144c85dfc4f9d652739feb06ad65d78fef70ca062e"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_after_430_text100.json",
+      "bytes": 226,
+      "sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_after_430_text130.json",
+      "bytes": 226,
+      "sha256": "4301b40018816fa39438b9c500b74b3e4c1beccb1373d7aa57c9cfe016bf0682"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_after_430_text200.json",
+      "bytes": 226,
+      "sha256": "44d9ee0ab545caa830b5627a56a145cff36255e45ba042f5116c75209b036ba2"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_before_375_text100.json",
+      "bytes": 226,
+      "sha256": "c02a1ee940fca1d8ce9caf58441843a4aac30c15dbc4d0d419b20a13a56ecf5a"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_before_375_text130.json",
+      "bytes": 226,
+      "sha256": "958d93154aa3a52d903b92a4dff216128e9631f8234f9dad93b3ef6dad9c8bfe"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_before_375_text200.json",
+      "bytes": 225,
+      "sha256": "52fcac67c64a9624661bc846c0514fe997dd6f868edf7b444e76b72b0aa45d0f"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_before_430_text100.json",
+      "bytes": 226,
+      "sha256": "7f09901a230bbec6815326d53a0a877382d83222921f7de43fa94381835162c1"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_before_430_text130.json",
+      "bytes": 226,
+      "sha256": "0aadaeba0be87a65886106384d6b635f0c1daff58b5e83d6f6296aba0e71eb22"
+    },
+    {
+      "path": "audit/rebase/backup_Apple_before_430_text200.json",
+      "bytes": 225,
+      "sha256": "55c7b9cbe11f9998bb3d9d58027799047e2ffb98b7e24e9fea30fea804935db3"
+    },
+    {
+      "path": "audit/rebase/backup_Google_after_375_text100.json",
+      "bytes": 226,
+      "sha256": "3d4c8624779a2092d5a26a6280bb3bc681e727ce7fa98da1f07e31e80f93ed57"
+    },
+    {
+      "path": "audit/rebase/backup_Google_after_375_text130.json",
+      "bytes": 226,
+      "sha256": "b3d1642060e98932c607597588a6959b94a8514d6d0a03ae93cc40f5a2c57429"
+    },
+    {
+      "path": "audit/rebase/backup_Google_after_375_text200.json",
+      "bytes": 225,
+      "sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af"
+    },
+    {
+      "path": "audit/rebase/backup_Google_after_430_text100.json",
+      "bytes": 226,
+      "sha256": "b99dc9476c57f4299858cd2c2f9b8be5ceecb5bc2b1b36ec677b52e274968588"
+    },
+    {
+      "path": "audit/rebase/backup_Google_after_430_text130.json",
+      "bytes": 226,
+      "sha256": "dcaf12d33cc6e2240c93598bd21c34333b5892c321f66fb711e8800fdd12b7df"
+    },
+    {
+      "path": "audit/rebase/backup_Google_after_430_text200.json",
+      "bytes": 226,
+      "sha256": "34f5fcbdb0291837cc15e0dbf3e698b36c17d98d6211b867e6926cc9cbacbc40"
+    },
+    {
+      "path": "audit/rebase/backup_Google_before_375_text100.json",
+      "bytes": 226,
+      "sha256": "e077fded49539db851be139d10be99c0e21be5aa3a5ec387e172b35140234137"
+    },
+    {
+      "path": "audit/rebase/backup_Google_before_375_text130.json",
+      "bytes": 226,
+      "sha256": "707c8ec990f61c8002ff281782ee4d8bd032433534300015e356868fde0d037a"
+    },
+    {
+      "path": "audit/rebase/backup_Google_before_375_text200.json",
+      "bytes": 225,
+      "sha256": "2254367ce5fd1bcb28707547ed52212c93cb672b84ffed15af6eca22ef1136b9"
+    },
+    {
+      "path": "audit/rebase/backup_Google_before_430_text100.json",
+      "bytes": 226,
+      "sha256": "a9f92289c554e7c0fb5f1ca42eaf5062bbda88d6011543ff5769733bd369f7df"
+    },
+    {
+      "path": "audit/rebase/backup_Google_before_430_text130.json",
+      "bytes": 226,
+      "sha256": "68ee99a41c4c1d1cf7cce7f58145af6978cbf1c21d7e09e8892a5c2e56395036"
+    },
+    {
+      "path": "audit/rebase/backup_Google_before_430_text200.json",
+      "bytes": 225,
+      "sha256": "9bb4fe034be02be57b52f611dc4a452e5b0fe7ef6b46e4b83e0c00d3a21d9f7e"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_android_375_text100.json",
+      "bytes": 224,
+      "sha256": "289f769ce414cd372c284bfc53e8a09980c3c1893fc2f8852d11bcc2012cb168"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_android_375_text130.json",
+      "bytes": 224,
+      "sha256": "42be55649abb722971228c5a9cbcfdb9588ec70915ef63b80bb4030408e0b0e7"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_android_430_text100.json",
+      "bytes": 224,
+      "sha256": "032975ec6b92e6621fc3a85049cdc508060712e5de396740e1899b2e459c721b"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_android_430_text130.json",
+      "bytes": 224,
+      "sha256": "3eaf93aca4090c6711440419f4bc8c170a3c03edb4520644be719161a02badf9"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_android_430_text200.json",
+      "bytes": 223,
+      "sha256": "aafeece0faed182910764e89d37331248f5d772b206a05f37566648174114000"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_iOS_375_text100.json",
+      "bytes": 224,
+      "sha256": "289f769ce414cd372c284bfc53e8a09980c3c1893fc2f8852d11bcc2012cb168"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_iOS_375_text130.json",
+      "bytes": 225,
+      "sha256": "da926b330161b61e18da52d9d4196495dfee8b436ed10cdb1fee61354fe1ddff"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_iOS_430_text100.json",
+      "bytes": 224,
+      "sha256": "032975ec6b92e6621fc3a85049cdc508060712e5de396740e1899b2e459c721b"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_iOS_430_text130.json",
+      "bytes": 224,
+      "sha256": "3eaf93aca4090c6711440419f4bc8c170a3c03edb4520644be719161a02badf9"
+    },
+    {
+      "path": "audit/rebase/recovery_bottom_iOS_430_text200.json",
+      "bytes": 224,
+      "sha256": "ee3b9b812a6fb073da441309b1d35e875c5bf2c218573d46e338eb1ff5ccc886"
+    },
+    {
+      "path": "audit/rebase/recovery_top_android_375_text100.json",
+      "bytes": 224,
+      "sha256": "289f769ce414cd372c284bfc53e8a09980c3c1893fc2f8852d11bcc2012cb168"
+    },
+    {
+      "path": "audit/rebase/recovery_top_android_375_text130.json",
+      "bytes": 224,
+      "sha256": "096dac3c750f6e4fd12730ce98228f89cf20db524b6d1bd9ca252bf86bd812fc"
+    },
+    {
+      "path": "audit/rebase/recovery_top_android_430_text100.json",
+      "bytes": 224,
+      "sha256": "032975ec6b92e6621fc3a85049cdc508060712e5de396740e1899b2e459c721b"
+    },
+    {
+      "path": "audit/rebase/recovery_top_android_430_text130.json",
+      "bytes": 224,
+      "sha256": "3eaf93aca4090c6711440419f4bc8c170a3c03edb4520644be719161a02badf9"
+    },
+    {
+      "path": "audit/rebase/recovery_top_android_430_text200.json",
+      "bytes": 224,
+      "sha256": "70f14d4f9afebfd5dbc3988488cc399975b7df6e0e3a25048e2cfa9aeff189a5"
+    },
+    {
+      "path": "audit/rebase/recovery_top_iOS_375_text100.json",
+      "bytes": 225,
+      "sha256": "ec64dc8b3c7b3f189931703f69147277184930e8a10fad179000699ab993b55f"
+    },
+    {
+      "path": "audit/rebase/recovery_top_iOS_375_text130.json",
+      "bytes": 225,
+      "sha256": "48c789d94aa22e9e7f8e7696116c219c57246aa3d84b54ec630792f5778193c3"
+    },
+    {
+      "path": "audit/rebase/recovery_top_iOS_430_text100.json",
+      "bytes": 225,
+      "sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8"
+    },
+    {
+      "path": "audit/rebase/recovery_top_iOS_430_text130.json",
+      "bytes": 225,
+      "sha256": "c24251e7deb80dc4e7ae60174bfea8474443356b3463deb1dbdcc4f6c0c9fe73"
+    },
+    {
+      "path": "audit/rebase/recovery_top_iOS_430_text200.json",
+      "bytes": 226,
+      "sha256": "8ac807d5b21fcc96ce08b153b99ddfa4fa9bd980980b669f1b945fec9492d48c"
+    },
+    {
+      "path": "audit/rebase/welcome_android_375_text100.json",
+      "bytes": 223,
+      "sha256": "7a99602e18c046774048a167db3880e239a660883b3eb3945a50eda7ab206ede"
+    },
+    {
+      "path": "audit/rebase/welcome_android_375_text130.json",
+      "bytes": 223,
+      "sha256": "0cc259e52745d5fc15e2e328c31f56488535a1df908fb859cc04f0c5fb05aea6"
+    },
+    {
+      "path": "audit/rebase/welcome_android_430_text100.json",
+      "bytes": 223,
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a"
+    },
+    {
+      "path": "audit/rebase/welcome_android_430_text130.json",
+      "bytes": 223,
+      "sha256": "826db2af1e98b1b3bc65a4c950f5bd64b4007156a2959dd13848f1daa6814eda"
+    },
+    {
+      "path": "audit/rebase/welcome_android_430_text200.json",
+      "bytes": 224,
+      "sha256": "6fc1a1a5903cd3ed5f300fdabb94fa2501978db41764bbb23038e9767c5c7e86"
+    },
+    {
+      "path": "audit/rebase/welcome_iOS_375_text100.json",
+      "bytes": 223,
+      "sha256": "7a99602e18c046774048a167db3880e239a660883b3eb3945a50eda7ab206ede"
+    },
+    {
+      "path": "audit/rebase/welcome_iOS_375_text130.json",
+      "bytes": 223,
+      "sha256": "0cc259e52745d5fc15e2e328c31f56488535a1df908fb859cc04f0c5fb05aea6"
+    },
+    {
+      "path": "audit/rebase/welcome_iOS_430_text100.json",
+      "bytes": 223,
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a"
+    },
+    {
+      "path": "audit/rebase/welcome_iOS_430_text130.json",
+      "bytes": 223,
+      "sha256": "826db2af1e98b1b3bc65a4c950f5bd64b4007156a2959dd13848f1daa6814eda"
+    },
+    {
+      "path": "audit/rebase/welcome_iOS_430_text200.json",
+      "bytes": 224,
+      "sha256": "6fc1a1a5903cd3ed5f300fdabb94fa2501978db41764bbb23038e9767c5c7e86"
+    },
+    {
+      "path": "audit/s03_welcome__android_google_first_with_recovery.json",
+      "bytes": 223,
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a"
+    },
+    {
+      "path": "comparison/ADDENDUM_Q243.json",
+      "bytes": 4517,
+      "sha256": "921deed473940baa1f24f63a2201df34e814272b04dc64cedbaa9312d7977027"
+    },
+    {
+      "path": "comparison/INDEPENDENT_REVIEW.json",
+      "bytes": 15664,
+      "sha256": "e1403c507e16d23da978137db076cd7ad4f2362cc7d597f57d6ac2d6eda7d0f2"
+    },
+    {
+      "path": "comparison/ar01_welcome__cant_sign_in__master_build.png",
+      "bytes": 397294,
+      "sha256": "da4d3ceddda78a43ad673e7a80ee517ce56a2f66d3be0465c6f6790f30edcec8"
+    },
+    {
+      "path": "comparison/ar02_cant_sign_in__support__master_build.png",
+      "bytes": 641460,
+      "sha256": "0ce901e6c9bf06f80575f24ed972ae308b9d7c604eee8b21850daab10f69e146"
+    },
+    {
+      "path": "comparison/ar03_sign_in_security__backup__master_build.png",
+      "bytes": 619114,
+      "sha256": "9366a8b530237b703a48c9bc14ef8cf254d69968e2c744cd8c1eaeef372efcf7"
+    },
+    {
+      "path": "comparison/ar04_sign_in_security__backup_added__master_build.png",
+      "bytes": 614999,
+      "sha256": "2c37f9cd1a1f475a3d940f119ffe56c2292dc9a521c097aecb9a78fbde4f8d23"
+    },
+    {
+      "path": "logs/accepted375-text2-baseline.log",
+      "bytes": 4506,
+      "sha256": "1bb880ef08fcf71c2b07f5d1fb2991f3bb3aee6b5a6056ace6ad2e60545e921b"
+    },
+    {
+      "path": "logs/analyzer-final.log",
+      "bytes": 96,
+      "sha256": "8379927d4cef042fe5ee45de2a9c6fc5c1d899589f57ca7a605e8f43bcc6dc35"
+    },
+    {
+      "path": "logs/analyzer.log",
+      "bytes": 97,
+      "sha256": "e109a19939a9128378fd50a2f9e3b4f2d3e189d5633fb59ebad9ead5fc79b421"
+    },
+    {
+      "path": "logs/ask-circle147.log",
+      "bytes": 433,
+      "sha256": "d75cb945a332b2262d59a725e45ff7220135e31e98548fabcb4e2197767144f4"
+    },
+    {
+      "path": "logs/candidate-final-secret-scan.log",
+      "bytes": 81,
+      "sha256": "0fec586a3ab6ac59b8742f5d18df291c4e6eed78f7c8db02aa0b764d0e512cd7"
+    },
+    {
+      "path": "logs/candidate-secret-scan.log",
+      "bytes": 79,
+      "sha256": "ff459867292c4bc3bbed83d76e63e4ecbb3c7207583834a216780afe6ec34d49"
+    },
+    {
+      "path": "logs/controls.log",
+      "bytes": 25218,
+      "sha256": "119190f4c84534f52db703c660263037063d72478a26f6dd7f5a64860fff73d9"
+    },
+    {
+      "path": "logs/focused.log",
+      "bytes": 6387,
+      "sha256": "74ccd162ca781503306c3115dbb21f39443d6232f19a5ce05925c88b4a9d05aa"
+    },
+    {
+      "path": "logs/history-secret-scan.log",
+      "bytes": 98,
+      "sha256": "e0a5c2ff96e684b8eaf0671aca8781868dc221189c01c91c6d0139c495964ecf"
+    },
+    {
+      "path": "logs/ordinary.log",
+      "bytes": 1633075,
+      "sha256": "997ddcee91b03761b1fc68f32f4e0084ae9be2d0ba09f59d93e96ebeefae5aad"
+    },
+    {
+      "path": "logs/overflow-diagnostic-accepted.log",
+      "bytes": 7964,
+      "sha256": "cb7d108fdaa1fb5b4fc57f6753e76610aa8bb0b69331cf4cfb8bb0574c5f84e8"
+    },
+    {
+      "path": "logs/overflow-diagnostic-candidate.log",
+      "bytes": 8206,
+      "sha256": "a19b690d5b9fc4a8fd5422d27518912cdf9d9509089ad0485e9fd4083d466f6f"
+    },
+    {
+      "path": "logs/preservation147.log",
+      "bytes": 6589,
+      "sha256": "049816427bfe9c060df221d22d0f9bdf76b0bd32c5727373c350f720382a5ee9"
+    },
+    {
+      "path": "logs/public-records.log",
+      "bytes": 66625,
+      "sha256": "7f7a881ebe656d380a29b08dc09a2afeb6031187780252caff0b15022fc6aaf9"
+    },
+    {
+      "path": "logs/public-source.log",
+      "bytes": 526,
+      "sha256": "8a57573a847a111d3425a6140a2583cfb4be1e7686eb731226e6ac04461a6bf0"
+    },
+    {
+      "path": "logs/rebase-size-proof-final.log",
+      "bytes": 5834,
+      "sha256": "2befd911e06d3807eb47d98a04cd29d63e24396a17cdbd09243e7534e2d563e0"
+    },
+    {
+      "path": "logs/rebase-size-proof-settled.log",
+      "bytes": 24305,
+      "sha256": "245fe29f3c8d2d93f296dd4d2cf1ac36549c61d746ae480fc70cc57088b75cd3"
+    },
+    {
+      "path": "logs/rebase-size-proof.log",
+      "bytes": 24305,
+      "sha256": "e6f3b64d966d993987a1a8dcbd6dccb3d7e7dbc407a51d913878858beaa2a9a8"
+    },
+    {
+      "path": "logs/record-secret-scan-details.log",
+      "bytes": 82,
+      "sha256": "b889abeabeb6803dea1907ab8f9504736928ef7197e97e7dab363f1637fad85c"
+    },
+    {
+      "path": "logs/record-secret-scan-final.log",
+      "bytes": 81,
+      "sha256": "c8bd0b4a948fdfd5fae227542becaef1081e2d688b785dce21d9939c2fbe51e8"
+    },
+    {
+      "path": "logs/record-secret-scan.log",
+      "bytes": 82,
+      "sha256": "1e064a36a40ea38e384f7bad20a3f772d0e570c7e5274c0e0ed26062af78d840"
+    },
+    {
+      "path": "logs/relevant-replay.log",
+      "bytes": 580,
+      "sha256": "23694c0c3b879619c7141d152c3ab3d97954a647c3ebb2bf6ba6208b60b8cdf5"
+    },
+    {
+      "path": "overflow_accepted/welcome_android.json",
+      "bytes": 2333,
+      "sha256": "aba1dcf6bc61a1805e29e22b7bbecddbf679896a11cd11a620738601973f4271"
+    },
+    {
+      "path": "overflow_accepted/welcome_android.png",
+      "bytes": 295196,
+      "sha256": "ec3857ec551c0295f3e067698d9deda380dcf4fca603070e31e2da47d2e47940"
+    },
+    {
+      "path": "overflow_accepted/welcome_iOS.json",
+      "bytes": 2325,
+      "sha256": "e6b041c291b0dc6a7c29a5c106469784584f726ba3f68364c21d792da7380a95"
+    },
+    {
+      "path": "overflow_accepted/welcome_iOS.png",
+      "bytes": 295412,
+      "sha256": "80402064b7433f6471e5dc7e731aa29b3391429080d99c34ae97404df5599868"
+    },
+    {
+      "path": "overflow_candidate/welcome_android.json",
+      "bytes": 2502,
+      "sha256": "35a0686b6e95bfd310a1c590df2d1490311945d5a0a2d0aa32091f7d51469a83"
+    },
+    {
+      "path": "overflow_candidate/welcome_android.png",
+      "bytes": 309968,
+      "sha256": "b34c31a7cb3d818edea393e3fb718de6a2c018df746251b34ab9b9f6b627be0d"
+    },
+    {
+      "path": "overflow_candidate/welcome_iOS.json",
+      "bytes": 2494,
+      "sha256": "38159677ce58f59288d26a3b0147b7611ebddba9145574df2bc3318be492d719"
+    },
+    {
+      "path": "overflow_candidate/welcome_iOS.png",
+      "bytes": 309475,
+      "sha256": "9d3a3ca581c8c19029c56828ab6baf5e69fce15731866ba959c1bef10b6cf1ac"
+    },
+    {
+      "path": "screens/ar01_welcome__cant_sign_in.png",
+      "bytes": 291241,
+      "sha256": "0cec6603bcdf4ef109237fb3d09cf1dc8609d0875eb2f85d9aa9a0b8f7205de6"
+    },
+    {
+      "path": "screens/ar02_cant_sign_in__support.png",
+      "bytes": 407173,
+      "sha256": "99310f60117d68f103ca2f421d25c99effb97ddb4669ed2e167f5d6efd9fb6dd"
+    },
+    {
+      "path": "screens/ar03_sign_in_security__backup.png",
+      "bytes": 232677,
+      "sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d"
+    },
+    {
+      "path": "screens/ar04_sign_in_security__backup_added.png",
+      "bytes": 228879,
+      "sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be"
+    },
+    {
+      "path": "screens/ps07_sign_in_one_device__with_backup.png",
+      "bytes": 201058,
+      "sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc"
+    },
+    {
+      "path": "screens/s03_welcome__android_google_first_with_recovery.png",
+      "bytes": 291132,
+      "sha256": "96f6c37e88ffd9d685c0aabd004de9117bf41cae8f6b7c1b73f6161a123001dc"
+    }
+  ]
+}

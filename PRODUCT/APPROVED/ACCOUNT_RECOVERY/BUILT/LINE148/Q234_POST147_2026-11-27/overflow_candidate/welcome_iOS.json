@@ -1,0 +1,57 @@
+{
+  "status": "DIAGNOSTIC_ONLY_NOT_GATE",
+  "source_label": "candidate",
+  "platform": "iOS",
+  "viewport": {
+    "width": 375,
+    "height": 667,
+    "text_scale": 2
+  },
+  "safe_padding": {
+    "top": 20,
+    "bottom": 0
+  },
+  "real_shadows": true,
+  "mount_failed": true,
+  "mount_failure": "Expected: null\n  Actual: FlutterError:<A RenderFlex overflowed by 71 pixels on the bottom.>\n",
+  "mount_failure_stack": "#0      fail (package:matcher/src/expect/expect.dart:187:31)\n#1      _expect (package:matcher/src/expect/expect.dart:182:3)\n#2      expect (package:matcher/src/expect/expect.dart:65:3)\n#3      expect (package:flutter_test/src/widget_tester.dart:473:18)\n#4      BaselineHarness.flush (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:915:5)\n<asynchronous suspension>\n#5      BaselineHarness.mountPresentation (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:946:5)\n<asynchronous suspension>\n#6      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_welcome_baseline_probe_test.dart:67:9)\n<asynchronous suspension>\n#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n#9      StackZoneSpecification._registerCallback.<anonymous closure> (package:stack_trace/src/stack_zone_specification.dart:114:42)\n<asynchronous suspension>\n",
+  "controller_step": "welcome",
+  "rects": {
+    "signup_welcome": {
+      "left": 20.0,
+      "top": 62.0,
+      "right": 355.0,
+      "bottom": 633.0,
+      "width": 335.0,
+      "height": 571.0
+    },
+    "signup_apple": {
+      "left": 20.0,
+      "top": 343.0,
+      "right": 355.0,
+      "bottom": 447.0,
+      "width": 335.0,
+      "height": 104.0
+    },
+    "signup_google": {
+      "left": 20.0,
+      "top": 459.0,
+      "right": 355.0,
+      "bottom": 563.0,
+      "width": 335.0,
+      "height": 104.0
+    },
+    "signup_open_recovery": {
+      "left": 85.7140121459961,
+      "top": 571.0,
+      "right": 289.2859878540039,
+      "bottom": 619.0,
+      "width": 203.5719757080078,
+      "height": 48.0
+    }
+  },
+  "no_gate_pass_claim": true,
+  "png": "build/line148/overflow_candidate/welcome_iOS.png",
+  "png_width": 1125,
+  "png_height": 2001
+}

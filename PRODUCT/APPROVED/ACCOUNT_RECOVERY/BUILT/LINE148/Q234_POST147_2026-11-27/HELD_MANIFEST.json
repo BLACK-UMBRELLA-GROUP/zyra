@@ -1,0 +1,90 @@
+{
+  "line": 148,
+  "lock": 50,
+  "question": 243,
+  "base": "e3943f2a698490dbacb81eef8e81a14ef6c15647",
+  "status": "HELD",
+  "patch": "LINE148_Q243_POST147.patch",
+  "patch_sha256": "df44e1069dd0641fcf252c9b4f72f01335a948f5f42110d613c81968edc9ca56",
+  "paths": [
+    {
+      "path": "SOURCE/README.md",
+      "accepted_sha256": "0527de4a9af2ef2b23c1d97a5100f4bb97a0b3ad7e3f03fef6ed7c25f7c66bb7",
+      "candidate_sha256": "69748938dc4e1667e46ec527cc391204a556ea9828ac29d7b6633c66f13c1487"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "accepted_sha256": "0741f0cc1ea5a44b992915187367b5626c1bab43ec5c1fd47a6b2d66f357c3d1",
+      "candidate_sha256": "a5c5e17ace6e95f3b3b3d5570ab057e1b4cd43a5c6c42d20452e8ee2871b238e"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_privacy_security_preview.dart",
+      "accepted_sha256": "304c3920921f514c547a242d658e719660fb85708edca924f8cee7d2333179aa",
+      "candidate_sha256": "431d4954825a97cede6b42998fb85cc1321d25f59601174983d31e5ba3e124a1"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_account_session.dart",
+      "accepted_sha256": "7fa80b6ba6aadb7206147e0c58182effae608e3c80e458e5661706cc5251f2f7",
+      "candidate_sha256": "c5b3999107fd1a73ecd5d1f7823232347cc16f2da58a8a0b773e725936e7eda4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "accepted_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+      "candidate_sha256": "953ec82b7b5687b4b1d2400ff0feb7995d5243e1143b9ffcd8085a1045113aa6"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview_controller.dart",
+      "accepted_sha256": "13fe47246cc4a7fc911c9ff705138d574b207b52e58ffbda919a26ed9530e89d",
+      "candidate_sha256": "0957b9f15e562cc1c23b9a50099e420f4c502368643360a93fdec8d7a70bc6b5"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_account_session_test.dart",
+      "accepted_sha256": "0600aa64f916ea035428b306adf50a23b373fbc62217ccfeba4bf5d2b312486b",
+      "candidate_sha256": "5ab615e356e85928fcb09223510538a59046a443b6993296dd08146b835c6c96"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_preview_widget_test.dart",
+      "accepted_sha256": "346e13cc5ed313c776bfe84cdcad5ce9f218d768972a64779fcb3d6bab2d9dec",
+      "candidate_sha256": "ddd0bb453f743dfc805293cf02c64d02975d0833ce11459977df767fd771f8bd"
+    },
+    {
+      "path": "SOURCE/test/visual/line148_account_recovery_capture_test.dart",
+      "accepted_sha256": null,
+      "candidate_sha256": "8ee4ffe227ac9716ca5922eea53563f30059113099324f5bf5a30dc0c442df2a"
+    },
+    {
+      "path": "SOURCE/test/visual/line148_lock50_rebase_proof_test.dart",
+      "accepted_sha256": null,
+      "candidate_sha256": "c75ade5c35980fd1aeb9ba7b15fb93cd491d27213fff6186a92a1f5b60e9bf3d"
+    }
+  ],
+  "timestamp": "2026-11-27T22:05:47.175569+00:00",
+  "gate": "Welcome375x667text2.0 overflow71px;accepted comparison41px notwaived",
+  "ordinary": "8122 passed /253 skipped /2 failed;9m08s;only375text2 Welcome iOS/Android71px",
+  "authority": [
+    "DR-ZYRA-385",
+    "OA-ZYRA-402",
+    "OA-ZYRA-371",
+    "Q234answered"
+  ],
+  "evidence": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q234_POST147_2026-11-27",
+  "release": {
+    "line": 148,
+    "status": "QUESTION",
+    "question": 243,
+    "accepted_head": "e3943f2a698490dbacb81eef8e81a14ef6c15647",
+    "lease_started_utc": "2026-11-27T21:54:35.778457+00:00",
+    "source_ci_released_utc": "2026-11-27T22:10:02.318929+00:00",
+    "source_status": "clean",
+    "ci_status": "unchanged",
+    "protected_staged_entries": 7,
+    "protected_line138_working_files": 5,
+    "prior_evidence_files_exact": 2943,
+    "candidate_patch_sha256": "df44e1069dd0641fcf252c9b4f72f01335a948f5f42110d613c81968edc9ca56",
+    "candidate_paths": 10,
+    "implementation_commit": null,
+    "implementation_pushes": 0,
+    "ordinary": "8122 passed /253 skipped /2 failed;9m08s;only375text2 Welcome iOS/Android71px",
+    "next": "Coordinator may start149;this owner does no other line"
+  }
+}
