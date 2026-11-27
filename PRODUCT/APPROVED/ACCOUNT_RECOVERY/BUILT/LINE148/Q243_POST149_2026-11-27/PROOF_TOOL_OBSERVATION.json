@@ -1,0 +1,7 @@
+{
+  "at": "2026-11-27T23:06:13.262501+00:00",
+  "status": "INTERRUPTED_TOOL_WAIT",
+  "observation": "Added top PNG written; test did not advance after iOS375text2. Added image encoder awaited outside tester.runAsync unlike existing capture helper. Correcting helper async context only; all app assertions retained.",
+  "source_change": false,
+  "raw_log": "six_size_proof.log"
+}

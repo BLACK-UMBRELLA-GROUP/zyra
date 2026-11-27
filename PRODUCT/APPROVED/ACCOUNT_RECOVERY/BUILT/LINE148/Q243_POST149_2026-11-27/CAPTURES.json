@@ -1,0 +1,57 @@
+{
+  "files": [
+    {
+      "path": "screens/ar04_sign_in_security__backup_added.png",
+      "bytes": 228879,
+      "sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+      "verdict": "normal capture byte-exact prior candidate"
+    },
+    {
+      "path": "screens/ps07_sign_in_one_device__with_backup.png",
+      "bytes": 201058,
+      "sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+      "verdict": "normal capture byte-exact prior candidate"
+    },
+    {
+      "path": "screens/ar01_welcome__cant_sign_in.png",
+      "bytes": 291241,
+      "sha256": "0cec6603bcdf4ef109237fb3d09cf1dc8609d0875eb2f85d9aa9a0b8f7205de6",
+      "verdict": "normal capture byte-exact prior candidate"
+    },
+    {
+      "path": "screens/s03_welcome__android_google_first_with_recovery.png",
+      "bytes": 291132,
+      "sha256": "96f6c37e88ffd9d685c0aabd004de9117bf41cae8f6b7c1b73f6161a123001dc",
+      "verdict": "normal capture byte-exact prior candidate"
+    },
+    {
+      "path": "screens/ar03_sign_in_security__backup.png",
+      "bytes": 232677,
+      "sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+      "verdict": "normal capture byte-exact prior candidate"
+    },
+    {
+      "path": "screens/ar02_cant_sign_in__support.png",
+      "bytes": 407173,
+      "sha256": "99310f60117d68f103ca2f421d25c99effb97ddb4669ed2e167f5d6efd9fb6dd",
+      "verdict": "normal capture byte-exact prior candidate"
+    },
+    {
+      "path": "overflow_top/welcome_iOS_375_text200.png",
+      "bytes": 305216,
+      "sha256": "dfb7f0656e18944b49661bf08c323e139d3a20b6cf86b3c885015b57e73ecf26",
+      "verdict": "strict top failure retained;end proof blocked"
+    },
+    {
+      "path": "overflow_top/welcome_android_375_text200.png",
+      "bytes": 305204,
+      "sha256": "b05a8aaccce47733c773a2985d64b95bb7e07d588c21c3f97528ea01fba7f5be",
+      "verdict": "strict top failure retained;end proof blocked"
+    }
+  ],
+  "normal_count": 6,
+  "failed_overflow_top_count": 2,
+  "normal_masters": "ACCOUNT_RECOVERY/MASTERS/ar01\u2013ar04;spec exceptions in VISUAL_REVIEW.json",
+  "shadows": "real shadows enabled,settled2600ms;normal six PNGs exact prior",
+  "overflow_end": "NOT_REACHED;strict top assertion fails;not waived"
+}

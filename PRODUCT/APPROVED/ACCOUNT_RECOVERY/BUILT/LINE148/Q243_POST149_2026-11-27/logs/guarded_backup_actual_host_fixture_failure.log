@@ -1,0 +1,238 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: LOCK50 actual Seeker Apple backup retains its signup provider and rejects stale actions
+ZYRA: fetchCandidates — no gender on own profile, so no target gender to search for. Returning no candidates.
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: an object with length of <25>
+  Actual: [
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ({String method, String path}):(method: GET, path: /rest/v1/profiles),
+            ({String method, String path}):(method: POST, path: /rest/v1/rpc/ages_for_one),
+            ({String method, String path}):(method: GET, path: /rest/v1/subscriptions),
+            ({String method, String path}):(method: GET, path: /rest/v1/profile_photos),
+            ({String method, String path}):(method: GET, path: /rest/v1/profile_unlocks),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/profiles),
+            ({String method, String path}):(method: GET, path: /rest/v1/wali_suggestions),
+            ({String method, String path}):(method: GET, path: /rest/v1/matches),
+            ({String method, String path}):(method: GET, path: /rest/v1/wali_suggestions),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/matches),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_dashboard_updates),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: POST, path: /rest/v1/rpc/unlock_balance),
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: GET, path: /rest/v1/saves),
+            ({String method, String path}):(method: GET, path: /rest/v1/likes),
+            ({String method, String path}):(method: GET, path: /rest/v1/passes),
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ...
+          ]
+   Which: has length of <29>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart:1873:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart line 1873
+The test description was:
+  LOCK50 actual Seeker Apple backup retains its signup provider and rejects stale actions
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +0 -1: LOCK50 actual Seeker Apple backup retains its signup provider and rejects stale actions [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 actual Seeker Apple backup retains its signup provider and rejects stale actions
+  
+00:03 +0 -1: LOCK50 actual Seeker Google backup retains its signup provider and rejects stale actions
+ZYRA: fetchCandidates — no gender on own profile, so no target gender to search for. Returning no candidates.
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: an object with length of <25>
+  Actual: [
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ({String method, String path}):(method: GET, path: /rest/v1/profiles),
+            ({String method, String path}):(method: POST, path: /rest/v1/rpc/ages_for_one),
+            ({String method, String path}):(method: GET, path: /rest/v1/subscriptions),
+            ({String method, String path}):(method: GET, path: /rest/v1/profile_photos),
+            ({String method, String path}):(method: GET, path: /rest/v1/profile_unlocks),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/profiles),
+            ({String method, String path}):(method: GET, path: /rest/v1/wali_suggestions),
+            ({String method, String path}):(method: GET, path: /rest/v1/matches),
+            ({String method, String path}):(method: GET, path: /rest/v1/wali_suggestions),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/matches),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_dashboard_updates),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: POST, path: /rest/v1/rpc/unlock_balance),
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: GET, path: /rest/v1/saves),
+            ({String method, String path}):(method: GET, path: /rest/v1/likes),
+            ({String method, String path}):(method: GET, path: /rest/v1/passes),
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ...
+          ]
+   Which: has length of <29>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart:1873:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart line 1873
+The test description was:
+  LOCK50 actual Seeker Google backup retains its signup provider and rejects stale actions
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +0 -2: LOCK50 actual Seeker Google backup retains its signup provider and rejects stale actions [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 actual Seeker Google backup retains its signup provider and rejects stale actions
+  
+00:04 +0 -2: LOCK50 actual Guardian Apple backup retains its signup provider and rejects stale actions
+ZYRA: fetchCandidates — no gender on own profile, so no target gender to search for. Returning no candidates.
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: an object with length of <25>
+  Actual: [
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ({String method, String path}):(method: GET, path: /rest/v1/profiles),
+            ({String method, String path}):(method: POST, path: /rest/v1/rpc/ages_for_one),
+            ({String method, String path}):(method: GET, path: /rest/v1/subscriptions),
+            ({String method, String path}):(method: GET, path: /rest/v1/profile_photos),
+            ({String method, String path}):(method: GET, path: /rest/v1/profile_unlocks),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/profiles),
+            ({String method, String path}):(method: GET, path: /rest/v1/wali_suggestions),
+            ({String method, String path}):(method: GET, path: /rest/v1/matches),
+            ({String method, String path}):(method: GET, path: /rest/v1/wali_suggestions),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/matches),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_dashboard_updates),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: POST, path: /rest/v1/rpc/unlock_balance),
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: GET, path: /rest/v1/saves),
+            ({String method, String path}):(method: GET, path: /rest/v1/likes),
+            ({String method, String path}):(method: GET, path: /rest/v1/passes),
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ...
+          ]
+   Which: has length of <29>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart:1873:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart line 1873
+The test description was:
+  LOCK50 actual Guardian Apple backup retains its signup provider and rejects stale actions
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +0 -3: LOCK50 actual Guardian Apple backup retains its signup provider and rejects stale actions [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 actual Guardian Apple backup retains its signup provider and rejects stale actions
+  
+00:05 +0 -3: LOCK50 actual Guardian Google backup retains its signup provider and rejects stale actions
+ZYRA: fetchCandidates — no gender on own profile, so no target gender to search for. Returning no candidates.
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: an object with length of <25>
+  Actual: [
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ({String method, String path}):(method: GET, path: /rest/v1/profiles),
+            ({String method, String path}):(method: POST, path: /rest/v1/rpc/ages_for_one),
+            ({String method, String path}):(method: GET, path: /rest/v1/subscriptions),
+            ({String method, String path}):(method: GET, path: /rest/v1/profile_photos),
+            ({String method, String path}):(method: GET, path: /rest/v1/profile_unlocks),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/profiles),
+            ({String method, String path}):(method: GET, path: /rest/v1/wali_suggestions),
+            ({String method, String path}):(method: GET, path: /rest/v1/matches),
+            ({String method, String path}):(method: GET, path: /rest/v1/wali_suggestions),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_my_onboarding_progress),
+            ({String method, String path}):(method: GET, path: /rest/v1/matches),
+            ({String method, String path}):(method: POST, path:
+/rest/v1/rpc/zyra_dashboard_updates),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: POST, path: /rest/v1/rpc/unlock_balance),
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ({String method, String path}):(method: GET, path: /rest/v1/notifications),
+            ({String method, String path}):(method: GET, path: /rest/v1/saves),
+            ({String method, String path}):(method: GET, path: /rest/v1/likes),
+            ({String method, String path}):(method: GET, path: /rest/v1/passes),
+            ({String method, String path}):(method: POST, path: /auth/v1/token),
+            ...
+          ]
+   Which: has length of <29>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart:1873:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart line 1873
+The test description was:
+  LOCK50 actual Guardian Google backup retains its signup provider and rejects stale actions
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +0 -4: LOCK50 actual Guardian Google backup retains its signup provider and rejects stale actions [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 actual Guardian Google backup retains its signup provider and rejects stale actions
+  
+00:06 +0 -4: (tearDownAll)
+00:06 +0 -4: Some tests failed.
+
+Failing tests:
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart: LOCK50 actual Guardian Apple backup retains its signup provider and rejects stale actions
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart: LOCK50 actual Guardian Google backup retains its signup provider and rejects stale actions
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart: LOCK50 actual Seeker Apple backup retains its signup provider and rejects stale actions
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart: LOCK50 actual Seeker Google backup retains its signup provider and rejects stale actions

@@ -1,0 +1,83 @@
+[
+  {
+    "role": "Seeker",
+    "area": "account_recovery",
+    "page": "ar01_welcome__cant_sign_in",
+    "state": "lock50",
+    "reached": "Founder sample account recovery, LOCK 50.",
+    "file": "ar01_welcome__cant_sign_in.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "account_recovery",
+    "page": "ar02_cant_sign_in__support",
+    "state": "lock50",
+    "reached": "Founder sample account recovery, LOCK 50.",
+    "file": "ar02_cant_sign_in__support.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "account_recovery",
+    "page": "ar03_sign_in_security__backup",
+    "state": "lock50",
+    "reached": "Founder sample account recovery, LOCK 50.",
+    "file": "ar03_sign_in_security__backup.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "account_action"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "account_recovery",
+    "page": "ar04_sign_in_security__backup_added",
+    "state": "lock50",
+    "reached": "Founder sample account recovery, LOCK 50.",
+    "file": "ar04_sign_in_security__backup_added.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "account_action"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "account_recovery",
+    "page": "ps07_sign_in_one_device__with_backup",
+    "state": "lock50",
+    "reached": "Founder sample account recovery, LOCK 50.",
+    "file": "ps07_sign_in_one_device__with_backup.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "account_action"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "account_recovery",
+    "page": "s03_welcome__android_google_first_with_recovery",
+    "state": "lock50",
+    "reached": "Founder sample account recovery, LOCK 50.",
+    "file": "s03_welcome__android_google_first_with_recovery.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 4
+  }
+]

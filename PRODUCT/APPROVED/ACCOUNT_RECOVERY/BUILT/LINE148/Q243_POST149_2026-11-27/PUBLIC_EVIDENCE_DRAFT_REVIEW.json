@@ -1,0 +1,1408 @@
+{
+  "hits": [
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/HANDOVER.txt",
+      "line": 15,
+      "matches": [
+        "price"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 7,
+      "matches": [
+        "pricing"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 12,
+      "matches": [
+        "pricing"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 17,
+      "matches": [
+        "pricing"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 22,
+      "matches": [
+        "pricing"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 27,
+      "matches": [
+        "pricing"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 32,
+      "matches": [
+        "pricing"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 37,
+      "matches": [
+        "pricing"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 42,
+      "matches": [
+        "pricing"
+      ],
+      "classification": "technical owner/route terms and existing public evidence filenames/product expressions; no business cost or financial document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 179,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 292,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 399,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 460,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 525,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 720,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 875,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 1464,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 1533,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2013,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2027,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2312,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2402,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2795,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2913,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3082,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3130,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3369,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3465,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3740,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3777,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3931,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3952,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4065,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4192,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4321,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4451,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4487,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4637,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4646,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4681,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4981,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 5457,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 179,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 292,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 399,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 460,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 525,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 720,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 875,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 1464,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 1533,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2013,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2027,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2312,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2402,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2795,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2913,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3082,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3130,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3272,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3443,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3761,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3883,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4003,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4013,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4033,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4136,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4347,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4605,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 244,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2116,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2230,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2321,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 3737,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4315,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4467,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4703,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4875,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4911,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5090,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5153,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5222,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5329,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 6018,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 244,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2116,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2230,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2321,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 3737,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4224,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4315,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4572,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4733,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4874,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4875,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4929,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5066,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5090,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5450,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5734,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5981,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 6003,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 6141,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 179,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 292,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 399,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 460,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 525,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 720,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 875,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 1464,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 1533,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2031,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2381,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2550,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2576,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2674,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2752,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2882,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3043,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3294,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3882,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3918,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3992,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 4049,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 4206,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 4552,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 4701,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 5075,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 5121,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 5157,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1217,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1254,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1467,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1505,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1554,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1581,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1699,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1852,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2107,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2180,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2200,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2409,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2571,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2716,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2813,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2927,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2999,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3065,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3163,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3298,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3536,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3732,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3812,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3853,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3966,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 4602,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 4616,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 5663,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 5806,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 6045,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 6252,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 6573,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 6903,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 7078,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 9460,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 9461,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 9965,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 10093,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 200,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 227,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 245,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 525,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 843,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1640,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1751,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1790,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1845,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1925,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1969,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 2257,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 3721,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 3788,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 3913,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4294,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4500,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4504,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4553,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4643,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4852,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4927,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4929,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 5017,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 5386,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 5496,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6152,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6157,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6196,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6202,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6335,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 7025,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 7260,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 200,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 227,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 245,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 525,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 843,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1640,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1751,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1790,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1845,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1925,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1969,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 2257,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 3721,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 3788,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 3913,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4108,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4127,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4153,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4261,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4335,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4376,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4665,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4858,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4918,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 5900,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 6065,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 6271,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 6311,
+      "matches": [],
+      "classification": "PNG compressed bytes decoded as text by scanner; real visual reviewed and normal6 byte-exact prior; no textual business document"
+    }
+  ],
+  "verdict": "PASS",
+  "new_private_material": false,
+  "all_hit_categories": [
+    "money"
+  ],
+  "binary_false_hits": 221
+}

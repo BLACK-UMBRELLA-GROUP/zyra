@@ -1,0 +1,154 @@
+{
+  "line": 148,
+  "lock": 50,
+  "question": 243,
+  "reviewer": "gate_inventory independent visual QA",
+  "reviewed_utc": "2026-11-27T23:05:07.986270+00:00",
+  "result": "PASS for six normal-size capture preservation; all six fresh PNGs are byte-identical to prior Q234_POST147 candidate. No newly introduced visual difference.",
+  "method": "SHA256 and byte comparisons, direct tools.view_image inspection of all six current captures and four raw locked masters; existing prior independent visual review read for context.",
+  "whole_page_pixel_match_to_prototype": false,
+  "capture_comparisons": [
+    {
+      "state": "ar01_welcome__cant_sign_in",
+      "current_sha256": "0cec6603bcdf4ef109237fb3d09cf1dc8609d0875eb2f85d9aa9a0b8f7205de6",
+      "prior_sha256": "0cec6603bcdf4ef109237fb3d09cf1dc8609d0875eb2f85d9aa9a0b8f7205de6",
+      "prior_byte_exact": true,
+      "master_sha256": "deecf7db5ba7801fa48f7fb35191e36284a36aefd1e7d718a06ae7b7f03ea863",
+      "viewed_current": true,
+      "viewed_master": true
+    },
+    {
+      "state": "ar02_cant_sign_in__support",
+      "current_sha256": "99310f60117d68f103ca2f421d25c99effb97ddb4669ed2e167f5d6efd9fb6dd",
+      "prior_sha256": "99310f60117d68f103ca2f421d25c99effb97ddb4669ed2e167f5d6efd9fb6dd",
+      "prior_byte_exact": true,
+      "master_sha256": "3d9948a5ee818608dd5bb2849994e46d336a1688a6538efa773510d3bce33fe3",
+      "viewed_current": true,
+      "viewed_master": true
+    },
+    {
+      "state": "ar03_sign_in_security__backup",
+      "current_sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+      "prior_sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+      "prior_byte_exact": true,
+      "master_sha256": "c551b8113148394e6f0625bc62d155e0ab15a39f9852230f8d77b625b430c321",
+      "viewed_current": true,
+      "viewed_master": true
+    },
+    {
+      "state": "ar04_sign_in_security__backup_added",
+      "current_sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+      "prior_sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+      "prior_byte_exact": true,
+      "master_sha256": "82dd250b3d366d33be90b6c5ef6d04401c3d6dd544662bd0d4ac50a2d20b6686",
+      "viewed_current": true,
+      "viewed_master": true
+    },
+    {
+      "state": "ps07_sign_in_one_device__with_backup",
+      "current_sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+      "prior_sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+      "prior_byte_exact": true,
+      "master_sha256": null,
+      "viewed_current": true,
+      "viewed_master": false
+    },
+    {
+      "state": "s03_welcome__android_google_first_with_recovery",
+      "current_sha256": "96f6c37e88ffd9d685c0aabd004de9117bf41cae8f6b7c1b73f6161a123001dc",
+      "prior_sha256": "96f6c37e88ffd9d685c0aabd004de9117bf41cae8f6b7c1b73f6161a123001dc",
+      "prior_byte_exact": true,
+      "master_sha256": null,
+      "viewed_current": true,
+      "viewed_master": false
+    }
+  ],
+  "main_audits": [
+    {
+      "name": "ar01_welcome__cant_sign_in.json",
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+      "prior_byte_exact": true,
+      "runs": 6,
+      "failures": 0
+    },
+    {
+      "name": "ar02_cant_sign_in__support.json",
+      "sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8",
+      "prior_byte_exact": true,
+      "runs": 10,
+      "failures": 0
+    },
+    {
+      "name": "ar02_larger_text_bottom.json",
+      "sha256": "a3206db3c69f09d13f760b33143acff971a856864c9a59f3940232a2ddc8267c",
+      "prior_byte_exact": true,
+      "runs": 5,
+      "failures": 0
+    },
+    {
+      "name": "ar02_larger_text_top.json",
+      "sha256": "8081481cf9e26e6d5b39057a047d6a4542ddc61cd8d832588b49a240a6beeac7",
+      "prior_byte_exact": true,
+      "runs": 3,
+      "failures": 0
+    },
+    {
+      "name": "ar03_sign_in_security__backup.json",
+      "sha256": "6abc6d4d03c6a27d410ed1bc9717f7c99f188fcfdcf8a8743a82c6d93c557fcf",
+      "prior_byte_exact": true,
+      "runs": 17,
+      "failures": 0
+    },
+    {
+      "name": "ar04_google_larger_text.json",
+      "sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af",
+      "prior_byte_exact": true,
+      "runs": 7,
+      "failures": 0
+    },
+    {
+      "name": "ar04_sign_in_security__backup_added.json",
+      "sha256": "98ee308abcdbd5317f2a99596df7df65e8e7ab62c1263cc4934a5a0f75d69848",
+      "prior_byte_exact": true,
+      "runs": 18,
+      "failures": 0
+    },
+    {
+      "name": "ps07_sign_in_one_device__with_backup.json",
+      "sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907",
+      "prior_byte_exact": true,
+      "runs": 14,
+      "failures": 0
+    },
+    {
+      "name": "s03_welcome__android_google_first_with_recovery.json",
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+      "prior_byte_exact": true,
+      "runs": 6,
+      "failures": 0
+    }
+  ],
+  "visual_observations": [
+    "All six fresh captures retain complete text, unclipped soft shadows, visible recovery/support controls and no image/photo content on Welcome.",
+    "iOS Welcome retains Apple then Google then recovery; Android retains Google then Apple then recovery. Brand and action positions remain exactly prior candidate at 430x932/1.0, including rendered shadows.",
+    "Recovery title, shared signup chevron, two numbered support steps and bottom Contact support are complete and unoverlapped.",
+    "Backup state changes the shared Settings row from Add Google as a backup with chevron to Google plus green Added; section remains between SIGN-IN and SIGNED-IN DEVICES.",
+    "One-device state retains backup section and green Only this phone is signed in footer."
+  ],
+  "explicit_master_exceptions": [
+    "ar01 prototype-only platform pill omitted as brief requires.",
+    "ar02 shared signup chevron size/position retained; prototype draws a smaller chevron.",
+    "ar03 backup label aligned with existing Settings rows; prototype extra button padding not copied.",
+    "ar04 Added #326B4C green follows spec/brief; prototype blanket grey superseded."
+  ],
+  "preexisting_shared_differences_retained": [
+    "Welcome app wordmark font weight/provider icons/type and button shadows differ from HTML prototype; exact prior candidate retained.",
+    "Recovery shared typography/line wraps, card widths/dividers/shadows differ from prototype; exact prior candidate retained.",
+    "Settings existing LOCK40 typography/surface/device row geometry and footer ink differ from prototype; note wraps to two lines instead of one; exact prior candidate retained."
+  ],
+  "limits": "No claim of literal prototype pixel MATCH, Founder acceptance, full gate completion or overflow behavior based on these six fitting captures; root owns six-size Q243 geometry/raster, ordinary and hosted gates.",
+  "written_refusal": "OA-ZYRA-371: no restyling of accepted shared components or wordmark to force prototype equality; observations retained for design review.",
+  "mutations": [
+    "SOURCE/build/line148_q243_post149_work/VISUAL_REVIEW.json"
+  ]
+}

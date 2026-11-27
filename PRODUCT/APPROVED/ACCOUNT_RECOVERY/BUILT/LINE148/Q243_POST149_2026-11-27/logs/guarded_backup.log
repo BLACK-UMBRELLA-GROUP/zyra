@@ -1,0 +1,12 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_developer_panel_entry_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: LOCK50 actual Seeker Apple backup retains its signup provider and rejects stale actions
+ZYRA: fetchCandidates — no gender on own profile, so no target gender to search for. Returning no candidates.
+00:04 +1: LOCK50 actual Seeker Google backup retains its signup provider and rejects stale actions
+ZYRA: fetchCandidates — no gender on own profile, so no target gender to search for. Returning no candidates.
+00:06 +2: LOCK50 actual Guardian Apple backup retains its signup provider and rejects stale actions
+ZYRA: fetchCandidates — no gender on own profile, so no target gender to search for. Returning no candidates.
+00:09 +3: LOCK50 actual Guardian Google backup retains its signup provider and rejects stale actions
+ZYRA: fetchCandidates — no gender on own profile, so no target gender to search for. Returning no candidates.
+00:10 +4: (tearDownAll)
+00:10 +4: All tests passed!

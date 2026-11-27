@@ -1,0 +1,21 @@
+{
+  "line": 148,
+  "status": "QUESTION",
+  "question": 244,
+  "accepted_head": "673a30427692f235ca6f6092339838bd2f36749e",
+  "implementation_commit": null,
+  "implementation_pushes": 0,
+  "source_lease_started_utc": "2026-11-27T23:02:38.776124+00:00",
+  "source_ci_released_utc": "2026-11-27T23:18:43.387204+00:00",
+  "source_ci_status": "clean",
+  "foreign_staged_entries_exact": 7,
+  "line138_working_files_exact": 5,
+  "prior_BUILT_evidence_files_exact": 3169,
+  "prior_seal2943_exact": true,
+  "held_source_paths": 11,
+  "held_patch_sha256": "6a279548560c543b4f02cc2b8e554b50da537d2cc0204cfec6de5484b80c194f",
+  "ordinary": "8146 passed /253 skipped /2 failed;543.11s;only unchanged ZYRA wordmark split at375x667text2 iOS/Android",
+  "hosted": "NOT_RUN;strict local gate red;records-only no duplicate CI wait",
+  "next": "Coordinator handles any separate line;this owner does no other line. Line150 remains separate daytime Founder-present task and still needs148BUILT.",
+  "held_manifest_sha256": "f4b582997901bd4645098ba05c1c853be10ac89c7be10ee1653291ca17e4db7d"
+}

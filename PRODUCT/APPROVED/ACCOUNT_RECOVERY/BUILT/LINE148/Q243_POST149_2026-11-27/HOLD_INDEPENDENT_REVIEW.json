@@ -1,0 +1,383 @@
+{
+  "line": 148,
+  "question": 244,
+  "reviewer": "gate_inventory independent bounded hold review",
+  "reviewed_utc": "2026-11-27T23:11:09.428938+00:00",
+  "result": "HOLD supported; both strict Welcome top audits fail on actual two-line ZYRA wordmark. No waiver or substitute pass.",
+  "declared_base": "673a30427692f235ca6f6092339838bd2f36749e",
+  "observed_HEAD": "673a30427692f235ca6f6092339838bd2f36749e",
+  "patch_sha256": "6a279548560c543b4f02cc2b8e554b50da537d2cc0204cfec6de5484b80c194f",
+  "patch_hash_matches_manifest": true,
+  "held_manifest_sha256": "db61cad96e56d152b1b12a737d5c803426d369dcd15d4057f3948f5f045b798e",
+  "final_code_manifest_sha256": "3ee0a9f216b43d49295b022ac14925f18db203b4345376dbd7e6856f2e1c1e03",
+  "same11path_manifest": true,
+  "in_memory_patch_replay": [
+    {
+      "path": "SOURCE/README.md",
+      "before_exact": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "before_exact": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_privacy_security_preview.dart",
+      "before_exact": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_account_session.dart",
+      "before_exact": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "before_exact": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview_controller.dart",
+      "before_exact": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/test/line121_signup_account_session_test.dart",
+      "before_exact": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/test/line121_signup_preview_widget_test.dart",
+      "before_exact": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/test/visual/line148_account_recovery_capture_test.dart",
+      "new_path_absent_at_base": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/test/visual/line148_lock50_rebase_proof_test.dart",
+      "new_path_absent_at_base": true,
+      "candidate_exact": true
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_panel_entry_test.dart",
+      "before_exact": true,
+      "candidate_exact": true
+    }
+  ],
+  "all11_candidate_hashes_exact": true,
+  "prior_seal": {
+    "patch": "df44e1069dd0641fcf252c9b4f72f01335a948f5f42110d613c81968edc9ca56",
+    "manifest": "bae8a518646c1a107c2223307f93c659fd5127b276237cc07603f20765c7ee9f"
+  },
+  "prior_seal_unchanged": true,
+  "foreign_index": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "stage_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+      "stage_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+      "stage_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+      "stage_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+      "stage_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+      "stage_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "stage_exact": true
+    }
+  ],
+  "all7_foreign_index_exact": true,
+  "line138": [
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+      "working_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+      "working_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+      "working_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+      "working_exact": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+      "working_exact": true
+    }
+  ],
+  "all5_line138_working_exact": true,
+  "fitting_geometry": [
+    {
+      "name": "welcome_android_375_text100.json",
+      "sha256": "f6d5edd06d8e7683a844258207ccc054857da3111ac4ee5ed24a597b64a9d4cd",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_android_375_text130.json",
+      "sha256": "716eb08f6faabcf74a8d6cc98b8f257065e27d282d7b753047083253f97ea559",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_android_430_text100.json",
+      "sha256": "7baa37d6d3af2ec30e52ca635b7bd5d675e933032978d6cb2909cfdec2c0a708",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_android_430_text130.json",
+      "sha256": "0245b784fbb2fb2d5d209182271f546d5faf4401b3a6f008bbc078a9c29f1f39",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_android_430_text200.json",
+      "sha256": "95b0d6fd13219529e3cbe144525d6d7192b51e748a000c1171e8416c3a81e1c2",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_iOS_375_text100.json",
+      "sha256": "eacbfa51b82329ccbd268ad0e9ed168446abd0cc03b84fc2a22707a2d01862a3",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_iOS_375_text130.json",
+      "sha256": "0dc5d8966bc31b161941dcf5dc44c2a6c070012ae58497adde4bd77efe0318d7",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_iOS_430_text100.json",
+      "sha256": "d68f72499ca0ced634ab6c83e865af7f27afc5b6825fe677c736bff41cba4113",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_iOS_430_text130.json",
+      "sha256": "ae0cc7276963034b63acc79c01b67599a1e98e163ce7ca11319474046b3efe54",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    },
+    {
+      "name": "welcome_iOS_430_text200.json",
+      "sha256": "80d7cb56652406f4a3b0a99e3638140449c2d91c5e10c6af219ce0812bfb49bf",
+      "checks": {
+        "fits": true,
+        "zero_extent": true,
+        "no_gesture_movement": true,
+        "bottom_position": true,
+        "provider_size": true,
+        "spacing": true,
+        "brand_centered": true,
+        "brand_original_vertical": true
+      },
+      "all_exact": true
+    }
+  ],
+  "all10_fitting_geometry_exact": true,
+  "strict_real_top": [
+    {
+      "platform": "iOS",
+      "top_audit_sha256": "8518b3159bcb569fdbf9e0b5bfab3738eea103d97102ec5cc5acb442d77fcc42",
+      "top_png_sha256": "dfb7f0656e18944b49661bf08c323e139d3a20b6cf86b3c885015b57e73ecf26",
+      "top_png_directly_viewed": true,
+      "real_shadows": true,
+      "failures": [
+        {
+          "text": "ZYRA",
+          "word_split_without_hyphen": true,
+          "paragraph": "ZYRA",
+          "lines": [
+            [
+              27.0,
+              73.98017120361328,
+              306.7080078125,
+              203.579833984375
+            ],
+            [
+              27.0,
+              227.98016357421875,
+              119.5159912109375,
+              357.579833984375
+            ]
+          ],
+          "widget_path": [
+            "Text",
+            "Column",
+            "Center",
+            "Expanded",
+            "Column",
+            "IntrinsicHeight",
+            "ConstrainedBox",
+            "Padding",
+            "_SingleChildViewport",
+            "IgnorePointer",
+            "Semantics",
+            "Listener"
+          ]
+        }
+      ],
+      "end_audit_absent": true,
+      "overflow_geometry_absent": true
+    },
+    {
+      "platform": "android",
+      "top_audit_sha256": "8518b3159bcb569fdbf9e0b5bfab3738eea103d97102ec5cc5acb442d77fcc42",
+      "top_png_sha256": "b05a8aaccce47733c773a2985d64b95bb7e07d588c21c3f97528ea01fba7f5be",
+      "top_png_directly_viewed": true,
+      "real_shadows": true,
+      "failures": [
+        {
+          "text": "ZYRA",
+          "word_split_without_hyphen": true,
+          "paragraph": "ZYRA",
+          "lines": [
+            [
+              27.0,
+              73.98017120361328,
+              306.7080078125,
+              203.579833984375
+            ],
+            [
+              27.0,
+              227.98016357421875,
+              119.5159912109375,
+              357.579833984375
+            ]
+          ],
+          "widget_path": [
+            "Text",
+            "Column",
+            "Center",
+            "Expanded",
+            "Column",
+            "IntrinsicHeight",
+            "ConstrainedBox",
+            "Padding",
+            "_SingleChildViewport",
+            "IgnorePointer",
+            "Semantics",
+            "Listener"
+          ]
+        }
+      ],
+      "end_audit_absent": true,
+      "overflow_geometry_absent": true
+    }
+  ],
+  "six_size_raw_log_sha256": "310fcc21c2a14bf4f9525049649b0042ab061237e344c9477db898f72f79b7c3",
+  "six_size_raw_summary": "23 passed,2 failed;only iOS/Android375x667text2 Welcome strict word_split_without_hyphen",
+  "guarded_backup_raw_log_sha256": "342d6c9387aa16353010fc4ebb9dc4b6b8ec5f952841f12ba34b3932b3a54543",
+  "guarded_backup_summary": "4 actual-host tests passed;Seeker/Guardian \u00d7Apple/Google with provider retention/stale actions and mock call assertions",
+  "ordinary_at_review": "IN PROGRESS;no terminal gate summary claimed",
+  "ordinary_tail_at_review": "02:04 +2063 ~1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/past_journey_archive_destination_test.dart: Paused real archive opens truthful status and Back, never counterpart Timeline",
+  "overflow_end_limitation": "Top raster assertion throws before the real-drag/end geometry/end raster and recovery roundtrip assertions on both overflow cases. End reachability is NOT passed or audited. Ten fitting cases complete those assertions. Positive overflow extent assertions execute before strict top audit, but no completed overflow geometry JSON exists.",
+  "written_refusal": "OA-ZYRA-371: preserve strict word_split_without_hyphen findings; no wordmark font/spacing/text-scale change, exception, suppressed audit, invented nonwrapping design or pass for unreached end frames under Q243 scroll-only authority.",
+  "scope": "Read-only checks;only this independent review JSON written. No gitwrites/app/index/queue/old evidence mutation."
+}

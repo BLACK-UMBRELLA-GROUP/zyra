@@ -1,0 +1,16 @@
+{
+  "name": "six_size_proof",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--dart-define=ZYRA_LINE148_CAPTURE=true",
+    "test/visual/line148_lock50_rebase_proof_test.dart"
+  ],
+  "exit_code": 1,
+  "seconds": 17.42
+}

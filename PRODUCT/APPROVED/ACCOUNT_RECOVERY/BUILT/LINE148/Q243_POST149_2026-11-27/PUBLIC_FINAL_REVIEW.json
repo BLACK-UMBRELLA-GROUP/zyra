@@ -1,0 +1,1650 @@
+{
+  "scanner_exit": 1,
+  "count": 273,
+  "categories": {
+    "existing_product_or_technical_reference": 52,
+    "compressed_PNG_false_positive": 221
+  },
+  "hits": [
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 7,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 15,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 23,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 31,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 39,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 47,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 55,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 63,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_EVIDENCE_DRAFT_REVIEW.json",
+      "line": 71,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/HANDOVER.txt",
+      "line": 15,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/SOURCE_SCOPE_REVIEW.json",
+      "line": 3,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 7,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 12,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 17,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 22,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 27,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 32,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 37,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/PUBLIC_SOURCE_REVIEW.json",
+      "line": 42,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 179,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 292,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 399,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 460,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 525,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 720,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 875,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 1464,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 1533,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2013,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2027,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2312,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2402,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2795,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2913,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3082,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3130,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3369,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3465,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3740,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3777,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3931,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3952,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4065,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4192,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4321,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4451,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4487,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4637,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4646,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4681,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4981,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar04_sign_in_security__backup_added.png",
+      "line": 5457,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 179,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 292,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 399,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 460,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 525,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 720,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 875,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 1464,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 1533,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2013,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2027,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2312,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2402,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2795,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2913,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3082,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3130,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3272,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3443,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3761,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3883,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4003,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4013,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4033,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4136,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4347,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4605,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 244,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2116,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2230,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2321,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 3737,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4315,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4467,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4703,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4875,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4911,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5090,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5153,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5222,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5329,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar01_welcome__cant_sign_in.png",
+      "line": 6018,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 244,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2116,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2230,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2321,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 3737,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4224,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4315,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4572,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4733,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4874,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4875,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4929,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5066,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5090,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5450,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5734,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5981,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 6003,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 6141,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 179,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 292,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 399,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 460,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 525,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 720,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 875,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 1464,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 1533,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2031,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2381,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2550,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2576,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2674,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2752,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 2882,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3043,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3294,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3882,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3918,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 3992,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 4049,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 4206,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 4552,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 4701,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 5075,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 5121,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar03_sign_in_security__backup.png",
+      "line": 5157,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1217,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1254,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1467,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1505,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1554,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1581,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1699,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 1852,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2107,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2180,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2200,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2409,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2571,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2716,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2813,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2927,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 2999,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3065,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3163,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3298,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3536,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3732,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3812,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3853,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 3966,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 4602,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 4616,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 5663,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 5806,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 6045,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 6252,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 6573,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 6903,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 7078,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 9460,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 9461,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 9965,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/screens/ar02_cant_sign_in__support.png",
+      "line": 10093,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 1274,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 1275,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 1276,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2019,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2020,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2021,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2022,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2023,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2024,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2025,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2026,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2027,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2028,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2029,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2030,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2031,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2032,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2033,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2034,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2035,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/ordinary.log",
+      "line": 2036,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/legal149.log",
+      "line": 26,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/legal149.log",
+      "line": 27,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/legal149.log",
+      "line": 28,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/INITIAL_STALE_ordinary.log",
+      "line": 1378,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/INITIAL_STALE_ordinary.log",
+      "line": 1379,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/INITIAL_STALE_ordinary.log",
+      "line": 1380,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/logs/INITIAL_STALE_ordinary.log",
+      "line": 1381,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 200,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 227,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 245,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 525,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 843,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1640,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1751,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1790,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1845,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1925,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 1969,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 2257,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 3721,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 3788,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 3913,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4294,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4500,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4504,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4553,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4643,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4852,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4927,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 4929,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 5017,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 5386,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 5496,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6152,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6157,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6196,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6202,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 6335,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 7025,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_iOS_375_text200.png",
+      "line": 7260,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 200,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 227,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 245,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 525,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 843,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1640,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1751,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1790,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1845,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1925,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 1969,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 2257,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 3721,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 3788,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 3913,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4108,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4127,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4153,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4261,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4335,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4376,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4665,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4858,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 4918,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 5900,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 6065,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 6271,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27/overflow_top/welcome_android_375_text200.png",
+      "line": 6311,
+      "category": "money",
+      "classification": "compressed PNG bytes scanned as text;visual reviewed"
+    },
+    {
+      "path": "SOURCE/build/line148_q243_post149_work/publish_views/QUESTIONS.md",
+      "line": 60,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "SOURCE/build/line148_q243_post149_work/publish_views/QUESTIONS.md",
+      "line": 88,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "SOURCE/build/line148_q243_post149_work/publish_views/QUESTIONS.md",
+      "line": 91,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "SOURCE/build/line148_q243_post149_work/publish_views/QUESTIONS.md",
+      "line": 105,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    },
+    {
+      "path": "SOURCE/build/line148_q243_post149_work/publish_views/QUESTIONS.md",
+      "line": 141,
+      "category": "money",
+      "classification": "existing locked product/test-log expression,public evidence filename or technical owner/route reference;no private commercial plan"
+    }
+  ],
+  "new_private_material": false,
+  "verdict": "PASS"
+}

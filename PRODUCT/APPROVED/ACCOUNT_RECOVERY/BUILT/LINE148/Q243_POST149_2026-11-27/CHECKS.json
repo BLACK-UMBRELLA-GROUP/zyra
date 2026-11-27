@@ -1,0 +1,155 @@
+[
+  {
+    "name": "focused",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_LINE148_CAPTURE=true",
+      "test/line121_signup_account_session_test.dart",
+      "test/line121_signup_preview_widget_test.dart",
+      "test/zyra_privacy_security_preview_test.dart",
+      "test/zyra_privacy_sensitive_actions_shell_test.dart",
+      "test/visual/line148_account_recovery_capture_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 12.8
+  },
+  {
+    "name": "controls",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/line121_signup_preview_controller_test.dart",
+      "test/zyra_rendered_text_audit_controls_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 25.6
+  },
+  {
+    "name": "replay",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/visual/line126_remaining_routes_test.dart",
+      "--name",
+      "overview signInSecurity"
+    ],
+    "exit_code": 0,
+    "seconds": 3.89
+  },
+  {
+    "name": "preservation147",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/line147_admission_test.dart",
+      "test/line147_family_introduction_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 12.73
+  },
+  {
+    "name": "ask_circle147",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/zyra_developer_panel_entry_test.dart",
+      "--name",
+      "LOCK 49"
+    ],
+    "exit_code": 0,
+    "seconds": 5.53
+  },
+  {
+    "name": "legal149",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/line149_accepted_integration_test.dart",
+      "test/purchase_wording_preview_test.dart",
+      "test/founder_launch_review_test.dart",
+      "test/visual/line149_legal_reader_capture_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 29.51
+  },
+  {
+    "name": "six_size_proof",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_LINE148_CAPTURE=true",
+      "test/visual/line148_lock50_rebase_proof_test.dart"
+    ],
+    "exit_code": 1,
+    "seconds": 17.42
+  },
+  {
+    "name": "analyzer_final",
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "result": "No issues found;17.5s",
+    "exit_code": 0
+  },
+  {
+    "name": "guarded_provider_role_backup",
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/zyra_developer_panel_entry_test.dart --name 'LOCK50 actual'",
+    "result": "4 passed;Seeker/Guardian x Apple/Google;stale route/cover/role/background/disposed callback checks;mockrequest count unchanged per backup action;native0",
+    "exit_code": 0
+  },
+  {
+    "name": "ordinary_final",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded"
+    ],
+    "exit_code": 1,
+    "seconds": 543.11,
+    "result": "8146 passed /253 skipped /2 failed;543.11s;only unchanged ZYRA wordmark split at375x667text2 iOS/Android",
+    "completed": true
+  },
+  {
+    "name": "hosted_candidate",
+    "status": "NOT_RUN",
+    "reason": "Local strict raster gate failed;no implementation commit or push. Records-only publication does not need duplicate SOURCE CI."
+  }
+]

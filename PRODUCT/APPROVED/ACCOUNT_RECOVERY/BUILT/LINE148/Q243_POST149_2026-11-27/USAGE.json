@@ -1,0 +1,27 @@
+{
+  "thread_id": "01a21f3d-b2ca-7101-bad0-ff939385d60e",
+  "scope": "root cumulative token counter snapshot;helpers excluded;no estimate",
+  "last": {
+    "timestamp": "2026-11-27T23:18:43.398Z",
+    "info": {
+      "total_token_usage": {
+        "input_tokens": 15242724,
+        "cached_input_tokens": 15065984,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 52729,
+        "reasoning_output_tokens": 24440,
+        "total_tokens": 15295453
+      },
+      "last_token_usage": {
+        "input_tokens": 222208,
+        "cached_input_tokens": 221696,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1710,
+        "reasoning_output_tokens": 110,
+        "total_tokens": 223918
+      },
+      "last_usage_includes_reasoning": true,
+      "model_context_window": 475000
+    }
+  }
+}

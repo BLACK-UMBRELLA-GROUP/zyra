@@ -1,0 +1,93 @@
+{
+  "line": 148,
+  "lock": 50,
+  "question": 244,
+  "base": "673a30427692f235ca6f6092339838bd2f36749e",
+  "status": "HELD",
+  "patch": "LINE148_Q244_POST149.patch",
+  "patch_sha256": "6a279548560c543b4f02cc2b8e554b50da537d2cc0204cfec6de5484b80c194f",
+  "paths": [
+    {
+      "path": "SOURCE/README.md",
+      "before_sha256": "b3a2a7945802d9ca92c8dd446fcc7f36bd5c37f2ca13fd6c41cf17d0b80bf992",
+      "candidate_sha256": "ae21fcee01963eb9b1ac77045effe09696183509156a58bfc5afc5aca7aa0e1a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "before_sha256": "c5906f23d72b9432165c159b3a40f8ff7a0457820c3de4accb1c4e4261b02b17",
+      "candidate_sha256": "bd1de087e01bbfee831ce49f62b589da3bbf090cc4de87b786b6384d612c560f"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_privacy_security_preview.dart",
+      "before_sha256": "304c3920921f514c547a242d658e719660fb85708edca924f8cee7d2333179aa",
+      "candidate_sha256": "431d4954825a97cede6b42998fb85cc1321d25f59601174983d31e5ba3e124a1"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_account_session.dart",
+      "before_sha256": "7fa80b6ba6aadb7206147e0c58182effae608e3c80e458e5661706cc5251f2f7",
+      "candidate_sha256": "c5b3999107fd1a73ecd5d1f7823232347cc16f2da58a8a0b773e725936e7eda4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "before_sha256": "12d0c4f9d0ee08977c0219039cfd265bfdb703638d90d47fbbcf16208efbfc0f",
+      "candidate_sha256": "52176c37db676ea773334f398f80f11f39783af51220337fad0a6a4cf3613b4d"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview_controller.dart",
+      "before_sha256": "13fe47246cc4a7fc911c9ff705138d574b207b52e58ffbda919a26ed9530e89d",
+      "candidate_sha256": "0957b9f15e562cc1c23b9a50099e420f4c502368643360a93fdec8d7a70bc6b5"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_account_session_test.dart",
+      "before_sha256": "0600aa64f916ea035428b306adf50a23b373fbc62217ccfeba4bf5d2b312486b",
+      "candidate_sha256": "5ab615e356e85928fcb09223510538a59046a443b6993296dd08146b835c6c96"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_preview_widget_test.dart",
+      "before_sha256": "346e13cc5ed313c776bfe84cdcad5ce9f218d768972a64779fcb3d6bab2d9dec",
+      "candidate_sha256": "ddd0bb453f743dfc805293cf02c64d02975d0833ce11459977df767fd771f8bd"
+    },
+    {
+      "path": "SOURCE/test/visual/line148_account_recovery_capture_test.dart",
+      "before_sha256": null,
+      "candidate_sha256": "8ee4ffe227ac9716ca5922eea53563f30059113099324f5bf5a30dc0c442df2a"
+    },
+    {
+      "path": "SOURCE/test/visual/line148_lock50_rebase_proof_test.dart",
+      "before_sha256": null,
+      "candidate_sha256": "b4c59dcd8e8eb897455bde7f85eb8d856ac1b29e2c512f14401889c4f2cdb4b5"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_panel_entry_test.dart",
+      "before_sha256": "3af48cee06394ff1f07cf9eda5ce93b2707f9a3b8335c7fc6ac8d9039fc0bfd6",
+      "candidate_sha256": "875d30a81197ebe5476e622bbd0c2b99fd0a064faaaeb3273e09ede9e4def088"
+    }
+  ],
+  "source_lease_started_utc": "2026-11-27T23:02:38.776124+00:00",
+  "sealed_at": "2026-11-27T23:09:47.593241+00:00",
+  "gate": "2real strict Welcome raster word_split_without_hyphen findings at375x667text2;unchangedZYRAwordmark54spacing14;Q243scroll-only scope forbids resolution",
+  "evidence": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q243_POST149_2026-11-27",
+  "prior_sealed_patch_sha256": "df44e1069dd0641fcf252c9b4f72f01335a948f5f42110d613c81968edc9ca56",
+  "prior_sealed_manifest_sha256": "bae8a518646c1a107c2223307f93c659fd5127b276237cc07603f20765c7ee9f",
+  "release": {
+    "line": 148,
+    "status": "QUESTION",
+    "question": 244,
+    "accepted_head": "673a30427692f235ca6f6092339838bd2f36749e",
+    "implementation_commit": null,
+    "implementation_pushes": 0,
+    "source_lease_started_utc": "2026-11-27T23:02:38.776124+00:00",
+    "source_ci_released_utc": "2026-11-27T23:18:43.387204+00:00",
+    "source_ci_status": "clean",
+    "foreign_staged_entries_exact": 7,
+    "line138_working_files_exact": 5,
+    "prior_BUILT_evidence_files_exact": 3169,
+    "prior_seal2943_exact": true,
+    "held_source_paths": 11,
+    "held_patch_sha256": "6a279548560c543b4f02cc2b8e554b50da537d2cc0204cfec6de5484b80c194f",
+    "ordinary": "8146 passed /253 skipped /2 failed;543.11s;only unchanged ZYRA wordmark split at375x667text2 iOS/Android",
+    "hosted": "NOT_RUN;strict local gate red;records-only no duplicate CI wait",
+    "next": "Coordinator handles any separate line;this owner does no other line. Line150 remains separate daytime Founder-present task and still needs148BUILT."
+  },
+  "ordinary": "8146 passed /253 skipped /2 failed;543.11s;only unchanged ZYRA wordmark split at375x667text2 iOS/Android"
+}

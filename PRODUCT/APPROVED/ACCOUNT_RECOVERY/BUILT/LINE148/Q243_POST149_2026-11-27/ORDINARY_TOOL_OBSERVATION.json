@@ -1,0 +1,6 @@
+{
+  "at": "2026-11-27T23:08:55.511886+00:00",
+  "status": "INTERRUPTED_STALE_TEST_SNAPSHOT",
+  "observation": "Ordinary suite launched while supplemental actual-host tests were finalizing. Flutter compiled prior fixture with broad request baseline, producing4fixture failures already corrected in final selected4pass. Interrupted to rerun full ordinary on stable final test code; no app change or assertion suppression.",
+  "raw_log": "INITIAL_STALE_ordinary.log"
+}

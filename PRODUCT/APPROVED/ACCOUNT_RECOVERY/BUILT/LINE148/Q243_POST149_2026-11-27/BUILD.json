@@ -1,0 +1,22 @@
+{
+  "line": 148,
+  "lock": 50,
+  "status": "QUESTION",
+  "question": 244,
+  "accepted_commit": "673a30427692f235ca6f6092339838bd2f36749e",
+  "implementation_commit": null,
+  "implementation_pushes": 0,
+  "flutter": "3.44.2",
+  "build_mode": "Flutter widget tests;Founder sample only",
+  "timestamp": "2026-11-27T23:12:13.642173+00:00",
+  "lease_started_utc": "2026-11-27T23:02:38.776124+00:00",
+  "gate": "strict word_split_without_hyphen ZYRA at375x667text2.0 iOS/Android",
+  "evidence": "six fresh430x932PNGs+two375text2topPNGs+nine main audits+56supplemental reports+ten fitting geometry proofs;overflowendnot reached",
+  "scope": "No native build/install,phone,real support,provider linking,credential/backend/live action,dependency resolution or other line",
+  "source_ci_released_utc": "2026-11-27T23:18:43.387204+00:00",
+  "ordinary": "8146 passed /253 skipped /2 failed;543.11s;only unchanged ZYRA wordmark split at375x667text2 iOS/Android",
+  "held_patch_sha256": "6a279548560c543b4f02cc2b8e554b50da537d2cc0204cfec6de5484b80c194f",
+  "held_manifest_sha256": "f4b582997901bd4645098ba05c1c853be10ac89c7be10ee1653291ca17e4db7d",
+  "full_gate_completed": 1,
+  "failed_full_gate_completed": 1
+}

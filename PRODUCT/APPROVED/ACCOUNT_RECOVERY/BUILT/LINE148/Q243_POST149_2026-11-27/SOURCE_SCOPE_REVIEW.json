@@ -1,0 +1,12 @@
+{
+  "verdict": "PASS",
+  "independent_source_review": "no source product finding;current _signupView/_legalRetainedGuard/_accountFreshGuard/Help/Circle/price blocks retained;no network/native/provider linkage",
+  "preserved_notices": [
+    "LOCK50 recovery no terminal period",
+    "LOCK51 signed-out Legal terminal period",
+    "Restore purchases and Apple checkout notice preserved"
+  ],
+  "welcome": "only shared min-height intrinsic scroll wrapper;no font/scaler/padding/size/wording/order/action change",
+  "supplemental_tests": "4actual host provider-role combinations;all original panel-entry tests/assertions retained;request snapshots scoped to backup actions;native0",
+  "strict_blocker": "not waived:visible ZYRA word split;Q244"
+}

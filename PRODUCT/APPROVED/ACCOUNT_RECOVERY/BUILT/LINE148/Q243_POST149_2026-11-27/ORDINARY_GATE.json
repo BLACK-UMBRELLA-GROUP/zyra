@@ -1,0 +1,14 @@
+{
+  "name": "ordinary",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded"
+  ],
+  "exit_code": 1,
+  "seconds": 543.11
+}
