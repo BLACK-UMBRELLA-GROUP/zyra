@@ -1,0 +1,57 @@
+{
+  "line": 140,
+  "part": "B LOCK46 over A5",
+  "status": "local gates PASS; B hosted receipt pending",
+  "authority": [
+    "Founder GO",
+    "Q222",
+    "Q223",
+    "Q228",
+    "Q229",
+    "Q237",
+    "LOCK46",
+    "DR-ZYRA-378",
+    "OA-AIOS-406"
+  ],
+  "built_from": "1d7bee70b2943c83cfd80d59fc9999ec86c78203 plus sealed B patch",
+  "patch_sha256": "11c89d649ad164e2e2ac4bdd28d29dbacfe33e9367c48d4f6be030e8ac69bcd9",
+  "flutter_version": "3.44.2",
+  "mode": "protected widget tests; no native app build",
+  "timestamp": "2026-11-27T12:45:24.108133+00:00",
+  "analyzer": "clean",
+  "focused": {
+    "passed": 649,
+    "skipped": 77,
+    "failed": 0
+  },
+  "bounded_replay": {
+    "passed": 11,
+    "settings": 4,
+    "fresh_png_audit_pairs": 66,
+    "text_runs": 628,
+    "raw_failures": 0
+  },
+  "visual": "all11 normal masters compared; scoped conformity and native rendering differences recorded; no pixel-parity or Founder acceptance claim",
+  "live": false,
+  "phone": false,
+  "migrations": "none",
+  "A5_hashes_preserved": true,
+  "B32_composition_hashes_verified": true,
+  "composed_A_B_strict": {
+    "passed": 12,
+    "frames": 654,
+    "runs": 9631,
+    "tuples": 24,
+    "coverage_gaps": 0,
+    "raw_failures": 0,
+    "seconds": 136.02
+  },
+  "commit": "64245355d8c01da75121a61b377247eed267d7bd",
+  "ordinary": {
+    "passed": 7959,
+    "skipped": 248,
+    "failed": 0,
+    "exit": 0,
+    "seconds": 551.56
+  }
+}

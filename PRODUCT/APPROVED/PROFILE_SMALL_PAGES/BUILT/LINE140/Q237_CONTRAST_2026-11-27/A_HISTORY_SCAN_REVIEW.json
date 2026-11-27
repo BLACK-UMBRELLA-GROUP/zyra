@@ -1,0 +1,264 @@
+{
+  "utc": "2026-11-27T12:16:42.846890+00:00",
+  "scan_exit": 1,
+  "reported_findings": 32,
+  "reviewed_entries": [
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 138,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/logs/candidate-auth-suite-final.txt",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 168,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/APP_COLOURS/BUILT/a11y_phone_access.png",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 460,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/FIRST_TOUR/BUILT/SCREENSHOTS/t10_my_zyra_quick_access.png",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 479,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/FIRST_TOUR/BUILT/SCREENSHOTS/tg08_my_zyra_quick_access.png",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 523,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/narrow_320_200_access_top.png",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 925,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/LIMITS/BUILT/LINE146/PUBLIC_SECRET_REVIEW.JSON",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 1134,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/PAGE_DOTS/BUILT/V2/d03_guardian_tab_narrow_large_text_access.png",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 1135,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/PAGE_DOTS/BUILT/V2/d03_guardian_tab_narrow_large_text_access_bottom.png",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 1323,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/phone_access__normal.png",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 1325,
+      "rule": "generic-api-key",
+      "digest_target": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/settings__phone_access_row.png",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 2452,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/lib/config/oauth_config.dart.example",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 2501,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/lib/dev/zyra_draft_compatibility_access_store.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 2553,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/lib/dev/zyra_one_journey_phone_access.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 2598,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/lib/screens/auth_gate.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 2682,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/lib/services/zyra_auth.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 2689,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/lib/services/zyra_developer_access.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 2989,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/supabase/migrations/20260718192519_optimize_rls_auth_uid_initplan.sql",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3004,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/supabase/migrations/20260726120300_restrict_ages_for_and_score_candidates_to_authenticated.sql",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3049,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/supabase/migrations/20260805233111_restrict_photo_object_gate_to_authenticated.sql",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3071,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/supabase/migrations/20260806193028_harden_revoke_truncate_from_anon_authenticated.sql",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3192,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/supabase/migrations/20260918075737_oa290_additional_guardian_journey_access.sql",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3233,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/supabase/production/RPC_ACCESS.md",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3511,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/lock15_quick_access_and_swipe_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3567,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/one_journey_prior_compatibility_access_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3634,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/supabase_publishable_auth_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3885,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/visual/lock12_phone_access_capture_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3961,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/zyra_additional_guardian_journey_access_migration_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 3966,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/zyra_auth_name_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 4004,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/zyra_developer_access_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 4012,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/zyra_draft_compatibility_access_store_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 4021,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/zyra_external_tester_access_test.dart",
+      "matches_git_blob_sha256": true
+    },
+    {
+      "file": "PRODUCT/APPROVED/LEGAL_PAGES/BUILT/LINE149/INTEGRATION_2026-11-27/INPUT_MANIFEST.json",
+      "commit": "95064a8734ce063cb0c36cc7996c0adc67706c31",
+      "line": 4077,
+      "rule": "generic-api-key",
+      "digest_target": "SOURCE/test/zyra_phone_access_lock12_test.dart",
+      "matches_git_blob_sha256": true
+    }
+  ],
+  "classification": "All 32 generic-api-key findings are exact SHA-256 file digests in the prior line149 manifest; every value verified against its historical Git blob. No credential found. No suppression or configuration change."
+}

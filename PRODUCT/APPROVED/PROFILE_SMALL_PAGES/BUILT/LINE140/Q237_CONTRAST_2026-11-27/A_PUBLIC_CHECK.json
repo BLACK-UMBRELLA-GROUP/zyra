@@ -1,0 +1,19 @@
+{
+  "utc": "2026-11-27T12:16:15.112628+00:00",
+  "exit": 1,
+  "paths": [
+    "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+    "SOURCE/test/visual/baseline_capture_support.dart",
+    "SOURCE/test/visual/basic_plans_capture_test.dart",
+    "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart",
+    "SOURCE/test/welcome_auth_failure_recovery_test.dart",
+    "SOURCE/lib/dev/zyra_full_profile_preview.dart",
+    "SOURCE/lib/dev/zyra_help_safety_preview.dart",
+    "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+    "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+    "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart"
+  ],
+  "output": "ZYRA/SOURCE/test/support/zyra_clearer_text_corpus.dart:903: money\nZYRA/SOURCE/lib/widgets/zyra_purchase_fine_print.dart:8: money\nZYRA/SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart:85: money\nZYRA/SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart:348: money\nZYRA/SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart:350: money\nZYRA/SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart:351: money\nChecked 10 file(s); 6 hit(s) to review.\n",
+  "classification": "Six existing source/test hits: catalogue-price commentary (2) and Dart record positional fields $1/$2/$3 (4). Every matched line exists unchanged in HEAD. No new business/private document or credential.",
+  "reviewed_false_positives": 6
+}

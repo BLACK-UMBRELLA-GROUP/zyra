@@ -1,0 +1,291 @@
+{
+  "reviewed_utc": "2026-11-27T12:43:27.070129+00:00",
+  "reviewer": "independent read-only B reviewer",
+  "scope": "All eleven fresh unsuffixed 430x932 scale1.0 captures against same-named locked masters; ls05 sheet only.",
+  "method": "Viewed every master and capture via view_image; checked dimensions and SHA256 pairing to raw audit JSON.",
+  "summary": "All locked content, state, order and required controls agree. No clipping, overlap, missing copy, heart, on-screen Back or forbidden tab bar observed in judged surfaces. Native Flutter typography/wrapping, darker captions and shared shadows differ visibly from prototype exports; pixel parity is not claimed.",
+  "result": "No actionable implementation finding in reviewed scope; exact visual differences retained below, no invented Founder acceptance.",
+  "limits": [
+    "This visual review covers normal430 master views only; the other three bounded settings and additional states belong to the parent gate and are not independently visually certified here.",
+    "Behavior, native share/auth prompts, ordinary regression, hosted CI and raw full replay success are not established by screenshots.",
+    "ls05 dimmed Guardian backdrop is excluded exactly as the brief directs.",
+    "No visual restyling, source/index change, master change, threshold adjustment or test execution by reviewer."
+  ],
+  "pairs": [
+    {
+      "name": "ls01_your_places.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:40:43.727950+00:00",
+      "master_sha256": "a7b622a31926b2b43a32debca4370aade0114d182393655deb946fd87d32e4b0",
+      "capture_sha256": "3396928f482b4f0c6480cb565a46ecfd93e5e0511048e8efc916c126cd2b568c",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Journey and Family place rows, names, stage, free counts, icons and both captions agree.",
+      "rendering_differences": "Native row/card stack is slightly shorter; final Family caption wraps after monthly as master does; captions are visibly darker.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 15,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls02_switch_profile.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:40:45.155009+00:00",
+      "master_sha256": "45ed1e556bd56661fdad020620777dd627239a3202bb031bf4fe4c15755f9131",
+      "capture_sha256": "52322e03c0a4a458bbb5fa0aba11da045671b95abc037e3536b8a2b1a7a1d821",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Both roles, plan lines, current gold edge, green Using now and gold switch action agree.",
+      "rendering_differences": "Native text metrics and stronger card shadow; other-role card/button stack is slightly shorter.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 8,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls03_invite_someone.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:40:46.781338+00:00",
+      "master_sha256": "6a595b18e772f34254cf4ea21eb2c31fd2fc198413337d9b9a821ba3343dd1a0",
+      "capture_sha256": "dc0ebd28a0d3860bba6e0c4cba70b5f54b630a490cb641c7c9bd8cfe88c26d43",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Seeker sample link, Copy/Share actions, two information rows and Guardian helper agree.",
+      "rendering_differences": "Intro wraps differently: native second line ends themselves; master second line continues through nothing. Native helper first line ends Guardian; master continues through tab. Cards are slightly shorter.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 12,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls04_request_restart.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:40:48.414863+00:00",
+      "master_sha256": "51c922f6109d212731a6b5f674ec754da0fc66586f7597b2b013ca9a8cb31c38",
+      "capture_sha256": "9b5740bf22c845fceff569f44435c0d748f0b3ebdda2f3297515ce56e7bd8178",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Restart title/card, Sara wording, two information rows and bottom gold action agree.",
+      "rendering_differences": "Native text metrics and shadows; information card is slightly shorter. Bottom action remains fully visible and follows content without overlap.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 9,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls05_make_main_sheet.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:40:55.377644+00:00",
+      "master_sha256": "bda00aaa350001349fe4b8d714be1b8955bce171c1b64984ddb153eba3ee03b3",
+      "capture_sha256": "491c365e412dcccc85a9deff8bc7ada14975dd2dfb1a5c11a72c14d248609219",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Sheet-only: Ibrahim gold-ring initial, title, exact B1 brackets wording, rectangular gold Make action and Cancel pill agree.",
+      "rendering_differences": "Body wraps differently in the parenthesized send/receive clause and final sentence. Native sheet rises slightly farther and shared text/shadows differ. Dimmed Hassan backdrop differs from master Ibrahim backdrop and is excluded by brief.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 5,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls06_guardian_your_places.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:40:56.886929+00:00",
+      "master_sha256": "1b9270d694733b4cd7c1613b00ae10476177baa429b59ddafe010b0c6c081476",
+      "capture_sha256": "8cff6de30ea71a631f10deca19e268a9b2ae9a99b2f0dcc20f6553be56d564dc",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Own-plan row, both Seeker names/access lines and Family helper agree.",
+      "rendering_differences": "Native card stack is slightly shorter; helper wraps after ZYRA before Family place, while master wraps after Family before place. Caption is darker.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 10,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls07_guardian_invite.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:40:58.178966+00:00",
+      "master_sha256": "1a1713ae40b6883cc59ea17d07b9bae4d889bef8e9c47f067b106c50e496b3f4",
+      "capture_sha256": "d487ee45be4eb7cbed29a3a5f6538967599384d47a0171c7ed07985cc3e0348e",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Guardian sample link, Copy/Share, information rows and Seeker helper agree.",
+      "rendering_differences": "Intro wrapping differs as ls03. Native helper first line ends links and second begins you to them; master first line includes you and second begins to them.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 12,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls08_switch_profile__seeker_only.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:41:00.861095+00:00",
+      "master_sha256": "2008fc412d172510dc3b9f580f57757cf2aabd50f8797eea825e9753fd9cc685",
+      "capture_sha256": "ae318475dc6c79e3cdc7d5bf01ae5922a02ae54057256c87c099405a2075222f",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Current Seeker card, no missing-role plan line, Guardian icon/title and gold Add a Guardian profile action agree.",
+      "rendering_differences": "Native typography/shadows differ; second card/button stack is slightly shorter.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 7,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls09_switch_profile__guardian_only.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:41:01.972446+00:00",
+      "master_sha256": "a6c5cde079bb8a8510efee174b994f2a3fd4d7ba99629f8aebda19fbf9858fc9",
+      "capture_sha256": "eedf22f818c27f62af59a3a781830a620bde290234de11903562ebc6792ca48a",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Current Guardian card, no missing-role plan line, Seeker icon/title and gold Add a Seeker profile action agree.",
+      "rendering_differences": "Native typography/shadows differ; second card/button stack is slightly shorter.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 7,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls10_guardian_your_places__basic.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:41:03.335817+00:00",
+      "master_sha256": "c048cd35130e6917a4ace7c2fd8b28a5cd346c5e05e014f3fc8c13b94bc65ef5",
+      "capture_sha256": "64cb538af904257eb66f2ab9682fb53e027d37d3331ef165306d7945ecb3240f",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Guardian Basic/free row, no-payment detail, both Seeker rows and Family helper agree.",
+      "rendering_differences": "Native card stack is slightly shorter; helper wraps after ZYRA before Family place, while master wraps after Family before place. Caption is darker.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 10,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    },
+    {
+      "name": "ls11_guardian_your_places__no_seekers.png",
+      "master_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_exists": true,
+      "capture_dimensions": [
+        1290,
+        2796
+      ],
+      "capture_mtime_utc": "2026-11-27T12:41:04.549846+00:00",
+      "master_sha256": "e2f4f5bc1b9fd53e2c16f36c8e054334087667c0811cc8c9194e525baf0795e5",
+      "capture_sha256": "ba31aa89a74ef36dfd642dfe5b341eea0dc15733bb1ccb2a77b666384b5c4515",
+      "content_structure": "agrees with locked master/spec",
+      "content_observation": "Own-plan row, No Seekers yet and plus-in-Seekers guidance, and Family helper agree.",
+      "rendering_differences": "Native empty card is slightly shorter; helper wraps after ZYRA before Family place, while master wraps after Family before place. Caption is darker.",
+      "clipping_overlap_or_missing_copy_observed": false,
+      "png_hash_stable_and_matches_audit": true,
+      "audit_runs": 8,
+      "audit_raw_failures": 0,
+      "real_shadows": true,
+      "repaint_before_audit": true,
+      "repaint_after_audit": true
+    }
+  ]
+}

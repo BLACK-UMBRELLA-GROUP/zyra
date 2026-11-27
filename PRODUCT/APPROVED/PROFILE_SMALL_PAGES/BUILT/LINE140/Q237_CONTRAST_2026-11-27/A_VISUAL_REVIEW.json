@@ -1,0 +1,123 @@
+{
+  "utc": "2026-11-27T12:18:35.851597+00:00",
+  "line": 140,
+  "authority": "Q237 / LOCK14 V9",
+  "review_method": "Read-only visual inspection of all five full-size captures beside their unchanged mapped masters; source diff reviewed to distinguish A5 changes from unchanged accepted app content.",
+  "scope": "Five accepted surfaces and their Q237 color changes only. Not a whole-page LOCK conformance approval.",
+  "full_screen_match_claim": false,
+  "surfaces": [
+    {
+      "surface": "request_a_journey",
+      "capture": {
+        "path": "SOURCE/build/line140-q237/screens/request_a_journey.png",
+        "sha256": "930c593fadfb6c5f33203e9d95127d951f9ae132c9d3fc06c1683e2f13d43152",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "master": {
+        "path": "PRODUCT/APPROVED/FULL_PROFILE/MASTERS/fp03_profiles__request_a_journey.png",
+        "sha256": "3eae087f866279aa8ff9b7fa1e90a15532805b36577e23a8f8b3d18fdbc7e81f",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "scoped_a5_color_observation": "Gold fill and espresso label visually agree with approved target. Source uses #C08A3A fill, #2B2420 ink and shadow tint follows fill.",
+      "other_comparison_differences_or_limits": "Capture uses Sara rather than Noor,3 photo dots rather than2, a darker outlined button edge and less visible gold glow; header/card spacing and some typography also differ. These sample/geometry/style areas have no A5 change; no full-screen MATCH claim.",
+      "new_actionable_a5_difference": null
+    },
+    {
+      "surface": "report_done",
+      "capture": {
+        "path": "SOURCE/build/line140-q237/screens/report_done.png",
+        "sha256": "b48901c0fc0e05fdbc1a5a6261045aab319e530efa41c566fd7fca5290d6d41d",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "master": {
+        "path": "PRODUCT/APPROVED/HELP_SAFETY/MASTERS/h05_report__sent.png",
+        "sha256": "20ef9451768badf0500d1160ad052a438816848ff89d5af0b48efce9c3b745bd",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "scoped_a5_color_observation": "Done uses the approved bright-gold fill with espresso label, matching the master color direction. Source shadow tint follows fill.",
+      "other_comparison_differences_or_limits": "Capture has different top/row/footer spacing, darker row icons, row dividers reaching further, a border around Done and less visible gold glow. A5 changes only the reportSent Done fill/shadow tint; these broader accepted details are unchanged.",
+      "new_actionable_a5_difference": null
+    },
+    {
+      "surface": "unlocks_caption",
+      "capture": {
+        "path": "SOURCE/build/line140-q237/screens/unlocks_caption.png",
+        "sha256": "6c5c95300d663153a3dcb283198c9650c8860fb489e8f58351bfc9d6c53a0c52",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "master": {
+        "path": "PRODUCT/APPROVED/PURCHASE_WORDING/MASTERS/b02_unlocks__store.png",
+        "sha256": "31c46c642f5dad0dd1ba07bdf48a692e1575bce4cd3b6538e249080677dd7444",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "scoped_a5_color_observation": "Billing caption is visible and darker at approved #4F443A on the same accepted background.",
+      "other_comparison_differences_or_limits": "Capture shows0 Unlocks and the corresponding accepted heading/copy while master shows1; vertical positions, selected-card fill and footer spacing differ. A5 changes only the compatibilityUnlocks caption ink, leaving these differences untouched.",
+      "new_actionable_a5_difference": null
+    },
+    {
+      "surface": "guardian_helper",
+      "capture": {
+        "path": "SOURCE/build/line140-q237/screens/guardian_helper.png",
+        "sha256": "8fe39b3fde7707d768c3386d6f843b9c69b89fc4e83fe890380b928fb57cbb9c",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "master": {
+        "path": "PRODUCT/APPROVED/PURCHASE_WORDING/MASTERS/b06_guardian_one__plans.png",
+        "sha256": "c2f971b69f41181b6b21c964227e31ebc6a1d727508fadc1c313c5bbf013cd7b",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "scoped_a5_color_observation": "Family-place helper is fully visible in fresh capture and uses approved #4F443A.",
+      "other_comparison_differences_or_limits": "Master has11 comparison rows while accepted capture has5, different layout and line wrapping. The helper is largely obscured behind the master button, so exact glyph-level comparison there is unavailable. A5 modifies only helper ink, not row data, wording or geometry; no full-screen MATCH.",
+      "new_actionable_a5_difference": null
+    },
+    {
+      "surface": "disabled_apple",
+      "capture": {
+        "path": "SOURCE/build/line140-q237/screens/disabled_apple.png",
+        "sha256": "1684f8b0ab92f80d1c6bedb166a36d0b5f01e4f6d9260fba9521de2af5997609",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "master": {
+        "path": "PRODUCT/APPROVED/PURCHASE_WORDING/MASTERS/b07_guardian_one__before_you_pay.png",
+        "sha256": "e6af83f17b428ec8c2b5ca512792beca5893fad8489e3520f3e5c462321bfab4",
+        "pixel_size": [
+          1290,
+          2796
+        ]
+      },
+      "scoped_a5_color_observation": "Capture has full-opacity #4F443A label on muted gold fill, checkbox unticked. Source keeps null onPressed until understood && canAct and keeps muted fill unchanged. This is the approved Q237 ladder after #6E6257 failed actual-background contrast.",
+      "other_comparison_differences_or_limits": "The master disabled label is visibly faded/grey; Q237 explicitly directs full-opacity ink, so capture intentionally differs from that master detail. Capture also has different card/text/checkbox positions, wrapping, border and shadow strength; those accepted geometry/styles have no A5 change.",
+      "new_actionable_a5_difference": null
+    }
+  ],
+  "new_actionable_a5_findings": [],
+  "written_refusal": "Broader unchanged sample, layout, typography and shadow-strength differences are recorded above; no expansion beyond Q237 color scope is made or requested by this reviewer.",
+  "measurement_limit": "Visual/source review does not substitute for parent strict raster measurements on every real background and four settings."
+}

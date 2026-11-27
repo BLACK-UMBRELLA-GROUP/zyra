@@ -1,0 +1,32 @@
+{
+  "utc": "2026-11-27T12:16:57.264464+00:00",
+  "line": 140,
+  "part": "A+A5",
+  "mode": "read-only independent source review; scanner reports written only in task work directory",
+  "test_hashes_match_sealed_candidate": {
+    "SOURCE/test/support/zyra_clearer_text_corpus.dart": true,
+    "SOURCE/test/visual/baseline_capture_support.dart": true,
+    "SOURCE/test/visual/basic_plans_capture_test.dart": true,
+    "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart": true,
+    "SOURCE/test/welcome_auth_failure_recovery_test.dart": true
+  },
+  "source_scope_exact10": true,
+  "source_sha256": {
+    "SOURCE/test/support/zyra_clearer_text_corpus.dart": "c52565978bd6d9405805764badb3c54958aa89d8d49c1253cb8d515f3d46f79e",
+    "SOURCE/test/visual/baseline_capture_support.dart": "3de7674d8e27f405e1e30727466920c3149b57bf9b9a90eccda56a35ad4e7262",
+    "SOURCE/test/visual/basic_plans_capture_test.dart": "061143c7b30cae0e8096f39403eb417940388f61fcf9e8d05e18f1eff4c08456",
+    "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart": "cf80e76bf6545df15da7aa86f67d2f90527ec00b8c93bcf5e40aa1d2f48c13cf",
+    "SOURCE/test/welcome_auth_failure_recovery_test.dart": "a3a2b72feda6d4d60dcf3e51cf1fe95cea78549ae76aee1fa1553e21d903e1e5",
+    "SOURCE/lib/dev/zyra_full_profile_preview.dart": "436ae57afb40fd25855068923221ecb6293b368a11d67b8869cd1523e1c17575",
+    "SOURCE/lib/dev/zyra_help_safety_preview.dart": "e7e3ed55b41c3220bb9f24a895eec15a9bb13a033a03908541dd33105fab88d6",
+    "SOURCE/lib/widgets/zyra_purchase_fine_print.dart": "4184e19a6ed5d338929c65987f198fcedcb8156a94b9d01dde0c237de4058bcc",
+    "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart": "45ed70405774d2713c7e9e4919eccfcb988334b38f9caca1297934a1324a07b6",
+    "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart": "c74cadb64cfe42ce4fe6ba2a381ec3453d3d2d153a52988c0bdc48f2da6d8bc1"
+  },
+  "a5_review": "No actionable scope or assertion issue. Request fill and shadow only for Request a Journey, report receipt fill and shadow only for reportSent Done; Unlocks-only caption ink; Guardian Family helper ink; disabled Apple full-opacity strongSecondaryText #4F443A under approved ladder, onPressed and disabled background unchanged. No threshold, waiver, suppression, URI shortcut or theme token edit.",
+  "raster_and_visual_gate": "Parent owns measurement and comparison; source review does not substitute for these gates.",
+  "public_scan": "Exit1, six reviewed existing false positives; A_PUBLIC_CHECK.json",
+  "source_secret_scan": "Exit0, zero findings; A_SOURCE_SECRET_SCAN.json",
+  "history_secret_scan": "Exit1,32 verified file digest matches; A_HISTORY_SCAN_REVIEW.json",
+  "actionable_findings": []
+}

@@ -1,0 +1,34 @@
+{
+  "normal": {
+    "status": "pass",
+    "frames": 178,
+    "runs": 2754,
+    "coverage_gaps": [],
+    "raw_failures": 0,
+    "tuples": 6
+  },
+  "normal-430": {
+    "status": "pass",
+    "frames": 86,
+    "runs": 1362,
+    "coverage_gaps": [],
+    "raw_failures": 0,
+    "tuples": 6
+  },
+  "large-375": {
+    "status": "pass",
+    "frames": 262,
+    "runs": 3425,
+    "coverage_gaps": [],
+    "raw_failures": 0,
+    "tuples": 6
+  },
+  "large-430": {
+    "status": "pass",
+    "frames": 128,
+    "runs": 2090,
+    "coverage_gaps": [],
+    "raw_failures": 0,
+    "tuples": 6
+  }
+}

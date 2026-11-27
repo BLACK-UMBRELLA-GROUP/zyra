@@ -1,0 +1,43 @@
+{
+  "line": 140,
+  "owner": "01a21ce9-c0d0-77c3-a6d8-c733f5947e09",
+  "source_acquired_utc": "2026-11-27T12:11:18.496756+00:00",
+  "deadline_utc": "2026-11-27T18:11:18.496756+00:00",
+  "failed_full_gates": 1,
+  "base_head": "ba61d2c7dfdce79b3078157533705ee6328cb9df",
+  "branch": "main",
+  "part": "A then A5, then B only after A green",
+  "foreign_paths": {
+    "PRODUCT/APPROVED/BUILD_QUEUE.md": {
+      "index_sha256": "6deb49c9bb2ed18a25a1838be203ea68dc63f2ec8ce418d23667c4ab2ce9d179",
+      "working_sha256": "526f77ce65d9199cf2de24b6cbbce8ef04045e56a15e20124fd969de204b8685"
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json": {
+      "index_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "working_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59"
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md": {
+      "index_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "working_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39"
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json": {
+      "index_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "working_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc"
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json": {
+      "index_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "working_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd"
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md": {
+      "index_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+      "working_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f"
+    },
+    "PRODUCT/APPROVED/QUESTIONS.md": {
+      "index_sha256": "ae91e39960c51f32646c2a0dd0d3548f11c2445d20180e186b2f892607ed1d16",
+      "working_sha256": "4772c7e848b0a57a3ec1e6ad4dd29e93d204835fcf321c635fe9a2c6e6a949ca"
+    }
+  },
+  "held_manifest_verified": true,
+  "baseline_proof_verified": true,
+  "failed_reason": "First strict replay: only 24 disabled Apple labels at #6E6257; approved ink ladder to #4F443A"
+}

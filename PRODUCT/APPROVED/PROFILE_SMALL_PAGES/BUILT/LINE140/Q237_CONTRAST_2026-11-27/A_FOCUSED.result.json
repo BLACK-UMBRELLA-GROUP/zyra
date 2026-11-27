@@ -1,0 +1,24 @@
+{
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--flavor",
+    "offline-ci",
+    "--reporter",
+    "expanded",
+    "--dart-define=ZYRA_LINE137_CAPTURE=true",
+    "test/visual/line137_help_support_capture_test.dart",
+    "test/welcome_auth_failure_recovery_test.dart",
+    "test/zyra_code_link_test.dart",
+    "test/zyra_code_link_coordinator_test.dart",
+    "test/zyra_code_link_service_test.dart",
+    "test/zyra_rendered_text_audit_controls_test.dart"
+  ],
+  "started_utc": "2026-11-27T12:13:15.040979+00:00",
+  "finished_utc": "2026-11-27T12:13:47.342962+00:00",
+  "seconds": 32.3,
+  "exit": 0
+}

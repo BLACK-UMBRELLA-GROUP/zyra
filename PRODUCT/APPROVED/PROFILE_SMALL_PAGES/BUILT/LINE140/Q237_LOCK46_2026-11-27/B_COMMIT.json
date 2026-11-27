@@ -1,0 +1,13 @@
+{
+  "commit": "64245355d8c01da75121a61b377247eed267d7bd",
+  "ordinary": {
+    "passed": 7959,
+    "skipped": 248,
+    "failed": 0,
+    "exit": 0,
+    "seconds": 551.56
+  },
+  "committed_utc": "2026-11-27T12:52:54.605972+00:00",
+  "foreign7_exact": true,
+  "source_ci_clean": true
+}

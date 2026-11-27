@@ -1,0 +1,14 @@
+{
+  "applied_utc": "2026-11-27T12:40:04.807645+00:00",
+  "on_A5_commit": "1d7bee70b2943c83cfd80d59fc9999ec86c78203",
+  "patch_sha256": "11c89d649ad164e2e2ac4bdd28d29dbacfe33e9367c48d4f6be030e8ac69bcd9",
+  "path_count": 32,
+  "all_preimages_verified": true,
+  "all_32_output_hashes_verified": true,
+  "zero_fuzz": true,
+  "backup_files_created": false,
+  "all_A_nonoverlap_hashes_unchanged": true,
+  "helper_sha256": "d5068b05aa30e19456f71646fdd4e24da4da211bd88399990c312bd370029232",
+  "foreign7_index_work_exact": true,
+  "required_A_hosted_3_shards": "success; optional full audits still running"
+}

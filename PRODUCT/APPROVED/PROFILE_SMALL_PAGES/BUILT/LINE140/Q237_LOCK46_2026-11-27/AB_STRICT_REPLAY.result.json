@@ -1,0 +1,23 @@
+{
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+    "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=profiles_photos/safety/Seeker_One,profiles_photos/help_report_sent/Seeker_One,basic_seeker/one_upgrade/Seeker_Basic,basic_seeker/compatibility_store/Seeker_Basic,basic_seeker/guardian_invite/Seeker_Basic,basic_guardian/one_upgrade/Guardian_Basic",
+    "--name",
+    "^(Seeker baseline seeker missing Profiles options and utility states|Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite|Basic plans capture Guardian Basic five current roots, upgrade and locked Network)",
+    "test/zyra_clearer_text_contrast_test.dart",
+    "test/zyra_clearer_text_contrast_430_test.dart",
+    "test/zyra_clearer_text_contrast_large_375_test.dart",
+    "test/zyra_clearer_text_contrast_large_430_test.dart"
+  ],
+  "started_utc": "2026-11-27T12:45:57.609873+00:00",
+  "finished_utc": "2026-11-27T12:48:13.624948+00:00",
+  "seconds": 136.02,
+  "exit": 0
+}

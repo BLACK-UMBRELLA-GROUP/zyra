@@ -1,0 +1,30 @@
+{
+  "line126-focused-contrast-large-375.json": {
+    "failures": 12,
+    "labels": {
+      "Continue to Apple": 12
+    },
+    "coverage_gaps": []
+  },
+  "line126-focused-contrast-normal-430.json": {
+    "failures": 4,
+    "labels": {
+      "Continue to Apple": 4
+    },
+    "coverage_gaps": []
+  },
+  "line126-focused-contrast-normal.json": {
+    "failures": 4,
+    "labels": {
+      "Continue to Apple": 4
+    },
+    "coverage_gaps": []
+  },
+  "line126-focused-contrast-large-430.json": {
+    "failures": 4,
+    "labels": {
+      "Continue to Apple": 4
+    },
+    "coverage_gaps": []
+  }
+}

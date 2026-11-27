@@ -1,0 +1,154 @@
+[
+  {
+    "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "line": 2972,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting Dart positional record field access triggers dollar-number pattern; exact A5-base line."
+  },
+  {
+    "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "line": 10698,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting Dart positional record field access triggers dollar-number pattern; exact A5-base line."
+  },
+  {
+    "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "line": 10699,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting Dart positional record field access triggers dollar-number pattern; exact A5-base line."
+  },
+  {
+    "path": "SOURCE/lib/dev/zyra_profile_small_pages_preview.dart",
+    "line": 69,
+    "kind": "money",
+    "exact_line_in_A5_base": false,
+    "classification": "reviewed_false_positive",
+    "reason": "New locked member-facing sample plan amount; PROFILE_SMALL_PAGES spec section 5b and ls06 master. No private pricing document."
+  },
+  {
+    "path": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+    "line": 2948,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting Flutter margin property; exact A5-base line."
+  },
+  {
+    "path": "SOURCE/test/founder_launch_style_test.dart",
+    "line": 128,
+    "kind": "email",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting synthetic Founder test fixture address; exact A5-base line."
+  },
+  {
+    "path": "SOURCE/test/guardian_card_shell_test.dart",
+    "line": 318,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/guardian_card_shell_test.dart",
+    "line": 341,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/guardian_card_shell_test.dart",
+    "line": 354,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+    "line": 105,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+    "line": 289,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+    "line": 435,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+    "line": 526,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+    "line": 566,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+    "line": 587,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting locked local/offline plan, fee or Family preview fixture/test identifier; exact A5-base line. No private pricing document."
+  },
+  {
+    "path": "SOURCE/test/one_journey_guardian_details_polish_test.dart",
+    "line": 373,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting Dart positional record field access triggers dollar-number pattern; exact A5-base line."
+  },
+  {
+    "path": "SOURCE/test/one_journey_guardian_details_polish_test.dart",
+    "line": 375,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting Dart positional record field access triggers dollar-number pattern; exact A5-base line."
+  },
+  {
+    "path": "SOURCE/test/one_journey_guardian_details_polish_test.dart",
+    "line": 376,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting Dart positional record field access triggers dollar-number pattern; exact A5-base line."
+  },
+  {
+    "path": "SOURCE/test/one_journey_guardian_details_polish_test.dart",
+    "line": 389,
+    "kind": "money",
+    "exact_line_in_A5_base": true,
+    "classification": "reviewed_false_positive",
+    "reason": "Preexisting Dart positional record field access triggers dollar-number pattern; exact A5-base line."
+  }
+]

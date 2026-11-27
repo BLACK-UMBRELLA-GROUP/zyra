@@ -1,0 +1,44 @@
+{
+  "frames": 654,
+  "runs": 9631,
+  "tuples": 24,
+  "raw_failures": 0,
+  "reports": [
+    {
+      "setting": "normal",
+      "frames": 178,
+      "runs": 2754,
+      "required_tuples": 6,
+      "raw_failures": 0,
+      "coverage_gaps": [],
+      "sha256": "d7f0761935bd03062bc38b754c5ab3aac82ec03a7d3756d450698ae910ba3c1f"
+    },
+    {
+      "setting": "normal-430",
+      "frames": 86,
+      "runs": 1362,
+      "required_tuples": 6,
+      "raw_failures": 0,
+      "coverage_gaps": [],
+      "sha256": "54a84fb0d2f0c76c8eedc470a8d17188e50e0cd8a49e0e5f3902cd0372e5faac"
+    },
+    {
+      "setting": "large-375",
+      "frames": 262,
+      "runs": 3425,
+      "required_tuples": 6,
+      "raw_failures": 0,
+      "coverage_gaps": [],
+      "sha256": "be2772bf9a5c5111577fc81cba1670e9d28a67ba0d45155dc8a78b061d407213"
+    },
+    {
+      "setting": "large-430",
+      "frames": 128,
+      "runs": 2090,
+      "required_tuples": 6,
+      "raw_failures": 0,
+      "coverage_gaps": [],
+      "sha256": "065ab25d41bb8d5a4ab2e0ae3d1719181037817f79b1efb1bcfb9b4dd64c4e3d"
+    }
+  ]
+}

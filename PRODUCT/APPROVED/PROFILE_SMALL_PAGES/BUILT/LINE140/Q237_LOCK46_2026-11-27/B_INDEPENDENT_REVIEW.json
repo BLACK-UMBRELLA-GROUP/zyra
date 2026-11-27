@@ -1,0 +1,254 @@
+{
+  "reviewed_utc": "2026-11-27T12:41:11.689215+00:00",
+  "mode": "read-only SOURCE; scratch reports only",
+  "path_count": 32,
+  "patch_sha256": "11c89d649ad164e2e2ac4bdd28d29dbacfe33e9367c48d4f6be030e8ac69bcd9",
+  "b_paths": {
+    "PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md": {
+      "sha256": "3e6279dfce6f6e03905353ecd9988e2a9f381deb4be8ae54524d920b27b944a1",
+      "expected": "3e6279dfce6f6e03905353ecd9988e2a9f381deb4be8ae54524d920b27b944a1",
+      "equal": true
+    },
+    "SOURCE/README.md": {
+      "sha256": "c21455fb052ff8b15329d55a8585ac9baef47a8c0b3c48fa5243e5e6468b11dc",
+      "expected": "c21455fb052ff8b15329d55a8585ac9baef47a8c0b3c48fa5243e5e6468b11dc",
+      "equal": true
+    },
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": {
+      "sha256": "727b273f1d6620780fe984455327f4c7acc14ea2ec157af5cf3b6d0137170758",
+      "expected": "727b273f1d6620780fe984455327f4c7acc14ea2ec157af5cf3b6d0137170758",
+      "equal": true
+    },
+    "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart": {
+      "sha256": "8ced80d5d840ed59f815381c1fcef05e1c73d5a6ac5b668a10de90773a0e0982",
+      "expected": "8ced80d5d840ed59f815381c1fcef05e1c73d5a6ac5b668a10de90773a0e0982",
+      "equal": true
+    },
+    "SOURCE/lib/dev/zyra_profile_small_pages_preview.dart": {
+      "sha256": "f973b9ef0c343b66c981a61aa4464668eeeb18ab1ff0560806d58a606f68d852",
+      "expected": "f973b9ef0c343b66c981a61aa4464668eeeb18ab1ff0560806d58a606f68d852",
+      "equal": true
+    },
+    "SOURCE/lib/models/zyra_developer_preview.dart": {
+      "sha256": "0a333ecbeab077445653497b9dc0899fa53e6355b407134556f1dff8b0f614ef",
+      "expected": "0a333ecbeab077445653497b9dc0899fa53e6355b407134556f1dff8b0f614ef",
+      "equal": true
+    },
+    "SOURCE/lib/screens/wali/seeker_guardian_designs.dart": {
+      "sha256": "ad48d10ef0f4e5dfa58b7fa887bab0cad35c78996c421e73c2f32f72e7b90ac7",
+      "expected": "ad48d10ef0f4e5dfa58b7fa887bab0cad35c78996c421e73c2f32f72e7b90ac7",
+      "equal": true
+    },
+    "SOURCE/lib/state/zyra_developer_samples.dart": {
+      "sha256": "31df0a70b3481b57eb054b1c8b4d4d3da66afbc71a7cc6f6c4af97dde9ea1a80",
+      "expected": "31df0a70b3481b57eb054b1c8b4d4d3da66afbc71a7cc6f6c4af97dde9ea1a80",
+      "equal": true
+    },
+    "SOURCE/lib/widgets/zyra_confirm_sheet.dart": {
+      "sha256": "94995cae65ea07c534f51737183d66aca826694d4c041a29db03419b95566845",
+      "expected": "94995cae65ea07c534f51737183d66aca826694d4c041a29db03419b95566845",
+      "equal": true
+    },
+    "SOURCE/lib/widgets/zyra_developer_panel.dart": {
+      "sha256": "1d3d865c03f331a63a2341693af6e24fbb3db8d11a0a42a1c06a73ff663301fa",
+      "expected": "1d3d865c03f331a63a2341693af6e24fbb3db8d11a0a42a1c06a73ff663301fa",
+      "equal": true
+    },
+    "SOURCE/lib/widgets/zyra_developer_title.dart": {
+      "sha256": "b6bf3683abe10622d6722bdd0f294b69d42258fdcbff0b9e6f49e628f8dd5444",
+      "expected": "b6bf3683abe10622d6722bdd0f294b69d42258fdcbff0b9e6f49e628f8dd5444",
+      "equal": true
+    },
+    "SOURCE/test/founder_launch_style_test.dart": {
+      "sha256": "ee4bff3dda83bc6eefef9d0fd8703267cfd400d5f36518070bbad6f3fc028299",
+      "expected": "ee4bff3dda83bc6eefef9d0fd8703267cfd400d5f36518070bbad6f3fc028299",
+      "equal": true
+    },
+    "SOURCE/test/guardian_card_shell_test.dart": {
+      "sha256": "2071b35111e5673624cf1a5156104f6811c3e32722a2035a95d489131268ecfe",
+      "expected": "2071b35111e5673624cf1a5156104f6811c3e32722a2035a95d489131268ecfe",
+      "equal": true
+    },
+    "SOURCE/test/one_journey_basic_joining_history_test.dart": {
+      "sha256": "430a5c11fbea804f3556ce521972c0f6fa5272ab38ade02475609e609dba840a",
+      "expected": "430a5c11fbea804f3556ce521972c0f6fa5272ab38ade02475609e609dba840a",
+      "equal": true
+    },
+    "SOURCE/test/one_journey_ended_card_test.dart": {
+      "sha256": "c3b1ccb7e344bd12d411e0359f403461bb54712ddd1ce0a09d2fb2618794e8ee",
+      "expected": "c3b1ccb7e344bd12d411e0359f403461bb54712ddd1ce0a09d2fb2618794e8ee",
+      "equal": true
+    },
+    "SOURCE/test/one_journey_guardian_details_polish_test.dart": {
+      "sha256": "1f99bf859dc661256558edda4225c6ea2e9c2dff93b23c51eb89023e05071c99",
+      "expected": "1f99bf859dc661256558edda4225c6ea2e9c2dff93b23c51eb89023e05071c99",
+      "equal": true
+    },
+    "SOURCE/test/one_journey_pull_down_routes_test.dart": {
+      "sha256": "80a94e02538c2cfdbcaa60f88b26217520ce302e6b52cdc04510167d4eafccbf",
+      "expected": "80a94e02538c2cfdbcaa60f88b26217520ce302e6b52cdc04510167d4eafccbf",
+      "equal": true
+    },
+    "SOURCE/test/one_journey_switch_signup_preview_test.dart": {
+      "sha256": "97d70572d381a59a2510deb311e89e0b69e558e00b25e01a9bea8b0c7a3f201c",
+      "expected": "97d70572d381a59a2510deb311e89e0b69e558e00b25e01a9bea8b0c7a3f201c",
+      "equal": true
+    },
+    "SOURCE/test/profile_tab_monogram_contract_test.dart": {
+      "sha256": "3fbdb80b3eaecda473446b626ee1637bd9393312a80ce6e80f30b4fc42250ff7",
+      "expected": "3fbdb80b3eaecda473446b626ee1637bd9393312a80ce6e80f30b4fc42250ff7",
+      "equal": true
+    },
+    "SOURCE/test/requests_guardians_lock2_shell_test.dart": {
+      "sha256": "adcd38f9fb443e44eab8bf9fc5c29c1f7f4869c61eea24f1da723c4c3facee1d",
+      "expected": "adcd38f9fb443e44eab8bf9fc5c29c1f7f4869c61eea24f1da723c4c3facee1d",
+      "equal": true
+    },
+    "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart": {
+      "sha256": "79ca339ebf692f94c263434ce81dba7c3eb01cc42f744387b8c8a95a3537cbd8",
+      "expected": "79ca339ebf692f94c263434ce81dba7c3eb01cc42f744387b8c8a95a3537cbd8",
+      "equal": true
+    },
+    "SOURCE/test/view_request_draft_widget_test.dart": {
+      "sha256": "3e719c31d74623fe825357f8c7cb165eade6ac3d56eb146e8a87efa9d264f81b",
+      "expected": "3e719c31d74623fe825357f8c7cb165eade6ac3d56eb146e8a87efa9d264f81b",
+      "equal": true
+    },
+    "SOURCE/test/visual/baseline_capture_support.dart": {
+      "sha256": "d5068b05aa30e19456f71646fdd4e24da4da211bd88399990c312bd370029232",
+      "expected": "d5068b05aa30e19456f71646fdd4e24da4da211bd88399990c312bd370029232",
+      "equal": true
+    },
+    "SOURCE/test/visual/line104_own_photo_test.dart": {
+      "sha256": "fd44351c47aa98ef845c32d2db3dbeb7300e9818e6e04b401dd902c903af7398",
+      "expected": "fd44351c47aa98ef845c32d2db3dbeb7300e9818e6e04b401dd902c903af7398",
+      "equal": true
+    },
+    "SOURCE/test/visual/line118_menu_sheet_capture_test.dart": {
+      "sha256": "aaf93ae77109016508c8853646476e6c3c8b63a338059b7df1e75651e99f0603",
+      "expected": "aaf93ae77109016508c8853646476e6c3c8b63a338059b7df1e75651e99f0603",
+      "equal": true
+    },
+    "SOURCE/test/visual/line126_coverage_entry_routes_test.dart": {
+      "sha256": "fe865ee79e5db9eb148c60f60df7ff29e1e6f0a629e5c1cd5639d427c29cafd0",
+      "expected": "fe865ee79e5db9eb148c60f60df7ff29e1e6f0a629e5c1cd5639d427c29cafd0",
+      "equal": true
+    },
+    "SOURCE/test/visual/line126_remaining_routes_test.dart": {
+      "sha256": "f5907c1bf897733067fb3b15637a5c96007ed0156b073c7eb5387d908b910da5",
+      "expected": "f5907c1bf897733067fb3b15637a5c96007ed0156b073c7eb5387d908b910da5",
+      "equal": true
+    },
+    "SOURCE/test/visual/line140_profile_small_pages_capture_test.dart": {
+      "sha256": "0fdf01a997b6bba6d9f343831d443db7fd048a6753620d71fde27c1ca20c9a42",
+      "expected": "0fdf01a997b6bba6d9f343831d443db7fd048a6753620d71fde27c1ca20c9a42",
+      "equal": true
+    },
+    "SOURCE/test/visual/line93_time_rules_visual_test.dart": {
+      "sha256": "7b76339fc6879fa4c271386441db5ab39e4806c86e480cb13de028f0f4576044",
+      "expected": "7b76339fc6879fa4c271386441db5ab39e4806c86e480cb13de028f0f4576044",
+      "equal": true
+    },
+    "SOURCE/test/visual/lock18_page_dots_capture_test.dart": {
+      "sha256": "c5f62150a509733b49cfc2b321e51c1633cbb224cc170a1b77934b8161076155",
+      "expected": "c5f62150a509733b49cfc2b321e51c1633cbb224cc170a1b77934b8161076155",
+      "equal": true
+    },
+    "SOURCE/test/visual/lock2_requests_guardians_capture_test.dart": {
+      "sha256": "ebac498f32bc5774649087bbc55f3621fbf482b001f46e28226ce401560b74d5",
+      "expected": "ebac498f32bc5774649087bbc55f3621fbf482b001f46e28226ce401560b74d5",
+      "equal": true
+    },
+    "SOURCE/test/visual/zyra_baseline_guardian_account_visual_test.dart": {
+      "sha256": "760cbc6d414eb6142f08a75dbcc02b198fdec947ef587bd7f2569388c243acd6",
+      "expected": "760cbc6d414eb6142f08a75dbcc02b198fdec947ef587bd7f2569388c243acd6",
+      "equal": true
+    }
+  },
+  "a_nonoverlap": {
+    "SOURCE/test/support/zyra_clearer_text_corpus.dart": {
+      "sha256": "c52565978bd6d9405805764badb3c54958aa89d8d49c1253cb8d515f3d46f79e",
+      "expected": "c52565978bd6d9405805764badb3c54958aa89d8d49c1253cb8d515f3d46f79e",
+      "equal": true
+    },
+    "SOURCE/test/visual/basic_plans_capture_test.dart": {
+      "sha256": "061143c7b30cae0e8096f39403eb417940388f61fcf9e8d05e18f1eff4c08456",
+      "expected": "061143c7b30cae0e8096f39403eb417940388f61fcf9e8d05e18f1eff4c08456",
+      "equal": true
+    },
+    "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart": {
+      "sha256": "cf80e76bf6545df15da7aa86f67d2f90527ec00b8c93bcf5e40aa1d2f48c13cf",
+      "expected": "cf80e76bf6545df15da7aa86f67d2f90527ec00b8c93bcf5e40aa1d2f48c13cf",
+      "equal": true
+    },
+    "SOURCE/test/welcome_auth_failure_recovery_test.dart": {
+      "sha256": "a3a2b72feda6d4d60dcf3e51cf1fe95cea78549ae76aee1fa1553e21d903e1e5",
+      "expected": "a3a2b72feda6d4d60dcf3e51cf1fe95cea78549ae76aee1fa1553e21d903e1e5",
+      "equal": true
+    },
+    "SOURCE/lib/dev/zyra_full_profile_preview.dart": {
+      "sha256": "436ae57afb40fd25855068923221ecb6293b368a11d67b8869cd1523e1c17575",
+      "expected": "436ae57afb40fd25855068923221ecb6293b368a11d67b8869cd1523e1c17575",
+      "equal": true
+    },
+    "SOURCE/lib/dev/zyra_help_safety_preview.dart": {
+      "sha256": "e7e3ed55b41c3220bb9f24a895eec15a9bb13a033a03908541dd33105fab88d6",
+      "expected": "e7e3ed55b41c3220bb9f24a895eec15a9bb13a033a03908541dd33105fab88d6",
+      "equal": true
+    },
+    "SOURCE/lib/widgets/zyra_purchase_fine_print.dart": {
+      "sha256": "4184e19a6ed5d338929c65987f198fcedcb8156a94b9d01dde0c237de4058bcc",
+      "expected": "4184e19a6ed5d338929c65987f198fcedcb8156a94b9d01dde0c237de4058bcc",
+      "equal": true
+    },
+    "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart": {
+      "sha256": "45ed70405774d2713c7e9e4919eccfcb988334b38f9caca1297934a1324a07b6",
+      "expected": "45ed70405774d2713c7e9e4919eccfcb988334b38f9caca1297934a1324a07b6",
+      "equal": true
+    },
+    "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart": {
+      "sha256": "c74cadb64cfe42ce4fe6ba2a381ec3453d3d2d153a52988c0bdc48f2da6d8bc1",
+      "expected": "c74cadb64cfe42ce4fe6ba2a381ec3453d3d2d153a52988c0bdc48f2da6d8bc1",
+      "equal": true
+    }
+  },
+  "expected_overlap": [
+    "SOURCE/test/visual/baseline_capture_support.dart"
+  ],
+  "public": {
+    "exit_code": 1,
+    "files": 32,
+    "log": "B_INDEPENDENT_PUBLIC_REDACTED.log",
+    "hits": 19,
+    "preexisting_exact_lines": 18,
+    "new_locked_UI_copy_hits": 1,
+    "all_hits_reviewed": true,
+    "classifications": "B_INDEPENDENT_PUBLIC_HITS_CLASSIFICATION.json",
+    "clean_exit_claimed": false,
+    "suppression_or_waiver": false
+  },
+  "secret": {
+    "exit_code": 0,
+    "files": 32,
+    "input_bytes": 1585094,
+    "report": "B_INDEPENDENT_SECRET_REDACTED.json",
+    "log": "B_INDEPENDENT_SECRET_REDACTED.log",
+    "suppression_flags": []
+  },
+  "scope_review": {
+    "result": "No actionable issue found",
+    "preserved_assertions": [
+      "role/model/membership invariants",
+      "stale callback refusal",
+      "own-photo behavior",
+      "Settings/safety/Seekers destinations",
+      "native authentication and cancellation order",
+      "one-send restart admission"
+    ],
+    "removed_checks": "retired wallet/pager/setup and post-Make-Main Continue behavior only",
+    "A5_production_paths_verified": 5,
+    "tests_run_by_reviewer": false,
+    "source_or_index_mutations_by_reviewer": false
+  },
+  "conclusion": "All 32 B composition hashes and all 9 nonoverlapping A hashes match. No actionable source/scope finding. Secret stdin scan exit 0. Public check exit 1 with all 19 hits individually reviewed; no suppression."
+}
