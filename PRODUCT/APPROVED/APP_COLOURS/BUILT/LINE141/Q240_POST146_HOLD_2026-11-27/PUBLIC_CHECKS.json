@@ -5,7 +5,7 @@
     "exit_code": 0
   },
   "records_secret_scan_before_final_review_append": {
-    "files": 107,
+    "files": 115,
     "findings": 0,
     "exit_code": 0,
     "no_scanner_suppression": true
@@ -23,7 +23,13 @@
     "actual_private_content": false
   },
   "metadata_formatting": "Two source-input hash maps losslessly represented as ordered entry arrays; exact original bytes independently recovered; raw raster/PNG/log/PROOF observations unchanged",
-  "history_scan": "pending after records-only commit; no implementation commit",
+  "history_scan": {
+    "evidence_commit": "d7099ff41aba429dc66f2c2254734a5c97c3a39e",
+    "prepush_exit": 0,
+    "prepush_findings": 0,
+    "postpush_exit": 0,
+    "postpush_findings": 0
+  },
   "B": "no private documents",
   "C": "none",
   "D": "none",

@@ -1,6 +1,6 @@
 {
-  "created": "2026-11-27T19:18:28.743235+00:00",
-  "scope": "Published record bytes excluding this self-referential manifest; original work package remains unchanged and PUBLICATION_FORMAT explains metadata formatting",
+  "created": "2026-11-27T19:19:51.829339+00:00",
+  "scope": "Published bytes excluding this self-referential manifest; original work metadata is reversibly represented per PUBLICATION_FORMAT",
   "files": [
     {
       "path": "BUILD.json",
@@ -28,6 +28,11 @@
       "bytes": 3974
     },
     {
+      "path": "FINAL_RELEASE_VERIFY.json",
+      "sha256": "cd8153cab65e2fe9c4d0b5694a377eb8fcd7545f04d3cd5214dbf9f240013045",
+      "bytes": 369
+    },
+    {
       "path": "GATES.json",
       "sha256": "664fdf9ba8be0c86543b67d8642a6d680f6932b1db4eae6df3dd89149d52b680",
       "bytes": 4343
@@ -39,8 +44,8 @@
     },
     {
       "path": "HANDOVER.txt",
-      "sha256": "85c20ecc41095cff8a93a5a6701130d6555b7f168bc578f2f055648932542b62",
-      "bytes": 9254
+      "sha256": "a35359ed71d11593135cccbdaf76f1abb9261ba526bf3191a6b62014c273b276",
+      "bytes": 9665
     },
     {
       "path": "INDEPENDENT_SOURCE_REVIEW.txt",
@@ -63,14 +68,19 @@
       "bytes": 1625
     },
     {
+      "path": "PUBLICATION.json",
+      "sha256": "1e832b02700803c05eeefd6d80badc5752273b6e3b25b98bfd8481cd3954b329",
+      "bytes": 1786
+    },
+    {
       "path": "PUBLICATION_FORMAT.json",
       "sha256": "346ad1b14920048c810cd714b4c349a017f71622940f9a8dd2f4a29b1d36865e",
       "bytes": 1272
     },
     {
       "path": "PUBLIC_CHECKS.json",
-      "sha256": "1f5fb5aed97de68c8ff09d21a1fdd4e012f25036f630428a18de304e5916635c",
-      "bytes": 1049
+      "sha256": "2da8c82f267690c5d563bf55282041020296ede8ae23573dcd2521e894b60eb8",
+      "bytes": 1161
     },
     {
       "path": "PUBLIC_RECORDS_REVIEW.json",
@@ -149,8 +159,8 @@
     },
     {
       "path": "TASK_NOTE.txt",
-      "sha256": "8df9e6d96b5e7bf15a97a99e8845a4d74fb61df0def566525417062d1dbdc2d6",
-      "bytes": 1510
+      "sha256": "d7ad0a8d634fc7c6445f5fa6dbb7a8ef3e0154fa62d2601fc6341ac350d7ff75",
+      "bytes": 1638
     },
     {
       "path": "captures/details/details_geometry.json",
@@ -293,6 +303,26 @@
       "bytes": 79
     },
     {
+      "path": "logs/gitleaks-history-after-push.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "logs/gitleaks-history-after-push.txt",
+      "sha256": "9324c1aff46a9991ef2c736c727a76c7c3867e3cd0c93d99b54cf62c79f3e457",
+      "bytes": 98
+    },
+    {
+      "path": "logs/gitleaks-history-before-push.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "logs/gitleaks-history-before-push.txt",
+      "sha256": "5c005990ac78d3526d002c99e94a2e5d331093482b42ce8fc23bb71ca6a77bbc",
+      "bytes": 111
+    },
+    {
       "path": "logs/gitleaks-records.json",
       "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
       "bytes": 3
@@ -321,6 +351,11 @@
       "path": "logs/public-source.txt",
       "sha256": "124dcf1d54257d62fffcbbb5e475b4ddff957112753c24f3dacbfc317b06e670",
       "bytes": 1816
+    },
+    {
+      "path": "logs/push-evidence.txt",
+      "sha256": "64659cd0c3ef473ccf13ce436d64eea8cd1ab3998a92352e44f475730a1de384",
+      "bytes": 88
     },
     {
       "path": "logs/q240-430-centering-before.log",

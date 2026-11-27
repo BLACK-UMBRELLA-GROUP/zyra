@@ -49,3 +49,5 @@ SOURCE/test/auth_gate_recovery_test.dart
 SOURCE/lib/widgets/zyra_profile_details_page.dart
 SOURCE/test/line141_details_gap_test.dart
 SOURCE/test/visual/line141_details_master_capture_test.dart
+
+Publication receipt: records-only d7099ff41aba429dc66f2c2254734a5c97c3a39e pushed origin/main and remote SHA verified. Prepush history: one commit / zero findings; postpush range: zero findings. Candidate remains held. Final index/source preservation receipt rechecked after publication. No duplicate hosted CI wait on records-only commits. Closure commit appears in the final owner response and daily report.

@@ -1,0 +1,12 @@
+{
+  "checked": "2026-11-27T19:19:51.829218+00:00",
+  "SOURCE_clean": true,
+  "github_clean": true,
+  "entire_source_index_unstaged_cached_untracked_clean": true,
+  "foreign_staged_snapshots_exact": 7,
+  "line138_working_exact": 5,
+  "old_evidence_exact": 2482,
+  "held_patch_and_manifest_exact": true,
+  "queue_status": "WAITING; NEEDS146BUILT",
+  "Q242": "ANSWERED"
+}
