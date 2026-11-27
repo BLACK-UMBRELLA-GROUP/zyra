@@ -1,0 +1,31 @@
+{
+  "final_source_verdict": "BLOCKING Q230; supersedes initial no-actionable-regression assessment",
+  "blocker": "Role-keyed Ramadan entry state permits two entries by one login after role switch. Locked scope says one per person.",
+  "evidence": [
+    "candidate concept_shell10263 Set<ZyraWalletRole>",
+    "candidate concept_shell10338-45 current-role contains/add",
+    "candidate concept_shell10112-139 wallet switch and8686-8696 role switch preserve account identity; accepted starts10100 and8675",
+    "accepted zyra_one_journey_switch_signup_preview.dart59-60 same-login copy",
+    "OFFERS spec section4 one entry per person"
+  ],
+  "proof_kind": "Independent source-path review; no cross-role widget/UI reproduction was run",
+  "visual_verdict": "All14pairs inspected; no material Offers-specific mismatch within named scope",
+  "visual_notes": [
+    "Q217 sheets compared alone; dimmed background is current LOCK42",
+    "Q218 Apple sentence last; no web line",
+    "Shared established typography/surfaces retained",
+    "o12 underlying sample counters and Preferences pill differ; Eid card matches"
+  ],
+  "test_migrations_proposed_not_applied": {
+    "SOURCE/test/profile_tab_monogram_contract_test.dart": "Replace4obsolete positive composite plan/role assertions with plan-only positive and composite-negative; retain geometry/order/actions/targets/haptics.",
+    "SOURCE/test/one_journey_basic_joining_history_test.dart": "Assert no sheet after saved callbacks; fresh Cancel opens sheet; tap Continue; retain URL/pages/model/role assertions."
+  },
+  "written_refusals": [
+    "Do not ship the duplicate-entry path.",
+    "Do not invent per-role exemption or change locked wording.",
+    "Do not repair accepted Q228/Q229 baseline faults in this line.",
+    "Do not change existing shared typography/sample counters or optional retired capture fixtures in this line."
+  ],
+  "reviewer_edits": "none",
+  "reviewer_flutter_runs": "none"
+}

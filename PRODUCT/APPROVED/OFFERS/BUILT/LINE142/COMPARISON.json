@@ -1,0 +1,254 @@
+{
+  "independent_review": "No actionable Offers-specific mismatch, all14pairs inspected. Founder remains sole approver.",
+  "comparison_orientation": "master left; integrated build right",
+  "frames": [
+    {
+      "id": "o01",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o01_delete__pause_card.png",
+      "master_sha256": "5ad9eb37381dce531e9d31408892960ee196649246267b3e8d9c677e108b3b9c",
+      "built_sha256": "45d9a6e28eefb7ca5288a9861537703713f72a3b584d521dc83f4f436aacae9e",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o01.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    },
+    {
+      "id": "o02",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o02_cancel__growth_3_months.png",
+      "master_sha256": "a82b85e0beda032bb05ecf94406339d04003ef282fe3cd2c195ea512fe135fa3",
+      "built_sha256": "f782863da14d82f2af55e90268086d27cf88690f05bced952815c1a9b1657213",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o02.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": [
+        "Q217: sheet-only comparison; background=current LOCK42"
+      ]
+    },
+    {
+      "id": "o03",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o03_cancel__normal_1_month.png",
+      "master_sha256": "0fd69cfdd3927373070bed0c3105fd23756e30995f7804f2203ca7dd1cd05bcf",
+      "built_sha256": "58ef53370cc40ba82cda35a6f312bc06130b7e152ce223850b6a56c48fc6f97f",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o03.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": [
+        "Q217: sheet-only comparison; background=current LOCK42"
+      ]
+    },
+    {
+      "id": "o04",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o04_cancel__guardian_growth.png",
+      "master_sha256": "7d58b56d6d352f7619b588d0b9e72a26a1cae84732e34deefe4cc13744f8401a",
+      "built_sha256": "016ac1a8e3e8c83b9f27afe9deb1bd60646ebabc60c10a0ccc55c695a413ace3",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o04.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": [
+        "Q217: sheet-only comparison; background=current LOCK42"
+      ]
+    },
+    {
+      "id": "o05",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o05_eid__seeker_one_fitr.png",
+      "master_sha256": "5c695522b687952aa902c8c5273b9fa8e9202fd577dbd60bc65e5678d68bad8f",
+      "built_sha256": "3e3295d903876b300c742b7264b0e9cea4984c38e7bbc3d1496f929d2eb1e400",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o05.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    },
+    {
+      "id": "o06",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o06_eid__seeker_one_adha.png",
+      "master_sha256": "1230844104ba8dfef20fe6bacbd9b640ccd191375024f152623b34710c93107b",
+      "built_sha256": "d99ace9688915af77d8b72d04b6b2b6bc689c4e6859d0f8a165ce2a7ff56af64",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o06.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    },
+    {
+      "id": "o07",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o07_eid__seeker_basic.png",
+      "master_sha256": "eff3059ad1b7a4ce8bb1ba83b365b6c95c6dfc37c554fb277e09d87dd6df7da1",
+      "built_sha256": "6992c2ee16b8e5cc396fc330d2e4ab9a304b87f95e07356d67499a042b1b58d9",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o07.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    },
+    {
+      "id": "o08",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o08_eid__guardian_one.png",
+      "master_sha256": "9f4f981385dfa0115c0a81320e165d6c1c89037bc213b46d6434266837cb9a24",
+      "built_sha256": "d863746c40368ca8f67901733784199ae3a772c9d211e9d0fd66e06e8b8507a3",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o08.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    },
+    {
+      "id": "o09",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o09_eid__guardian_basic.png",
+      "master_sha256": "8fae7586d517f98c6760d95bea5103c9fe7cc301b5155064d693ac81d672501e",
+      "built_sha256": "6ef47d5a6ef33b946d6bff771985a4f7879e46770ff02b2916d92295101671a5",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o09.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    },
+    {
+      "id": "o10",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o10_ramadan__enter_rules.png",
+      "master_sha256": "d38b849cfa417f473240ec77352916f3376c2b3c1f8264aa0ae119a5458468e5",
+      "built_sha256": "22678c7d745143f0080d3257d13e36461bdc3c38b1d305cd62626c3630c1b6d8",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o10.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": [
+        "Q218: Apple sentence last; no Full terms or web route"
+      ]
+    },
+    {
+      "id": "o11",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o11_ramadan__entered.png",
+      "master_sha256": "3f71d9af52e4a869488115d74f6f422b3d9295254ee3c3a4c83730c8dac2ba0f",
+      "built_sha256": "7482481174d57da6425d51020d1ef47b27e8b9e7fadcdc2f324bb66cb811caef",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o11.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    },
+    {
+      "id": "o12",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o12_myzyra__eid_item.png",
+      "master_sha256": "9f9b95cef4842f26ae1da88b8dcc4e7321c97842ae735f69baf3500fb3161794",
+      "built_sha256": "1377cbfffca45d60fc4e7631e36f3ce3b2126e83c3e09c8e9e4be6b1ccc94700",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o12.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": [
+        "Eid card matches; underlying accepted sample counters and Preferences pill differ from prototype fixture; no change requested"
+      ]
+    },
+    {
+      "id": "o13",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o13_profile__seeker_header.png",
+      "master_sha256": "de6a2034965d5c4b7a05d5aada3f3173e6bf335a60292a38b3861d25082a41be",
+      "built_sha256": "6e54f9c4e5a9579bea14d9690f3e729ff72ac888b3cbc89754fd109727f5c858",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o13.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    },
+    {
+      "id": "o14",
+      "master": "PRODUCT/APPROVED/OFFERS/MASTERS/o14_profile__guardian_header.png",
+      "master_sha256": "3a4598fd506590cc4b2aa62566247da895ede94ae8093cf3e7fcc09e2f88de27",
+      "built_sha256": "02808046a3460d06e30c1cc17a5f06e3d1566ac8489139c1f7591e4e82097f69",
+      "native_size": [
+        1290,
+        2796
+      ],
+      "logical_size": [
+        430,
+        932
+      ],
+      "comparison": "comparisons/o14.png",
+      "verdict": "MATCH within approved feature scope; shared typography/surfaces retained",
+      "notes": []
+    }
+  ]
+}

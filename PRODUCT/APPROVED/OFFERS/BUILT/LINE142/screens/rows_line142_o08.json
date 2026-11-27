@@ -1,0 +1,16 @@
+[
+  {
+    "role": "Guardian",
+    "area": "offers",
+    "page": "o08",
+    "state": "normal",
+    "reached": "o08",
+    "file": "o08.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "eid_gift_preview"
+    ],
+    "tab": 2
+  }
+]

@@ -1,0 +1,129 @@
+{
+  "status": "QUESTION Q230; candidate parked, not built",
+  "accepted_head": "f709626dfd98c910594369716c141d941a3ec306",
+  "accepted_source": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "lease_start": "2026-11-27T08:17:04.550342+00:00",
+  "deadline": "2026-11-27T14:17:04.550342+00:00",
+  "source_index_release": "2026-11-27T08:27:50.995466+00:00",
+  "held_path": "SOURCE/build/held/LINE142/2026-11-27_OFFERS_Q230",
+  "patch_sha256": "518c60824ad32bf71d757115873b0a07a42c1fe4a5c0071c201bba0d46bdb15c",
+  "files": [
+    {
+      "path": "SOURCE/README.md",
+      "base_sha256": "030c7e8ba448512e084a5245c67044bc9c0ffcf61e4f6da8afe7eb643f2c2522",
+      "candidate_sha256": "44035e6723c3ae6464df582187f512dc09abd9e64f8cf7a8cac95b53b59f29c6"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_help_safety_preview.dart",
+      "base_sha256": "36e0878ef68f4306eb301eb39891279fb40662b2fe6769c92ef40da536f675ad",
+      "candidate_sha256": "e058d996a61b0d4249c4ce24cfb03d0415d775e97ac439ae059c34ddf8ba675f"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_membership_preview.dart",
+      "base_sha256": "8049de240dba7250e11c0bce10041169c63bd5ae8db84a35a03f5c8f9b200423",
+      "candidate_sha256": "b681ee0d6b01f59fda8233dd89646ec9b6d57e4dade6a1c79c11205eec300914"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_offers_preview.dart",
+      "base_sha256": null,
+      "candidate_sha256": "db8c9a4c366bcaf87de2b4833cbcc6692c8921308800c331a33dc61a48020df5"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "base_sha256": "e52ea189499754da93864e9f782863b385ea58cffbe0b5b4979e8aef7b318f97",
+      "candidate_sha256": "cab649d775ef06a2e112974f27ede06f90288488153e29ee499ea5c72c2f83c9"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "base_sha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea",
+      "candidate_sha256": "f7339895627d00bf36ef2bbe81387eac3cb7b9f51385780905e96ef18fc0932d"
+    },
+    {
+      "path": "SOURCE/lib/models/zyra_developer_preview.dart",
+      "base_sha256": "d2cdffc80ca9a49b4b11a47e3e8a7c0bcfa568820b256fc4f62ea929f8325617",
+      "candidate_sha256": "997f08516a610ee4839a02617d1597bfc3c6d70cb541b20678c0f6ec61da9bd3"
+    },
+    {
+      "path": "SOURCE/lib/models/zyra_offers_preview.dart",
+      "base_sha256": null,
+      "candidate_sha256": "3366ff7a01fab1beed2ed3ddbf3b14cc0082db5b39c0adfd474b6120763aea7f"
+    },
+    {
+      "path": "SOURCE/lib/state/zyra_developer_samples.dart",
+      "base_sha256": "42d922ed5c0c3d0342bfc73384524cb887a376bb422aa50ed5f85c102e3a5711",
+      "candidate_sha256": "4ac858335225f716de969a081663f6a4549ce2cfb69a79161afdcf683e1b63f5"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_panel.dart",
+      "base_sha256": "c24792181a31d54736e8bb1c2633bc035de7770f2d1eb04941833c67f6c3a2d7",
+      "candidate_sha256": "f7fff3c2ce8e43abac1b94452991d0836961d6fb7d6db93d9509e777504e5cab"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_title.dart",
+      "base_sha256": "33a4039ce9e4033a8d2e92c4c3aee1eacddf36fbef46f1987ec003c0ecb4d694",
+      "candidate_sha256": "71c922485213d3b1d3668200e313f9bc1a7399e33c37f8244996c566069f0450"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "base_sha256": "d0d284e53895c2ad288d9572a8f601fc9584dbf44f3de94b83ee10601b52df26",
+      "candidate_sha256": "7acaa06ad7e7b07ed225976b9237ed0150253e15af8b7682845c257d012f394e"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "base_sha256": "c8f6f0ca67eacf331a4a99e4c06fe31cf0d7100feaefab7c3c690dfee4ebbc47",
+      "candidate_sha256": "891376449d4d8cbd1c8fbecc5c417a1519e5419a8715fb9d68d210dac8542d94"
+    },
+    {
+      "path": "SOURCE/test/visual/line136_membership_capture_test.dart",
+      "base_sha256": "c41bae6236702d022c05e1785441b026086417ece57d82161dd1ff4c27c9059f",
+      "candidate_sha256": "1d142c76e1ee84df1f2dfdfc8a98fc4ca1c5d4fc9245733e5a9d0b3d97559940"
+    },
+    {
+      "path": "SOURCE/test/visual/line142_offers_preview_test.dart",
+      "base_sha256": null,
+      "candidate_sha256": "ca486a0d4cb85347242c6b149799e99f4feee4f2b2197d4278887639ff46fd78"
+    }
+  ],
+  "foreign_staged": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "index_blob": "f1915859e9eb592f2db782df5889d66f3d06bb02",
+      "worktree_sha256": "0f2fa602d99d688c80dcfd08f016d6a27b926424aa10410e0663fbfa35d21ab5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+      "index_blob": "0935e25eeea8b6ffe3ce64b614fcbf9468606b71",
+      "worktree_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+      "index_blob": "341b615843c7227166868b6f025c30baed513281",
+      "worktree_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+      "index_blob": "0531f5ad6daa081e49990b9c03427b7b4a7f3291",
+      "worktree_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+      "index_blob": "b890726e53fbb2c4fdc8bf5ebd27811996fcd5f3",
+      "worktree_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+      "index_blob": "4e002f5d53b681c5bbccc6617181b7264555d3ea",
+      "worktree_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "index_blob": "7b9d76e6b1b22dd40b24dd8824a52fb95a300c8a",
+      "worktree_sha256": "52bc9822b7189820c8a3553adafa71106ee3c9c36305f35aad696c8c55ad602d"
+    }
+  ],
+  "preservation": "12tracked files forward-written from accepted Git objects;3new files moved into held/new_files;15exact candidate hashes verified before parking; all7foreign staged blobs and worktree hashes exact; SOURCE clean",
+  "failed_full_gate_attempts": 1,
+  "product_blocker": "Ramadan draw entry keyed by role allows same account to enter twice; LOCK47 says one entry per person",
+  "proof": "Independent source-path review; no cross-role Flutter reproduction claimed",
+  "no_other_line_started": true
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "role": "Seeker",
+    "area": "offers",
+    "page": "o10",
+    "state": "normal",
+    "reached": "o10",
+    "file": "o10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "ramadan_draw_preview"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "offers",
+    "page": "o11",
+    "state": "normal",
+    "reached": "o11",
+    "file": "o11.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "ramadan_draw_preview"
+    ],
+    "tab": 2
+  }
+]

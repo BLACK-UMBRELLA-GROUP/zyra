@@ -1,0 +1,16 @@
+[
+  {
+    "role": "Seeker",
+    "area": "offers",
+    "page": "o02",
+    "state": "normal",
+    "reached": "o02",
+    "file": "o02.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "membership"
+    ],
+    "tab": 4
+  }
+]

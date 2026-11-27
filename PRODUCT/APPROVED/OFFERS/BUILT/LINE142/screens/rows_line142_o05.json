@@ -1,0 +1,28 @@
+[
+  {
+    "role": "Seeker",
+    "area": "offers",
+    "page": "o12",
+    "state": "normal",
+    "reached": "o12",
+    "file": "o12.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "offers",
+    "page": "o05",
+    "state": "normal",
+    "reached": "o05",
+    "file": "o05.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "eid_gift_preview"
+    ],
+    "tab": 2
+  }
+]

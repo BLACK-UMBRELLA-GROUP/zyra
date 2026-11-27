@@ -1,0 +1,18 @@
+[
+  {
+    "role": "Seeker",
+    "area": "offers",
+    "page": "o01",
+    "state": "normal",
+    "reached": "o01",
+    "file": "o01.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "help_advanced",
+      "help_delete"
+    ],
+    "tab": 4
+  }
+]

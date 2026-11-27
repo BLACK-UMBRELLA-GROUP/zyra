@@ -1,0 +1,92 @@
+{
+  "analyzer": {
+    "name": "analyze",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exit_code": 0,
+    "seconds": 13.1,
+    "ended": "2026-11-27T08:18:51.637595+00:00"
+  },
+  "focused": {
+    "name": "focused",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--dart-define=ZYRA_LINE142_CAPTURE=true",
+      "--reporter",
+      "expanded",
+      "test/visual/line142_offers_preview_test.dart",
+      "test/visual/line138_pause_private_capture_test.dart",
+      "test/zyra_pause_private_preview_state_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 24.02,
+    "ended": "2026-11-27T08:19:23.146780+00:00",
+    "passed": 26,
+    "skipped": 23,
+    "scope": "Offers + LOCK44 capture behavior + preview state;14contrast assertions passed;3model tests not included in this focused invocation"
+  },
+  "ordinary": {
+    "status": "failed and deliberately interrupted for confirmed product blocker; no full-suite pass",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded"
+    ],
+    "recorder_exit": 130,
+    "last_observed_elapsed": "07:42",
+    "passed": 7522,
+    "skipped": 243,
+    "failed": 6,
+    "failed_cases": [
+      "01:38 +1791 ~1 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/one_journey_basic_joining_history_test.dart: protected paid cancellation callbacks never revive after plan comparison [E]",
+      "03:08 +3324 ~1 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart: Seeker One keeps locked row order and caller actions [E]",
+      "03:09 +3334 ~1 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart: Seeker Basic keeps locked row order and caller actions [E]",
+      "03:10 +3342 ~1 -4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart: Guardian One keeps locked row order and caller actions [E]",
+      "03:11 +3351 ~1 -5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart: Guardian Basic keeps locked row order and caller actions [E]",
+      "04:50 +4901 ~160 -6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false [E]"
+    ],
+    "new_stale_fixture_expectations": 5,
+    "baseline_help_failure": 1,
+    "test_migrations_applied": false,
+    "product_blocker": "Q230 cross-role entry; independent direct source-path proof, not a Flutter reproduction",
+    "remaining_tests": "not completed after intentional interrupt",
+    "auth_timeout": "not observed in this run before interruption; Q229 historical baseline only"
+  },
+  "full_gate_attempts_failed": 1,
+  "full_suite_pass": false,
+  "accepted_ci": {
+    "run": 45958031712,
+    "flutter_shard_0": "success",
+    "flutter_shards_1_2": "failure",
+    "baseline_questions": [
+      "Q228 Help lazy mount/hosted Welcome app_links",
+      "Q229 AuthGate timeout"
+    ],
+    "current_run_auth_timeout": "not observed before interruption"
+  },
+  "secret_patch_scan": {
+    "bytes": 59703,
+    "leaks": 0,
+    "redacted": true
+  },
+  "public_source_scan": {
+    "files": 15,
+    "scanner_exit": 1,
+    "hits": 24,
+    "disposition": "All24 money hits reviewed as locked public-facing sample UI amounts, existing membership UI, field names or corresponding tests; no private business planning, legal work, personal data or secret.",
+    "secret_patch_scan": "gitleaks stdin redacted;59703bytes;0leaks"
+  }
+}

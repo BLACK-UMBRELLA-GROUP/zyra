@@ -1,0 +1,34 @@
+{
+  "scanner": "fable_public_check.py",
+  "initial_scope": "48owned record files plus3mixed existing files; all15candidate source files also scanned before parking",
+  "initial_record_scan_exit": 1,
+  "record_scan_hits": 895,
+  "record_scan_disposition": {
+    "valid_png_compressed_binary_false_matches": 879,
+    "benign_handover_deferred_review_reference": 1,
+    "preexisting_mixed_queue_questions_map_references": 15
+  },
+  "png_validation": "All28valid PNGs inspected/derived from known captures and masters; no tEXt/iTXt/zTXt chunks; no source/compiled app stored in evidence",
+  "candidate_source_scan": {
+    "files": 15,
+    "hits": 24,
+    "disposition": "Locked public UI amounts, existing UI fields and corresponding tests; no private business/legal documents or secrets"
+  },
+  "secret_scan": {
+    "candidate_patch_bytes": 59703,
+    "candidate_patch_leaks": 0,
+    "initial_record_text_bytes": 35267,
+    "record_text_leaks": 0,
+    "redacted": true
+  },
+  "public_A_F": {
+    "A": "patch and final record text secret scans clean",
+    "B": "reviewed false matches as above; no private source planning or personal material",
+    "C": "no roadmap row",
+    "D": "no version change",
+    "E": "neutral record wording; locked UI unchanged",
+    "F": "candidate README held; accepted README restored"
+  },
+  "publication": "local record-only commits; no push because implementation gate did not pass",
+  "map": "regenerated456documents/68withoutheader/41problems; mixed MAP remains unstaged; no administrative repair in this line"
+}

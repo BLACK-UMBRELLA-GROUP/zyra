@@ -1,0 +1,16 @@
+[
+  {
+    "role": "Guardian",
+    "area": "offers",
+    "page": "o04",
+    "state": "normal",
+    "reached": "o04",
+    "file": "o04.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "membership"
+    ],
+    "tab": 4
+  }
+]
