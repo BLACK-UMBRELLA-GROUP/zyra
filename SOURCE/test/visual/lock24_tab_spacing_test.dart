@@ -413,9 +413,18 @@ Map<String, double> _verifySpacing(
     Finder dotTarget,
     Finder dot, {
     Finder? titleBlock,
+    Finder? countBar,
     Finder? card,
   }) {
-    gap('title block to dot slot', titleBlock ?? title, dotTarget, 12);
+    final block = titleBlock ?? title;
+    if (countBar == null) {
+      gap('title block to dot slot', block, dotTarget, 12);
+    } else {
+      gap('title block to count bar', block, countBar, 12);
+      gap('count bar to dot slot', countBar, dotTarget, 10);
+      results['title block to dot slot'] =
+          box(dotTarget).top - box(block).bottom;
+    }
     results['title text to dot slot'] = box(dotTarget).top - box(title).bottom;
     results['title text to painted dot'] = box(dot).top - box(title).bottom;
     if (card != null) gap('painted dot to card', dot, card, 12);
@@ -434,7 +443,21 @@ Map<String, double> _verifySpacing(
   switch (screen) {
     case 'Profiles':
       final card = _key('concept_browse_portrait_card');
+      final countBar = _key('lock48_profiles_count');
       pageInsets(card);
+      expect(countBar, basic ? findsOneWidget : findsNothing);
+      if (basic) {
+        final bar = box(countBar);
+        final track = box(
+          find.descendant(
+            of: countBar,
+            matching: find.byType(LinearProgressIndicator),
+          ),
+        );
+        check('count bar left edge', bar.left, box(card).left);
+        check('count bar right edge', bar.right, box(card).right);
+        check('count track thickness', track.height, 4);
+      }
       titleToDots(
         _key('concept_browse_title'),
         _key('concept_browse_dot_target_0'),
@@ -444,6 +467,7 @@ Map<String, double> _verifySpacing(
               matching: find.byType(AnimatedContainer),
             )
             .first,
+        countBar: basic ? countBar : null,
         card: card,
       );
       final request = find.descendant(

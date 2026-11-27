@@ -186,6 +186,7 @@ void _showProfile(
   String? suggestedBy,
   ZyraFullProfileSituation situation = ZyraFullProfileSituation.general,
   VoidCallback? onAction,
+  ValueChanged<BuildContext>? onActionFromProfile,
   VoidCallback? onSecondary,
 }) {
   if (!_foreground(context) || !current()) return;
@@ -216,7 +217,9 @@ void _showProfile(
                       fit: BoxFit.cover,
                       alignment: alignment,
                     ),
-                onAction: onAction,
+                onAction: onActionFromProfile == null
+                    ? onAction
+                    : () => onActionFromProfile(context),
                 onSecondary: onSecondary,
                 onCompatibility: () =>
                     _sampleCompatibility(context, person, current),
@@ -271,12 +274,16 @@ class ZyraDeveloperJourneyRequestsScreen extends StatefulWidget {
     this.initialTab = 0,
     this.onTabChanged,
     this.wrapTitle,
+    this.sentCount,
+    this.additionalSent,
   });
 
   final bool tabClearance;
   final int initialTab;
   final ValueChanged<int>? onTabChanged;
   final Widget Function(Widget)? wrapTitle;
+  final Widget Function()? sentCount;
+  final List<Widget> Function()? additionalSent;
 
   @override
   State<ZyraDeveloperJourneyRequestsScreen> createState() =>
@@ -333,8 +340,13 @@ class _ZyraDeveloperJourneyRequestsScreenState
   List<Widget> _pending(bool incoming) {
     final rows =
         (incoming ? _samples.receivedRows : _samples.sentRows) ?? const [];
-    if (rows.isEmpty) {
+    final count = incoming ? null : widget.sentCount?.call();
+    final extra = incoming
+        ? const <Widget>[]
+        : widget.additionalSent?.call() ?? const [];
+    if (rows.isEmpty && extra.isEmpty) {
       return [
+        ?count,
         ZyraRequestActivityEmpty(
           icon: Icons.mail_outline_rounded,
           title: incoming
@@ -346,7 +358,11 @@ class _ZyraDeveloperJourneyRequestsScreenState
         ),
       ];
     }
-    return [for (final request in rows) _requestCard(request)];
+    return [
+      ?count,
+      ...extra,
+      for (final request in rows) _requestCard(request),
+    ];
   }
 
   Widget _requestCard(ZyraSampleRequest request) {
@@ -643,10 +659,12 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
     required this.row,
     required this.controller,
     this.onViewArchive,
+    this.admitRestart,
   });
   final ZyraSampleJourney row;
   final ZyraConnectionsExpansionController controller;
   final VoidCallback? onViewArchive;
+  final bool Function(BuildContext)? admitRestart;
 
   bool _present() => _samples.endedRows?.contains(row) ?? false;
 
@@ -697,7 +715,10 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
 
   Future<void> _restart(BuildContext context, int generation) async {
     bool current() => _samples.isCurrentLease(generation) && _present();
-    if (!_foreground(context) || !current() || !_samples.mayRestart(row)) {
+    if (!_foreground(context) ||
+        !current() ||
+        !_samples.mayRestart(row) ||
+        admitRestart?.call(context) == false) {
       return;
     }
     final confirm = await showZyraConfirm(
@@ -714,6 +735,7 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
         context.mounted &&
         _foreground(context) &&
         current() &&
+        admitRestart?.call(context) != false &&
         _samples.restart(row)) {
       _notice(context, 'Journey request sent.');
     }
@@ -1216,9 +1238,11 @@ class ZyraSampleIntroductionsList extends StatefulWidget {
     super.key,
     required this.wrapTitle,
     this.tabClearance = false,
+    this.admitRequest,
   });
   final Widget Function(Widget) wrapTitle;
   final bool tabClearance;
+  final bool Function(BuildContext)? admitRequest;
 
   @override
   State<ZyraSampleIntroductionsList> createState() =>
@@ -1310,9 +1334,14 @@ class _ZyraSampleIntroductionsListState
           suggestedBy:
               '${introduction.guardianName} · ${introduction.relation}',
           situation: ZyraFullProfileSituation.introduction,
-          onAction: () {
-            if (!present() || !_samples.requestIntroduction(person)) return;
-            Navigator.of(context).pop();
+          onActionFromProfile: (profileContext) {
+            if (!present() ||
+                !_samples.canRequestIntroduction(person) ||
+                widget.admitRequest?.call(profileContext) == false ||
+                !_samples.requestIntroduction(person)) {
+              return;
+            }
+            Navigator.of(profileContext).pop();
             _expansion.collapseAll();
             _notice(
               context,
@@ -1336,7 +1365,10 @@ class _ZyraSampleIntroductionsListState
           icon: Icons.check,
           onTap: _samples.canRequestIntroduction(person)
               ? () {
-                  if (!current() || !_samples.requestIntroduction(person)) {
+                  if (!current() ||
+                      !_samples.canRequestIntroduction(person) ||
+                      widget.admitRequest?.call(context) == false ||
+                      !_samples.requestIntroduction(person)) {
                     return;
                   }
                   _expansion.collapseAll();

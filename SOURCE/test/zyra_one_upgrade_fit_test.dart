@@ -12,6 +12,7 @@ import 'package:zyra/theme/zyra_text.dart';
 const _seeker = [
   ('Journey places', '1', '3'),
   ('Browse profiles', '25 every 4 hours', 'Unlimited'),
+  ('Requests waiting at once', '5', '20'),
   ('Compatibility score', 'Overall score', 'Every topic'),
   ('Filters', 'Age and location', 'All filters'),
   ('Guardians', '1 on Guardian Basic', 'Any 10'),

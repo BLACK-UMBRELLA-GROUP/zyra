@@ -873,6 +873,46 @@ Future<void> _openRequests(WidgetTester tester, {bool sent = false}) async {
   await _press(tester, 'draft_requests_${sent ? 1 : 0}');
 }
 
+Future<void> _revealSentContent(WidgetTester tester, Finder target) async {
+  final pager = tester.widget<PageView>(_key('request_activity_pager'));
+  expect(pager.controller!.page, closeTo(1, .001));
+  final list = find.byKey(const PageStorageKey('concept_connections_page_1'));
+  expect(list, findsOneWidget);
+  final scrollable = find.descendant(
+    of: list,
+    matching: find.byType(Scrollable),
+  );
+  expect(scrollable, findsOneWidget);
+  final position = tester.state<ScrollableState>(scrollable).position;
+  expect(position.axis, Axis.vertical);
+  bool visible() {
+    if (target.evaluate().isEmpty) return false;
+    final body = tester.getRect(list);
+    final tabs = tester.getRect(_key('compact-nav-surface'));
+    final readingArea = body.intersect(
+      Rect.fromLTRB(body.left, body.top, body.right, tabs.top),
+    );
+    return !readingArea.isEmpty && tester.getRect(target).overlaps(readingArea);
+  }
+
+  // On compact Larger Text the floating bar covers the list's centre.
+  // Start each gesture in the visible reading area above it.
+  for (var attempt = 0; attempt < 12 && !visible(); attempt++) {
+    final before = position.pixels;
+    await tester.dragFrom(
+      _visibleTabBodyPoint(tester, list),
+      const Offset(0, -64),
+    );
+    await tester.pumpAndSettle();
+    expect(position.pixels, greaterThan(before));
+  }
+  expect(
+    visible(),
+    isTrue,
+    reason: 'Sent content is reachable above the tabs.',
+  );
+}
+
 Finder _returnSemantics() => find
     .descendant(
       of: _key('concept_pull_down_back_scope'),
@@ -2129,7 +2169,9 @@ void main() {
               await _press(tester, 'draft_requests_$index');
               expectRequestPage(index);
               if (index == 1) {
-                expect(find.text('No sent requests yet.'), findsOneWidget);
+                final empty = find.text('No sent requests yet.');
+                await _revealSentContent(tester, empty);
+                expect(empty, findsOneWidget);
                 await _captureCandidate(
                   tester,
                   'requests_sent_$captureSuffix',
@@ -4997,6 +5039,10 @@ void main() {
           await capture('connections');
           await _openRequests(tester, sent: true);
           await capture('my_zyra_sent_requests');
+          await _revealSentContent(
+            tester,
+            _key('concept_request_${_fixture}_header'),
+          );
           await _press(tester, 'draft_recipient_$_fixture');
           await capture('mutual_preparation');
           await _press(tester, 'draft_ready_$_fixture');

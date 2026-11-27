@@ -6,6 +6,7 @@ import 'zyra_seeker_basic_policy.dart';
 /// Downgrading never deletes profiles, Journeys or accepted Guardian links.
 class ZyraSeekerPlanLimits {
   final int savedProfiles;
+  final int waitingRequests;
   final int? activeConsiders;
   final int? dailyConsiders;
   final int recentDeclinedProfiles;
@@ -13,6 +14,7 @@ class ZyraSeekerPlanLimits {
 
   const ZyraSeekerPlanLimits({
     required this.savedProfiles,
+    required this.waitingRequests,
     required this.activeConsiders,
     required this.dailyConsiders,
     required this.recentDeclinedProfiles,
@@ -20,10 +22,12 @@ class ZyraSeekerPlanLimits {
   });
 
   static const oneSavedProfiles = 50;
+  static const oneWaitingRequestLimit = 20;
   static const maxLinkedGuardians = 10;
   static const basicGuardianPlaces = 1;
   static const basic = ZyraSeekerPlanLimits(
     savedProfiles: ZyraSeekerBasicPolicy.totalSaveLimit,
+    waitingRequests: ZyraSeekerBasicPolicy.waitingRequestLimit,
     activeConsiders: ZyraSeekerBasicPolicy.totalConsiderLimit,
     dailyConsiders: ZyraSeekerBasicPolicy.dailyConsiderLimit,
     recentDeclinedProfiles: 0,
@@ -31,6 +35,7 @@ class ZyraSeekerPlanLimits {
   );
   static const one = ZyraSeekerPlanLimits(
     savedProfiles: oneSavedProfiles,
+    waitingRequests: oneWaitingRequestLimit,
     activeConsiders: null,
     dailyConsiders: null,
     recentDeclinedProfiles: 10,
@@ -39,6 +44,8 @@ class ZyraSeekerPlanLimits {
 
   static ZyraSeekerPlanLimits of(ZyraPlan plan) =>
       plan == ZyraPlan.one ? one : basic;
+
+  bool hasWaitingRequestSpace(int waiting) => waiting < waitingRequests;
 
   bool canSave({required int currentCount, bool alreadySaved = false}) =>
       alreadySaved || (currentCount >= 0 && currentCount < savedProfiles);

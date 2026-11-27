@@ -967,6 +967,8 @@ class BaselineHarness {
     Map<ZyraWalletRole, ZyraMembershipPreviewRecord?>? membershipRecords,
     ZyraPreviewOfferChoices? offerChoices,
     List<NavigatorObserver> navigatorObservers = const [],
+    int seededWaitingRequests = 0,
+    int seededViewedProfiles = 0,
   }) async {
     this.guardian = guardian;
     ZyraColors.restoreAppPalette(null);
@@ -984,6 +986,8 @@ class BaselineHarness {
       profileSmallPageSample: profileSmallPageSample,
       membershipRecords: membershipRecords,
       offerChoices: offerChoices,
+      seededWaitingRequests: seededWaitingRequests,
+      seededViewedProfiles: seededViewedProfiles,
     );
     final capacity = initialSeekerBasic ? 1 : 3;
     final defaultModel = receivedRequest

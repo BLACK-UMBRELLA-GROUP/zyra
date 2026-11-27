@@ -22,6 +22,7 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
     this.familyMonthlyPence,
     this.onNotice,
     this.canAct,
+    this.disclosureColor,
   }) : assert(
          offer != ZyraPurchaseOffer.zyraFamily || familyMonthlyPence != null,
        );
@@ -30,6 +31,9 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
   final int? familyMonthlyPence;
   final ValueChanged<String>? onNotice;
   final bool Function()? canAct;
+
+  /// Q241 opt-in for the actual Basic comparison paragraph only.
+  final Color? disclosureColor;
 
   static const termsNotice = 'The terms of use open here.';
   static const privacyNotice = 'The privacy policy opens here.';
@@ -110,9 +114,11 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
         textAlign: TextAlign.center,
         style: ZyraText.body(
           size: 11.5,
-          color: offer == ZyraPurchaseOffer.compatibilityUnlocks
-              ? const Color(0xFF4F443A)
-              : const Color(0xFF6E6257),
+          color:
+              disclosureColor ??
+              (offer == ZyraPurchaseOffer.compatibilityUnlocks
+                  ? const Color(0xFF4F443A)
+                  : const Color(0xFF6E6257)),
         ),
       ),
       const SizedBox(height: 4),

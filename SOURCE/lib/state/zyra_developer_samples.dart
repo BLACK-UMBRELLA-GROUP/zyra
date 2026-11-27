@@ -73,8 +73,14 @@ class ZyraSampleRequest {
   final DateTime? expiresAt;
   final bool suggestedByOwnGuardian;
 
-  bool _expiredAt(DateTime now) =>
-      expiresAt != null && !now.isBefore(expiresAt!);
+  DateTime? get _waitingExpiry =>
+      expiresAt ??
+      (incoming ? null : date.add(ViewRequestDraftModel.requestLifetime));
+
+  bool _expiredAt(DateTime now) {
+    final deadline = _waitingExpiry;
+    return deadline != null && !now.isBefore(deadline);
+  }
 }
 
 class ZyraSamplePastRequest {
@@ -741,11 +747,11 @@ class ZyraDeveloperSamples extends ChangeNotifier {
       canSendPreviewRequest(person.id);
 
   bool requestIntroduction(DraftProfile person) {
+    if (!isAuthorized) return false;
+    final now = _clock();
+    _expirePendingRequests(now);
     if (!canRequestIntroduction(person)) return false;
-    (_sent ??= []).insert(
-      0,
-      ZyraSampleRequest(person, _clock(), incoming: false),
-    );
+    (_sent ??= []).insert(0, ZyraSampleRequest(person, now, incoming: false));
     _finishIntroduction(person, ZyraSampleIntroductionOutcome.requested);
     return true;
   }
@@ -902,6 +908,30 @@ class ZyraDeveloperSamples extends ChangeNotifier {
       isRequestCurrent(request) &&
       !(_active?.any((row) => row.person.id == request.person.id) ?? false);
 
+  Iterable<String> get waitingSentProfileIds =>
+      sentRows?.map((row) => row.person.id) ?? const [];
+
+  DateTime? get nextWaitingRequestExpiry {
+    if (!isAuthorized) return null;
+    final now = _clock();
+    DateTime? next;
+    for (final request in _sent ?? const <ZyraSampleRequest>[]) {
+      final deadline = request._waitingExpiry;
+      if (deadline != null &&
+          deadline.isAfter(now) &&
+          (next == null || deadline.isBefore(next))) {
+        next = deadline;
+      }
+    }
+    return next;
+  }
+
+  void advanceWaitingRequests() {
+    if (!isAuthorized) return;
+    final now = _clock();
+    if (_sent?.any((request) => request._expiredAt(now)) ?? false) _changed();
+  }
+
   bool hasPreviewSent(String profileId) =>
       isAuthorized && (_sent?.any((r) => r.person.id == profileId) ?? false);
 
@@ -947,12 +977,14 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   /// No member identity or transport is accepted by this sample-only API.
   bool togglePreviewRequest(String profileId) {
     if (!isAuthorized) return false;
+    final now = _clock();
+    _expirePendingRequests(now);
     final sent = _sent?.where((r) => r.person.id == profileId).firstOrNull;
     if (sent != null) return declineOrCancel(sent);
     if (!canSendPreviewRequest(profileId)) return false;
     (_sent ??= []).insert(
       0,
-      ZyraSampleRequest(_people[profileId]!, _clock(), incoming: false),
+      ZyraSampleRequest(_people[profileId]!, now, incoming: false),
     );
     _changed();
     return true;
@@ -1024,7 +1056,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     );
     _ownReady.remove(row.id);
     _peerReady.remove(row.id);
-    _expireRestartRequests(_clock());
+    _expirePendingRequests(_clock());
     _sent?.removeWhere((request) => request.person.id == row.person.id);
     _received?.removeWhere((request) => request.person.id == row.person.id);
     _journeyStarts[row.person.id] = ++_serial;
@@ -1165,7 +1197,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _timeRuleTimer = null;
   }
 
-  void _expireRestartRequests(DateTime now) {
+  void _expirePendingRequests(DateTime now) {
     final sent = _sent;
     if (sent == null) return;
     for (final request in sent.where((row) => row._expiredAt(now)).toList()) {
@@ -1173,7 +1205,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
       _recordPast(
         request,
         DraftPastRequestOutcome.notTakenUp,
-        request.expiresAt!,
+        request._waitingExpiry!,
       );
     }
   }
@@ -1182,7 +1214,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _cancelTimeRuleTimer();
     if (!isAuthorized) return;
     final now = _clock();
-    _expireRestartRequests(now);
+    _expirePendingRequests(now);
     DateTime? next;
     void consider(DateTime? deadline) {
       if (deadline != null &&

@@ -88,6 +88,8 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.profileSwipe,
     this.bottomPadding = 100,
     this.fixedTabFooter = false,
+    this.headerAccessory,
+    this.headerAccessoryHeight = 0,
     this.alignHeaderActions = false,
     this.nextProfileMotion = ZyraBrowseNextMotion.current,
     this.nextProfileMotionEpoch = 0,
@@ -165,6 +167,8 @@ class ZyraBrowseDesigns extends StatefulWidget {
   final ZyraProfileSwipe? profileSwipe;
   final double bottomPadding;
   final bool fixedTabFooter;
+  final Widget? headerAccessory;
+  final double headerAccessoryHeight;
   final bool alignHeaderActions;
   // Optional presentation-only preview. Callers own selection and actions;
   // unchanged default and token zero preserve all existing shared callers.
@@ -1018,8 +1022,13 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         final headerHeight = headerHasDots
             ? titleHeight + ZyraPreviewSpacing.titleToDots
             : math.max(showHeader ? actionWidth : 0.0, titleHeight);
+        final accessory = showHeader ? widget.headerAccessory : null;
+        final accessoryHeight = accessory == null
+            ? 0.0
+            : widget.headerAccessoryHeight + 10;
         final fittedHeight =
             constraints.maxHeight -
+            accessoryHeight -
             24 -
             afterDots -
             bottom -
@@ -1056,10 +1065,25 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (headerHasDots)
-                _header(dots: _photoPagination(profile))
+                _header(
+                  dots: accessory == null
+                      ? _photoPagination(profile)
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            accessory,
+                            const SizedBox(height: 10),
+                            _photoPagination(profile),
+                          ],
+                        ),
+                )
               else ...[
                 if (showHeader)
                   SizedBox(height: headerHeight, child: _header()),
+                if (accessory != null) ...[
+                  accessory,
+                  const SizedBox(height: 10),
+                ],
                 _photoPagination(profile),
               ],
               if (afterDots > 0) SizedBox(height: afterDots),

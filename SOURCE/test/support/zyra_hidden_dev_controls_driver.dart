@@ -42,6 +42,8 @@ class ZyraShellTestFixture extends ChangeNotifier {
     ZyraPreviewOfferChoices? offerChoices,
     ZyraMembershipPaymentHistory membershipPaymentHistory =
         ZyraMembershipPaymentHistory.paidBefore,
+    int seededWaitingRequests = 0,
+    int seededViewedProfiles = 0,
   }) : _model =
            model ??
            (receivedRequest
@@ -66,6 +68,8 @@ class ZyraShellTestFixture extends ChangeNotifier {
       profileSmallPageSample: profileSmallPageSample,
       membershipRecords: membershipRecords,
       offerChoices: offerChoices,
+      seededWaitingRequests: seededWaitingRequests,
+      seededViewedProfiles: seededViewedProfiles,
       guardianTabs: guardianTabs,
       readState: _consumeState,
       onAttached: (isCurrent) => _isCurrent = isCurrent,

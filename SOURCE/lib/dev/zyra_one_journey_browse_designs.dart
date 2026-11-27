@@ -52,6 +52,8 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     this.profileSwipe,
     this.bottomPadding = 100,
     this.fixedTabFooter = false,
+    this.headerAccessory,
+    this.headerAccessoryHeight = 0,
     this.photoBuilder,
     this.alignHeaderActions = false,
     this.nextProfileMotion = ZyraBrowseNextMotion.current,
@@ -85,6 +87,8 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   final ZyraProfileSwipe? profileSwipe;
   final double bottomPadding;
   final bool fixedTabFooter;
+  final Widget? headerAccessory;
+  final double headerAccessoryHeight;
 
   /// Optional owner-prepared offline renderer. The existing sample-only
   /// default remains unchanged for existing callers and fixtures.
@@ -146,6 +150,8 @@ class _ZyraOneJourneyBrowseDesignsState
     profileSwipe: widget.profileSwipe,
     bottomPadding: widget.bottomPadding,
     fixedTabFooter: widget.fixedTabFooter,
+    headerAccessory: widget.headerAccessory,
+    headerAccessoryHeight: widget.headerAccessoryHeight,
     alignHeaderActions: widget.alignHeaderActions,
     nextProfileMotion: widget.nextProfileMotion,
     nextProfileMotionEpoch: widget.nextProfileMotionEpoch,

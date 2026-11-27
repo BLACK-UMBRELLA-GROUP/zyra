@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'zyra_browse_filter.dart';
+import 'zyra_limits_preview.dart' show ZyraPreviewBrowseSnapshot;
 import 'zyra_subscription_wallet_draft.dart' show ZyraWalletReadiness;
 import 'zyra_one_journey_guardian_tabs.dart' show ZyraGuardianTabsSnapshot;
 import 'zyra_view_request_draft_model.dart';
@@ -80,6 +81,7 @@ class ZyraPreviewNavigationCheckpoint {
     this.guardianJourneyId,
     this.guardianJourneyAttemptRevision,
     this.browseId,
+    this.profilesWindow,
     ZyraBrowseFilter browseFilter = const ZyraBrowseFilter(),
     Iterable<String> browseHistory = const [],
     Iterable<String> seenBrowseProfiles = const [],
@@ -169,6 +171,7 @@ class ZyraPreviewNavigationCheckpoint {
   // Viewed synthetic IDs only; never an entitlement or source of profiles.
   final Set<String> seenBrowseProfiles;
   final String? personId, guardianJourneyId, browseId;
+  final ZyraPreviewBrowseSnapshot? profilesWindow;
   final int? guardianJourneyAttemptRevision;
   final ZyraBrowseFilter browseFilter;
   final int browseCursor;

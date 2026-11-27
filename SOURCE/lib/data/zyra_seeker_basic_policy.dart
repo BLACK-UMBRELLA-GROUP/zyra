@@ -2,6 +2,9 @@
 /// membership copy and tests cannot silently drift apart.
 abstract final class ZyraSeekerBasicPolicy {
   static const int activeJourneyLimit = 1;
+  static const int waitingRequestLimit = 5;
+
+  // Only the retired member app and old capture fixtures read Consider caps.
   static const int totalConsiderLimit = 25;
   static const int totalSaveLimit = 5;
   static const int dailyConsiderLimit = 5;

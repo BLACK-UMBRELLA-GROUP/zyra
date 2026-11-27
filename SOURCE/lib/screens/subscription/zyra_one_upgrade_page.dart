@@ -1,3 +1,5 @@
+import '../../data/zyra_seeker_plan_limits.dart';
+import '../../data/zyra_seeker_basic_policy.dart';
 import '../../widgets/zyra_developer_title.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +22,7 @@ class ZyraOneUpgradePage extends StatelessWidget {
     this.includesPreviewComparisons = false,
     this.includesProfileVideo = false,
     this.founderPreview = false,
+    this.strongBasicComparisonDisclosure = false,
     this.seekerFirstName = 'Adam',
     this.onPurchaseNotice,
     this.childCanAct,
@@ -29,6 +32,9 @@ class ZyraOneUpgradePage extends StatelessWidget {
   final bool includesPreviewComparisons;
   final bool includesProfileVideo;
   final bool founderPreview;
+
+  /// LOCK14 V9 / Q241: opt in only from the owned Basic comparison route.
+  final bool strongBasicComparisonDisclosure;
   final String seekerFirstName;
   final ValueChanged<String>? onPurchaseNotice;
 
@@ -40,6 +46,11 @@ class ZyraOneUpgradePage extends StatelessWidget {
   List<(String, String, String)> get _seekerRows => [
     ('Journey places', '1', '3'),
     ('Browse profiles', '25 every 4 hours', 'Unlimited'),
+    (
+      'Requests waiting at once',
+      '${ZyraSeekerBasicPolicy.waitingRequestLimit}',
+      '${ZyraSeekerPlanLimits.oneWaitingRequestLimit}',
+    ),
     if (includesPreviewComparisons) ...[
       ('Compatibility score', 'Overall score', 'Every topic'),
       ('Filters', 'Age and location', 'All filters'),
@@ -185,7 +196,9 @@ class ZyraOneUpgradePage extends StatelessWidget {
               : 'You keep everything you have now. Cancel any time in Apple settings.',
           style: ZyraText.subtext(
             size: 12,
-            color: guardian ? ZyraColors.strongSecondaryText : ZyraColors.secondaryText,
+            color: guardian
+                ? ZyraColors.strongSecondaryText
+                : ZyraColors.secondaryText,
           ),
           textAlign: TextAlign.center,
         ),
@@ -213,6 +226,9 @@ class ZyraOneUpgradePage extends StatelessWidget {
         if (founderPreview) ...[
           const SizedBox(height: 8),
           ZyraPurchaseFinePrint(
+            disclosureColor: strongBasicComparisonDisclosure
+                ? ZyraColors.strongSecondaryText
+                : null,
             offer: guardian
                 ? ZyraPurchaseOffer.guardianOne
                 : ZyraPurchaseOffer.seekerOne,

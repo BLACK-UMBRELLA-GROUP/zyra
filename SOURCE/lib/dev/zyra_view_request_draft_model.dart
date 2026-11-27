@@ -826,6 +826,7 @@ class ViewRequestDraftModel {
   static const readyReminderDelay = Duration(hours: 48);
   static const readyCloseDelay = Duration(hours: 72);
   static const askAgainWait = Duration(days: 7);
+  static const requestLifetime = Duration(days: 7);
   static const restartWait = Duration(hours: 24);
   static const restartLifetime = Duration(days: 30);
 
@@ -1570,6 +1571,32 @@ class ViewRequestDraftModel {
     return true;
   }
 
+  Set<String> get waitingSentProfileIds {
+    final now = _clock().toUtc();
+    return {
+      for (final entry in _pendingRequestedAt.entries)
+        if (_states[entry.key] == DraftJourneyState.sent &&
+            !isBlocked(entry.key) &&
+            now.isBefore(entry.value.add(requestLifetime)))
+          entry.key,
+      for (final id in _restartRequestedAt.keys)
+        if (restartExpiresAt(id) != null && !isBlocked(id)) id,
+    };
+  }
+
+  bool cancelRestart(String id) {
+    if (restartExpiresAt(id) == null || isBlocked(id)) return false;
+    final requested = _restartRequestedAt.remove(id)!;
+    final now = _clock().toUtc();
+    _recordPastRequest(
+      id,
+      DraftPastRequestOutcome.cancelled,
+      requested,
+      now.isBefore(requested) ? requested : now,
+    );
+    return true;
+  }
+
   bool canRequest(String id) =>
       (ownProfilePrivacy?.canSendRequest ?? true) &&
       _fixtureIds.contains(id) &&
@@ -1823,6 +1850,11 @@ class ViewRequestDraftModel {
     for (final sentAt in _restartRequestedAt.values) {
       consider(sentAt.add(restartLifetime));
     }
+    for (final entry in _pendingRequestedAt.entries) {
+      if (_states[entry.key] == DraftJourneyState.sent) {
+        consider(entry.value.add(requestLifetime));
+      }
+    }
     for (final id
         in _pastRequests
             .where(_isOutgoingNotTakenUp)
@@ -1839,6 +1871,23 @@ class ViewRequestDraftModel {
   bool advanceTimeRules() {
     var changed = false;
     final now = _clock().toUtc();
+    for (final entry in _pendingRequestedAt.entries.toList()) {
+      final expiresAt = entry.value.add(requestLifetime);
+      if (_states[entry.key] != DraftJourneyState.sent ||
+          now.isBefore(expiresAt)) {
+        continue;
+      }
+      _recordPastRequest(
+        entry.key,
+        DraftPastRequestOutcome.notTakenUp,
+        entry.value,
+        expiresAt,
+      );
+      _states.remove(entry.key);
+      _attemptRevisions.remove(entry.key);
+      _pendingRequestedAt.remove(entry.key);
+      changed = true;
+    }
     for (final entry in _preparingRequests.entries.toList()) {
       final closesAt = entry.value.acceptedAt.add(readyCloseDelay);
       if (!_bothReady(entry.key) && !now.isBefore(closesAt)) {

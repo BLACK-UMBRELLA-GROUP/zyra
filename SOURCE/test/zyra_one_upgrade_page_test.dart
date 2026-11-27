@@ -50,12 +50,13 @@ Future<void> _capture(BaselineHarness harness, String name) async {
 }
 
 void main() {
-  setUpAll(baselineSetUp);
+  setUpAll(() => baselineSetUp(evidenceRoot: null));
   tearDownAll(baselineTearDown);
 
   const seekerVisible = [
     'Journey places',
     'Browse profiles',
+    'Requests waiting at once',
     'Compatibility score',
     'Filters',
     'Guardians',
@@ -70,7 +71,6 @@ void main() {
     'Join chaperoned video calls',
   ];
   const seekerHidden = [
-    'Requests waiting at once',
     'Compatibility Unlocks',
     'Restart an ended Journey',
     'Gold ring on your profile',

@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 import 'zyra_developer_focus_presets.dart';
 import 'zyra_full_profile_preview.dart';
+import 'zyra_limits_preview.dart';
 import 'zyra_pause_private_preview.dart';
 import 'zyra_pause_private_preview_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +23,8 @@ import 'package:flutter/services.dart'
         ClipboardData;
 
 import '../data/zyra_journey_stages.dart';
+import '../data/zyra_seeker_basic_policy.dart';
+import '../data/zyra_seeker_plan_limits.dart';
 import '../data/zyra_journey_guardian_selection.dart';
 import '../data/journey_questions.dart';
 import '../data/zyra_reference_data.dart';
@@ -187,6 +190,8 @@ class ZyraOneJourneyShellFixture {
     this.seekerPhotos,
     this.confirmSensitiveAction,
     this.profileSmallPageSample,
+    this.seededWaitingRequests = 0,
+    this.seededViewedProfiles = 0,
   });
 
   final ViewRequestDraftModel? model;
@@ -223,6 +228,9 @@ class ZyraOneJourneyShellFixture {
   /// Test-only native-auth boundary; the running preview uses the OS prompt.
   final Future<bool> Function()? confirmSensitiveAction;
   final ZyraProfileSmallPageSample? profileSmallPageSample;
+  // These stand in for other fictional history in test-owned policy state.
+  final int seededWaitingRequests;
+  final int seededViewedProfiles;
 }
 
 /// One caller-owned fixture update. No account or disclosure grant is carried.
@@ -1268,6 +1276,16 @@ class _ZyraOneJourneyConceptShellState
   int _browseIndex = 1;
   // Session-only viewing order, never a visibility or request permission.
   final _seenBrowseProfileIds = <String>{};
+  late ZyraPreviewBrowseWindow _profilesWindow =
+      switch (widget.fixture?.seededViewedProfiles ?? 0) {
+        0 => ZyraPreviewBrowseWindow(),
+        final count => ZyraPreviewBrowseWindow(
+          startedAt: _previewNow,
+          seededViews: count,
+        ),
+      };
+  bool _waitingRequestsSheetOpen = false;
+  ModalRoute<ZyraRequestLimitChoice>? _waitingRequestsSheetRoute;
   final _browseHistory = ZyraBrowseHistory();
   // The approved portrait card is the single active Browse direction.
   static const _browseDesign = ZyraOneJourneyBrowseDesign.portraitCard;
@@ -1638,12 +1656,30 @@ class _ZyraOneJourneyConceptShellState
 
   void _refreshTimeRules() {
     final changed = _model.advanceTimeRules();
+    if (_hasDeveloperPreview) _developerSamples.advanceWaitingRequests();
     setState(() {});
     if (changed) _publishCheckpoint();
   }
 
   void _syncTimeRuleTimer() {
-    final deadline = _model.nextTimeRuleDeadline;
+    var deadline = _model.nextTimeRuleDeadline;
+    final previewExpiry = _hasDeveloperPreview
+        ? _developerSamples.nextWaitingRequestExpiry
+        : null;
+    if (previewExpiry != null &&
+        (deadline == null || previewExpiry.isBefore(deadline))) {
+      deadline = previewExpiry;
+    }
+    final refill = _profilesWindow.refillAt;
+    if (!_guardianRole &&
+        _seekerMembership == 'Seeker Basic' &&
+        _tab == 0 &&
+        _page == null &&
+        refill != null &&
+        _profilesWindow.activeAt(_previewNow) &&
+        (deadline == null || refill.isBefore(deadline))) {
+      deadline = refill;
+    }
     final routeCurrent = ModalRoute.isCurrentOf(context) == true;
     if (!_allowed || !routeCurrent || deadline == null) {
       _cancelTimeRuleTimer();
@@ -1968,6 +2004,9 @@ class _ZyraOneJourneyConceptShellState
     final invitationClockStart = saved.guardianInvitationClockStart;
     if (invitationClockStart != null) {
       _guardianInvitationClockStart = invitationClockStart;
+    }
+    if (saved.profilesWindow case final window?) {
+      _profilesWindow = ZyraPreviewBrowseWindow.fromSnapshot(window);
     }
     _seenBrowseProfileIds
       ..clear()
@@ -2302,6 +2341,7 @@ class _ZyraOneJourneyConceptShellState
       browseFilter: _browseFilter.withOrigin(_homeTownPoint),
       browseHistory: _browseHistory.ids,
       seenBrowseProfiles: _seenBrowseProfileIds,
+      profilesWindow: _profilesWindow.snapshot(),
       browseCursor: _browseHistory.cursor,
       photoIndices: _browsePhotoIndices,
       galleryIndices: _browseGalleryIndices,
@@ -3528,6 +3568,9 @@ class _ZyraOneJourneyConceptShellState
     'membership' => _membershipView(),
     'one_upgrade' => ZyraOneUpgradePage(
       guardian: _guardianRole,
+      strongBasicComparisonDisclosure: _guardianRole
+          ? _guardianMembership == 'Guardian Basic'
+          : _seekerMembership == 'Seeker Basic',
       founderPreview: true,
       seekerFirstName: _conceptGuardianJourney?.linkedSeekerName ?? 'Adam',
       includesPreviewComparisons: true,
@@ -3731,6 +3774,108 @@ class _ZyraOneJourneyConceptShellState
     };
   }
 
+  bool get _basicRequestPlan => _seekerMembership == 'Seeker Basic';
+
+  ZyraSeekerPlanLimits get _requestPlanLimits =>
+      _basicRequestPlan ? ZyraSeekerPlanLimits.basic : ZyraSeekerPlanLimits.one;
+
+  int get _sentRequestsWaiting =>
+      {
+        ..._model.waitingSentProfileIds,
+        if (_hasDeveloperPreview) ..._developerSamples.waitingSentProfileIds,
+      }.length +
+      (widget.fixture?.seededWaitingRequests ?? 0);
+
+  Widget _sentCount() => ZyraSentRequestCount(
+    key: const ValueKey('lock48_sent_waiting'),
+    waiting: _sentRequestsWaiting,
+    cap: _requestPlanLimits.waitingRequests,
+  );
+
+  bool _admitWaitingRequest(BuildContext origin) {
+    final ownsForeground =
+        origin.mounted &&
+        ModalRoute.isCurrentOf(origin) == true &&
+        ModalRoute.of(context)?.isActive == true &&
+        (_allowed || widget.canActInOwnedDialog?.call() == true);
+    if (!ownsForeground ||
+        _guardianRole ||
+        !_profilePrivacy.canSendRequest ||
+        _waitingRequestsSheetOpen) {
+      return false;
+    }
+    if (_requestPlanLimits.hasWaitingRequestSpace(_sentRequestsWaiting)) {
+      return true;
+    }
+    unawaited(_showWaitingRequestsFull(origin));
+    return false;
+  }
+
+  Future<void> _showWaitingRequestsFull(BuildContext origin) async {
+    _waitingRequestsSheetOpen = true;
+    final cap = _requestPlanLimits.waitingRequests;
+    final basic = _basicRequestPlan;
+    final owner = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final revision = _uiRevision;
+    final originRoute = ModalRoute.of(origin);
+    final shellRoute = ModalRoute.of(context);
+    bool sameOwner() =>
+        mounted &&
+        !_guardianRole &&
+        revision == _uiRevision &&
+        owner == (ZyraAccountState.userId, ZyraAccountState.generation);
+    try {
+      final choice = await showModalBottomSheet<ZyraRequestLimitChoice>(
+        context: origin,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        barrierColor: const Color(0x611E1610),
+        builder: (sheet) {
+          _waitingRequestsSheetRoute = ModalRoute.of(sheet);
+          bool current() =>
+              sheet.mounted &&
+              sameOwner() &&
+              ModalRoute.of(sheet)?.isCurrent == true &&
+              (widget.canActInOwnedDialog?.call() ?? _allowed);
+          void select(ZyraRequestLimitChoice? value) {
+            if (current()) Navigator.of(sheet).pop(value);
+          }
+
+          return ZyraTapFeedback(
+            level: () => _accountSession.hapticLevel,
+            canAct: current,
+            child: ZyraRequestsFullSheet(
+              cap: cap,
+              basic: basic,
+              onSent: () => select(ZyraRequestLimitChoice.sent),
+              onUpgrade: () => select(ZyraRequestLimitChoice.upgrade),
+              onDismiss: () => select(null),
+            ),
+          );
+        },
+      );
+      if (choice == null ||
+          !origin.mounted ||
+          !sameOwner() ||
+          originRoute?.isCurrent != true) {
+        return;
+      }
+      if (originRoute != shellRoute) {
+        Navigator.of(origin).pop();
+      }
+      if (!_allowed || !sameOwner() || shellRoute?.isCurrent != true) return;
+      switch (choice) {
+        case ZyraRequestLimitChoice.sent:
+          _activity('requests', requestsTab: 1);
+        case ZyraRequestLimitChoice.upgrade:
+          _open('one_upgrade');
+      }
+    } finally {
+      _waitingRequestsSheetOpen = false;
+      _waitingRequestsSheetRoute = null;
+    }
+  }
+
   void _toggleInvitation(String id) {
     if (!_allowed ||
         !_profilePrivacy.canSendRequest ||
@@ -3747,6 +3892,7 @@ class _ZyraOneJourneyConceptShellState
       );
       return;
     }
+    if (!_hasSentInvitation(id) && !_admitWaitingRequest(_tapContext)) return;
     if (_hasDeveloperPreview) {
       if (_developerSamples.setupUnfinished && !_hasSentInvitation(id)) {
         setState(
@@ -3959,6 +4105,55 @@ class _ZyraOneJourneyConceptShellState
         ),
       );
     }
+    final now = _previewNow;
+    final viewed = _profilesWindow.countAt(now);
+    final refillAt = _profilesWindow.activeAt(now)
+        ? _profilesWindow.refillAt!
+        : now.add(ZyraSeekerBasicPolicy.swipeWindow);
+    final refillTime = MaterialLocalizations.of(
+      context,
+    ).formatTimeOfDay(TimeOfDay.fromDateTime(refillAt.toLocal())).toLowerCase();
+    final limitBar = seekerBasic
+        ? ZyraProfilesLimitBar(
+            key: const ValueKey('lock48_profiles_count'),
+            count: viewed,
+            refillTime: refillTime,
+          )
+        : null;
+    if (seekerBasic && ZyraSeekerBasicPolicy.swipeLimitReached(viewed)) {
+      return SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(20, 16, 20, clearance),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Expanded(child: ZyraTabTitle('Profiles')),
+                  ZyraBrowseOptionsButton(
+                    profile: null,
+                    alignToContentEdge: true,
+                    onOpen: (_) => _openBrowseOptions(null),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              limitBar!,
+              const SizedBox(height: 14),
+              Expanded(
+                child: ZyraProfilesLimitCard(
+                  key: const ValueKey('lock48_profiles_refill'),
+                  refillTime: refillTime,
+                  onUpgrade: _bound(() => _open('one_upgrade')),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     final index = _browseSelectionIndex(people, seekerBasic: seekerBasic);
     if (index == null) {
       return SafeArea(
@@ -4041,11 +4236,20 @@ class _ZyraOneJourneyConceptShellState
         _model.canBrowse &&
         _browseHistory.currentId == displayed.id;
     // Record actual exposure after rendering, including filter selections.
-    // This bookkeeping never triggers a rebuild or changes the selection.
+    // Refresh the visible count without changing the current selection.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (current() && _seenBrowseProfileIds.add(displayed.id)) {
-        _publishCheckpoint();
+      if (!current()) return;
+      final newVisit = _seenBrowseProfileIds.add(displayed.id);
+      var recorded = false;
+      if (seekerBasic && _seekerMembership == 'Seeker Basic') {
+        final exposedAt = _previewNow;
+        if (!_profilesWindow.activeAt(exposedAt)) {
+          _profilesWindow = ZyraPreviewBrowseWindow(startedAt: exposedAt);
+        }
+        recorded = _profilesWindow.record(displayed.id, exposedAt);
+        if (recorded) setState(() {});
       }
+      if (newVisit || recorded) _publishCheckpoint();
     });
     return ZyraProfileVideoAccess(
       ownerId: displayed.id,
@@ -4072,6 +4276,8 @@ class _ZyraOneJourneyConceptShellState
         hapticLevel: _accountSession.hapticLevel,
         bottomPadding: ZyraNavBarMetrics.contentBottomClearance(context),
         fixedTabFooter: true,
+        headerAccessory: limitBar,
+        headerAccessoryHeight: limitBar?.heightFor(context) ?? 0,
         onFilters: _bound(() {
           _open('filters');
         }),
@@ -4163,6 +4369,19 @@ class _ZyraOneJourneyConceptShellState
         _personId == p.id &&
         !_model.isBlocked(p.id) &&
         !_developerSamples.isSampleProfileExcluded(p.id);
+    final owner = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final revision = _uiRevision;
+    bool presentBehindLimitSheet() =>
+        mounted &&
+        _waitingRequestsSheetRoute?.isCurrent == true &&
+        owner == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        revision == _uiRevision &&
+        !_guardianRole &&
+        _page == 'profile' &&
+        _personId == p.id &&
+        !_model.isBlocked(p.id) &&
+        !_developerSamples.isSampleProfileExcluded(p.id) &&
+        (widget.canActInOwnedDialog?.call() ?? _allowed);
     final state = _model.stateFor(p.id);
     final situation = _signupUnverified
         ? ZyraFullProfileSituation.unverified
@@ -4180,6 +4399,7 @@ class _ZyraOneJourneyConceptShellState
       situation: situation,
       photoBuilder: _memberBrowsePhoto,
       canAct: current,
+      canPresentBackdrop: presentBehindLimitSheet,
       initialPage: _browseGalleryIndices[p.id] ?? 0,
       onPageChanged: (index) {
         if (current()) _rememberGallery(p.id, index);
@@ -4615,6 +4835,7 @@ class _ZyraOneJourneyConceptShellState
       );
 
   Widget _requestActivity() {
+    final revision = _uiRevision;
     if (_hasDeveloperPreview &&
         (_developerSamples.receivedRows != null ||
             _developerSamples.sentRows != null ||
@@ -4622,13 +4843,22 @@ class _ZyraOneJourneyConceptShellState
       return ZyraDeveloperJourneyRequestsScreen(
         tabClearance: _quickAccessTabBar,
         initialTab: _requestsTab,
+        sentCount: _sentCount,
+        additionalSent: () => _draftPendingRestartCards(
+          () =>
+              _allowed &&
+              revision == _uiRevision &&
+              !_guardianRole &&
+              _tab == 2 &&
+              _page == 'requests' &&
+              _requestsTab == 1,
+        ),
         onTabChanged: (tab) {
           if (_allowed) _requestsTab = tab;
         },
         wrapTitle: (title) => ZyraDeveloperTitle(child: title),
       );
     }
-    final revision = _uiRevision;
     return ZyraRequestActivityPresentation(
       key: const ValueKey('concept_activity_requests'),
       wrapTitle: (title) => ZyraDeveloperTitle(child: title),
@@ -4678,6 +4908,7 @@ class _ZyraOneJourneyConceptShellState
         ? ZyraSampleIntroductionsList(
             tabClearance: _quickAccessTabBar,
             wrapTitle: (title) => ZyraDeveloperTitle(child: title),
+            admitRequest: _admitWaitingRequest,
           )
         : ZyraRequestActivityPresentation(
             key: const ValueKey('concept_activity_introductions'),
@@ -4837,6 +5068,46 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
+  List<Widget> _draftPendingRestartCards(bool Function() current) => [
+    for (final p in draftProfiles)
+      if (_model.restartExpiresAt(p.id) != null && !_model.isBlocked(p.id))
+        ZyraRequestActivityCard(
+          controller: _expansion,
+          profile: _displayProfile(p),
+          subtitle: 'Waiting for a response',
+          cardId: 'lock48_restart_${p.id}',
+          canInteract: current,
+          onToggle: _bound(() {
+            if (!current()) return;
+            final id = 'lock48_restart_${p.id}';
+            if (_expansion.value == id) {
+              _expansion.close(id);
+            } else {
+              _expansion.open(id);
+            }
+          }),
+          primary: _connectionAction(
+            'lock48_restart_profile_${p.id}',
+            'View profile',
+            Icons.visibility_outlined,
+            _bound(() {
+              if (current() && _model.restartExpiresAt(p.id) != null) {
+                _open('profile', person: p.id);
+              }
+            }),
+          ),
+          actions: [
+            ZyraOneJourneyConnectionsAction(
+              label: 'Cancel request',
+              icon: Icons.close,
+              onTap: _bound(() {
+                if (current()) _act(() => _model.cancelRestart(p.id));
+              }),
+            ),
+          ],
+        ),
+  ];
+
   List<Widget> _requests(int tab) {
     final revision = _uiRevision;
     final fresh = _accountFreshGuard();
@@ -4877,8 +5148,12 @@ class _ZyraOneJourneyConceptShellState
                       _model.waitingIsIncoming(p.id) == (tab == 0))),
         )
         .toList();
-    if (people.isEmpty) {
+    final restartCards = tab == 1
+        ? _draftPendingRestartCards(current)
+        : <Widget>[];
+    if (people.isEmpty && restartCards.isEmpty) {
       return [
+        if (tab == 1) _sentCount(),
         ZyraRequestActivityEmpty(
           icon: Icons.mail_outline_rounded,
           title: tab == 0
@@ -4891,6 +5166,8 @@ class _ZyraOneJourneyConceptShellState
       ];
     }
     return [
+      if (tab == 1) _sentCount(),
+      ...restartCards,
       for (final p in people)
         ZyraRequestActivityCard(
           profile: _displayProfile(p),
@@ -5645,6 +5922,7 @@ class _ZyraOneJourneyConceptShellState
           ZyraSampleEndedJourneyCard(
             row: row,
             controller: _expansion,
+            admitRestart: _admitWaitingRequest,
             onViewArchive: _bound(() {
               if (_allowed &&
                   _endedHistoryRoot &&
@@ -5891,7 +6169,13 @@ class _ZyraOneJourneyConceptShellState
           ? 'You can ask 24 hours after the Journey ends. The request lasts 30 days.'
           : 'Restart requests are not available in this preview.',
       onRequest: () {
-        if (!fresh() || !canSend || _seekerMembership != 'Seeker One') return;
+        if (!fresh() ||
+            !canSend ||
+            _seekerMembership != 'Seeker One' ||
+            !_canRequestEndedRestart(person.id) ||
+            !_model.canRequestEndedJourney(person.id)) {
+          return;
+        }
         if (_signupUnverified) {
           _tabTo(0);
           return;
@@ -5903,6 +6187,7 @@ class _ZyraOneJourneyConceptShellState
           );
           return;
         }
+        if (!_admitWaitingRequest(_tapContext)) return;
         _act(() {
           if (_model.requestEndedJourney(person.id)) {
             _notice =

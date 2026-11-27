@@ -30,6 +30,7 @@ class ZyraFullProfilePreview extends StatefulWidget {
     required this.situation,
     required this.photoBuilder,
     required this.canAct,
+    this.canPresentBackdrop,
     this.introductionByline,
     this.onAction,
     this.onSecondary,
@@ -43,6 +44,7 @@ class ZyraFullProfilePreview extends StatefulWidget {
   final ZyraFullProfileSituation situation;
   final ZyraBrowsePhotoBuilder photoBuilder;
   final bool Function() canAct;
+  final bool Function()? canPresentBackdrop;
   final String? introductionByline;
   final VoidCallback? onAction;
   final VoidCallback? onSecondary;
@@ -315,7 +317,7 @@ class _ZyraFullProfilePreviewState extends State<ZyraFullProfilePreview> {
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.canAct()) {
+    if (!widget.canAct() && widget.canPresentBackdrop?.call() != true) {
       return const SizedBox.expand(key: ValueKey('full_profile_unavailable'));
     }
     if (_page > widget.profile.photos.length) _page = 0;

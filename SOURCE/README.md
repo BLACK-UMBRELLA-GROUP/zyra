@@ -283,6 +283,32 @@ and write opt-in evidence under `build/line145/`; ordinary tests leave BUILT
 screenshots untouched. These corrections remain local Founder preview behavior.
 The g11/g12 goldens follow Q214, with matching SOURCE and SYSTEM manifest rows.
 
+## Founder preview Journey request and profile limits
+
+LOCK 48 shares one limit across Profiles, full profiles, Introductions and
+restart requests. Seeker Basic can have five sent requests waiting, and Seeker
+One can have twenty. The Sent tab shows the count. Incoming requests have no
+cap. Cancellation, acceptance and expiry return a waiting spot. The older
+member-app Consider fixtures do not set the Founder preview limit.
+
+Seeker Basic Profiles shows its 25-profile allowance in a four-hour window
+starting with the first view. It counts distinct profiles in that window and
+shows the refill time. Seeker One does not have the count bar. These are
+detached preview rules only. There is no server enforcement in this change.
+
+LOCK 14 V9 / Q241 uses the stronger secondary ink for the purchase disclosure
+paragraph reached through the Basic comparison route, for either current role.
+Other purchase presenters retain their existing disclosure defaults.
+
+The locked threshold states can be captured without adding any sample people:
+
+```sh
+node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LINE146_CAPTURE=true test/line146_limits_test.dart test/visual/line146_limits_capture_test.dart
+```
+
+The fixture seeds the count inside its own shell. It is never passed by the
+running app. The test outputs go to `build/line146/`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,
