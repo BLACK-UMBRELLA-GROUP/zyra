@@ -108,7 +108,12 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
       Text(
         copyFor(offer, familyMonthlyPence: familyMonthlyPence),
         textAlign: TextAlign.center,
-        style: ZyraText.body(size: 11.5, color: const Color(0xFF6E6257)),
+        style: ZyraText.body(
+          size: 11.5,
+          color: offer == ZyraPurchaseOffer.compatibilityUnlocks
+              ? const Color(0xFF4F443A)
+              : const Color(0xFF6E6257),
+        ),
       ),
       const SizedBox(height: 4),
       Wrap(

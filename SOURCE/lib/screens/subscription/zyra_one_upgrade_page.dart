@@ -183,7 +183,10 @@ class ZyraOneUpgradePage extends StatelessWidget {
               : founderPreview
               ? 'You keep everything you have now.'
               : 'You keep everything you have now. Cancel any time in Apple settings.',
-          style: ZyraText.subtext(size: 12, color: ZyraColors.secondaryText),
+          style: ZyraText.subtext(
+            size: 12,
+            color: guardian ? ZyraColors.strongSecondaryText : ZyraColors.secondaryText,
+          ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),

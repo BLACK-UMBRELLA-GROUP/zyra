@@ -288,8 +288,13 @@ class _ZyraFullProfilePreviewState extends State<ZyraFullProfilePreview> {
               },
         style: OutlinedButton.styleFrom(
           backgroundColor: primary
-              ? ZyraColors.journeyGold
+              ? label == 'Request a Journey'
+                    ? ZyraColors.goldTextFill
+                    : ZyraColors.journeyGold
               : ZyraColors.ivoryTop,
+          shadowColor: label == 'Request a Journey'
+              ? ZyraColors.goldTextFill
+              : null,
           foregroundColor: ZyraColors.espresso,
           side: BorderSide(
             color: primary

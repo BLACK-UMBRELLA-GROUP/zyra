@@ -191,8 +191,7 @@ class _ZyraGuardianBeforePayPreviewState
                           foregroundColor: ZyraColors.espresso,
                           disabledBackgroundColor: ZyraColors.goldTextFill
                               .withValues(alpha: .45),
-                          disabledForegroundColor: ZyraColors.espresso
-                              .withValues(alpha: .45),
+                          disabledForegroundColor: ZyraColors.strongSecondaryText,
                           minimumSize: const Size.fromHeight(50),
                           shape: const StadiumBorder(),
                         ),

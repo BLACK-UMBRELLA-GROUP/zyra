@@ -404,7 +404,7 @@ class _ZyraHelpSafetyPreviewState extends State<ZyraHelpSafetyPreview> {
     ZyraHelpSafetyScreen.contactSent => _mainButton('Done', widget.onDone),
     ZyraHelpSafetyScreen.reportSent => Column(
       children: [
-        _mainButton('Done', widget.onReportDone),
+        _mainButton('Done', widget.onReportDone, goldFill: true),
         const SizedBox(height: 5),
         TextButton(
           key: const ValueKey('help_report_block_too'),
@@ -670,12 +670,16 @@ class _ZyraHelpSafetyPreviewState extends State<ZyraHelpSafetyPreview> {
     String text,
     VoidCallback? onTap, {
     Key? key,
+    bool goldFill = false,
   }) => FilledButton(
     key: key ?? ValueKey('help_action_$text'),
     onPressed: onTap == null ? null : ZyraTapFeedback.onTap(context, onTap),
     style: FilledButton.styleFrom(
       minimumSize: const Size.fromHeight(52),
-      backgroundColor: ZyraColors.journeyGold,
+      backgroundColor: goldFill
+          ? ZyraColors.goldTextFill
+          : ZyraColors.journeyGold,
+      shadowColor: goldFill ? ZyraColors.goldTextFill : null,
       foregroundColor: ZyraColors.espresso,
       disabledBackgroundColor: ZyraColors.journeyGold.withValues(alpha: .46),
       disabledForegroundColor: ZyraColors.secondaryText,
