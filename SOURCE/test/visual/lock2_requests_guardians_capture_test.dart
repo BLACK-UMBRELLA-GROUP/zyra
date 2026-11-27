@@ -312,28 +312,30 @@ void main() {
         1,
       );
       await h.tapFinder(_guardianAction('guardian-make-main'));
-      await h.tapFinder(
-        find.byKey(ValueKey('guardian-make-main-confirmation-approve')),
-      );
-      h.assertPage('guardian_main_notice');
-      expect(h.latest.mainGuardianId, _yusuf);
-      expect(h.latest.pendingMainGuardianNoticeId, _yusuf);
       expect(find.text('Yusuf will be your Main Guardian'), findsOneWidget);
       expect(
         find.text(
-          "Yusuf is part of every Journey you begin. Yusuf will also see your Journey requests — the ones you send and the ones you receive — and who each is with. Yusuf sees that person's profile as anyone browsing would. Nothing more.",
+          'Yusuf is part of every Journey you begin. Yusuf will also see your '
+          'Journey requests (the ones you send and the ones you receive) and '
+          'who each is with. Yusuf sees that person’s profile as anyone '
+          'browsing would. Nothing more.',
         ),
         findsOneWidget,
       );
+      expect(h.latest.mainGuardianId, 'draft-guardian-hassan');
       await h.capture(
         'guardians',
         'guardian_main',
-        'first_main_message',
-        'Actual existing Yusuf Make Main and Confirm controls from the Guardian tab; no invented link event; actual centered shared gold-ring initial',
+        'make_main_sheet',
+        'LOCK46 shared Make Main sheet before the existing phone check.',
       );
-      await h.tap('concept_main_guardian_continue');
+      await h.tapFinder(
+        find.byKey(const ValueKey('guardian-make-main-confirmation-approve')),
+      );
+      expect(h.latest.pages, isEmpty);
       expect(h.latest.pendingMainGuardianNoticeId, isNull);
       expect(h.latest.mainGuardianId, _yusuf);
+      expect(find.text('Yusuf is now your Main Guardian.'), findsOneWidget);
       expect(
         find.byKey(const ValueKey('concept_main_guardian_notice')),
         findsNothing,

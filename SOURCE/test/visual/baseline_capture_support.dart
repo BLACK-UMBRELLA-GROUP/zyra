@@ -15,6 +15,7 @@ import 'package:zyra/dev/zyra_guardian_circle_preview.dart';
 import 'package:zyra/main.dart' show ZyraApp;
 import 'package:zyra/dev/zyra_membership_preview.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
+import 'package:zyra/models/zyra_developer_preview.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
@@ -961,6 +962,7 @@ class BaselineHarness {
     DateTime Function()? previewClock,
     List<String>? seekerPhotos,
     Future<bool> Function()? confirmSensitiveAction,
+    ZyraProfileSmallPageSample? profileSmallPageSample,
     Map<ZyraWalletRole, ZyraMembershipPreviewRecord?>? membershipRecords,
     List<NavigatorObserver> navigatorObservers = const [],
   }) async {
@@ -977,6 +979,7 @@ class BaselineHarness {
       circleArrivalsFor: circleArrivalsFor,
       seekerPhotos: seekerPhotos,
       confirmSensitiveAction: confirmSensitiveAction,
+      profileSmallPageSample: profileSmallPageSample,
       membershipRecords: membershipRecords,
     );
     final capacity = initialSeekerBasic ? 1 : 3;

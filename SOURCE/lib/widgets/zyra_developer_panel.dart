@@ -284,6 +284,15 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
           onChanged: (value) => _previewAction(() => actions.onNotice(value)),
         ),
       ],
+      if (actions.onProfileSmallPage case final openSample?) ...[
+        const _SectionLabel('PROFILE PAGES'),
+        for (final sample in ZyraProfileSmallPageSample.values)
+          _DeveloperAction(
+            id: 'profile_small_page_${sample.name}',
+            label: sample.label,
+            onPressed: () => _previewAction(() => openSample(sample)),
+          ),
+      ],
       const _SectionLabel('ERROR PAGES'),
       for (final error in const [
         (label: 'Phone offline', kind: ZyraErrorKind.offline),

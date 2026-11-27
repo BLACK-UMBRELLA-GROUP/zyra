@@ -212,7 +212,7 @@ Future<void> _makeMain(WidgetTester tester) async {
     tester,
     find.byKey(ValueKey('guardian-make-main-confirmation-approve')),
   );
-  await _press(tester, _key('concept_main_guardian_continue'));
+  expect(_key('concept_main_guardian_notice'), findsNothing);
 }
 
 Future<void> _capture(WidgetTester tester, String name) async {

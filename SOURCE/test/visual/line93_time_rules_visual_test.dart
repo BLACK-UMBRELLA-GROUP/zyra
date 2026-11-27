@@ -104,13 +104,10 @@ void main() {
       expect(h.key('draft_journey_options_$_peer'), findsNothing);
       await capture('archive_menu');
       await h.tapFinder(find.text('Request a new Journey'));
-      expect(find.textContaining('The request lasts 30 days.'), findsOneWidget);
+      expect(find.text('Request restart'), findsWidgets);
       await capture('restart_request');
       await h.tap('draft_restart_send_$_peer');
-      expect(
-        find.textContaining('Request sent. It expires on'),
-        findsOneWidget,
-      );
+      expect(find.text('Request sent'), findsOneWidget);
       await returnZyraPreviewPage(tester);
       if (find.text('Remove from my Journeys').evaluate().isEmpty) {
         await h.tap('draft_journey_${_peer}_header');

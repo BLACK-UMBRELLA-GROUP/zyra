@@ -197,7 +197,8 @@ class _OwnerSurfaces {
   Future<void> switchRole({required bool guardian}) async {
     await tab(4);
     await h.tap('switch-account-button');
-    await h.tap(guardian ? 'wallet_primary_guardian' : 'wallet_primary_seeker');
+    h.assertPage('switch_account_signup');
+    await h.tap('small_pages_switch_role');
     expect(h.latest.guardian, guardian);
   }
 

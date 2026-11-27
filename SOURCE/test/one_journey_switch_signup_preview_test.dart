@@ -9,9 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
+import 'package:zyra/dev/zyra_profile_small_pages_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_switch_signup_preview.dart';
-import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
+import 'package:zyra/dev/zyra_signup_preview.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
@@ -90,6 +91,17 @@ Future<void> _tap(WidgetTester tester, String key) async {
   }
   expect(target.hitTestable(), findsOneWidget);
   await tester.tap(target);
+  await tester.pumpAndSettle();
+  expect(tester.takeException(), isNull);
+}
+
+Future<void> _tapReadySwitch(WidgetTester tester, String role) async {
+  final action = find.text('Switch to $role');
+  expect(action, findsOneWidget);
+  await Scrollable.ensureVisible(tester.element(action), alignment: .5);
+  await tester.pumpAndSettle();
+  expect(action.hitTestable(), findsOneWidget);
+  await tester.tap(action);
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
 }
@@ -392,24 +404,23 @@ void main() {
         final owner = _Owner();
         await owner.mount(tester, guardian: guardian);
         final before = _modelFacts(owner.latest);
-        final target = guardian
-            ? ZyraWalletRole.seeker
-            : ZyraWalletRole.guardian;
         await _missing(tester);
         await _tap(tester, 'switch-account-button');
-        expect(_key('wallet_switch_scroll'), findsOneWidget);
-        expect(find.textContaining('without buying it again'), findsOneWidget);
+        final page = tester.widget<ZyraSwitchProfilePreview>(
+          find.byType(ZyraSwitchProfilePreview),
+        );
+        expect(page.otherRoleMissing, isTrue);
         expect(owner.latest.pages, ['switch_account_signup']);
-        await _tap(tester, 'wallet_primary_${target.name}');
-        expect(_key('concept_switch_setup'), findsOneWidget);
-        expect(owner.latest.pages, [
-          'switch_account_signup',
-          'switch_account_setup',
-        ]);
+        await _tap(tester, 'small_pages_add_role');
+        final signup = tester.widget<ZyraSignupPreview>(
+          find.byType(ZyraSignupPreview),
+        );
+        expect(signup.controller.guardian, !guardian);
+        expect(find.byType(ZyraMembershipChoices), findsNothing);
+        expect(owner.latest.pages, ['switch_account_signup', 'signup']);
         await returnZyraPreviewPage(tester);
-        expect(_key('wallet_switch_scroll'), findsOneWidget);
-        await _tap(tester, 'wallet_primary_${target.name}');
-        await _tap(tester, 'concept_switch_return_profile');
+        expect(find.byType(ZyraSwitchProfilePreview), findsOneWidget);
+        await returnZyraPreviewPage(tester);
         expect(find.byType(ZyraConceptProfilePresentation), findsOneWidget);
         expect(owner.latest.pages, isEmpty);
         expect(owner.latest.guardian, guardian);
@@ -420,17 +431,18 @@ void main() {
   }
 
   testWidgets(
-    'ready covered Switch previews coverage then switches once, without buying',
+    'ready covered Switch switches once without buying and shows its toast',
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester);
       await _tap(tester, 'switch-account-button');
       expect(owner.roleChanges, isEmpty);
-      expect(_key('wallet_switch_scroll'), findsOneWidget);
-      await _tap(tester, 'wallet_primary_guardian');
+      expect(find.byType(ZyraSwitchProfilePreview), findsOneWidget);
+      await _tapReadySwitch(tester, 'Guardian');
       expect(owner.roleChanges, [true]);
       expect(owner.latest.guardian, isTrue);
       expect(owner.latest.pages, isEmpty);
+      expect(find.text('Switched.'), findsOneWidget);
       await openZyraDevControls(tester);
       expect(_key('concept_switch_ready'), findsNothing);
       await closeZyraDevControls(tester);
@@ -440,66 +452,88 @@ void main() {
       await _tap(tester, 'draft_reset');
       await _nav(tester, 'Profile');
       await _tap(tester, 'switch-account-button');
-      await _tap(tester, 'wallet_primary_guardian');
+      await _tapReadySwitch(tester, 'Guardian');
       expect(owner.roleChanges, [true, false, true]);
     },
   );
 
   testWidgets(
-    'saved Switch, wallet and setup callbacks fail under controls, route changes and revocation',
+    'ready Switch callbacks cannot revive after controls, role change or revocation',
+    (tester) async {
+      final owner = _Owner();
+      await owner.mount(tester);
+      await _tap(tester, 'switch-account-button');
+      final first = tester.widget<ZyraSwitchProfilePreview>(
+        find.byType(ZyraSwitchProfilePreview),
+      );
+      await openZyraDevControls(tester);
+      first.onSwitch();
+      await tester.pumpAndSettle();
+      expect(owner.roleChanges, isEmpty);
+      await closeZyraDevControls(tester);
+      first.onSwitch();
+      await tester.pumpAndSettle();
+      expect(owner.roleChanges, isEmpty);
+      await _tapReadySwitch(tester, 'Guardian');
+      expect(owner.roleChanges, [true]);
+      first.onSwitch();
+      await tester.pumpAndSettle();
+      expect(owner.roleChanges, [true]);
+      await _nav(tester, 'Profile');
+      await _tap(tester, 'switch-account-button');
+      final denied = tester.widget<ZyraSwitchProfilePreview>(
+        find.byType(ZyraSwitchProfilePreview),
+      );
+      final before = owner.latest;
+      owner.allowed = false;
+      denied.onSwitch();
+      await tester.pump();
+      expect(owner.latest, same(before));
+      expect(owner.roleChanges, [true]);
+    },
+  );
+
+  testWidgets(
+    'saved one-role actions fail under controls, route changes and revocation',
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester);
       await _missing(tester);
-      final switchAction = tester
+      final profileAction = tester
           .widget<ZyraConceptProfilePresentation>(
             find.byType(ZyraConceptProfilePresentation),
           )
           .onSwitchRole;
       await openZyraDevControls(tester);
-      switchAction();
+      profileAction();
       await tester.pumpAndSettle();
       expect(owner.latest.pages, isEmpty);
       await closeZyraDevControls(tester);
       await _tap(tester, 'switch-account-button');
-      final first = tester.widget<ZyraSubscriptionSwitchPreview>(
-        find.byType(ZyraSubscriptionSwitchPreview),
+      final first = tester.widget<ZyraSwitchProfilePreview>(
+        find.byType(ZyraSwitchProfilePreview),
       );
       await openZyraDevControls(tester);
-      first.onSetup(ZyraWalletRole.guardian);
-      first.onSwitch(ZyraWalletRole.guardian);
-      first.onBack?.call();
+      first.onSwitch();
       await tester.pumpAndSettle();
       expect(owner.latest.pages, ['switch_account_signup']);
       await closeZyraDevControls(tester);
-      await _tap(tester, 'wallet_primary_guardian');
-      final overview = tester.widget<ZyraSwitchSignupPreview>(
-        find.byType(ZyraSwitchSignupPreview),
-      );
-      first.onSetup(ZyraWalletRole.guardian);
-      first.onBack?.call();
-      switchAction();
+      first.onSwitch();
       await tester.pumpAndSettle();
-      expect(owner.latest.pages, [
-        'switch_account_signup',
-        'switch_account_setup',
-      ]);
-      await _tap(tester, 'concept_switch_return_profile');
-      overview.onReturnToProfile();
-      first.onSwitch(ZyraWalletRole.guardian);
+      expect(owner.latest.pages, ['switch_account_signup']);
+      await _tap(tester, 'small_pages_add_role');
+      first.onSwitch();
+      profileAction();
       await tester.pumpAndSettle();
-      expect(owner.latest.pages, isEmpty);
+      expect(owner.latest.pages, ['switch_account_signup', 'signup']);
       expect(owner.roleChanges, isEmpty);
-      await _tap(tester, 'switch-account-button');
-      final denied = tester.widget<ZyraSubscriptionSwitchPreview>(
-        find.byType(ZyraSubscriptionSwitchPreview),
+      await returnZyraPreviewPage(tester);
+      final denied = tester.widget<ZyraSwitchProfilePreview>(
+        find.byType(ZyraSwitchProfilePreview),
       );
       final checkpointCount = owner.checkpoints.length;
       owner.allowed = false;
-      denied.onSetup(ZyraWalletRole.guardian);
-      denied.onMembership(ZyraWalletRole.guardian);
-      denied.onSwitch(ZyraWalletRole.guardian);
-      denied.onBack?.call();
+      denied.onSwitch();
       await tester.pump();
       expect(owner.checkpoints.length, checkpointCount);
       expect(owner.roleChanges, isEmpty);
@@ -507,38 +541,19 @@ void main() {
   );
 
   testWidgets(
-    'Profile subscriptions stay local and old callbacks cannot revive after controls close',
+    'Profile places is read-only and cannot change role, membership or model',
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester);
-      final modelBefore = _modelFacts(owner.latest);
+      final before = _modelFacts(owner.latest);
       await _tap(tester, 'concept_subscriptions');
-      final wallet = tester.widget<ZyraSubscriptionWalletPreview>(
-        find.byType(ZyraSubscriptionWalletPreview),
-      );
-      final draft = wallet.draft;
+      expect(find.byType(ZyraSeekerPlacesPreview), findsOneWidget);
+      expect(find.byType(ZyraSubscriptionWalletPreview), findsNothing);
       await openZyraDevControls(tester);
       await closeZyraDevControls(tester);
-      wallet.onChanged(
-        draft.withRole(
-          ZyraWalletRole.guardian,
-          coverage: ZyraWalletCoverage.none,
-        ),
-      );
-      wallet.onSwitch(ZyraWalletRole.guardian);
-      wallet.onBack?.call();
-      await tester.pumpAndSettle();
       expect(owner.latest.pages, ['subscriptions']);
       expect(owner.roleChanges, isEmpty);
-      expect(
-        tester
-            .widget<ZyraSubscriptionWalletPreview>(
-              find.byType(ZyraSubscriptionWalletPreview),
-            )
-            .draft,
-        same(draft),
-      );
-      expect(_modelFacts(owner.latest), modelBefore);
+      expect(_modelFacts(owner.latest), before);
       await returnZyraPreviewPage(tester);
       expect(find.byType(ZyraConceptProfilePresentation), findsOneWidget);
     },
@@ -553,8 +568,8 @@ void main() {
       await _tap(tester, 'concept_wallet_coverage_basic');
       await closeZyraDevControls(tester);
       await _tap(tester, 'switch-account-button');
-      expect(find.text('Guardian Basic'), findsOneWidget);
-      await _tap(tester, 'wallet_primary_guardian');
+      expect(find.textContaining('Guardian Basic'), findsOneWidget);
+      await _tapReadySwitch(tester, 'Guardian');
       await _nav(tester, 'Profile');
       expect(
         tester
@@ -605,8 +620,8 @@ void main() {
       expect(owner.roleChanges, isEmpty);
       await _tap(tester, 'wallet_confirm');
       expect(owner.latest.pages, ['switch_account_signup']);
-      expect(find.text('Guardian One · ZYRA Family'), findsOneWidget);
-      await _tap(tester, 'wallet_primary_guardian');
+      expect(find.textContaining('Guardian One'), findsOneWidget);
+      await _tapReadySwitch(tester, 'Guardian');
       expect(owner.roleChanges, [true]);
       expect(owner.latest.guardianMembership, 'Guardian One');
     },

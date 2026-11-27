@@ -555,7 +555,7 @@ void main() {
       await _press(tester, _key('draft_ended_restart_$_sara'));
       expect(_key('draft_ended_restart_$_sara'), findsOneWidget);
       final send = _key('draft_restart_send_$_sara');
-      expect(tester.widget<OutlinedButton>(send).onPressed, isNull);
+      expect(tester.widget<ButtonStyleButton>(send).onPressed, isNull);
       expect(find.textContaining('The request lasts 30 days.'), findsOneWidget);
       _expectSameModel(current, before);
       await returnZyraPreviewPage(tester);
@@ -895,7 +895,7 @@ void main() {
     await _press(tester, _key('draft_ended_restart_$_sara'));
     expect(
       tester
-          .widget<OutlinedButton>(_key('draft_restart_send_$_sara'))
+          .widget<ButtonStyleButton>(_key('draft_restart_send_$_sara'))
           .onPressed,
       isNotNull,
     );
@@ -1079,7 +1079,18 @@ void main() {
       await _press(tester, _key('draft_journey_${_sara}_header'));
       await _capture(tester, 'ended_open_layout_${viewport.suffix}');
       await _press(tester, _key('draft_ended_restart_$_sara'));
-      expect(_key('draft_restart_send_$_sara'), findsOneWidget);
+      final restartAction = _key('draft_restart_send_$_sara');
+      if (restartAction.evaluate().isEmpty) {
+        await tester.scrollUntilVisible(
+          restartAction,
+          150,
+          scrollable: find.descendant(
+            of: _key('small_pages_restart_scroll'),
+            matching: find.byType(Scrollable),
+          ),
+        );
+      }
+      expect(restartAction, findsOneWidget);
       await returnZyraPreviewPage(tester);
       await _openArchive(tester);
       await _capture(tester, 'ended_archive_layout_${viewport.suffix}');

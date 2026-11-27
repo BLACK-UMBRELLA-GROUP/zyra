@@ -2827,7 +2827,7 @@ void main() {
       expect(_key('guardian-make-main'), findsOneWidget);
       await press('guardian-make-main');
       await press('guardian-make-main-confirmation-approve');
-      await press('concept_main_guardian_continue');
+      expect(_key('concept_main_guardian_notice'), findsNothing);
       await press('guardian-card-menu');
       await press('guardian-remove');
       await press('guardian-remove-confirmation-approve');

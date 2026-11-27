@@ -14,6 +14,7 @@ import 'package:zyra/dev/zyra_membership_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
+import 'package:zyra/models/zyra_developer_preview.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
@@ -35,6 +36,7 @@ class ZyraShellTestFixture extends ChangeNotifier {
     ZyraCirclePreviewArrivals? circleArrivalsFor,
     List<String>? seekerPhotos,
     Future<bool> Function()? confirmSensitiveAction,
+    ZyraProfileSmallPageSample? profileSmallPageSample,
     Map<ZyraWalletRole, ZyraMembershipPreviewRecord?>? membershipRecords,
     ZyraMembershipPaymentHistory membershipPaymentHistory =
         ZyraMembershipPaymentHistory.paidBefore,
@@ -59,6 +61,7 @@ class ZyraShellTestFixture extends ChangeNotifier {
       circleArrivalsFor: circleArrivalsFor,
       seekerPhotos: seekerPhotos,
       confirmSensitiveAction: confirmSensitiveAction,
+      profileSmallPageSample: profileSmallPageSample,
       membershipRecords: membershipRecords,
       guardianTabs: guardianTabs,
       readState: _consumeState,
@@ -609,18 +612,25 @@ Future<bool> pressZyraDevControlKey(WidgetTester tester, String key) async {
           .evaluate()
           .isNotEmpty) {
     if (!fixture.current) return true;
+    final desiredGuardian = key == 'draft_role_guardian';
+    if ((fixture.latest?.guardian ?? fixture.guardianRole) == desiredGuardian) {
+      return true;
+    }
     final button = find.byKey(const ValueKey('switch-account-button'));
     await Scrollable.ensureVisible(tester.element(button), alignment: .5);
     await tester.pumpAndSettle();
     await tester.tap(button);
     await tester.pumpAndSettle();
     final role = key == 'draft_role_guardian' ? 'guardian' : 'seeker';
-    final confirm = find.byKey(ValueKey('wallet_primary_$role'));
+    final readySwitch = find.byKey(const ValueKey('small_pages_switch_role'));
+    final confirm = readySwitch.evaluate().isNotEmpty
+        ? readySwitch
+        : find.byKey(ValueKey('wallet_primary_$role'));
     await Scrollable.ensureVisible(tester.element(confirm), alignment: .5);
     await tester.pumpAndSettle();
     await tester.tap(confirm);
     await tester.pumpAndSettle();
-    fixture.guardianRole = role == 'guardian';
+    fixture.guardianRole = desiredGuardian;
     expect(tester.takeException(), isNull);
     return true;
   }

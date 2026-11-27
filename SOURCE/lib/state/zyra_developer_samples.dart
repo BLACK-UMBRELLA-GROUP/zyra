@@ -146,6 +146,8 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   int? _viewedSeekerPlaces;
   bool _unverified = false, _setupUnfinished = false;
   ZyraDeveloperPreset? _preset;
+  ZyraProfileSmallPageSample? _profileSmallPage;
+  int _profileSmallPageEpoch = 0;
   int _notice = 0;
   String? _selectedJourneyId;
   var _realEnded = 0;
@@ -241,6 +243,9 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   bool get unverified => isAuthorized && _unverified;
   bool get setupUnfinished => isAuthorized && _setupUnfinished;
   ZyraDeveloperPreset? get preset => isAuthorized ? _preset : null;
+  ZyraProfileSmallPageSample? get profileSmallPage =>
+      isAuthorized ? _profileSmallPage : null;
+  int get profileSmallPageEpoch => _profileSmallPageEpoch;
   int get notice => isAuthorized ? _notice : 0;
   String? get selectedJourneyId =>
       isAuthorized &&
@@ -457,7 +462,12 @@ class ZyraDeveloperSamples extends ChangeNotifier {
 
   /// Changes only this verified lifetime's local preview plan.
   void setViewAs(ZyraDeveloperViewAs value) {
-    if (!isAuthorized || _viewAs == value) return;
+    if (!isAuthorized) return;
+    if (_viewAs == value) {
+      clearProfileSmallPage();
+      return;
+    }
+    _profileSmallPage = null;
     final previousPlaces = capacity;
     _viewAs = value;
     if (value.guardian) {
@@ -494,6 +504,24 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   void setSetupUnfinished(bool value) {
     if (!isAuthorized || _setupUnfinished == value) return;
     _setupUnfinished = value;
+    _changed();
+  }
+
+  void setProfileSmallPage(ZyraProfileSmallPageSample value) {
+    if (!isAuthorized) return;
+    setViewAs(
+      value == ZyraProfileSmallPageSample.seekerOnly
+          ? ZyraDeveloperViewAs.seekerOne
+          : ZyraDeveloperViewAs.guardianOne,
+    );
+    _profileSmallPage = value;
+    ++_profileSmallPageEpoch;
+    _changed();
+  }
+
+  void clearProfileSmallPage() {
+    if (!isAuthorized || _profileSmallPage == null) return;
+    _profileSmallPage = null;
     _changed();
   }
 
@@ -585,6 +613,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _unverified = false;
     _setupUnfinished = false;
     _preset = null;
+    _profileSmallPage = null;
     _notice = 0;
     _selectedJourneyId = null;
   }

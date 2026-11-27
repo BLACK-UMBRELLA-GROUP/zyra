@@ -800,7 +800,17 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
       };
       void Function(T) preview<T>(void Function(T) action) =>
           allowed<T>((value) {
-            if (_activatePreview()) action(value);
+            if (_activatePreview()) {
+              if (owner case final scope?) {
+                scope._bridge._dispatchSelection(() {
+                  _samples.clearProfileSmallPage();
+                  action(value);
+                });
+              } else {
+                _samples.clearProfileSmallPage();
+                action(value);
+              }
+            }
           });
 
       route = zyraDeveloperPanelRoute(
@@ -815,6 +825,7 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
           onViewAs: allowed(_samples.setViewAs),
           onStartSignup: () {
             if (currentSheet() && _activatePreview() && owner != null) {
+              _samples.clearProfileSmallPage();
               unawaited(_startSignupPreview(route, owner));
             }
           },
@@ -843,7 +854,17 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
           }),
           onPreset: allowed((ZyraDeveloperPreset value) {
             if (_activatePreview()) {
-              owner?._bridge._requestPreset(() => _samples.setPreset(value));
+              owner?._bridge._requestPreset(() {
+                _samples.clearProfileSmallPage();
+                _samples.setPreset(value);
+              });
+            }
+          }),
+          onProfileSmallPage: allowed((ZyraProfileSmallPageSample value) {
+            if (owner case final scope?) {
+              scope._bridge._dispatchSelection(
+                () => _samples.setProfileSmallPage(value),
+              );
             }
           }),
           onNotice: preview((int value) {
@@ -853,6 +874,7 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
           }),
           onError: allowed((kind) {
             if (owner != null) {
+              _samples.clearProfileSmallPage();
               unawaited(_showPreviewError(kind, route, owner));
             }
           }),

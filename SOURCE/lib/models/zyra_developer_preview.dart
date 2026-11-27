@@ -20,6 +20,15 @@ enum ZyraDeveloperViewAs {
   final int places;
 }
 
+enum ZyraProfileSmallPageSample {
+  seekerOnly('Switch profile · Seeker only'),
+  guardianOnly('Switch profile · Guardian only'),
+  guardianNoSeekers('Your places · no Seekers yet');
+
+  const ZyraProfileSmallPageSample(this.label);
+  final String label;
+}
+
 enum ZyraDeveloperPreset {
   allCaughtUp('All caught up'),
   typicalDay('Typical day'),
@@ -71,6 +80,7 @@ class ZyraDeveloperPreviewActions {
     required this.onJourney,
     required this.onStage,
     required this.onPreset,
+    this.onProfileSmallPage,
     required this.onNotice,
     required this.onError,
   });
@@ -80,6 +90,7 @@ class ZyraDeveloperPreviewActions {
   final ValueChanged<bool> onUnverified, onSetupUnfinished;
   final ValueChanged<String> onJourney, onStage;
   final ValueChanged<ZyraDeveloperPreset> onPreset;
+  final ValueChanged<ZyraProfileSmallPageSample>? onProfileSmallPage;
   final ValueChanged<int> onNotice;
   final ValueChanged<ZyraErrorKind> onError;
 }

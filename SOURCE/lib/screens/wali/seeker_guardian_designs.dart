@@ -1111,9 +1111,17 @@ Future<bool?> showZyraGuardianManagementConfirm({
   bool Function()? canConfirm,
   void Function(ModalRoute<bool> route)? onOpening,
   VoidCallback? onConfirmedPop,
+  bool founderMakeMain = false,
 }) {
   final name = person.firstName;
   final (title, body, confirm, keep, key) = switch (action) {
+    ZyraGuardianManagementAction.makeMain when founderMakeMain => (
+      '$name will be your Main Guardian',
+      '$name is part of every Journey you begin. $name will also see your Journey requests (the ones you send and the ones you receive) and who each is with. $name sees that person’s profile as anyone browsing would. Nothing more.',
+      'Make $name Main',
+      'Cancel',
+      'guardian-make-main-confirmation',
+    ),
     ZyraGuardianManagementAction.makeMain => (
       'Make $name your Main Guardian?',
       '$name will become your Main Guardian for your Journeys.',
@@ -1143,6 +1151,7 @@ Future<bool?> showZyraGuardianManagementConfirm({
     primaryLabel: confirm,
     secondaryLabel: keep,
     personName: name,
+    goldPrimary: founderMakeMain && action == ZyraGuardianManagementAction.makeMain,
     sheetKey: ValueKey(key),
     primaryKey: ValueKey('$key-approve'),
     secondaryKey: ValueKey('$key-keep'),

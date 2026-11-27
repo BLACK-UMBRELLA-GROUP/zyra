@@ -376,7 +376,7 @@ void main() {
     _rootProfile(tester);
   });
 
-  _case('Review then Membership Back restores wallet and Profile parents', (
+  _case('Review then Membership Back restores Switch and Profile parents', (
     tester,
   ) async {
     await _mount(tester);
@@ -385,8 +385,7 @@ void main() {
     expect(fixture.setOtherCoverage(ZyraWalletCoverage.none), isTrue);
     expect(fixture.setOtherReadiness(ZyraWalletReadiness.ready), isTrue);
     await tester.pumpAndSettle();
-    await _tap(tester, 'concept_subscriptions');
-    await _tap(tester, 'wallet_profiles_dot_target_1');
+    await _tap(tester, 'switch-account-button');
     await _tap(tester, 'wallet_primary_guardian');
     expect(find.byType(ZyraConceptMembershipPresentation), findsOneWidget);
     _oneMemberBack();
@@ -400,7 +399,7 @@ void main() {
     expect(find.byType(ZyraConceptMembershipPresentation), findsOneWidget);
     expect(_key('concept_account_action_scroll'), findsNothing);
     await _returnHeader(tester);
-    expect(_key('wallet_title'), findsOneWidget);
+    expect(_key('wallet_switch_scroll'), findsOneWidget);
     _oneMemberBack();
     await _returnHeader(tester);
     _rootProfile(tester);

@@ -17,7 +17,9 @@ import 'package:flutter/services.dart'
         SystemUiOverlayStyle,
         MissingPluginException,
         PlatformException,
-        rootBundle;
+        rootBundle,
+        Clipboard,
+        ClipboardData;
 
 import '../data/zyra_journey_stages.dart';
 import '../data/zyra_journey_guardian_selection.dart';
@@ -34,7 +36,6 @@ import '../services/zyra_local_prefs.dart';
 import '../services/zyra_profile_video_service.dart';
 import '../services/zyra_guardian_info_service.dart' show GuardianInfo;
 import '../screens/wali/family_messaging_screens.dart';
-import '../screens/wali/seeker_guardian_designs.dart';
 import '../screens/wali/link_guardian_panel.dart';
 import '../screens/wali/zyra_code_screen.dart' show ZyraCodeLocalPreview;
 import '../screens/settings/help_support_screen.dart';
@@ -101,6 +102,7 @@ import 'zyra_draft_compatibility_score_designs.dart';
 import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
 import 'zyra_help_safety_preview.dart';
+import 'zyra_profile_small_pages_preview.dart';
 import 'zyra_privacy_security_preview.dart';
 import 'zyra_email_settings_preview.dart';
 import 'zyra_draft_safety_advice_presentation.dart';
@@ -181,6 +183,7 @@ class ZyraOneJourneyShellFixture {
     this.legacyAmberQuickCheck = false,
     this.seekerPhotos,
     this.confirmSensitiveAction,
+    this.profileSmallPageSample,
   });
 
   final ViewRequestDraftModel? model;
@@ -215,6 +218,7 @@ class ZyraOneJourneyShellFixture {
 
   /// Test-only native-auth boundary; the running preview uses the OS prompt.
   final Future<bool> Function()? confirmSensitiveAction;
+  final ZyraProfileSmallPageSample? profileSmallPageSample;
 }
 
 /// One caller-owned fixture update. No account or disclosure grant is carried.
@@ -315,8 +319,10 @@ class _ZyraOneJourneyConceptShellState
   int _developerNavigation = 0, _developerLastNotice = 0;
   int _developerNoticeEpoch = 0, _developerPresetEpoch = 0;
   int _developerEmailCount = 2;
+  int _developerProfileSmallPageEpoch = 0;
 
   ZyraSignupPreviewController? _signup;
+  ZyraSignupPreviewController? _addedRoleSignup;
   ZyraCompatibilityDraft? _signupPreferences;
   Widget? _signupSurface, _signupPreferenceSurface;
   Object? _signupLease;
@@ -586,6 +592,7 @@ class _ZyraOneJourneyConceptShellState
 
   void _leaveSignup(ZyraSignupPreviewController controller, Object lease) {
     if (!_signupCurrent(controller, lease) || !controller.hasAccount) return;
+    if (identical(_addedRoleSignup, controller)) _addedRoleSignup = null;
     final firstEntry = !_signupHasEntered;
     _signupHasEntered = true;
     controller.pauseSetup();
@@ -865,6 +872,8 @@ class _ZyraOneJourneyConceptShellState
           .join('|'),
       samples.introductionRows?.map((person) => person.id).join('|'),
       samples.preset,
+      samples.profileSmallPage,
+      samples.profileSmallPageEpoch,
       samples.notice,
       bridge.journeyNavigationEpoch,
       bridge.noticeNavigationEpoch,
@@ -1023,6 +1032,20 @@ class _ZyraOneJourneyConceptShellState
         if (samples.preset != null && !_guardianRole) {
           _pages.clear();
           _tab = 2;
+        }
+      }
+      if (_developerProfileSmallPageEpoch != samples.profileSmallPageEpoch) {
+        _developerProfileSmallPageEpoch = samples.profileSmallPageEpoch;
+        if (samples.profileSmallPage case final sample?) {
+          _tab = 4;
+          _pages
+            ..clear()
+            ..add(
+              sample == ZyraProfileSmallPageSample.guardianNoSeekers
+                  ? 'subscriptions'
+                  : 'switch_account_signup',
+            );
+          _personId = null;
         }
       }
       if (_developerNoticeEpoch != bridge.noticeNavigationEpoch) {
@@ -2098,16 +2121,8 @@ class _ZyraOneJourneyConceptShellState
         _pages.add(page);
         continue;
       }
-      if (page == 'guardian_main_notice') {
-        if (_guardianRole ||
-            _tab != 3 ||
-            _pages.isNotEmpty ||
-            _pendingMainGuardianNoticeId == null) {
-          break;
-        }
-        _pages.add(page);
-        continue;
-      }
+      // LOCK46 supersedes the old post-change Continue page.
+      if (page == 'guardian_main_notice') break;
       if (page == 'account_action') {
         if (_pages.lastOrNull != 'settings' ||
             !_canRestoreSettingsOverview(accountDestination)) {
@@ -2627,6 +2642,13 @@ class _ZyraOneJourneyConceptShellState
     if (_page == 'signup' && _signup != null) {
       if (_signup!.canGoBack) {
         _signup!.back();
+      } else if (identical(_signup, _addedRoleSignup)) {
+        _signup!.dispose();
+        _signup = _addedRoleSignup = null;
+        _signupLease = null;
+        _signupPreferences = null;
+        _signupSurface = _signupPreferenceSurface = null;
+        _move(_pages.removeLast);
       } else if (_signup!.hasAccount) {
         _leaveSignup(_signup!, _signupLease!);
       } else {
@@ -2640,10 +2662,6 @@ class _ZyraOneJourneyConceptShellState
     }
     if (_locationSheet != 0) {
       setState(_closeLocationFlow);
-      return;
-    }
-    if (_page == 'guardian_main_notice') {
-      _closeMainGuardianNotice();
       return;
     }
     if (_expandedJourneyOptionsId != null && _page == null) {
@@ -3120,7 +3138,6 @@ class _ZyraOneJourneyConceptShellState
           'guardian_access_agreement',
           'guardian_circle',
           'guardian_invite',
-          'guardian_main_notice',
           'guardian_info',
           'account_action',
           'settings_detail',
@@ -3277,7 +3294,7 @@ class _ZyraOneJourneyConceptShellState
                               !_isRetainedAccountPage &&
                               _page != 'own_profile_preview' &&
                               _page != 'guardian_main_notice' &&
-                              _page != 'signup')
+                              (_page != 'signup' || _addedRoleSignup != null))
                             ZyraPullDownBackScope(
                               key: const ValueKey(
                                 'concept_pull_down_back_scope',
@@ -3467,7 +3484,6 @@ class _ZyraOneJourneyConceptShellState
     'ended_compatibility' => _endedCompatibility(),
     'guardian_access_agreement' => _guardianAccessAgreement(),
     'guardian_invite' => _guardianInvite(),
-    'guardian_main_notice' => _mainGuardianNotice(),
     'guardian_info' => _guardianInfo(),
     'network_request' => _guardianTabsView('connect_confirm'),
     'guardian_introduce' => _guardianTabsView('introduce_confirm'),
@@ -5851,43 +5867,38 @@ class _ZyraOneJourneyConceptShellState
         _seekerMembership == 'Seeker One' &&
         _model.isRecentEndedJourney(person.id);
     final canSend = eligible && _model.canRequestEndedJourney(person.id);
-    return _pageScroll([
-      _heading('Request a new Journey', 'You and ${person.firstName}'),
-      _card([
-        _body('${person.firstName} needs to accept a new request.'),
-        _body(
-          expiresAt != null
-              ? 'Request sent. It expires on ${MaterialLocalizations.of(context).formatMediumDate(expiresAt.toLocal())}.'
-              : eligible
-              ? 'You can ask 24 hours after the Journey ends. The request lasts 30 days.'
-              : 'Restart requests are not available in this preview.',
-        ),
-        if (expiresAt == null)
-          _button(
-            'draft_restart_send_${person.id}',
-            'Request a new Journey',
-            canSend
-                ? _bound(() {
-                    if (_seekerMembership != 'Seeker One') return;
-                    if (_signupUnverified) {
-                      _tabTo(0);
-                      return;
-                    }
-                    if (_signupIncomplete) {
-                      setState(
-                        () => _notice =
-                            'Finish setting up your profile to start a Journey.',
-                      );
-                      return;
-                    }
-                    _act(() => _model.requestEndedJourney(person.id));
-                  })
-                : null,
-            primary: true,
-            fitLabel: true,
-          ),
-      ]),
-    ], key: ValueKey('draft_ended_restart_${person.id}'));
+    final fresh = _accountFreshGuard();
+    return ZyraRequestRestartPreview(
+      key: ValueKey('draft_ended_restart_${person.id}'),
+      name: person.firstName,
+      subjectId: person.id,
+      sent: expiresAt != null,
+      unavailableReason: expiresAt != null || canSend
+          ? null
+          : eligible
+          ? 'You can ask 24 hours after the Journey ends. The request lasts 30 days.'
+          : 'Restart requests are not available in this preview.',
+      onRequest: () {
+        if (!fresh() || !canSend || _seekerMembership != 'Seeker One') return;
+        if (_signupUnverified) {
+          _tabTo(0);
+          return;
+        }
+        if (_signupIncomplete) {
+          _act(
+            () =>
+                _notice = 'Finish setting up your profile to start a Journey.',
+          );
+          return;
+        }
+        _act(() {
+          if (_model.requestEndedJourney(person.id)) {
+            _notice =
+                'Request sent. ${person.firstName} will see it in ${_displayProfile(person).gender.toLowerCase() == 'female' ? 'her' : 'his'} requests.';
+          }
+        });
+      },
+    );
   }
 
   Widget _journeyView() {
@@ -7193,20 +7204,6 @@ class _ZyraOneJourneyConceptShellState
   String _conceptMainGuardianId = 'draft-guardian-hassan';
   String? _pendingMainGuardianNoticeId;
 
-  void _closeMainGuardianNotice() {
-    if (!_allowed ||
-        _guardianRole ||
-        _tab != 3 ||
-        _page != 'guardian_main_notice' ||
-        _pendingMainGuardianNoticeId == null) {
-      return;
-    }
-    _move(() {
-      _pendingMainGuardianNoticeId = null;
-      _pages.removeLast();
-    });
-  }
-
   Widget _guardianInfo() {
     if (_guardianRole || _tab != 4) return _unavailable();
     final main = _conceptGuardianPeople
@@ -7222,75 +7219,18 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
-  Widget _mainGuardianNotice() {
-    final id = _pendingMainGuardianNoticeId;
-    final guardian = draftGuardians
-        .where((person) => person.id == id)
-        .firstOrNull;
-    if (_guardianRole ||
-        guardian == null ||
-        !_model.ownMainGuardianPresent ||
-        id != _conceptMainGuardianId ||
-        _conceptRemovedGuardians.contains(id)) {
-      return _unavailable();
-    }
-    final fresh = _accountFreshGuard();
-    final name = guardian.firstName;
-    return SafeArea(
-      key: const ValueKey('concept_main_guardian_notice'),
-      child: LayoutBuilder(
-        builder: (context, constraints) => ZyraShadowScrollView(
-          padding: const EdgeInsets.all(20),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: (constraints.maxHeight - 40).clamp(0, double.infinity),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: zyraGuardianManagerMonogram(
-                    name: name,
-                    guardianOne: _model.canUseSampleGuardianChat(guardian.id),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                ZyraDeveloperTitle(
-                  child: Text(
-                    '$name will be your Main Guardian',
-                    textAlign: TextAlign.center,
-                    style: ZyraText.heading(size: 26),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  '$name is part of every Journey you begin. $name will also see '
-                  'your Journey requests — the ones you send and the ones you '
-                  'receive — and who each is with. $name sees that person\'s '
-                  'profile as anyone browsing would. Nothing more.',
-                  textAlign: TextAlign.center,
-                  style: ZyraText.body(size: 14).copyWith(height: 1.4),
-                ),
-                const SizedBox(height: 24),
-                _button('concept_main_guardian_continue', 'Continue', () {
-                  if (fresh() && _pendingMainGuardianNoticeId == id) {
-                    _closeMainGuardianNotice();
-                  }
-                }, primary: true),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   final _conceptRemovedGuardians = <String>{};
   final _conceptGuardianHistory = <String, bool>{};
   final _conceptNetworkSent = <String>{};
 
+  ZyraProfileSmallPageSample? get _profileSmallPageSample =>
+      widget.fixture?.profileSmallPageSample ??
+      (_hasDeveloperPreview ? _developerSamples.profileSmallPage : null);
+
   bool get _conceptHassanLinked =>
+      (!_guardianRole ||
+          _profileSmallPageSample !=
+              ZyraProfileSmallPageSample.guardianNoSeekers) &&
       !_conceptRemovedGuardians.contains('draft-guardian-hassan');
 
   List<WaliLinkedPerson> get _conceptGuardianPeople => [
@@ -8370,8 +8310,7 @@ class _ZyraOneJourneyConceptShellState
           _conceptMainGuardianId = id;
           _model.setOwnMainGuardianPresent(true);
           _guardianPage = 0;
-          _pendingMainGuardianNoticeId = id;
-          _pages.add('guardian_main_notice');
+          _notice = '${guardian.firstName} is now your Main Guardian.';
         });
         return true;
       },
@@ -10167,33 +10106,182 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
+  bool get _hasPreviewFamily =>
+      _guardianFamily.freePlaces > 0 ||
+      _guardianFamily.invites.any(
+        (invite) => invite.status == ZyraGuardianFamilyInviteStatus.accepted,
+      );
+
   Widget _subscriptionsView() {
-    final fresh = _walletGuard();
-    return ZyraSubscriptionWalletPreview(
-      draft: _subscriptionWallet,
-      currentRole: _walletRole,
-      showBackButton: false,
-      canAct: fresh,
-      onChanged: (draft) {
-        if (fresh()) _cacheWallet(draft);
+    if (_guardianRole) {
+      final linked = _conceptLinkedSeeker;
+      final journey = _conceptGuardianJourney;
+      final adamAccess = !linked.isMain
+          ? 'Additional Guardian · as Adam allows'
+          : journey == null ||
+                _conceptAccessFor(
+                  'draft-guardian-hassan',
+                  journey.partner.id,
+                ).chat
+          ? 'Main Guardian · View and Chat'
+          : 'Main Guardian · View';
+      return ZyraGuardianPlacesPreview(
+        familyPayer: _accountData.familyPlacePayer,
+        isBasic: _guardianMembership == 'Guardian Basic',
+        seekers: [
+          if (_conceptHassanLinked) ...[
+            ZyraProfileSmallPageRow(
+              icon: Icons.person_outline,
+              title: linked.firstName,
+              subtitle: adamAccess,
+            ),
+            const ZyraProfileSmallPageRow(
+              icon: Icons.person_outline,
+              title: 'Yusuf',
+              subtitle: 'Additional Guardian · as Yusuf allows',
+            ),
+          ],
+        ],
+      );
+    }
+    final one = _seekerMembership == 'Seeker One';
+    final journeys = _currentJourneys;
+    return ZyraSeekerPlacesPreview(
+      isOne: one,
+      journeys: [
+        for (final person in journeys)
+          ZyraProfileSmallPageRow(
+            icon: Icons.people_outline,
+            title:
+                '${person.firstName} · Stage ${_model.stageFor(person.id)?.order ?? 1} of 8',
+            subtitle: 'In use',
+          ),
+        for (var i = journeys.length; i < (one ? 3 : 1); i++)
+          const ZyraProfileSmallPageRow(icon: Icons.add, title: 'Free place'),
+      ],
+      familyPlaces: !_hasPreviewFamily
+          ? null
+          : [
+              ZyraProfileSmallPageRow(
+                icon: Icons.person_outline,
+                title: 'You · $_seekerMembership',
+                subtitle: 'Your own place',
+              ),
+              for (final invite in _guardianFamily.invites)
+                if (invite.status == ZyraGuardianFamilyInviteStatus.accepted)
+                  ZyraProfileSmallPageRow(
+                    icon: Icons.security,
+                    title: '${invite.guardianName} · Guardian One',
+                    subtitle: 'Family place',
+                  ),
+              if (_guardianFamily.freePlaces > 0)
+                ZyraProfileSmallPageRow(
+                  icon: Icons.add,
+                  title:
+                      '${_guardianFamily.freePlaces} ${_guardianFamily.freePlaces == 1 ? 'place' : 'places'} free',
+                  subtitle:
+                      'Give it to a Guardian from their card in the Guardian tab',
+                ),
+            ],
+    );
+  }
+
+  Widget _inviteView() {
+    final fresh = _accountFreshGuard();
+    final link = _guardianRole ? 'zyra.app/i/HASSAN3K' : 'zyra.app/i/ADAM7Q';
+    return ZyraInvitePreview(
+      guardian: _guardianRole,
+      link: link,
+      onCopy: () async {
+        if (!fresh()) return;
+        await Clipboard.setData(ClipboardData(text: link));
+        if (fresh()) _act(() => _notice = 'Link copied.');
       },
-      onSwitch: (role) {
-        if (fresh()) _walletSwitch(role);
-      },
-      onSetup: (role) {
-        if (fresh()) _walletSetup(role);
-      },
-      onMembership: (role) {
-        if (fresh()) _walletMembership(role);
-      },
-      onBack: () {
-        if (fresh()) _back();
+      onShare: () {
+        if (!fresh()) return;
+        final box = context.findRenderObject() as RenderBox?;
+        unawaited(
+          SharePlus.instance.share(
+            ShareParams(
+              text: link,
+              sharePositionOrigin: box == null
+                  ? null
+                  : box.localToGlobal(Offset.zero) & box.size,
+            ),
+          ),
+        );
       },
     );
   }
 
+  void _startAddedRoleSignup(ZyraWalletRole role) {
+    if (!_allowed) return;
+    final guardian = role == ZyraWalletRole.guardian;
+    final profile = _accountSession.ownProfile(guardian);
+    _signup?.dispose();
+    _signup = ZyraSignupPreviewController(now: widget.previewClock)
+      ..seedSetup(
+        guardian: guardian,
+        verified: !_signupUnverified,
+        firstName: profile.firstName,
+        surname: profile.surnameLine ?? '',
+      )
+      ..resumeSetup();
+    _addedRoleSignup = _signup;
+    // Both roles share this preview account; the added role must not reset
+    // the current role’s Journeys or start a second account.
+    _signupHasEntered = true;
+    _signupPreferences = null;
+    _signupSurface = _signupPreferenceSurface = null;
+    _signupLease = Object();
+    _open('signup');
+    unawaited(_loadSignupPhoto());
+  }
+
   Widget _switchSignupView({required bool setupOverview}) {
     final fresh = _walletGuard();
+    final targetRole = _walletRole.other;
+    final sample = _profileSmallPageSample;
+    final missing =
+        sample ==
+            (_guardianRole
+                ? ZyraProfileSmallPageSample.guardianOnly
+                : ZyraProfileSmallPageSample.seekerOnly) ||
+        _subscriptionWallet.forRole(targetRole).readiness ==
+            ZyraWalletReadiness.missing;
+    if (!setupOverview &&
+        (missing ||
+            _subscriptionWallet.nextStep(targetRole) ==
+                    ZyraWalletNextStep.switchProfile &&
+                ZyraWalletRole.values.every(
+                  (role) =>
+                      _subscriptionWallet.forRole(role).readiness ==
+                      ZyraWalletReadiness.ready,
+                ))) {
+      final seekerPlan = _guardianRole
+          ? (_subscriptionWallet.seeker.isOne ? 'Seeker One' : 'Seeker Basic')
+          : _seekerMembership;
+      final guardianPlan = _guardianRole
+          ? _guardianMembership
+          : (_subscriptionWallet.guardian.isOne
+                ? 'Guardian One'
+                : 'Guardian Basic');
+      return ZyraSwitchProfilePreview(
+        guardian: _guardianRole,
+        seekerPlan: '$seekerPlan${_hasPreviewFamily ? ' · ZYRA Family' : ''}',
+        guardianPlan: '$guardianPlan${_guardianRole ? '' : ' · ready'}',
+        otherRoleMissing: missing,
+        onSwitch: () {
+          if (!fresh()) return;
+          if (missing) {
+            _startAddedRoleSignup(targetRole);
+            return;
+          }
+          _walletSwitch(targetRole);
+          if (_walletRole == targetRole) _act(() => _notice = 'Switched.');
+        },
+      );
+    }
     if (!setupOverview) {
       return ZyraSubscriptionSwitchPreview(
         draft: _subscriptionWallet,
@@ -10798,6 +10886,7 @@ class _ZyraOneJourneyConceptShellState
         action == ZyraConceptAccountAction.hiddenProfiles) {
       return _privacySecurityView(action!);
     }
+    if (action == ZyraConceptAccountAction.invite) return _inviteView();
     if (action == ZyraConceptAccountAction.notificationSettings) {
       final fresh = _accountFreshGuard();
       return ZyraEmailSettingsPreview(

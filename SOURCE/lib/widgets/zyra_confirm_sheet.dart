@@ -17,6 +17,7 @@ Future<bool?> showZyraConfirm({
   required String secondaryLabel,
   IconData icon = Icons.info_outline,
   String? personName,
+  bool goldPrimary = false,
   Key? sheetKey,
   Key? primaryKey,
   Key? secondaryKey,
@@ -114,6 +115,7 @@ Future<bool?> showZyraConfirm({
             error: status.error,
             icon: icon,
             personName: personName,
+            goldPrimary: goldPrimary,
             primaryKey: primaryKey,
             secondaryKey: secondaryKey,
             onConfirm: status.busy ? null : () => unawaited(choose(true)),
@@ -153,6 +155,7 @@ class ZyraConfirmSheet extends StatelessWidget {
     this.swipeToKeep = false,
     this.surfaceKey,
     this.personName,
+    this.goldPrimary = false,
     this.primaryKey,
     this.secondaryKey,
   });
@@ -160,7 +163,7 @@ class ZyraConfirmSheet extends StatelessWidget {
   final String title, body, primaryLabel, secondaryLabel;
   final IconData icon;
   final String? personName, error;
-  final bool swipeToKeep;
+  final bool swipeToKeep, goldPrimary;
   final Key? surfaceKey, primaryKey, secondaryKey;
   final VoidCallback? onConfirm, onKeep;
 
@@ -311,6 +314,12 @@ class ZyraConfirmSheet extends StatelessWidget {
                                     vertical: 8,
                                   ),
                                   foregroundColor: ZyraColors.dangerText,
+                                  backgroundColor: goldPrimary
+                                      ? ZyraColors.goldTextFill
+                                      : null,
+                                  shape: goldPrimary
+                                      ? const RoundedRectangleBorder()
+                                      : null,
                                 ),
                                 onPressed: onConfirm,
                                 child: Text(
@@ -318,7 +327,9 @@ class ZyraConfirmSheet extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   style: ZyraText.body(
                                     size: 15,
-                                    color: ZyraColors.dangerText,
+                                    color: goldPrimary
+                                        ? ZyraColors.espresso
+                                        : ZyraColors.dangerText,
                                   ),
                                 ),
                               ),

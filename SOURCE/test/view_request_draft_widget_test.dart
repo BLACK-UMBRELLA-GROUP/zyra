@@ -928,8 +928,7 @@ Future<void> _confirmGuardianMain(
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
   if (!remove) {
-    expect(_key('concept_main_guardian_notice'), findsOneWidget);
-    await _press(tester, 'concept_main_guardian_continue');
+    expect(_key('concept_main_guardian_notice'), findsNothing);
   }
   final people = _guardianCards(tester).people;
   expect(people.where((card) => card.person.isMain).length, remove ? 0 : 1);
@@ -4275,8 +4274,7 @@ void main() {
         expect(fixture.setOtherCoverage(ZyraWalletCoverage.none), isTrue);
         expect(fixture.setOtherReadiness(ZyraWalletReadiness.ready), isTrue);
         await tester.pumpAndSettle();
-        await _press(tester, 'concept_subscriptions');
-        await _press(tester, 'wallet_profiles_dot_target_1');
+        await _press(tester, 'switch-account-button');
         await _press(tester, 'wallet_primary_guardian');
         expect(_key('membership-section-seeker'), findsOneWidget);
         await _press(tester, 'membership-section-seeker');

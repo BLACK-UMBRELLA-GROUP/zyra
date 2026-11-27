@@ -446,6 +446,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           context: context,
           action: selected,
           person: person,
+          founderMakeMain: true,
           onOpening: (opened) {
             _confirmRoute = confirmRoute = opened;
             onMenuRouteChanged?.call(opened, open: true);

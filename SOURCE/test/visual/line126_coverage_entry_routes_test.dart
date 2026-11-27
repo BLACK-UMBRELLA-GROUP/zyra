@@ -350,28 +350,30 @@ void main() {
   }
 
   for (final basic in [false, true]) {
-    _case('line126 public Seeker ${basic ? 'Basic' : 'One'} Make Main notice', (
-      tester,
-    ) async {
-      final h = await _mount(
-        tester,
-        guardian: false,
-        basic: basic,
-        state: 'guardian_main_notice',
-        tab: 3,
-      );
-      expect(find.byType(ZyraOneJourneyGuardianCards), findsOneWidget);
-      await swipeGuardianCard(tester);
-      await h.flush();
-      await h.tap('guardian-card-menu');
-      await h.tap('guardian-make-main');
-      expect(find.text('Make Yusuf your Main Guardian?'), findsOneWidget);
-      await h.tap('guardian-make-main-confirmation-approve');
-      h.assertPage('guardian_main_notice');
-      expect(h.latest.mainGuardianId, 'draft-guardian-yusuf');
-      expect(_key('concept_main_guardian_notice'), findsOneWidget);
-      await _readAll(h);
-    });
+    _case(
+      'line126 public Seeker ${basic ? 'Basic' : 'One'} Make Main confirmation',
+      (tester) async {
+        final h = await _mount(
+          tester,
+          guardian: false,
+          basic: basic,
+          state: 'guardian_main_confirmation',
+          tab: 3,
+        );
+        expect(find.byType(ZyraOneJourneyGuardianCards), findsOneWidget);
+        await swipeGuardianCard(tester);
+        await h.flush();
+        await h.tap('guardian-card-menu');
+        await h.tap('guardian-make-main');
+        expect(find.text('Yusuf will be your Main Guardian'), findsOneWidget);
+        await _readAll(h);
+        await h.tap('guardian-make-main-confirmation-approve');
+        expect(h.latest.pages, isEmpty);
+        expect(h.latest.mainGuardianId, 'draft-guardian-yusuf');
+        expect(_key('concept_main_guardian_notice'), findsNothing);
+        expect(find.text('Yusuf is now your Main Guardian.'), findsOneWidget);
+      },
+    );
   }
 
   _case('line126 public Guardian Basic free-place invitation', (tester) async {

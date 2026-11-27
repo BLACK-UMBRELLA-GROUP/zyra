@@ -318,14 +318,14 @@ class _Owner {
 }
 
 Future<void> _openChoices(WidgetTester tester, _Owner owner) async {
+  owner.fixture.guardianRole = owner.latest.guardian;
   expect(owner.fixture.setOtherCoverage(ZyraWalletCoverage.none), isTrue);
   expect(owner.fixture.setOtherReadiness(ZyraWalletReadiness.ready), isTrue);
   await tester.pumpAndSettle();
-  await _tap(tester, _key('concept_subscriptions'));
+  await _tap(tester, _key('switch-account-button'));
   final role = owner.fixture.role.other;
-  await _tap(tester, _key('wallet_profiles_dot_target_${role.index}'));
   await _tap(tester, _key('wallet_primary_${role.name}'));
-  expect(owner.latest.pages, ['subscriptions', 'membership']);
+  expect(owner.latest.pages, ['switch_account_signup', 'membership']);
 }
 
 ZyraConceptAccountData _shownData(WidgetTester tester) => tester
@@ -687,7 +687,7 @@ void main() {
       first.onDraftChanged(staleDraft);
       first.onReview(staleReview);
       await tester.pumpAndSettle();
-      expect(owner.latest.pages, ['subscriptions', 'membership']);
+      expect(owner.latest.pages, ['switch_account_signup', 'membership']);
       await _tap(tester, _key('concept_membership_history_neverPaid'));
       await closeZyraDevControls(tester);
       first.onDraftChanged(staleDraft);
@@ -701,7 +701,7 @@ void main() {
         current.data.membershipPaymentHistory,
         ZyraMembershipPaymentHistory.neverPaid,
       );
-      expect(owner.latest.pages, ['subscriptions', 'membership']);
+      expect(owner.latest.pages, ['switch_account_signup', 'membership']);
       final count = owner.checkpoints.length;
       owner.allowed = false;
       current.onDraftChanged(staleDraft);
@@ -781,7 +781,7 @@ void main() {
       expect(find.text('Membership terms'), findsNothing);
       await _tap(tester, terms);
       expect(find.text('Membership terms'), findsOneWidget);
-      expect(owner.latest.pages, ['subscriptions', 'membership']);
+      expect(owner.latest.pages, ['switch_account_signup', 'membership']);
       expect(_modelFacts(owner.latest), before);
       expect(owner.roles, isEmpty);
     },
@@ -808,7 +808,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       await _tap(tester, _key('switch-account-button'));
-      await _tap(tester, _key('wallet_primary_guardian'));
+      await _tap(tester, find.text('Switch to Guardian'));
       await _nav(tester, 'Profile');
       await _openChoices(tester, owner);
       expect(_shownData(tester).guardian, isTrue);

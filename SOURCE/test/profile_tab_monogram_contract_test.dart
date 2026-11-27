@@ -13,6 +13,7 @@ import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
+import 'package:zyra/dev/zyra_profile_small_pages_preview.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
@@ -416,7 +417,7 @@ void main() {
     });
 
     testWidgets(
-      '${role.label} retains membership, wallet and settings destinations',
+      '${role.label} retains membership, places and settings destinations',
       (tester) async {
         Future<void> start() => _mountShell(
           tester,
@@ -440,7 +441,12 @@ void main() {
         }
         await start();
         await _tap(tester, 'concept_subscriptions');
-        expect(find.byType(ZyraSubscriptionWalletPreview), findsOneWidget);
+        expect(
+          find.byType(
+            role.guardian ? ZyraGuardianPlacesPreview : ZyraSeekerPlacesPreview,
+          ),
+          findsOneWidget,
+        );
         await start();
         await _tap(tester, 'concept_settings');
         expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
@@ -454,12 +460,20 @@ void main() {
         );
         await start();
         await _tap(tester, 'concept_invite');
-        expect(_key('concept_account_action_scroll'), findsOneWidget);
+        final invite = tester.widget<ZyraInvitePreview>(
+          find.byType(ZyraInvitePreview),
+        );
+        expect(invite.guardian, role.guardian);
+        expect(_key('small_pages_invite_scroll'), findsOneWidget);
         expect(find.text('Invite someone to ZYRA'), findsOneWidget);
         expect(
-          find.textContaining('send invitations or feedback'),
+          find.text(
+            role.guardian ? 'zyra.app/i/HASSAN3K' : 'zyra.app/i/ADAM7Q',
+          ),
           findsOneWidget,
         );
+        expect(_key('small_pages_copy_link'), findsOneWidget);
+        expect(_key('small_pages_share_link'), findsOneWidget);
         if (role.guardian) {
           await start();
           await _tap(tester, 'concept_your_seekers');
@@ -601,6 +615,9 @@ void main() {
       await tester.pumpAndSettle();
       expect(exits, 0);
       expect(find.byType(ZyraSubscriptionWalletPreview), findsNothing);
+      expect(find.byType(ZyraSeekerPlacesPreview), findsNothing);
+      expect(find.byType(ZyraGuardianPlacesPreview), findsNothing);
+      expect(find.byType(ZyraInvitePreview), findsNothing);
       expect(find.byType(ZyraConceptMembershipPresentation), findsNothing);
       expect(
         find.byType(ZyraConceptSettingsPresentation),

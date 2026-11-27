@@ -222,8 +222,8 @@ void main() {
         await h.capture(
           _account,
           'account_action',
-          'invite_held',
-          'Profile > Invite someone to ZYRA; actual held local action.',
+          'invite',
+          'Profile > Invite someone to ZYRA; local sample link and system share action.',
         );
       },
       skip: !_capture,
@@ -339,7 +339,7 @@ void main() {
           _account,
           'subscriptions',
           'normal',
-          'Profile > Your subscriptions; unchanged local wallet.',
+          'Profile > Your places; LOCK46 local sample places.',
         );
       },
       skip: !_capture,

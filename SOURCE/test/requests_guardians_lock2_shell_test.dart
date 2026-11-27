@@ -183,8 +183,7 @@ Future<void> _makeMain(WidgetTester tester) async {
 
 Future<void> _nextGuardian(WidgetTester tester, String id) async {
   // LOCK 19 V8 opens the selected Guardian's management sheet above the app.
-  // LOCK 2 §2.4 and guardian_main__first_main_message.png still govern notice
-  // semantics after the retained Make Main confirmation flow.
+  // LOCK46 supplies the shared confirm sheet before the existing phone check.
   await _tap(tester, _key('guardian-card-dot-target-1'));
   expect(_key('guardian-card-$id'), findsOneWidget);
   await _tap(tester, _key('guardian-card-menu'));
@@ -195,19 +194,13 @@ Future<void> _nextGuardian(WidgetTester tester, String id) async {
   expect(action.hitTestable(), findsOneWidget);
 }
 
-void _expectNotice(WidgetTester tester, _Owner owner, String id, String name) {
-  expect(_key('concept_main_guardian_notice'), findsOneWidget);
-  expect(find.text('$name will be your Main Guardian'), findsOneWidget);
-  expect(
-    find.text(
-      "$name is part of every Journey you begin. $name will also see your Journey requests — the ones you send and the ones you receive — and who each is with. $name sees that person's profile as anyone browsing would. Nothing more.",
-    ),
-    findsOneWidget,
-  );
+void _expectMain(WidgetTester tester, _Owner owner, String id, String name) {
   expect(owner.latest.mainGuardianId, id);
-  expect(owner.latest.pendingMainGuardianNoticeId, id);
-  expect(owner.latest.pages.last, 'guardian_main_notice');
-  expect(_key('concept_main_guardian_continue'), findsOneWidget);
+  expect(owner.latest.pendingMainGuardianNoticeId, isNull);
+  expect(owner.latest.pages, isEmpty);
+  expect(_key('concept_main_guardian_notice'), findsNothing);
+  expect(_key('concept_main_guardian_continue'), findsNothing);
+  expect(find.text('$name is now your Main Guardian.'), findsOneWidget);
 }
 
 void main() {
@@ -507,35 +500,20 @@ void main() {
   );
 
   testWidgets(
-    'Main notice appears once for each effective H to Y to H change',
+    'Main confirmation changes H to Y to H without a retired Continue page',
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester, tab: 3, pages: const []);
-      expect(_key('concept_main_guardian_notice'), findsNothing);
       final alreadyMain = _guardians(tester).makeMain;
       expect(await alreadyMain(_hassan), isFalse);
       await tester.pumpAndSettle();
-      expect(_key('concept_main_guardian_notice'), findsNothing);
       expect(owner.latest.pendingMainGuardianNoticeId, isNull);
       await _nextGuardian(tester, _yusuf);
       await _makeMain(tester);
-      _expectNotice(tester, owner, _yusuf, 'Yusuf');
-      final retainedContinue = _buttonAction(
-        tester,
-        'concept_main_guardian_continue',
-      );
-      await _tap(tester, _key('concept_main_guardian_continue'));
-      expect(owner.latest.pendingMainGuardianNoticeId, isNull);
-      expect(_key('concept_main_guardian_notice'), findsNothing);
+      _expectMain(tester, owner, _yusuf, 'Yusuf');
       await _nextGuardian(tester, _hassan);
       await _makeMain(tester);
-      _expectNotice(tester, owner, _hassan, 'Hassan');
-      final pending = owner.latest;
-      retainedContinue();
-      await tester.pumpAndSettle();
-      expect(owner.latest, same(pending));
-      _expectNotice(tester, owner, _hassan, 'Hassan');
-      await _tap(tester, _key('concept_main_guardian_continue'));
+      _expectMain(tester, owner, _hassan, 'Hassan');
       await _nav(tester, 0);
       await _nav(tester, 3);
       expect(_key('concept_main_guardian_notice'), findsNothing);
@@ -545,24 +523,38 @@ void main() {
   );
 
   testWidgets(
-    'a pending Main notice resumes for its exact subject then stays consumed',
+    'cancelled Make Main approval cannot revive when a new sheet opens',
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester, tab: 3, pages: const []);
       await _nextGuardian(tester, _yusuf);
-      await _makeMain(tester);
-      final pending = owner.latest;
-      final resumed = _Owner();
-      await resumed.mount(tester, checkpoint: pending);
-      _expectNotice(tester, resumed, _yusuf, 'Yusuf');
-      expect(find.text('Hassan will be your Main Guardian'), findsNothing);
-      await _tap(tester, _key('concept_main_guardian_continue'));
-      final consumed = resumed.latest;
-      final after = _Owner();
-      await after.mount(tester, checkpoint: consumed);
-      expect(_key('concept_main_guardian_notice'), findsNothing);
-      expect(after.latest.mainGuardianId, _yusuf);
-      expect(after.latest.pendingMainGuardianNoticeId, isNull);
+      await _tap(tester, _guardianMenuAction('guardian-make-main'));
+      expect(find.text('Yusuf will be your Main Guardian'), findsOneWidget);
+      expect(
+        find.text(
+          'Yusuf is part of every Journey you begin. Yusuf will also see your '
+          'Journey requests (the ones you send and the ones you receive) and '
+          'who each is with. Yusuf sees that person’s profile as anyone browsing '
+          'would. Nothing more.',
+        ),
+        findsOneWidget,
+      );
+      final retiredApprove = _buttonAction(
+        tester,
+        'guardian-make-main-confirmation-approve',
+      );
+      await _tap(tester, _key('guardian-make-main-confirmation-keep'));
+      expect(owner.latest.mainGuardianId, _hassan);
+      await _tap(tester, _key('guardian-card-menu'));
+      await _tap(tester, _guardianMenuAction('guardian-make-main'));
+      final before = owner.latest;
+      retiredApprove();
+      await tester.pumpAndSettle();
+      expect(owner.latest, same(before));
+      expect(owner.latest.mainGuardianId, _hassan);
+      expect(find.text('Yusuf will be your Main Guardian'), findsOneWidget);
+      await _tap(tester, _key('guardian-make-main-confirmation-approve'));
+      _expectMain(tester, owner, _yusuf, 'Yusuf');
     },
   );
 
@@ -668,32 +660,26 @@ void main() {
   );
 
   testWidgets(
-    'Main message remains readable with Continue at compact 200 percent',
+    'Main confirmation remains readable and actionable at compact 200 percent',
     (tester) async {
       final owner = _Owner();
-      final model = ReceivedRequestFixture(capacity: 3, clock: () => owner.now);
       await owner.mount(
         tester,
+        tab: 3,
+        pages: const [],
         size: const Size(320, 568),
         textScale: 2,
-        checkpoint: ZyraPreviewNavigationCheckpoint(
-          guardian: false,
-          model: model.snapshot(),
-          tab: 3,
-          pages: const ['guardian_main_notice'],
-          mainGuardianId: _yusuf,
-          pendingMainGuardianNoticeId: _yusuf,
-        ),
       );
-      _expectNotice(tester, owner, _yusuf, 'Yusuf');
+      await _nextGuardian(tester, _yusuf);
+      await _tap(tester, _guardianMenuAction('guardian-make-main'));
       final title = tester.widget<Text>(
         find.text('Yusuf will be your Main Guardian'),
       );
       expect(title.maxLines, isNull);
       expect(title.overflow, isNull);
-      await _tap(tester, _key('concept_main_guardian_continue'));
-      expect(owner.latest.pendingMainGuardianNoticeId, isNull);
-      expect(_key('concept_main_guardian_notice'), findsNothing);
+      expect(tester.takeException(), isNull);
+      await _tap(tester, _key('guardian-make-main-confirmation-approve'));
+      _expectMain(tester, owner, _yusuf, 'Yusuf');
     },
   );
 

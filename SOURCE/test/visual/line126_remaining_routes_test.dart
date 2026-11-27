@@ -19,9 +19,10 @@ import 'package:zyra/dev/zyra_one_journey_guardian_info_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
 import 'package:zyra/dev/zyra_privacy_security_preview.dart';
-import 'package:zyra/dev/zyra_one_journey_switch_signup_preview.dart';
+import 'package:zyra/dev/zyra_signup_preview.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
+import 'package:zyra/dev/zyra_profile_small_pages_preview.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/profile/compatibility_editors.dart';
@@ -428,7 +429,12 @@ void _registerAccountCases(
     );
     await h.tap('concept_subscriptions');
     h.assertPage('subscriptions');
-    expect(find.byType(ZyraSubscriptionWalletPreview), findsOneWidget);
+    expect(
+      find.byType(
+        guardian ? ZyraGuardianPlacesPreview : ZyraSeekerPlacesPreview,
+      ),
+      findsOneWidget,
+    );
     await _readAll(h, 'subscriptions');
     _record(h, 'subscriptions');
     final profile = await _mount(
@@ -444,13 +450,18 @@ void _registerAccountCases(
     await profile.closeControls();
     await profile.tap('switch-account-button');
     profile.assertPage('switch_account_signup');
-    expect(find.byType(ZyraSubscriptionSwitchPreview), findsOneWidget);
+    final switchProfile = tester.widget<ZyraSwitchProfilePreview>(
+      find.byType(ZyraSwitchProfilePreview),
+    );
+    expect(switchProfile.otherRoleMissing, isTrue);
     await _readAll(profile, 'switch_signup');
     _record(profile, 'switch_signup');
-    await profile.tap('wallet_primary_${guardian ? 'seeker' : 'guardian'}');
-    profile.assertPage('switch_account_setup');
-    expect(find.byType(ZyraSwitchSignupPreview), findsOneWidget);
-    expect(_key('concept_switch_setup_steps'), findsOneWidget);
+    await profile.tap('small_pages_add_role');
+    profile.assertPage('signup');
+    final signup = tester.widget<ZyraSignupPreview>(
+      find.byType(ZyraSignupPreview),
+    );
+    expect(signup.controller.guardian, !guardian);
     await _readAll(profile, 'switch_setup');
     expect(profile.latest.guardian, guardian);
     _record(profile, 'switch_setup');
@@ -474,8 +485,8 @@ void _registerAccountCases(
       h.shellFixture.setOtherCoverage(ZyraWalletCoverage.none);
       h.shellFixture.setOtherReadiness(ZyraWalletReadiness.ready);
       await h.flush();
-      await h.tap('concept_subscriptions');
-      await h.tap('wallet_profiles_dot_target_${guardian ? 0 : 1}');
+      await h.tap('switch-account-button');
+      expect(find.byType(ZyraSubscriptionSwitchPreview), findsOneWidget);
       await h.tap('wallet_primary_${guardian ? 'seeker' : 'guardian'}');
       expect(find.byType(ZyraMembershipChoices), findsOneWidget);
       for (final section in ['seeker', 'guardian', 'family']) {

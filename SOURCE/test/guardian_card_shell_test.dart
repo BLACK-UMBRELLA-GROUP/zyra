@@ -447,25 +447,29 @@ void main() {
       expect(h.latest.guardianHistory[_hassan], isNot(true));
     },
   );
-  testWidgets(
-    'actual Make Main confirms into existing notice without removing links or Journeys',
-    (t) async {
-      final h = harness(t);
-      await h.mount(
-        tab: 3,
-        model: ViewRequestDraftModel(capacity: 3)..seedJourneys(2),
-      );
-      final states = h.latest.model.states;
-      await swipeGuardianCard(t);
-      await h.flush();
-      await h.tap('guardian-card-menu');
-      await h.tap('guardian-make-main');
-      expect(h.latest.mainGuardianId, _hassan);
-      await h.tap('guardian-make-main-confirmation-approve');
-      h.assertPage('guardian_main_notice');
-      expect(h.latest.mainGuardianId, _additional);
-      expect(h.latest.model.states, states);
-      expect(h.latest.removedGuardians, isEmpty);
-    },
-  );
+  testWidgets('actual Make Main confirms without removing links or Journeys', (
+    t,
+  ) async {
+    final h = harness(t);
+    await h.mount(
+      tab: 3,
+      model: ViewRequestDraftModel(capacity: 3)..seedJourneys(2),
+    );
+    final states = h.latest.model.states;
+    await swipeGuardianCard(t);
+    await h.flush();
+    await h.tap('guardian-card-menu');
+    await h.tap('guardian-make-main');
+    expect(h.latest.mainGuardianId, _hassan);
+    await h.tap('guardian-make-main-confirmation-approve');
+    expect(h.latest.pages, isEmpty);
+    expect(
+      find.byKey(const ValueKey('concept_main_guardian_notice')),
+      findsNothing,
+    );
+    expect(find.text('Yusuf is now your Main Guardian.'), findsOneWidget);
+    expect(h.latest.mainGuardianId, _additional);
+    expect(h.latest.model.states, states);
+    expect(h.latest.removedGuardians, isEmpty);
+  });
 }

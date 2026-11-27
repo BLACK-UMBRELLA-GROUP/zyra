@@ -69,14 +69,14 @@ void main() {
       expect(find.text('Remove Yusuf'), findsOneWidget);
       await capture(h, 'guardian_menu', 'Guardian additional card → •••');
       await h.tap('guardian-make-main');
-      expect(find.text('Make Yusuf your Main Guardian?'), findsOneWidget);
+      expect(find.text('Yusuf will be your Main Guardian'), findsOneWidget);
       expect(h.latest.mainGuardianId, 'draft-guardian-hassan');
       expect(h.latest.model.states, initial);
       await capture(h, 'guardian_confirm', '••• → Make Main Guardian');
       await h.tap('guardian-make-main-confirmation-keep');
       expect(h.latest.mainGuardianId, 'draft-guardian-hassan');
       expect(h.latest.model.states, initial);
-      expect(find.text('Make Yusuf your Main Guardian?'), findsNothing);
+      expect(find.text('Yusuf will be your Main Guardian'), findsNothing);
       expect(t.takeException(), isNull);
     }, variant: _ios);
 

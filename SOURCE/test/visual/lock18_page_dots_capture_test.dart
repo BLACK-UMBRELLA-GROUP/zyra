@@ -134,8 +134,8 @@ void main() {
       page: ['manage_photos'],
     ),
     (
-      name: 'e07_subscriptions',
-      title: 'Your subscriptions',
+      name: 'e07_your_places',
+      title: 'Your places',
       tab: 4,
       guardian: false,
       page: ['subscriptions'],
@@ -219,7 +219,7 @@ void main() {
               await h.flush();
             }
             final open = switch (entry.name) {
-              'e07_subscriptions' => 'concept_subscriptions',
+              'e07_your_places' => 'concept_subscriptions',
               'e09_guardian_info' => 'concept_guardian_info',
               'e10_filters' => 'concept_browse_menu',
               _ => null,
@@ -244,6 +244,23 @@ void main() {
               await h.flush();
             }
             await _decodeVisiblePhotos(h);
+            if (entry.name == 'e07_your_places') {
+              expect(_k('small_pages_seeker_places'), findsOneWidget);
+              expect(find.text('Your places'), findsOneWidget);
+              expect(_dots, findsNothing);
+              expect(find.byType(BackButton), findsNothing);
+              expect(_k('floating-nav-item-0'), findsNothing);
+              expect(_k('wallet_profiles_pages'), findsNothing);
+              await _cap(
+                h,
+                '${entry.name}${scale == 1
+                    ? ''
+                    : narrow
+                    ? '_narrow_large_text'
+                    : '_large_text'}',
+              );
+              continue;
+            }
             expect(_dots, findsOneWidget, reason: entry.name);
             final dots = _pager(t);
             expect(dots.count, greaterThan(1), reason: entry.name);
@@ -264,8 +281,7 @@ void main() {
             expect(_k('focus-previous'), findsNothing);
             if (scale == 1 ||
                 entry.name.startsWith('d0') ||
-                entry.name == 'e06_photos' ||
-                entry.name == 'e07_subscriptions') {
+                entry.name == 'e06_photos') {
               await _cap(
                 h,
                 '${entry.name}${scale == 1
@@ -331,7 +347,6 @@ void main() {
                 'd02_journey_tab' => _k('journey_tab_card'),
                 'd04_my_zyra' || 'e05_guardian_my_zyra' => _k('focus-area'),
                 'e06_photos' => _k('photos-page-view'),
-                'e07_subscriptions' => _k('wallet_profiles_pages'),
                 'e08_peer_guardians' => _k('peer_guardians_pager_draft-sara'),
                 'e09_guardian_info' => _k('guardian_info_cards'),
                 _ => _k('filters_card'),
@@ -349,31 +364,6 @@ void main() {
               );
               await h.flush();
               expect(_pager(t).index, first, reason: '${entry.name}: swipe');
-            }
-            if (entry.name == 'e07_subscriptions') {
-              final oldProfileDot = t
-                  .widget<GestureDetector>(_target(1))
-                  .onTap!;
-              await h.tap('wallet_group_family');
-              final count = _pager(t).count;
-              expect(count, greaterThan(1));
-              await t.tap(_target(count - 1));
-              await h.flush();
-              expect(_pager(t).index, count - 1);
-              oldProfileDot();
-              await h.flush();
-              expect(_pager(t).index, count - 1);
-              if (scale == 1) await _cap(h, 'e12_subscriptions_family');
-              final pages = _k('wallet_family_pages');
-              await t.ensureVisible(pages);
-              final visible = t
-                  .getRect(pages)
-                  .intersect(
-                    Rect.fromLTWH(0, 0, narrow ? 320 : 430, narrow ? 468 : 832),
-                  );
-              await t.flingFrom(visible.center, const Offset(240, 0), 1000);
-              await h.flush();
-              expect(_pager(t).index, count - 2);
             }
             if (scale == 2 &&
                 (entry.name == 'd04_my_zyra' ||

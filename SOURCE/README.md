@@ -237,6 +237,28 @@ rendered-text replay are in `test/visual/line138_pause_private_capture_test.dart
 its optional seven master captures use `--dart-define=ZYRA_LINE138_CAPTURE=true`
 through the protected driver and write under `build/line138/`.
 
+## Founder preview Profile pages
+
+LOCK 46 replaces Your places, Switch profile, Invite someone to ZYRA,
+Request restart and the Make Main Guardian confirmation in the local Founder
+preview. Both roles use the shared ivory pages. One-role accounts can start
+the other role's sample sign-up; Guardian Basic and accounts with no Seekers
+retain the approved Your places page. The Developer state list includes the
+three locked one-role and no-Seeker fixtures; selecting another state resets
+them.
+
+Copy and Share pass only the displayed sample invite link. Restart retains
+membership, age, pause and one-send admission. Make Main presents the approved
+B1 sheet before the existing native authentication boundary; cancellation
+changes nothing. No member data or server connection is added.
+
+Focused route and native-boundary mocks are in
+`test/visual/line140_profile_small_pages_capture_test.dart`. Its bounded replay
+uses `--dart-define=ZYRA_LINE140_CAPTURE=true` through the protected driver,
+covering 375/430 widths at normal and Larger Text with real shadows. Screens
+and audit records stay under `build/line140/`. The as-built record is
+`../PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/HANDOVER_2026-11-27.md`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,
