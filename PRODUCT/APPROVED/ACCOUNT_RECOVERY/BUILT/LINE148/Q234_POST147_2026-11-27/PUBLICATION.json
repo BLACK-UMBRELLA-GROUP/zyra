@@ -14,6 +14,10 @@
     "F": "README implementation remains held"
   },
   "publish_scope": "Only this ACCOUNT_RECOVERY/BUILT/LINE148/Q234_POST147_2026-11-27 directory;noqueue/questions/indexforeign snapshots incommit",
-  "push_status": "not yet attempted;published state is verified by origin/main after this receipt commit",
-  "timestamp": "2026-11-27T22:13:51.929973+00:00"
+  "push_status": "Published and verified;this receipt follow-up changes only owned records",
+  "timestamp": "2026-11-27T22:13:51.929973+00:00",
+  "published_through_commit": "ab4113d3d760ca611c211d6169c3ffad42a5b1af",
+  "origin_main_verified": "ab4113d3d760ca611c211d6169c3ffad42a5b1af",
+  "verified_utc": "2026-11-27T22:14:59.822596+00:00",
+  "post_push_secret_scan": "exit0,no leaks in origin/main..HEAD"
 }

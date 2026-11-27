@@ -30,8 +30,8 @@
     },
     {
       "path": "HANDOVER.txt",
-      "bytes": 8735,
-      "sha256": "7caeccc1fc9ca3731bdd72aa0039da23b8df532d635a0dd514456cbc5281b2f5"
+      "bytes": 8910,
+      "sha256": "1aaf7a69aadd954a729392665272bce2de1ba259566e9aae235f6cfb2c26d4ed"
     },
     {
       "path": "HASH_SCAN_REVIEW.json",
@@ -55,8 +55,8 @@
     },
     {
       "path": "PUBLICATION.json",
-      "bytes": 760,
-      "sha256": "c154d1bd394a7187982e0890e1d99e6200dc78aa8803274972dacecfdc22ebce"
+      "bytes": 1010,
+      "sha256": "16b4391131411f5519f1c9c7115ef8848f616b915e4f7c467ead6939bb4cefb4"
     },
     {
       "path": "PUBLIC_REVIEW.json",
@@ -85,8 +85,8 @@
     },
     {
       "path": "TASK_NOTE.txt",
-      "bytes": 1239,
-      "sha256": "f5cb60a2ee961e0dc68fdfa960884be3e9e3f70ada8ffc641aaa254dc6828dcf"
+      "bytes": 1293,
+      "sha256": "e5b9644e7adfeb949ef5cecd742b1b1327b1ce3d76ba377acfc514b33254f868"
     },
     {
       "path": "USAGE.json",
