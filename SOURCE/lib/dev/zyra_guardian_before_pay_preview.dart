@@ -202,6 +202,7 @@ class _ZyraGuardianBeforePayPreviewState
                         offer: ZyraPurchaseOffer.guardianOne,
                         onNotice: widget.onNotice,
                         canAct: _canAct,
+                        canRetainLegal: widget.canAct,
                       ),
                     ],
                   ),

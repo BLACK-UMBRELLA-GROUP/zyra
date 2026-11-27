@@ -1,0 +1,260 @@
+{
+  "task": "ZYRA line149 LOCK51 visual review",
+  "reviewer": "independent lock_review agent",
+  "scope": "Read-only inspection of all seven 430x932@3x master/build pairs plus all seven build states in each of four combinations:430x932 scale1.0,375x667 scale1.0,375x667 scale1.3,430x932 scale1.3.28 build images reviewed. No app change, test driver, threshold or waiver.",
+  "evidence": "work/MASTER_BUILD_CONTACT.png; work/MASTER_COMPARISON.json; SOURCE/build/line149/screens/lg*.png",
+  "verdict": {
+    "pixel_match_claim": false,
+    "numeric_spec_conforms": true,
+    "structural_states_present": true,
+    "unresolved_material_layout_deviation_identified": false,
+    "design_approval_claim": false,
+    "explanation": "All locked components, sample content and represented states are present. Native font raster/metrics, shared surfaces and small resulting geometry differences remain visible; numerical conformity and readable layout are not called pixel MATCH. No missing component, unintended overlap, ellipsis or non-scroll clipping was identified in the reviewed images. This is a visual review, not Founder/designer acceptance.",
+    "additional_four_combo_issue_identified": false,
+    "four_combo_explanation": "All28 images reviewed. No new material issue, unintended word splitting, ellipsis, overlap or non-scroll cutoff was observed in the two added combinations. Partial neighboring chips and partial rows at scroll-viewport edges are expected horizontally/vertically scrollable content, not whole-label truncation."
+  },
+  "numeric_spec": {
+    "title": "28 pt, weight300, using shared ZyraText.pageTitle() with local LOCK51 numeric overrides; photo title balances into two whole-word lines when required.",
+    "section_heading": "16.5 pt, weight500, line height1.35.",
+    "section_body": "14.5 pt, line height1.6; gold number and27pt body indentation.",
+    "summary": "14 pt, line height1.5, four gold-check points.",
+    "chips": "12.5pt; whole label; horizontal scroll, fixed below title/date.",
+    "navigation": "No on-screen Back or tab bar in any reader capture."
+  },
+  "shared_native_baseline": {
+    "preserved": "Reader cards use existing ZyraFloatingSurface, ZyraColors.cardSurface and ZyraColors.surfaceBorder; typography uses existing ZyraText. Those shared files and preexisting Help/Privacy presentation have no line149 diff.",
+    "accepted_line145_context": "Root identifies the full-opacity/shared shadow treatment as accepted line145 behavior required to preserve; visual review does not propose reverting it to prototype shadows.",
+    "visible_common_differences": [
+      "Native body and section-heading glyphs look heavier/darker than prototype raster.",
+      "Native cards have more pronounced lower shadows and a more defined edge than prototype cards.",
+      "Reader card inset is22pt in code, while prototype cards appear approximately20pt; this is a small visible width difference, recorded without claiming exact pixel parity.",
+      "Native text metrics and fixed header/chip heights move subsequent content slightly upward; content order and numeric type sizes are retained."
+    ]
+  },
+  "master_states": [
+    {
+      "state": "lg00",
+      "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg00_privacy_data__rows.png",
+      "build": "SOURCE/build/line149/screens/lg00_privacy_data__rows.png",
+      "observed": "Privacy & data READ rows, Download my data and deletion note all present; layout remains native LOCK37 page.",
+      "visible_difference": "Native row separators and darker/thicker chevrons are visible; group starts slightly higher and background is flatter/lighter than prototype. This presentation is unchanged by line149.",
+      "pixel_exact": false,
+      "master_sha256": "12a793bdbc4d97e1cfe9f5274cff3d2ed37d363b5df7f40f3c9c7a2d83cbfb78",
+      "build_sha256": "7c62424794e04110d021f8f98b8cb520a67020ea77bf367e332492ac6dd2b1e7"
+    },
+    {
+      "state": "lg01",
+      "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg01_privacy__top.png",
+      "build": "SOURCE/build/line149/screens/lg01_privacy__top.png",
+      "observed": "Privacy top shows fixed title/date/chips, selected section1, four In short points and numbered sections in correct order.",
+      "visible_difference": "Summary native surface is slightly narrower with stronger shadow; native glyph weights differ and the first section begins slightly higher.",
+      "pixel_exact": false,
+      "master_sha256": "b3165aee97b065bec52e1769388e187fc4648400a15a8901d5fe1b9db801b171",
+      "build_sha256": "ece0113a34f4b20adfdad138664853c37b3190130bb67657e6028cc58f70cf3a"
+    },
+    {
+      "state": "lg02",
+      "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg02_privacy__all_sections.png",
+      "build": "SOURCE/build/line149/screens/lg02_privacy__all_sections.png",
+      "observed": "All-sections sheet has correct18-section heading and first12 numbered rows at normal size, dimmed reader behind and drag handle.",
+      "visible_difference": "Sheet top position and list geometry are close but not pixel identical; native text weight, divider/shadow edge and small vertical positioning differ.",
+      "pixel_exact": false,
+      "master_sha256": "4a21cb2a9e679eff0d4c2e46a4e6b9887ddb03d42f9f1ab177ccfa8cd8d3e3d4",
+      "build_sha256": "d4fef57afecdb6c3a2c5c2b5895e5d2d6fc2f1c3949dcb852a9774d2487f1532"
+    },
+    {
+      "state": "lg03",
+      "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg03_privacy__jumped_to_section.png",
+      "build": "SOURCE/build/line149/screens/lg03_privacy__jumped_to_section.png",
+      "observed": "Section7 and gold Photos and video chip selected; correct sections7\u201312 and start13 visible with title/date fixed.",
+      "visible_difference": "Native text/chips are slightly higher and cumulative section rhythm exposes more of section13 than prototype; no content omission or overlap.",
+      "pixel_exact": false,
+      "master_sha256": "7a40a177baf71b3ec08a8154c45678aed6aaccc7c265c717137079ea4858a796",
+      "build_sha256": "9cae0e37e595331339b8999e5259ad2b6af47f11a9fe99a4e32d0167bcaf99ad"
+    },
+    {
+      "state": "lg04",
+      "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg04_privacy__end_read_next.png",
+      "build": "SOURCE/build/line149/screens/lg04_privacy__end_read_next.png",
+      "observed": "Last chip18 is gold; final sections and Read next Terms/Photos/Contact support plus plain web line present.",
+      "visible_difference": "Read next card is slightly narrower and higher with stronger native shadow; web text is slightly heavier. Top cropped prior body is expected scroll position.",
+      "pixel_exact": false,
+      "master_sha256": "53ce82b296909cde5bc9ec96f7593f282f4560cfb2440ab40be6b89b407db132",
+      "build_sha256": "f38926d11bd9a0a8eda34e7ae1e03494f392875c3b4b116bbfc2842e08dfbfe1"
+    },
+    {
+      "state": "lg05",
+      "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg05_terms__top.png",
+      "build": "SOURCE/build/line149/screens/lg05_terms__top.png",
+      "observed": "Terms top shows correct title/date, first chip, four In short points and sections1 onward.",
+      "visible_difference": "Same native font/card differences as Privacy top; later content starts slightly higher and more section5 text is visible.",
+      "pixel_exact": false,
+      "master_sha256": "4ac2f91f49aaa8092f228b67eca446f7e91f8ee951746fc22841659cb806bb9b",
+      "build_sha256": "a52e748d5cb3f78a49b9eaee6cf8cc44070258370ad56abd0a7d6025583c655c"
+    },
+    {
+      "state": "lg06",
+      "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg06_photos__top.png",
+      "build": "SOURCE/build/line149/screens/lg06_photos__top.png",
+      "observed": "Photos top shows correct title/date/chips, lead and sections1\u20136; no summary card, as specified.",
+      "visible_difference": "Native glyph weight and vertical rhythm differ slightly; more final-section body is visible at bottom than prototype, without clipping.",
+      "pixel_exact": false,
+      "master_sha256": "4464ff49ab862cee0db230b50f4da7381408bfd82146f78b789229422a5ad503",
+      "build_sha256": "d0bd8136b2ddb56988af7abfb46cd25f6b399eef240a79ca8611eb2f46f38fb7"
+    }
+  ],
+  "large375_review": [
+    {
+      "state": "lg00",
+      "observed": "All four rows readable. Long How photos row fits; account-deletion note wraps onto two lines with whole words."
+    },
+    {
+      "state": "lg01",
+      "observed": "Title/date fit. Four summary points wrap cleanly. Adjacent chip is partially visible at right because row scrolls horizontally; no ellipsis."
+    },
+    {
+      "state": "lg02",
+      "observed": "Sheet heading fits. Long sections4 and5 wrap cleanly. Section8 continues below viewport in scrollable sheet; not an assertion of truncation."
+    },
+    {
+      "state": "lg03",
+      "observed": "Section7 aligns below pinned chip row; sections7 and8 readable. Section9 begins at viewport bottom and continues in body scroll. No overlap or word splitting."
+    },
+    {
+      "state": "lg04",
+      "observed": "Last chip gold; final section and all three Read next rows fit. Contact support row wraps before chevron. Plain web address wraps onto next whole line and remains fully visible."
+    },
+    {
+      "state": "lg05",
+      "observed": "Title/date fit and four summary points wrap within card; section1 begins below viewport and is reachable by body scroll."
+    },
+    {
+      "state": "lg06",
+      "observed": "Photo title balances How photos are / kept safe. Lead and section1 wrap at whole words; following heading continues below body viewport. No added tab/back."
+    }
+  ],
+  "limits": [
+    "Screenshots cannot by themselves prove chip scrolling, fixed-header behavior, reader replacement or return lifetime; root owns behavior-test evidence.",
+    "The seven normal master/build hashes all differ. Mean channel differences in MASTER_COMPARISON.json remain raw observations; no tolerance or pass threshold introduced."
+  ],
+  "size_text_combinations": [
+    {
+      "width": 430,
+      "height": 932,
+      "scale": 1.0,
+      "suffix": "",
+      "images": 7
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "scale": 1.0,
+      "suffix": "_375_normal",
+      "images": 7
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "scale": 1.3,
+      "suffix": "_375_large",
+      "images": 7
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "scale": 1.3,
+      "suffix": "_430_large",
+      "images": 7
+    }
+  ],
+  "additional375_normal_review": [
+    {
+      "state": "lg00",
+      "observed": "All rows fit. Delete-account note wraps Advanced onto its next whole-word line, with no cutoff."
+    },
+    {
+      "state": "lg01",
+      "observed": "Privacy title/date fit. All four summary points wrap within card. Section1 body and section2 heading visible; lower content continues in scroll."
+    },
+    {
+      "state": "lg02",
+      "observed": "All-sections heading fits; section5 long heading wraps at whole words. First8 rows visible, others below scrollable viewport."
+    },
+    {
+      "state": "lg03",
+      "observed": "Active chip7 fully visible; title/date pinned; section7,8,9 content wraps cleanly. Section10 body continues at bottom of body scroll."
+    },
+    {
+      "state": "lg04",
+      "observed": "Active last chip18 visible. Final sections, all3 Read next rows and entire web line fit with no horizontal overflow."
+    },
+    {
+      "state": "lg05",
+      "observed": "Terms title/date and summary fit; sections1 and2 wrap cleanly and remain distinct."
+    },
+    {
+      "state": "lg06",
+      "observed": "Photos title balances into2 lines, no ellipsis. Lead and section headings/bodies wrap whole words; section3 continues in body scroll."
+    }
+  ],
+  "additional430_large_review": [
+    {
+      "state": "lg00",
+      "observed": "All rows fit, including long photo label; delete-account note wraps Advanced onto next whole-word line."
+    },
+    {
+      "state": "lg01",
+      "observed": "Privacy title/date fit. Summary and body wrap within width; active chip1 whole. Lower body is scrollable."
+    },
+    {
+      "state": "lg02",
+      "observed": "Sheet title fits; long section5 heading wraps into2 whole-word lines. Row12 starts at bottom and continues below sheet scroll viewport; no fixed clipping inferred."
+    },
+    {
+      "state": "lg03",
+      "observed": "Active chip7 whole, section7 and8 readable, section9 heading wraps cleanly. Section10 continues at bottom of body viewport."
+    },
+    {
+      "state": "lg04",
+      "observed": "Last chip18 whole/gold, final sections, all3 Read next rows and plain web line fit. Prior section text partly hidden under fixed chip boundary reflects current body scroll."
+    },
+    {
+      "state": "lg05",
+      "observed": "Title/date fit. Four summary points and sections1,2 readable; section3 heading wraps at whole words and body begins below viewport."
+    },
+    {
+      "state": "lg06",
+      "observed": "Photos title balances into2 lines; lead wraps at whole words. Sections1\u20133 readable with no overlap; section4 heading starts at bottom of body viewport."
+    }
+  ],
+  "reviewed_build_image_hashes": {
+    "lg00_privacy_data__rows.png": "7c62424794e04110d021f8f98b8cb520a67020ea77bf367e332492ac6dd2b1e7",
+    "lg00_privacy_data__rows_375_large.png": "51ef929b7ff7a7b4210848ee63fc55ee2a6b3299b957aed6c5587dee805b6cc2",
+    "lg00_privacy_data__rows_375_normal.png": "8c7165d5b5c7288e5d412bb3aea3974669965547b8038ed41abb72b880647afa",
+    "lg00_privacy_data__rows_430_large.png": "8ee7d29f4fbd5588af50871f0084459ed98a6cbec4bfbd598fec82789d3c818e",
+    "lg01_privacy__top.png": "ece0113a34f4b20adfdad138664853c37b3190130bb67657e6028cc58f70cf3a",
+    "lg01_privacy__top_375_large.png": "3d6a12eda05f707f2371dc47e2a80893eebfc53a01948bfe3d091b77fdbf65e6",
+    "lg01_privacy__top_375_normal.png": "96fd766a9f15e3523043eabeee3456e0d0f98d38af5ffa842de426637d9ebe6d",
+    "lg01_privacy__top_430_large.png": "9862c551f14970a8fbc7e4e86ff1c194b1ccd8a9f3d5a08c7edcfffa8e4170f1",
+    "lg02_privacy__all_sections.png": "d4fef57afecdb6c3a2c5c2b5895e5d2d6fc2f1c3949dcb852a9774d2487f1532",
+    "lg02_privacy__all_sections_375_large.png": "0478f017cd7850818bf26777f5c3d750b629113ccf4c811a07129811c42ae758",
+    "lg02_privacy__all_sections_375_normal.png": "5fc7be93aee69494e0725db489294672e652e783d58ab98e131dde0be79450d9",
+    "lg02_privacy__all_sections_430_large.png": "ba7be0ce49ac10166effa72e0e93d96c595f46e7ed2eca111646b7d7671931ea",
+    "lg03_privacy__jumped_to_section.png": "9cae0e37e595331339b8999e5259ad2b6af47f11a9fe99a4e32d0167bcaf99ad",
+    "lg03_privacy__jumped_to_section_375_large.png": "8c20266ddd7dbf346f1d3b0d13c5329759d8561066d46753e3c76e4c57700346",
+    "lg03_privacy__jumped_to_section_375_normal.png": "73da09451e4ba352dbfacf70c877314977de23e62142bcbfe06f4f8d0bff2e98",
+    "lg03_privacy__jumped_to_section_430_large.png": "1cf64bd66566edd258a4e02bc734c750c200f0fa98aac62dcab200a2f01d4597",
+    "lg04_privacy__end_read_next.png": "f38926d11bd9a0a8eda34e7ae1e03494f392875c3b4b116bbfc2842e08dfbfe1",
+    "lg04_privacy__end_read_next_375_large.png": "42c119bf605750e93d64f6d9b34a6ccff83564e64bd300f1f1996bdd0874cee1",
+    "lg04_privacy__end_read_next_375_normal.png": "60f213755249e5b704ce73a196ea72d910af73e693ddafdc06036b307fa05659",
+    "lg04_privacy__end_read_next_430_large.png": "fbf481c34ab6fc01526635751d0dccf03ccb3b1cb2dc33809b4a7a980baafcc1",
+    "lg05_terms__top.png": "a52e748d5cb3f78a49b9eaee6cf8cc44070258370ad56abd0a7d6025583c655c",
+    "lg05_terms__top_375_large.png": "56c50c8b774c879c48a83fbf53c55dbe5e55c36e1dacfc6183cd85b34053da0e",
+    "lg05_terms__top_375_normal.png": "ab5bdaf87d92f7420a8a6d7e86ee5a8679d56f81d90248d9037bc0040a4b99b3",
+    "lg05_terms__top_430_large.png": "eb9eeaae9a7641c81e1437731868e043747cb87b0bf84db6cc9e6cdcaef19bcb",
+    "lg06_photos__top.png": "d0bd8136b2ddb56988af7abfb46cd25f6b399eef240a79ca8611eb2f46f38fb7",
+    "lg06_photos__top_375_large.png": "3a76361fa9e6364811a7439b3e5e76399a97694e07cf22c35beeb6e729086e83",
+    "lg06_photos__top_375_normal.png": "1f90455da315c613f45938564060e3342f6418ce2f8ba3c3c8373aa522631599",
+    "lg06_photos__top_430_large.png": "88553b733c8d2ffeec6740cc028057e2d70c820bfdb04cd95c17eeca3d1039a7"
+  }
+}

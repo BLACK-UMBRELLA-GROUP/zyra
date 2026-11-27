@@ -1,0 +1,22 @@
+{
+  "fixedPrototype": "V365",
+  "pages": [
+    {
+      "page": "privacy",
+      "sections": 18,
+      "strings": 60
+    },
+    {
+      "page": "terms",
+      "sections": 15,
+      "strings": 51
+    },
+    {
+      "page": "photos",
+      "sections": 6,
+      "strings": 21
+    }
+  ],
+  "allExactLiteralText": true,
+  "missing": []
+}

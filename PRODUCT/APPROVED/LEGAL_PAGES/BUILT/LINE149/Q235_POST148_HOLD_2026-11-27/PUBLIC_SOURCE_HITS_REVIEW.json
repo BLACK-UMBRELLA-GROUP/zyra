@@ -1,0 +1,285 @@
+{
+  "hits": [
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "line": 678,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "0e83b5f0e5091bf6f7acb70ac67a42de1db4e84daa92b89bb3cb0b12164f6594"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "line": 684,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "acd8e463533b8c9f2a91bc7e9dcab097d1fab9c4fea95bb5042c705b699fcccc"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 3031,
+      "type": "money",
+      "review": "Dart tuple/record accessor; no financial document",
+      "source_line_sha256": "a5ad65492b8c8081b8717cdb4bcf6027098925aa204c2fd85d02104007ad191d"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 11587,
+      "type": "money",
+      "review": "Dart tuple/record accessor; no financial document",
+      "source_line_sha256": "be18757225844081fe89698a61271da6004cec7d1dbe909e9f21863472351bbb"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 11588,
+      "type": "money",
+      "review": "Dart tuple/record accessor; no financial document",
+      "source_line_sha256": "e4d4e7fbc168edde616809f199e921e839584ab078de4bd710a1abb8a87f273e"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 13,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "a55aa29ea31ad2310e8d811fddb4f600edcafd4a5c5414ef067b6e99fd354cbe"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 133,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "649fcbf849ded85afd29d6b4f87e8b15215cc178a74f79b36352b8e5af8f0991"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 138,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "27db304800a4a72832dc40ccec52d6f3d36b81288c827964e442b2cc96f7cf15"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 203,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "f82d80ea7f3fea96c0a2309693d9b92ae2b637fb81977b1acbbc9ed7c0c4b0c0"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 208,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "dcd82bbd989505970b82f8ba54c557ce93c6f5a30931094fc405554b2f52016a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 227,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "19fea5bfd784e2b75fa3ed014b0a9791f0cfd7248d6eb7be6a65f2474d57e984"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 242,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "03f47071fc0929f422a883179108804888edd685e56362639e05b0b2b41adae2"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 327,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "fa9e8a00fb067b1e90d063751edf3ffe51085f229cee87776952bf87e85c238e"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 333,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "ae7e0506e05521ef6757ef254e0962522af3ce84e7350e495605bcca67afad3e"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 382,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "750b2500ccf1b80a884b834837f8ee113a3967425efcab8bb10f195b5d21cab4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 391,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "d2bdcf4231cbcd6e163df698b424d419833993aa57213d6026741c5e4355c89c"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 394,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "fb3a60c920b569358fcf58e40ab1e9f78ad40b57fd41dc83d64d64f78339df97"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 395,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "bc99f859b0f751308604540b2e787c921c5947e0296ead8fd58f857fb21ee60a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 447,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "f5f18280ea48f9b2d7afda58df36a875ca7d079480611e6eff6a0b8e26408aaf"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 450,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "19fea5bfd784e2b75fa3ed014b0a9791f0cfd7248d6eb7be6a65f2474d57e984"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 468,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "600e70d4659486267486f488f294bf9b2e85298dca3f3f38b83c4141512468e0"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "line": 473,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "2aa8395c0643d4326f9d99fa3400da15709084d88b760d343860d8eb037fc49f"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 561,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "f1e9ff76bd69e8675ea7c09a987f81fc436dcde478eeede0c73d04bde1752c69"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 605,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "0df0b544c7f4a2f49b44bd6d96bf07028c953cb66919d59224c909059982a1c4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 608,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "d2bdcf4231cbcd6e163df698b424d419833993aa57213d6026741c5e4355c89c"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 637,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "cfe36ec85fe0a71fd86b03d6d95d39cbba7577fb6b1e5898d723653f354154c0"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 689,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "7d6eace2a35c146bb868fd759fcabe89352f4cc00f1429e28e2314182d608946"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 96,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "fc9bb08326036939c7d5bfcef2072f7daddd1c1e27c87439c3fd4bca78e91236"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 365,
+      "type": "money",
+      "review": "Dart tuple/record accessor; no financial document",
+      "source_line_sha256": "0771080f21c35eaff90cce41a6dd2ebc124e53223beccbbba11e007a87f083ce"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 367,
+      "type": "money",
+      "review": "Dart tuple/record accessor; no financial document",
+      "source_line_sha256": "aad9945b28a4e125d698cfbbf6810f384df3c2dc92fd0f2791cc5426e54982a3"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 368,
+      "type": "money",
+      "review": "Dart tuple/record accessor; no financial document",
+      "source_line_sha256": "0990a17429edd38dedbf2515c6463f3f9aa575dc41be7127c401ebd7f57583a2"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+      "line": 10,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "87234727f1bb0514bfed0accb24d8c1b003d272107a0d5fdf19da3c7d26e3040"
+    },
+    {
+      "path": "SOURCE/test/purchase_wording_preview_test.dart",
+      "line": 28,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "f423e0d97e5d8ae7ad03c73508592130c55a229a6c0be1a7702b7aebf6159cb4"
+    },
+    {
+      "path": "SOURCE/test/purchase_wording_preview_test.dart",
+      "line": 41,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "16174c8966af012773fa00cde3fd05185bdf033ed19ad42eb72d1ae073f5123b"
+    },
+    {
+      "path": "SOURCE/test/purchase_wording_preview_test.dart",
+      "line": 227,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "64d9502c3c68cb21902d7f37a6b67d18019afe9c915d443fd2ce6b18470edf4d"
+    },
+    {
+      "path": "SOURCE/test/purchase_wording_preview_test.dart",
+      "line": 264,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "cb379c073942cdd947c120f256d516fc40b0c236f1d9ae54e9071f71ccef17f8"
+    },
+    {
+      "path": "SOURCE/test/line149_accepted_integration_test.dart",
+      "line": 519,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "b151397156bbd160dc8dec6aa5f4fde8c0dcbd46d27b6da1fc8f4ffa90537117"
+    },
+    {
+      "path": "SOURCE/test/line149_accepted_integration_test.dart",
+      "line": 535,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "427e7a6f9ac8e47bb810b48262793cce04cf59fe02066ad949f5fde34fb285d7"
+    },
+    {
+      "path": "SOURCE/test/line149_accepted_integration_test.dart",
+      "line": 549,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "b151397156bbd160dc8dec6aa5f4fde8c0dcbd46d27b6da1fc8f4ffa90537117"
+    },
+    {
+      "path": "SOURCE/test/line149_accepted_integration_test.dart",
+      "line": 589,
+      "type": "money",
+      "review": "Existing sample UI/catalogue or test flow identifier; no private document",
+      "source_line_sha256": "37da0fb3532b713bf746dfbbb8704e5cec49f74a8ec2636c03289405db024d2a"
+    }
+  ],
+  "unresolved": 0
+}

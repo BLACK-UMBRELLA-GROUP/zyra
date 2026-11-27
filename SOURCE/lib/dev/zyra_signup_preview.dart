@@ -38,6 +38,7 @@ class ZyraSignupPreview extends StatefulWidget {
     required this.onShareCode,
     this.onVerifyIdentity,
     this.onEditDone,
+    this.canRetainLegal,
   });
 
   final ZyraSignupPreviewController controller;
@@ -45,6 +46,7 @@ class ZyraSignupPreview extends StatefulWidget {
   final WidgetBuilder preferencesBuilder;
   final VoidCallback onPause, onEnter, onShareCode;
   final VoidCallback? onVerifyIdentity;
+  final bool Function()? canRetainLegal;
 
   /// Reuses the locked About you step pages for caller-owned local edits.
   final VoidCallback? onEditDone;
@@ -708,6 +710,11 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
             : ZyraPurchaseOffer.seekerOne,
         onNotice: _purchaseNotice,
         canAct: widget.canAct,
+        canRetainLegal: () =>
+            mounted &&
+            (widget.canRetainLegal?.call() ?? widget.canAct()) &&
+            c.step == ZyraSignupStep.membership,
+        signupLegal: true,
       ),
       const SizedBox(height: 8),
       _button(

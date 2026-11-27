@@ -1,0 +1,28 @@
+{
+  "line": 149,
+  "lock": 51,
+  "base_commit": "7af4268181c6ba7620be27867259a0ac4cd37f8a",
+  "implementation_commit": "pending local gate and commit",
+  "flutter_version": "3.44.2",
+  "build_mode": "protected local widget tests; no native build",
+  "timestamp": "2026-11-27T22:35:45.414912+00:00",
+  "state": "local gates passed; exact candidate hosted checks pending",
+  "published": false,
+  "scope": "Founder preview; V365 sample legal text; local support",
+  "ordinary": {
+    "passed": 8112,
+    "skipped": 253,
+    "failed": 0,
+    "elapsed": "10:20"
+  },
+  "analyzer": "No issues found",
+  "focused": "180 passed; four-setting capture supplement 5 passed",
+  "cross_feature_and_preservation": "80 passed including 9 actual integration cases",
+  "line126_replay": "16 passed",
+  "raster": {
+    "reports": 28,
+    "runs": 468,
+    "failures": 0
+  },
+  "failed_full_gate_runs": 0
+}

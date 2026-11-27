@@ -3,6 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_store_presentation.dart';
 import 'package:zyra/dev/zyra_guardian_before_pay_preview.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_family_sheet.dart';
+import 'package:zyra/dev/zyra_signup_preview.dart';
+import 'package:zyra/dev/zyra_signup_preview_controller.dart';
 import 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_purchase_fine_print.dart';
@@ -39,7 +42,7 @@ void main() {
     );
   });
 
-  testWidgets('purchase links are preview notices and Unlocks omit Restore', (
+  testWidgets('LOCK51 purchase links open the reader, Restore stays a notice', (
     tester,
   ) async {
     final notices = <String>[];
@@ -53,19 +56,10 @@ void main() {
         ),
       ),
     );
-    for (final label in [
-      'Terms of use',
-      'Privacy policy',
-      'Restore purchases',
-    ]) {
-      await tester.tap(find.text(label));
-    }
+    await _legalLinks(tester);
     expect(find.text('·'), findsNWidgets(2));
-    expect(notices, [
-      ZyraPurchaseFinePrint.termsNotice,
-      ZyraPurchaseFinePrint.privacyNotice,
-      ZyraPurchaseFinePrint.restoreNotice,
-    ]);
+    await tester.tap(find.text('Restore purchases'));
+    expect(notices, [ZyraPurchaseFinePrint.restoreNotice]);
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -131,6 +125,7 @@ void main() {
       ),
     );
     expect(find.text('I understand Sara decides.'), findsOneWidget);
+    await _legalLinks(tester);
     FilledButton button() => tester.widget<FilledButton>(
       find.byKey(const ValueKey('guardian-before-pay-continue')),
     );
@@ -167,6 +162,7 @@ void main() {
         ),
       ),
     );
+    await _legalLinks(tester);
     await tester.tap(find.byKey(const ValueKey('one-upgrade-continue')));
     await tester.pumpAndSettle();
     expect(find.text('Before you pay'), findsOneWidget);
@@ -203,6 +199,137 @@ void main() {
       find.byKey(const ValueKey('draft_compatibility_store_continue')),
     );
     expect(notices, ["Purchasing isn't available yet."]);
+    await _legalLinks(tester);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('Seeker One plan disclosure opens both legal pages', (
+    tester,
+  ) async {
+    _phone(tester);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: ZyraOneUpgradePage(
+            guardian: false,
+            founderPreview: true,
+            canContinue: () => true,
+            onBack: () {},
+          ),
+        ),
+      ),
+    );
+    await _legalLinks(tester);
+    expect(find.byKey(const ValueKey('one-upgrade-continue')), findsOneWidget);
+  });
+
+  testWidgets(
+    'Family price sheet opens both legal pages and resumes its price',
+    (tester) async {
+      _phone(tester);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => TextButton(
+                onPressed: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (sheetContext) => ZyraGuardianFamilySheet(
+                    guardianName: 'Hassan',
+                    canAct: () =>
+                        ModalRoute.of(sheetContext)?.isCurrent == true,
+                    canRetainLegal: () =>
+                        ModalRoute.of(sheetContext)?.isActive == true,
+                    invited: false,
+                    onInvite: () {},
+                    onCancelInvite: () {},
+                    onClose: () => Navigator.of(sheetContext).pop(),
+                  ),
+                ),
+                child: const Text('Family sheet'),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Family sheet'));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(const ValueKey('guardian-family-introduction-primary')),
+      );
+      await tester.pumpAndSettle();
+      await _legalLinks(tester);
+      expect(
+        find.byKey(const ValueKey('guardian-family-price-primary')),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  for (final basic in [false, true]) {
+    testWidgets(
+      'Sign-up $basic legal links have the signed-out support notice',
+      (tester) async {
+        _phone(tester);
+        final controller = ZyraSignupPreviewController()
+          ..seedSetup(guardian: false, verified: true)
+          ..setMembershipBasic(basic)
+          ..setStep(ZyraSignupStep.membership);
+        addTearDown(controller.dispose);
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: ZyraSignupPreview(
+                controller: controller,
+                canAct: () => true,
+                preferencesBuilder: (_) => const SizedBox.shrink(),
+                onPause: () {},
+                onEnter: () {},
+                onShareCode: () {},
+                samplePhotos: const [],
+                ownCode: '',
+              ),
+            ),
+          ),
+        );
+        await _legalLinks(tester);
+        await tester.tap(find.byKey(const ValueKey('purchase-terms-of-use')));
+        await tester.pumpAndSettle();
+        final contact = find.byKey(const ValueKey('legal_contact'));
+        await tester.ensureVisible(contact);
+        await tester.tap(contact);
+        await tester.pumpAndSettle();
+        expect(
+          find.text('Opens the support form — no sign-in needed.'),
+          findsOneWidget,
+        );
+        expect(find.byKey(const ValueKey('help_safety_contact')), findsNothing);
+      },
+    );
+  }
+}
+
+void _phone(WidgetTester tester) {
+  tester.view.physicalSize = const Size(430, 932);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+}
+
+Future<void> _legalLinks(WidgetTester tester) async {
+  for (final (label, id) in [
+    ('terms-of-use', 'terms'),
+    ('privacy-policy', 'privacy'),
+  ]) {
+    final link = find.byKey(ValueKey('purchase-$label'));
+    await tester.ensureVisible(link);
+    await tester.tap(link);
+    await tester.pumpAndSettle();
+    expect(find.byKey(ValueKey('legal_reader_$id')), findsOneWidget);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(link, findsOneWidget);
+  }
 }

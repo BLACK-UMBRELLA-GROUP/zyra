@@ -1,0 +1,24 @@
+Analyzing SOURCE...                                             
+
+warning • Unused import: 'package:zyra/dev/zyra_family_introduction_preview.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:13:8 • unused_import
+warning • Unused import: 'package:zyra/dev/zyra_family_introduction_preview.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:13:8 • unused_import
+warning • Unused import: 'package:zyra/dev/zyra_legal_reader_preview.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:29:8 • unused_import
+warning • Unused import: 'package:zyra/dev/zyra_one_journey_guardian_family_sheet.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:30:8 • unused_import
+warning • Unused import: 'package:zyra/dev/zyra_one_journey_guardian_family_sheet.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:30:8 • unused_import
+warning • Unused import: 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:31:8 • unused_import
+warning • Unused import: 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:32:8 • unused_import
+warning • Unused import: 'package:zyra/screens/wali/family_messaging_screens.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:33:8 • unused_import
+warning • Unused import: 'package:zyra/screens/wali/family_messaging_screens.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:33:8 • unused_import
+warning • Unused import: 'package:zyra/theme/zyra_colors.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:34:8 • unused_import
+warning • Unused import: 'package:zyra/widgets/zyra_guardian_preview_lifetime.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:35:8 • unused_import
+warning • Unused import: 'package:zyra/widgets/zyra_guardian_preview_lifetime.dart'. Try removing the import directive • test/line149_accepted_integration_test.dart:35:8 • unused_import
+warning • The declaration '_expectInk' isn't referenced. Try removing the declaration of '_expectInk' • test/line149_accepted_integration_test.dart:64:6 • unused_element
+warning • The declaration '_endOfReader' isn't referenced. Try removing the declaration of '_endOfReader' • test/line149_accepted_integration_test.dart:86:14 • unused_element
+warning • The declaration '_pop' isn't referenced. Try removing the declaration of '_pop' • test/line149_accepted_integration_test.dart:93:14 • unused_element
+warning • The declaration 'mount' isn't referenced. Try removing the declaration of 'mount' • test/line149_accepted_integration_test.dart:199:37 • unused_element
+warning • The declaration 'mount' isn't referenced. Try removing the declaration of 'mount' • test/line149_accepted_integration_test.dart:199:37 • unused_element
+  error • Expected to find '}' • test/line149_accepted_integration_test.dart:278:1 • expected_token
+  error • The argument type 'Null' can't be assigned to the parameter type 'String'.  • test/line149_accepted_integration_test.dart:317:26 • argument_type_not_assignable
+  error • Expected to find '}' • test/line149_accepted_integration_test.dart:405:1 • expected_token
+
+20 issues found. (ran in 15.5s)

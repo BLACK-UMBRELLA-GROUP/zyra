@@ -521,17 +521,20 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     setState(() {
       _render++;
     });
-    bool current() =>
+    bool retainLegal() =>
         mounted &&
         identical(_sheetLease, lease) &&
         _owner == (ZyraAccountState.userId, ZyraAccountState.generation) &&
         ownerContext == widget.contextIdentity &&
         originRender == widget.renderIdentity &&
+        (widget.canActInOwnedMenu ?? widget.canAct)() &&
+        _target == target &&
+        ownedContext?.mounted == true;
+    bool current() =>
+        retainLegal() &&
         authority() &&
         widget.canAct() &&
-        _target == target &&
         sheetEpoch == widget.interactionEpoch() &&
-        ownedContext?.mounted == true &&
         ModalRoute.of(ownedContext!)?.isCurrent == true;
     try {
       await showModalBottomSheet<void>(
@@ -550,6 +553,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           return ZyraGuardianFamilySheet(
             guardianName: person.person.firstName,
             canAct: current,
+            canRetainLegal: retainLegal,
+            onLegalReturn: () => sheetEpoch = widget.interactionEpoch(),
             invited:
                 widget.familyInvited?.call(target) ?? _invites.contains(target),
             familyState: widget.familyState,

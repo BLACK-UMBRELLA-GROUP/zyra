@@ -1,0 +1,185 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/purchase_wording_preview_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/founder_launch_review_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/founder_launch_review_test.dart: only explicit internally admitted metadata receives launch attention
+00:00 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/founder_launch_review_test.dart: resolving one requirement leaves only its explicit remaining dependencies
+00:00 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/founder_launch_review_test.dart: destructive specifications have explicit internal-only requirements
+00:00 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/founder_launch_review_test.dart: overview_advanced Seeker normal is an internal-only non-executing specification hold
+00:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/founder_launch_review_test.dart: overview_advanced Seeker normal is an internal-only non-executing specification hold
+00:00 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/purchase_wording_preview_test.dart: LOCK51 purchase links open the reader, Restore stays a notice
+00:00 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/purchase_wording_preview_test.dart: LOCK51 purchase links open the reader, Restore stays a notice
+00:01 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/founder_launch_review_test.dart: detail_resetProfile Seeker normal is an internal-only non-executing specification hold
+00:01 +8: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/founder_launch_review_test.dart: detail_resetProfile Seeker normal is an internal-only non-executing specification hold
+00:01 +9: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +10: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +11: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +12: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +13: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +14: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +15: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +16: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +17: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +18: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +19: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +20: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +21: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +22: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +24: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +25: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +26: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +27: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +28: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +29: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:01 +30: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +31: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +32: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +33: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +34: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +35: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +36: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +37: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +38: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +39: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +40: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +41: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +42: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +43: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +44: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +45: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +47: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +48: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +49: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +50: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +51: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +52: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +53: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:02 +54: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:03 +55: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:03 +56: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:03 +57: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:03 +58: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +59: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +60: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +61: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +62: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +63: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +64: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +65: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +66: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +67: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +68: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +69: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +70: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +71: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +72: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +73: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +74: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +75: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +76: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +77: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +78: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:04 +79: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:05 +80: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:05 +81: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:05 +82: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:05 +83: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:05 +84: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:05 +85: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:05 +86: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:05 +87: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +88: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +89: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +90: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +91: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +92: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +93: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +94: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +95: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +96: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +97: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +98: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +99: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +100: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +101: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +102: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +103: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +104: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:06 +105: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +106: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +107: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +108: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +109: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +110: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +111: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +112: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +113: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +114: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +115: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +116: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +117: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +118: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +119: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +120: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +121: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +122: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +123: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +124: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +125: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +126: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +127: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +128: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +129: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:07 +130: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +131: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +132: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +133: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +134: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +135: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +136: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +137: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +138: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +139: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +140: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:08 +141: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.0
+00:11 +142: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration LOCK22 V4 actual Settings and Edit profile routes at 1.0
+00:11 +143: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(375.0, 667.0)/1.3
+00:13 +144: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(375.0, 667.0)/1.3
+00:16 +145: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(375.0, 667.0)/1.3
+00:16 +146: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration Settings retains every row action guardian=false smooth=true
+00:16 +147: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration Settings retains every row action guardian=false smooth=true
+00:19 +148: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration Settings retains every row action guardian=true smooth=false
+00:20 +149: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration Settings retains every row action guardian=true smooth=true
+00:22 +150: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration unkeyed responsive scrolls restore their exact child slots
+00:22 +151: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration real compatibility reader restores real page without sentinel
+00:22 +152: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration unkeyed restoration rejects a changed type path
+00:22 +153: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration unkeyed restoration rejects a changed key path
+00:22 +154: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration unkeyed restoration rejects a changed cardinality path
+00:22 +155: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: preserve
+00:22 +156: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: editable
+00:22 +157: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: filled
+00:22 +158: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: app-controller
+00:22 +159: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: app-key
+00:23 +160: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: hint
+00:23 +161: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration empty read-only display restoration: focused
+00:23 +162: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration nested scroll chrome keeps ownership: preserve
+00:23 +163: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration nested scroll chrome keeps ownership: outer-controller
+00:23 +164: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration nested scroll chrome keeps ownership: app-key
+00:23 +165: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration editable restoration identity: preserve
+00:23 +166: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration editable restoration identity: controller
+00:23 +167: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration editable restoration identity: explicit-focus
+00:23 +168: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration editable restoration identity: focused-generated
+00:23 +169: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration initial raster audit requires presentation readiness=true
+00:23 +170: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration initial raster audit requires presentation readiness=false
+00:23 +171: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration cold image first frame covers the actual closed action tray
+00:23 +172: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration failed image first frame cannot become passing raster proof
+00:23 +173: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration mounted cached PageView image settles before audit capture
+00:23 +174: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration cached image first-frame error rejects before any raster proof
+00:23 +175: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration cached image readiness stays four-pass bounded and disposes listeners
+00:23 +176: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration actual nested native notifier during once-only readiness settles before capture
+00:24 +177: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration layout-mounted unresolved image rejects before capture without readiness retry
+00:24 +178: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration pending async notifier builds before sliver raster layout
+00:25 +179: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration a nested forced scaler cannot claim a canonical tuple
+00:25 +180: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: audit harness restoration (tearDownAll)
+00:25 +180: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_rendered_text_audit_controls_test.dart: (tearDownAll)
+00:25 +180: All tests passed!

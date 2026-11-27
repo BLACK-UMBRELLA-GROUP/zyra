@@ -27,6 +27,8 @@ class ZyraGuardianFamilySheet extends StatefulWidget {
     required this.onCancelInvite,
     required this.onClose,
     this.onPurchaseNotice,
+    this.canRetainLegal,
+    this.onLegalReturn,
   });
 
   final String guardianName;
@@ -39,6 +41,8 @@ class ZyraGuardianFamilySheet extends StatefulWidget {
   final VoidCallback onCancelInvite;
   final VoidCallback onClose;
   final ValueChanged<String>? onPurchaseNotice;
+  final bool Function()? canRetainLegal;
+  final VoidCallback? onLegalReturn;
 
   @override
   State<ZyraGuardianFamilySheet> createState() =>
@@ -208,6 +212,8 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
                   familyMonthlyPence: _nextQuote.formulaMonthlyPence,
                   onNotice: _previewNotice,
                   canAct: () => _current(revision, widget.canAct),
+                  canRetainLegal: widget.canRetainLegal,
+                  onLegalReturn: widget.onLegalReturn,
                 ),
               ],
               const SizedBox(height: 5),

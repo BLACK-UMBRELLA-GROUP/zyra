@@ -106,6 +106,8 @@ import 'zyra_draft_compatibility_score_designs.dart';
 import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
 import 'zyra_help_safety_preview.dart';
+import 'zyra_legal_preview_content.dart';
+import 'zyra_legal_reader_preview.dart';
 import 'zyra_profile_small_pages_preview.dart';
 import 'zyra_privacy_security_preview.dart';
 import 'zyra_email_settings_preview.dart';
@@ -705,9 +707,11 @@ class _ZyraOneJourneyConceptShellState
       );
     }
 
+    final legalOwner = _legalRetainedGuard();
     return _signupSurface = ZyraSignupPreview(
       controller: controller,
       canAct: current,
+      canRetainLegal: () => legalOwner() && retained(),
       preferencesBuilder: preferences,
       samplePhotos: [
         if (_photos != null) _photos!.seekerPhoto else ?_signupPhoto,
@@ -3587,7 +3591,7 @@ class _ZyraOneJourneyConceptShellState
           (_fixtureOwner?.profileVideoLoader != null ||
               _fixtureOwner?.profileVideoStore != null),
       canContinue: _accountFreshGuard(),
-      childCanAct: _accountFreshGuard(allowOwnedChildRoute: true),
+      childCanAct: _legalRetainedGuard(),
       onBack: _bound(_back),
     ),
     'membership_review' => _membershipReviewView(),
@@ -8899,6 +8903,19 @@ class _ZyraOneJourneyConceptShellState
       _conceptHassanLinked &&
       _hasGuardianCompatibilityPlan;
 
+  // Only the legal child may retain this owner while its origin is covered.
+  // Ordinary compatibility admission continues to require the current route.
+  bool get _guardianCompatibilityLegalOwner =>
+      mounted &&
+      (widget.canActInOwnedDialog?.call() ?? _allowed) &&
+      _fixtureAccount ==
+          (ZyraAccountState.userId, ZyraAccountState.generation) &&
+      ModalRoute.of(context)?.isActive == true &&
+      _guardianRole &&
+      _guardianTabs.main &&
+      _conceptHassanLinked &&
+      _hasGuardianCompatibilityPlan;
+
   bool _guardianCompatibilityOrigin({required bool archived}) {
     if (!_guardianRole) return false;
     // These leaves are session-local. Validate their exact parent chain on
@@ -8924,10 +8941,15 @@ class _ZyraOneJourneyConceptShellState
     };
   }
 
-  bool _canReadGuardianCompatibility(_GuardianCompatibilityTarget target) {
+  bool _canReadGuardianCompatibility(
+    _GuardianCompatibilityTarget target, {
+    bool retainedLegal = false,
+  }) {
     final id = target.subjectId;
     final archiveId = target.archiveId;
-    if (!_guardianCompatibilityOwner ||
+    if (!(retainedLegal
+            ? _guardianCompatibilityLegalOwner
+            : _guardianCompatibilityOwner) ||
         !_profileIds.contains(id) ||
         _model.isBlocked(id) ||
         !_guardianCompatibilityOrigin(archived: archiveId != null)) {
@@ -8936,7 +8958,7 @@ class _ZyraOneJourneyConceptShellState
     if (archiveId != null) {
       final attempt = _endedAttempt(id, archiveId);
       return attempt != null &&
-          _guardianCanSeePastSummary(attempt) &&
+          _guardianCanSeePastSummary(attempt, retainedLegal: retainedLegal) &&
           attempt.hasRecordedEnd(_previewNow) &&
           attempt.progress.compatibilityConsent &&
           attempt.progress.peerCompatibilityConsent;
@@ -8952,8 +8974,13 @@ class _ZyraOneJourneyConceptShellState
         _model.compatibilityRevealed(id);
   }
 
-  bool _guardianCanSeePastSummary(DraftEndedJourneyAttempt attempt) =>
-      _guardianCompatibilityOwner &&
+  bool _guardianCanSeePastSummary(
+    DraftEndedJourneyAttempt attempt, {
+    bool retainedLegal = false,
+  }) =>
+      (retainedLegal
+          ? _guardianCompatibilityLegalOwner
+          : _guardianCompatibilityOwner) &&
       !_model.isBlocked(attempt.profileId) &&
       !_model.hasDeparted(attempt.profileId) &&
       !_model.isEndedAttemptRemoved(attempt.id) &&
@@ -9035,7 +9062,7 @@ class _ZyraOneJourneyConceptShellState
       return _unavailable();
     }
     final fresh = _accountFreshGuard();
-    final childFresh = _accountFreshGuard(allowOwnedChildRoute: true);
+    final childFresh = _legalRetainedGuard();
     return ZyraOneUpgradePage(
       guardian: true,
       founderPreview: true,
@@ -9048,7 +9075,7 @@ class _ZyraOneJourneyConceptShellState
       childCanAct: () =>
           childFresh() &&
           _guardianMembership == 'Guardian Basic' &&
-          _canReadGuardianCompatibility(target),
+          _canReadGuardianCompatibility(target, retainedLegal: true),
       onBack: _bound(_back),
     );
   }
@@ -10580,6 +10607,7 @@ class _ZyraOneJourneyConceptShellState
   bool Function() _accountFreshGuard({
     int Function()? expectedNavigatorStamp,
     bool allowOwnedChildRoute = false,
+    bool Function()? retainedAuthority,
   }) {
     final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     final revision = _uiRevision;
@@ -10589,7 +10617,7 @@ class _ZyraOneJourneyConceptShellState
     final navigatorStamp = _routeStamp;
     final hostRoute = ModalRoute.of(context);
     return () =>
-        _allowed &&
+        (retainedAuthority?.call() ?? _allowed) &&
         account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
         (allowOwnedChildRoute
             ? hostRoute?.isActive == true
@@ -10601,6 +10629,12 @@ class _ZyraOneJourneyConceptShellState
         page == _page &&
         tab == _tab;
   }
+
+  bool Function() _legalRetainedGuard() => _accountFreshGuard(
+    allowOwnedChildRoute: true,
+    retainedAuthority: () =>
+        mounted && (widget.canActInOwnedDialog?.call() ?? _allowed),
+  );
 
   void _accountDispatch(ZyraConceptAccountAction action) {
     switch (action) {
@@ -12279,6 +12313,7 @@ class _ZyraOneJourneyConceptShellState
           canAct: current,
           balance: _guardianRole ? null : _compatibilityAccess.balance,
           founderPreview: true,
+          canRetainLegal: _legalRetainedGuard(),
           onPurchaseNotice: (message) {
             if (current()) _act(() => _notice = message);
           },
@@ -12702,6 +12737,7 @@ class _ZyraOneJourneyConceptShellState
     final person = _person;
     final firstName = _accountData.name.trim().split(' ').first;
     final current = _accountFreshGuard();
+    final canReadLegal = _legalRetainedGuard();
     return ZyraHelpSafetyPreview(
       key: ValueKey(('help_safety', page, _guardianRole)),
       screen: screen,
@@ -12776,12 +12812,12 @@ class _ZyraOneJourneyConceptShellState
       },
       onLegal: (name) {
         if (!current()) return;
-        final message = switch (name) {
-          'privacy' => 'The privacy policy opens here.',
-          'terms' => 'The terms of use open here.',
-          _ => 'Opens the photo privacy page.',
-        };
-        _act(() => _notice = message);
+        openZyraLegalReader(
+          context,
+          ZyraLegalPreviewDocument.values.byName(name),
+          canOpen: current,
+          canRetain: canReadLegal,
+        );
       },
       onSubscriptions: () {
         if (current()) unawaited(_openAppleSubscriptions(current));

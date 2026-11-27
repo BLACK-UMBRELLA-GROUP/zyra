@@ -850,6 +850,34 @@ void main() {
     );
   }
 
+  for (final guardian in [false, true]) {
+    testWidgets('LOCK51 privacy rows open the same reader ($guardian)', (
+      tester,
+    ) async {
+      _size(tester);
+      final owner = _Owner();
+      await owner.mount(tester, guardian: guardian);
+      await owner.privacy(tester);
+      for (final (title, id) in [
+        ('Privacy policy', 'privacy'),
+        ('Terms of use', 'terms'),
+        ('How photos are kept safe', 'photos'),
+      ]) {
+        await _tap(tester, _key('help_row_$title'));
+        expect(_key('legal_reader_$id'), findsOneWidget);
+        expect(_key('help_safety_privacy'), findsNothing);
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+        expect(_key('help_safety_privacy'), findsOneWidget);
+      }
+      await _tap(tester, _key('help_row_Privacy policy'));
+      final contact = _key('legal_contact');
+      await tester.ensureVisible(contact);
+      await _tap(tester, contact);
+      expect(_key('help_safety_contact'), findsOneWidget);
+    });
+  }
+
   testWidgets(
     'old Privacy legal callback cannot act after owner loss or fresh mount',
     (tester) async {
@@ -863,12 +891,12 @@ void main() {
       oldOwner.allowed = false;
       saved('privacy');
       await tester.pumpAndSettle();
-      expect(find.text('The privacy policy opens here.'), findsNothing);
+      expect(_key('legal_reader_privacy'), findsNothing);
       final freshOwner = _Owner();
       await freshOwner.mount(tester, guardian: true);
       saved('privacy');
       await tester.pumpAndSettle();
-      expect(find.text('The privacy policy opens here.'), findsNothing);
+      expect(_key('legal_reader_privacy'), findsNothing);
       expect(find.byType(ZyraConceptProfilePresentation), findsOneWidget);
       expect(find.text('Founder input needed before launch'), findsNothing);
       await tester.pumpWidget(const SizedBox.shrink());

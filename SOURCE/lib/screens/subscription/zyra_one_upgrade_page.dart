@@ -234,6 +234,7 @@ class ZyraOneUpgradePage extends StatelessWidget {
                 : ZyraPurchaseOffer.seekerOne,
             onNotice: (message) => _previewNotice(context, message),
             canAct: canContinue,
+            canRetainLegal: childCanAct,
           ),
         ],
         TextButton(

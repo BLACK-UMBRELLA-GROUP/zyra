@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../data/zyra_membership_catalog.dart';
+import '../dev/zyra_legal_preview_content.dart';
+import '../dev/zyra_legal_reader_preview.dart';
 import '../theme/zyra_text.dart';
 
 /// LOCK 38 purchase disclosure for the detached Founder preview.
 ///
-/// The catalogue owns prices. This table owns purchase words and preview-only
-/// actions; none of its links starts a purchase or opens a legal page.
+/// Prices come from the catalogue. LOCK 51 links open the local sample reader.
 enum ZyraPurchaseOffer {
   seekerOne,
   guardianOne,
@@ -23,6 +24,9 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
     this.onNotice,
     this.canAct,
     this.disclosureColor,
+    this.canRetainLegal,
+    this.onLegalReturn,
+    this.signupLegal = false,
   }) : assert(
          offer != ZyraPurchaseOffer.zyraFamily || familyMonthlyPence != null,
        );
@@ -35,8 +39,10 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
   /// Q241 opt-in for the actual Basic comparison paragraph only.
   final Color? disclosureColor;
 
-  static const termsNotice = 'The terms of use open here.';
-  static const privacyNotice = 'The privacy policy opens here.';
+  final bool Function()? canRetainLegal;
+  final VoidCallback? onLegalReturn;
+  final bool signupLegal;
+
   static const restoreNotice =
       'ZYRA checks your Apple ID for earlier purchases.';
   static const appleNotice = "Apple's subscription sheet opens here.";
@@ -70,11 +76,24 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
     }
   }
 
-  Widget _link(BuildContext context, String label, String message) =>
+  void _legal(BuildContext context, ZyraLegalPreviewDocument document) {
+    openZyraLegalReader(
+      context,
+      document,
+      canOpen: canAct ?? _allowedWhenUnscoped,
+      canRetain: canRetainLegal ?? canAct ?? _allowedWhenUnscoped,
+      signup: signupLegal,
+      onReturn: onLegalReturn,
+    );
+  }
+
+  static bool _allowedWhenUnscoped() => true;
+
+  Widget _link(BuildContext context, String label, VoidCallback onTap) =>
       TextButton(
         key: ValueKey('purchase-${label.toLowerCase().replaceAll(' ', '-')}'),
         onPressed: () {
-          if (canAct?.call() ?? true) _notice(context, message);
+          if (canAct?.call() ?? true) onTap();
         },
         style: TextButton.styleFrom(
           foregroundColor: const Color(0xFF845F24),
@@ -94,13 +113,13 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
   Widget _linkWithSeparator(
     BuildContext context,
     String label,
-    String message,
+    VoidCallback onTap,
   ) => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
       _separator(),
       const SizedBox(width: 2),
-      Flexible(child: _link(context, label, message)),
+      Flexible(child: _link(context, label, onTap)),
     ],
   );
 
@@ -127,10 +146,22 @@ class ZyraPurchaseFinePrint extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 2,
         children: [
-          _link(context, 'Terms of use', termsNotice),
-          _linkWithSeparator(context, 'Privacy policy', privacyNotice),
+          _link(
+            context,
+            'Terms of use',
+            () => _legal(context, ZyraLegalPreviewDocument.terms),
+          ),
+          _linkWithSeparator(
+            context,
+            'Privacy policy',
+            () => _legal(context, ZyraLegalPreviewDocument.privacy),
+          ),
           if (offer != ZyraPurchaseOffer.compatibilityUnlocks) ...[
-            _linkWithSeparator(context, 'Restore purchases', restoreNotice),
+            _linkWithSeparator(
+              context,
+              'Restore purchases',
+              () => _notice(context, restoreNotice),
+            ),
           ],
         ],
       ),

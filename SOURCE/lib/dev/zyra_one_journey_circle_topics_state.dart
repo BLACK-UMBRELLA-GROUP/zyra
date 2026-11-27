@@ -555,13 +555,13 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     final lease = Object(), epoch = _topicsEpoch;
     _topicsSheet = lease;
     BuildContext? owned;
-    bool current() =>
+    bool retainLegal() =>
         mounted &&
         _canInteract &&
         epoch == _topicsEpoch &&
         identical(_topicsSheet, lease) &&
-        owned?.mounted == true &&
-        ModalRoute.of(owned!)?.isCurrent == true;
+        owned?.mounted == true;
+    bool current() => retainLegal() && ModalRoute.of(owned!)?.isCurrent == true;
     try {
       await showModalBottomSheet<void>(
         context: context,
@@ -579,6 +579,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
             ZyraGuardianFamilySheet(
               guardianName: person.firstName,
               canAct: current,
+              canRetainLegal: retainLegal,
               invited: _familyInvites.contains(person.userId),
               onInvite: () {
                 if (current()) _familyInvites.add(person.userId);

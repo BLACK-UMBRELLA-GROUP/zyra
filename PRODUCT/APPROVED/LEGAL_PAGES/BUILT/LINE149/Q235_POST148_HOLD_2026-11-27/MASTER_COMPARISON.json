@@ -1,0 +1,142 @@
+[
+  {
+    "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg00_privacy_data__rows.png",
+    "build": "SOURCE/build/line149/screens/lg00_privacy_data__rows.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "master_sha256": "12a793bdbc4d97e1cfe9f5274cff3d2ed37d363b5df7f40f3c9c7a2d83cbfb78",
+    "build_sha256": "7c62424794e04110d021f8f98b8cb520a67020ea77bf367e332492ac6dd2b1e7",
+    "mean_absolute_channel_difference": [
+      8.918431369287243,
+      10.528824954808087,
+      13.561767918732187
+    ],
+    "pixel_exact": false
+  },
+  {
+    "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg01_privacy__top.png",
+    "build": "SOURCE/build/line149/screens/lg01_privacy__top.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "master_sha256": "b3165aee97b065bec52e1769388e187fc4648400a15a8901d5fe1b9db801b171",
+    "build_sha256": "ece0113a34f4b20adfdad138664853c37b3190130bb67657e6028cc58f70cf3a",
+    "mean_absolute_channel_difference": [
+      17.882400660966386,
+      18.107960707988155,
+      18.094015259895087
+    ],
+    "pixel_exact": false
+  },
+  {
+    "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg02_privacy__all_sections.png",
+    "build": "SOURCE/build/line149/screens/lg02_privacy__all_sections.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "master_sha256": "4a21cb2a9e679eff0d4c2e46a4e6b9887ddb03d42f9f1ab177ccfa8cd8d3e3d4",
+    "build_sha256": "d4fef57afecdb6c3a2c5c2b5895e5d2d6fc2f1c3949dcb852a9774d2487f1532",
+    "mean_absolute_channel_difference": [
+      7.685350888866709,
+      7.949802874538377,
+      8.061592696099632
+    ],
+    "pixel_exact": false
+  },
+  {
+    "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg03_privacy__jumped_to_section.png",
+    "build": "SOURCE/build/line149/screens/lg03_privacy__jumped_to_section.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "master_sha256": "7a40a177baf71b3ec08a8154c45678aed6aaccc7c265c717137079ea4858a796",
+    "build_sha256": "9cae0e37e595331339b8999e5259ad2b6af47f11a9fe99a4e32d0167bcaf99ad",
+    "mean_absolute_channel_difference": [
+      18.58351853700192,
+      19.05202310055339,
+      18.88303501125639
+    ],
+    "pixel_exact": false
+  },
+  {
+    "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg04_privacy__end_read_next.png",
+    "build": "SOURCE/build/line149/screens/lg04_privacy__end_read_next.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "master_sha256": "53ce82b296909cde5bc9ec96f7593f282f4560cfb2440ab40be6b89b407db132",
+    "build_sha256": "f38926d11bd9a0a8eda34e7ae1e03494f392875c3b4b116bbfc2842e08dfbfe1",
+    "mean_absolute_channel_difference": [
+      12.947663328564616,
+      13.285592651739472,
+      13.441679697463709
+    ],
+    "pixel_exact": false
+  },
+  {
+    "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg05_terms__top.png",
+    "build": "SOURCE/build/line149/screens/lg05_terms__top.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "master_sha256": "4ac2f91f49aaa8092f228b67eca446f7e91f8ee951746fc22841659cb806bb9b",
+    "build_sha256": "a52e748d5cb3f78a49b9eaee6cf8cc44070258370ad56abd0a7d6025583c655c",
+    "mean_absolute_channel_difference": [
+      16.697729037051825,
+      16.919283638863938,
+      16.992473189828214
+    ],
+    "pixel_exact": false
+  },
+  {
+    "master": "PRODUCT/APPROVED/LEGAL_PAGES/MASTERS/lg06_photos__top.png",
+    "build": "SOURCE/build/line149/screens/lg06_photos__top.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "master_sha256": "4464ff49ab862cee0db230b50f4da7381408bfd82146f78b789229422a5ad503",
+    "build_sha256": "d0bd8136b2ddb56988af7abfb46cd25f6b399eef240a79ca8611eb2f46f38fb7",
+    "mean_absolute_channel_difference": [
+      14.236710805026005,
+      14.604632864224639,
+      14.519094553681338
+    ],
+    "pixel_exact": false
+  }
+]

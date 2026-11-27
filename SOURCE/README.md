@@ -113,8 +113,8 @@ migration, native build, phone installation or delivery.
 LOCK 37 adds Contact support, Report sent, Advanced, Download my data,
 Delete my account and Privacy & data to the local Founder preview for Seeker
 and Guardian. Contact, report, export request and account closure use sample
-state only. The three legal rows show the approved preview messages; they do
-not open hosted documents yet. The closed-page Close action exits the preview.
+state only. LOCK 51 makes the three legal rows open the local sample reader;
+hosted documents remain outside this preview. The closed-page Close action exits the preview.
 The focused checks are in `test/zyra_help_safety_preview_test.dart` and
 `test/browse_options_menu_test.dart`.
 
@@ -339,6 +339,15 @@ Focused checks are `test/line147_family_introduction_test.dart`,
 `test/zyra_developer_panel_entry_test.dart`. Enable `ZYRA_LINE147_CAPTURE=true`
 through the protected driver to write the focused PNGs and raster reports under
 `build/line147/`.
+
+## Founder preview legal pages
+
+LOCK 51 opens Privacy policy, Terms of use and How photos are kept safe in the
+detached Founder preview. Settings → Privacy & data and the Terms of use and
+Privacy policy links in purchase disclosures use the same reader. It keeps its
+section navigation visible while the text scrolls, and Read next stays on the
+same route. The content comes from the fixed V365 sample table. The web address
+is displayed as text. Restore purchases still shows its preview notice.
 
 ## Rendered text audit
 

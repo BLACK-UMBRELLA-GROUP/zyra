@@ -1,0 +1,14 @@
+{
+  "scanned_paths": 106,
+  "raw_hits": 2045,
+  "text_hits": 103,
+  "binary_hits": 1942,
+  "unresolved": 0,
+  "classification": {
+    "binary": "Raw PNG bytes decoded as text by the public checker; all are generated legal preview/comparison images, not textual records. Three binary legal/company matches and the binary money matches are false positives.",
+    "text": "Reviewed source/UI/test labels, public catalogue-backed preview copy, Dart record accessors, and evidence descriptions/path labels. No private business record, actual draft, credential or personal information."
+  },
+  "source_secret_scan": "clear",
+  "evidence_secret_scan": "clear",
+  "checks_changed": false
+}

@@ -20,6 +20,7 @@ class ZyraDraftCompatibilityStorePresentation extends StatefulWidget {
     this.onTerms,
     this.founderPreview = false,
     this.onPurchaseNotice,
+    this.canRetainLegal,
     this.storePlatform = TargetPlatform.iOS,
   }) : assert(balance == null || balance >= 0);
 
@@ -29,6 +30,7 @@ class ZyraDraftCompatibilityStorePresentation extends StatefulWidget {
   final VoidCallback? onTerms;
   final bool founderPreview;
   final ValueChanged<String>? onPurchaseNotice;
+  final bool Function()? canRetainLegal;
   final TargetPlatform storePlatform;
 
   @override
@@ -265,6 +267,12 @@ class _ZyraDraftCompatibilityStorePresentationState
             offer: ZyraPurchaseOffer.compatibilityUnlocks,
             onNotice: _previewNotice,
             canAct: () => _current(revision),
+            canRetainLegal:
+                widget.canRetainLegal ??
+                () =>
+                    mounted &&
+                    revision == _revision &&
+                    (widget.canAct?.call() ?? true),
           )
         else
           Wrap(

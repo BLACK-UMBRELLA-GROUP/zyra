@@ -1,0 +1,397 @@
+{
+  "reviewed_utc": "2026-11-27T22:23:52.898502+00:00",
+  "reviewer": "held_verification",
+  "method": "Read-only git/object/filesystem inspection; both patches reconstructed in memory; no drivers or git writes",
+  "accepted_head": "7af4268181c6ba7620be27867259a0ac4cd37f8a",
+  "held_checks": {
+    "original": {
+      "patch_sha256": "801ea0d1f1acd84ffc0868f28538e602e4f6799f7387d6007e10c03642c69a7e",
+      "expected_patch_matches": true,
+      "declared_base": "4ed97269f6b048e8c5bcf277537fbb5ef6b15a9c",
+      "paths": [
+        {
+          "path": "SOURCE/README.md",
+          "preimage_sha256": "030c7e8ba448512e084a5245c67044bc9c0ffcf61e4f6da8afe7eb643f2c2522",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "05f9e50435d50ead97aa0b471ec399ac2c9ce4f84459183cd72a46edc8789d32",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+          "preimage_sha256": "cb8149939a389f4d34cc83b8a5fc4b2298adb9095c5fa9b8948f717e792e9964",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "a65e34facd784c1a9a8f5f471f4ae7174766b48bde95d3da5372df0745e38d48",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart",
+          "preimage_sha256": "f5a7df71b0a9a22201696898f85c861dfe81702a96723f87a5f1fe3126a79a81",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "6955cf993a936a5ea02d19c6fcaadb8e60b6c589df6852d0ffc0a3b792bee12b",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_legal_preview_content.dart",
+          "preimage_sha256": null,
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "aabe03342a7ca0715eace0863f7487382681d34ac3654872a95a7fb382aa4c69",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_legal_reader_preview.dart",
+          "preimage_sha256": null,
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "57928c7fd4a6a7b1a8de0a701afbc6949786e0a79d8f302e07c35f786738a783",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+          "preimage_sha256": "d990a98abfd8a66f47d821545a89604ba3e486552dce7d6ee643c8fab1c3ba49",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "c91c5f59a3d93c90431472e8e903f89738194ff449aa2dd5e8d2b1704ea45c08",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+          "preimage_sha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "dde8de3bc386e9b375fbf7a24fca8c953727f1acd0e103e7a45f2b85d6d2c940",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+          "preimage_sha256": "bb95d92f93bccf2bdf4b69bfff4666cfae2f466c627f9d51f99f3e8a27d5a2fd",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "e30b73a899b269de5a30e113f7f2bed28e998e8e658ac5efdb1df5bb23dbbd46",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+          "preimage_sha256": "460381d8569d41b466ad7dc65e3fe1366bab5f37d3efcb29ffd3da4c3ddfda37",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "fa98688fc81589881982ae6d8c6ac65d0fc540c5df3928bb176a1a9dcac64770",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+          "preimage_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "12d0c4f9d0ee08977c0219039cfd265bfdb703638d90d47fbbcf16208efbfc0f",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+          "preimage_sha256": "63a764f657c006efb1a912f536260e11ce055626d7b42fbb25bc74de7c66862e",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "723ddb8c45e5f5ad66091b732267b60d3810c82f5abcf8184cebdad9bae4b16b",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+          "preimage_sha256": "dccf45ad1a9c97e5ceadfdb13d7ec5d948a353cad77cc78ab2093f3eb73a6b6d",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "7fa427ace0f1c30b7a0d45f3a2ab9ec308ba09f2d5b2ffd025a2f1aea3d5ac84",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/test/founder_launch_review_test.dart",
+          "preimage_sha256": "3536e4f83bf8a20f66db783d0161d97bc628b9e481e770b3a0b88c68123ff9f0",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "5f0993a1820b2237686f7eabe9d5502fbfc5fd57ff5e905c4ae877a3213223a9",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/test/purchase_wording_preview_test.dart",
+          "preimage_sha256": "7a4090657ec3682c2a4a21e1ba6781b297beda31a7bae222c73f49591a287b93",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "3ea2d42dad28c3e01e4b29fc08849add1e824a4207e9ddbddb04b9766e861c7b",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/test/visual/line149_legal_reader_capture_test.dart",
+          "preimage_sha256": null,
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "36ab07dc268e3835b93e7478432cafe3af8b1ffb841c18b7cea781b19fe9a979",
+          "output_matches": true
+        }
+      ],
+      "manifest_sha256": "5bcd219a01e2516bbc2b33d1b1f71a59a134843d814b2ed840a84c54c71f8af6",
+      "source_manifest_sha256": "ad55891c22b387a52a2e3f38d02df1d1a983262c9ac5676c44ef494596871c34"
+    },
+    "newer": {
+      "patch_sha256": "b85847bd4523db98d6b3e1272dc30e01d1143232484115ff87ff1bf9937dc8a0",
+      "expected_patch_matches": true,
+      "declared_base": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+      "paths": [
+        {
+          "path": "SOURCE/README.md",
+          "preimage_sha256": "c21455fb052ff8b15329d55a8585ac9baef47a8c0b3c48fa5243e5e6468b11dc",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "8f9d6759797f289b189bb8ef8d313c94f60a5ce1cf8acdb081bba1c5fbce1338",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+          "preimage_sha256": "cb8149939a389f4d34cc83b8a5fc4b2298adb9095c5fa9b8948f717e792e9964",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "a65e34facd784c1a9a8f5f471f4ae7174766b48bde95d3da5372df0745e38d48",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart",
+          "preimage_sha256": "c74cadb64cfe42ce4fe6ba2a381ec3453d3d2d153a52988c0bdc48f2da6d8bc1",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "347ca0e45b0a865030863dddd0df9eb3efe5e6ee6ff9efbb28dd9c0804e1954e",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_legal_preview_content.dart",
+          "preimage_sha256": null,
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "aabe03342a7ca0715eace0863f7487382681d34ac3654872a95a7fb382aa4c69",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_legal_reader_preview.dart",
+          "preimage_sha256": null,
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "57928c7fd4a6a7b1a8de0a701afbc6949786e0a79d8f302e07c35f786738a783",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+          "preimage_sha256": "d990a98abfd8a66f47d821545a89604ba3e486552dce7d6ee643c8fab1c3ba49",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "c91c5f59a3d93c90431472e8e903f89738194ff449aa2dd5e8d2b1704ea45c08",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+          "preimage_sha256": "727b273f1d6620780fe984455327f4c7acc14ea2ec157af5cf3b6d0137170758",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "47fe1d05d5a1790fa40ef0ae74717efb610fa4212182320351009c4d46cbf6f3",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+          "preimage_sha256": "8ced80d5d840ed59f815381c1fcef05e1c73d5a6ac5b668a10de90773a0e0982",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "e41c1e1b08fce2bc22da7d80a8d5990515ef830736204eb7406f4fc7b3e467d6",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+          "preimage_sha256": "460381d8569d41b466ad7dc65e3fe1366bab5f37d3efcb29ffd3da4c3ddfda37",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "fa98688fc81589881982ae6d8c6ac65d0fc540c5df3928bb176a1a9dcac64770",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+          "preimage_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "12d0c4f9d0ee08977c0219039cfd265bfdb703638d90d47fbbcf16208efbfc0f",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+          "preimage_sha256": "45ed70405774d2713c7e9e4919eccfcb988334b38f9caca1297934a1324a07b6",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "cfac5bfd4ba636d4a6953bd493dd874f2268205b032aa7430133030d1db04ba1",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+          "preimage_sha256": "4184e19a6ed5d338929c65987f198fcedcb8156a94b9d01dde0c237de4058bcc",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "a25622fbb6829eea358a522d5f68fcf2d57db88d83e7c8901bf52361bae68725",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/test/founder_launch_review_test.dart",
+          "preimage_sha256": "3536e4f83bf8a20f66db783d0161d97bc628b9e481e770b3a0b88c68123ff9f0",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "5f0993a1820b2237686f7eabe9d5502fbfc5fd57ff5e905c4ae877a3213223a9",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/test/purchase_wording_preview_test.dart",
+          "preimage_sha256": "7a4090657ec3682c2a4a21e1ba6781b297beda31a7bae222c73f49591a287b93",
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "3ea2d42dad28c3e01e4b29fc08849add1e824a4207e9ddbddb04b9766e861c7b",
+          "output_matches": true
+        },
+        {
+          "path": "SOURCE/test/visual/line149_legal_reader_capture_test.dart",
+          "preimage_sha256": null,
+          "preimage_matches": true,
+          "zero_fuzz_context": true,
+          "output_sha256": "36ab07dc268e3835b93e7478432cafe3af8b1ffb841c18b7cea781b19fe9a979",
+          "output_matches": true
+        }
+      ],
+      "manifest_sha256": "194d063beba803bc17c411a135dd53e358b88a990c3ba2d2b2e7ca7becf60bee"
+    }
+  },
+  "preservation": {
+    "index": {
+      "count": 7,
+      "mismatches": []
+    },
+    "foreign_working": {
+      "count": 5,
+      "mismatches": []
+    },
+    "prior_evidence": {
+      "count": 24365,
+      "mismatches": []
+    }
+  },
+  "integrated_paths": [
+    {
+      "path": "SOURCE/README.md",
+      "accepted_sha256": "0527de4a9af2ef2b23c1d97a5100f4bb97a0b3ad7e3f03fef6ed7c25f7c66bb7",
+      "newer_preimage_matches_accepted": false,
+      "reviewed_current_sha256": "b3a2a7945802d9ca92c8dd446fcc7f36bd5c37f2ca13fd6c41cf17d0b80bf992"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "accepted_sha256": "cb8149939a389f4d34cc83b8a5fc4b2298adb9095c5fa9b8948f717e792e9964",
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "a65e34facd784c1a9a8f5f471f4ae7174766b48bde95d3da5372df0745e38d48"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart",
+      "accepted_sha256": "c74cadb64cfe42ce4fe6ba2a381ec3453d3d2d153a52988c0bdc48f2da6d8bc1",
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "347ca0e45b0a865030863dddd0df9eb3efe5e6ee6ff9efbb28dd9c0804e1954e"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_legal_preview_content.dart",
+      "accepted_sha256": null,
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "aabe03342a7ca0715eace0863f7487382681d34ac3654872a95a7fb382aa4c69"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_legal_reader_preview.dart",
+      "accepted_sha256": null,
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "86a9db4cf3a6a0969df68dd0deaa629b9a5fd1a211c21b4923fc0437a6bad659"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "accepted_sha256": "eee694aa95617f9e84dbbfa5f08283af72fac833719429752c122213fbc3eb69",
+      "newer_preimage_matches_accepted": false,
+      "reviewed_current_sha256": "29f4cbfbb1428f9670a6f5f9e465183b7c1c7151c19bd721c281767548344e04"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "accepted_sha256": "0741f0cc1ea5a44b992915187367b5626c1bab43ec5c1fd47a6b2d66f357c3d1",
+      "newer_preimage_matches_accepted": false,
+      "reviewed_current_sha256": "c5906f23d72b9432165c159b3a40f8ff7a0457820c3de4accb1c4e4261b02b17"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "accepted_sha256": "a2628c27c85409cd6e75e9a44f77cfd17d60ff7b37c2bee14d487cac9015818a",
+      "newer_preimage_matches_accepted": false,
+      "reviewed_current_sha256": "d0e0ce8353b183663bfc33b647d32cd5ad3ac15844ec0027a0114b106342a04c"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "accepted_sha256": "460381d8569d41b466ad7dc65e3fe1366bab5f37d3efcb29ffd3da4c3ddfda37",
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "fa98688fc81589881982ae6d8c6ac65d0fc540c5df3928bb176a1a9dcac64770"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "accepted_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "12d0c4f9d0ee08977c0219039cfd265bfdb703638d90d47fbbcf16208efbfc0f"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "accepted_sha256": "91a2464c9c4cbc0900117efafb321e79ee60efbedbc142409f2359e38a89f743",
+      "newer_preimage_matches_accepted": false,
+      "reviewed_current_sha256": "8c54b05014825fee65aebc6c09f88a0af3010da63d26ee1ae686914c6756efb8"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+      "accepted_sha256": "69c0bb313dde91291bc3de61016692d763c93309b0ca81c0b395ffa36adc316c",
+      "newer_preimage_matches_accepted": false,
+      "reviewed_current_sha256": "554d48aed674cc0ec3f46477253f8dd23d8299de3ca9a80d1f5a378a94a2c120"
+    },
+    {
+      "path": "SOURCE/test/founder_launch_review_test.dart",
+      "accepted_sha256": "3536e4f83bf8a20f66db783d0161d97bc628b9e481e770b3a0b88c68123ff9f0",
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "5f0993a1820b2237686f7eabe9d5502fbfc5fd57ff5e905c4ae877a3213223a9"
+    },
+    {
+      "path": "SOURCE/test/purchase_wording_preview_test.dart",
+      "accepted_sha256": "7a4090657ec3682c2a4a21e1ba6781b297beda31a7bae222c73f49591a287b93",
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "3ea2d42dad28c3e01e4b29fc08849add1e824a4207e9ddbddb04b9766e861c7b"
+    },
+    {
+      "path": "SOURCE/test/visual/line149_legal_reader_capture_test.dart",
+      "accepted_sha256": null,
+      "newer_preimage_matches_accepted": true,
+      "reviewed_current_sha256": "36ab07dc268e3835b93e7478432cafe3af8b1ffb841c18b7cea781b19fe9a979"
+    }
+  ],
+  "review": {
+    "disclosure": "Q241 optional constructor/field and null/default branch preserved; 11.5 pt paragraph, 12 pt gold links and 44 pt controls unchanged; Basic-only opt-in remains on actual one_upgrade; Guardian Compatibility has no override.",
+    "authority": "_accountFreshGuard default _allowed path retained; _legalRetainedGuard opt-in still checks account generation, role, UI revision, page, tab and active host route, with existing canActInOwnedDialog owner authority.",
+    "line147": "No diff in accepted introductionAttachment, role/topic/generation/foreground logic; Circle diff limited to price sheet retainLegal/current split and passed callback.",
+    "boundary": "Static re-review: direct and owned bridge notifications, ancestor Circle authority, scenario/auth/navigation changes and origin.popped feed exact-route withdrawal. Reader, support and all-sections use the same retained predicate. Withdrawal denies immediately and removes only the captured active non-first route after frame; origin-pop chains child cleanup. No generic pop in revocation path.",
+    "actionable_findings": [
+      {
+        "id": "review-direct-bridge",
+        "path": "SOURCE/lib/dev/zyra_legal_reader_preview.dart",
+        "line": 38,
+        "status": "RESOLVED: direct ZyraDeveloperSeekerScope.bridgeOf(origin context) is included in notifier merge; deduplicated against owned bridge.",
+        "finding": "Changes merges only owned-navigator bridge; direct ZyraDeveloperSeekerScope bridge is absent on normal purchase and Privacy routes, allowing owner denial to leave a reader until another watched event.",
+        "recommendation": "Include ZyraDeveloperSeekerScope.bridgeOf(origin context) in retained changes, deduplicated if identical to owned bridge."
+      }
+    ],
+    "runtime_validation": "Not run by reviewer; root owns protected gates.",
+    "unresolved_actionable_findings": [],
+    "guardian_compatibility": "Static re-review: original _guardianCompatibilityOwner remains byte-for-byte unchanged, including _allowed and current route. _canReadGuardianCompatibility and _guardianCanSeePastSummary default retainedLegal=false and preserve the accepted owner/blocked/origin/attempt/consent checks. Only upgrade childCanAct supplies retainedLegal=true, combined with captured _legalRetainedGuard and Guardian Basic. New retained owner uses mounted, supplied owned-dialog authority, same account generation, active route, role/Main/linked/plan checks. canContinue still uses original fresh and ordinary read path; no Q241 colour override added.",
+    "scope": "Current tracked SOURCE delta remains the original 12 tracked paths; original three new paths plus line149_accepted_integration_test.dart are untracked line149 additions. No .github delta. No other line or gate edit observed.",
+    "supplemental_smoke_path": {
+      "path": "SOURCE/test/line149_accepted_integration_test.dart",
+      "sha256": "87644846e0bfb53ef707898a17ccc331c68f815b85dfa87ffe49e2dbae1ac366",
+      "test_results": "Root reports actual smoke 7 passed; expanded 9-case and preservation/ordinary in progress. Reviewer did not run drivers or claim those gates."
+    }
+  },
+  "final_static_review_utc": "2026-11-27T22:25:45.777665+00:00"
+}

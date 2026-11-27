@@ -1,0 +1,91 @@
+{
+  "line": 149,
+  "lock": 51,
+  "question": 235,
+  "base": "7af4268181c6ba7620be27867259a0ac4cd37f8a",
+  "paths": [
+    {
+      "path": "SOURCE/README.md",
+      "base_sha256": "0527de4a9af2ef2b23c1d97a5100f4bb97a0b3ad7e3f03fef6ed7c25f7c66bb7",
+      "candidate_sha256": "b3a2a7945802d9ca92c8dd446fcc7f36bd5c37f2ca13fd6c41cf17d0b80bf992"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "base_sha256": "cb8149939a389f4d34cc83b8a5fc4b2298adb9095c5fa9b8948f717e792e9964",
+      "candidate_sha256": "a65e34facd784c1a9a8f5f471f4ae7174766b48bde95d3da5372df0745e38d48"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart",
+      "base_sha256": "c74cadb64cfe42ce4fe6ba2a381ec3453d3d2d153a52988c0bdc48f2da6d8bc1",
+      "candidate_sha256": "347ca0e45b0a865030863dddd0df9eb3efe5e6ee6ff9efbb28dd9c0804e1954e"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_legal_preview_content.dart",
+      "base_sha256": null,
+      "candidate_sha256": "aabe03342a7ca0715eace0863f7487382681d34ac3654872a95a7fb382aa4c69"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_legal_reader_preview.dart",
+      "base_sha256": null,
+      "candidate_sha256": "86a9db4cf3a6a0969df68dd0deaa629b9a5fd1a211c21b4923fc0437a6bad659"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "base_sha256": "eee694aa95617f9e84dbbfa5f08283af72fac833719429752c122213fbc3eb69",
+      "candidate_sha256": "29f4cbfbb1428f9670a6f5f9e465183b7c1c7151c19bd721c281767548344e04"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "base_sha256": "0741f0cc1ea5a44b992915187367b5626c1bab43ec5c1fd47a6b2d66f357c3d1",
+      "candidate_sha256": "c5906f23d72b9432165c159b3a40f8ff7a0457820c3de4accb1c4e4261b02b17"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "base_sha256": "a2628c27c85409cd6e75e9a44f77cfd17d60ff7b37c2bee14d487cac9015818a",
+      "candidate_sha256": "d0e0ce8353b183663bfc33b647d32cd5ad3ac15844ec0027a0114b106342a04c"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "base_sha256": "460381d8569d41b466ad7dc65e3fe1366bab5f37d3efcb29ffd3da4c3ddfda37",
+      "candidate_sha256": "fa98688fc81589881982ae6d8c6ac65d0fc540c5df3928bb176a1a9dcac64770"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "base_sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251",
+      "candidate_sha256": "12d0c4f9d0ee08977c0219039cfd265bfdb703638d90d47fbbcf16208efbfc0f"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "base_sha256": "91a2464c9c4cbc0900117efafb321e79ee60efbedbc142409f2359e38a89f743",
+      "candidate_sha256": "8c54b05014825fee65aebc6c09f88a0af3010da63d26ee1ae686914c6756efb8"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+      "base_sha256": "69c0bb313dde91291bc3de61016692d763c93309b0ca81c0b395ffa36adc316c",
+      "candidate_sha256": "554d48aed674cc0ec3f46477253f8dd23d8299de3ca9a80d1f5a378a94a2c120"
+    },
+    {
+      "path": "SOURCE/test/founder_launch_review_test.dart",
+      "base_sha256": "3536e4f83bf8a20f66db783d0161d97bc628b9e481e770b3a0b88c68123ff9f0",
+      "candidate_sha256": "5f0993a1820b2237686f7eabe9d5502fbfc5fd57ff5e905c4ae877a3213223a9"
+    },
+    {
+      "path": "SOURCE/test/purchase_wording_preview_test.dart",
+      "base_sha256": "7a4090657ec3682c2a4a21e1ba6781b297beda31a7bae222c73f49591a287b93",
+      "candidate_sha256": "3ea2d42dad28c3e01e4b29fc08849add1e824a4207e9ddbddb04b9766e861c7b"
+    },
+    {
+      "path": "SOURCE/test/visual/line149_legal_reader_capture_test.dart",
+      "base_sha256": null,
+      "candidate_sha256": "f9c7fd3b65ab0b9efd38d498ce38d3a4cebe2706fc1582a44c72d9688fd62d16"
+    },
+    {
+      "path": "SOURCE/test/line149_accepted_integration_test.dart",
+      "base_sha256": null,
+      "candidate_sha256": "87644846e0bfb53ef707898a17ccc331c68f815b85dfa87ffe49e2dbae1ac366"
+    }
+  ],
+  "source_paths": 16,
+  "budget_started": "2026-11-27T22:18:11.192211+00:00",
+  "source_patch_sha256": "479d1dd1a729362b83a88cedfc93b2c4d7072da7a72c67b78af7ef3a9385d13d"
+}
