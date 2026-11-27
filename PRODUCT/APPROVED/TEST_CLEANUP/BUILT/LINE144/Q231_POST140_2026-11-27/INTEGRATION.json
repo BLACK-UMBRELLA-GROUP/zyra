@@ -1,0 +1,85 @@
+{
+  "line": 144,
+  "question": 231,
+  "accepted_source": "344943800577e0e7f6f5f56c50d09b0abb86401a",
+  "paths": [
+    {
+      "path": ".github/workflows/zyra-ci.yml",
+      "base_sha256": "64c440795304b06c9adef9cf2263de9963aeb0fe524525bc810c0ca6538b290b",
+      "candidate_sha256": "9171caba0d3e044e311266e2dac44eda245907e07c8188c01dc561a18f2d354a",
+      "sealed_candidate_sha256": "9171caba0d3e044e311266e2dac44eda245907e07c8188c01dc561a18f2d354a",
+      "base_matches_sealed_preimage": true,
+      "bytes": 12228
+    },
+    {
+      "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+      "base_sha256": "c52565978bd6d9405805764badb3c54958aa89d8d49c1253cb8d515f3d46f79e",
+      "candidate_sha256": "1c5e5a8ee5b426354f9df957cc3ed01a213bcfaa8f3da47c163744f95b921310",
+      "sealed_candidate_sha256": "bcf013e8aa45ccfdf885971dce7ea5ad89851f4d94b1fa0e45efb2ab7d454263",
+      "base_matches_sealed_preimage": false,
+      "bytes": 37631
+    },
+    {
+      "path": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "base_sha256": "a6694908bb945be048390ef443fe9f492ae9a770a363d36bc46476e998394e66",
+      "candidate_sha256": "ca7025b3a6ae8777596d8f6abe39492e9f5537865ac7b3d3b2a563805db5ad6a",
+      "sealed_candidate_sha256": "ca7025b3a6ae8777596d8f6abe39492e9f5537865ac7b3d3b2a563805db5ad6a",
+      "base_matches_sealed_preimage": true,
+      "bytes": 62954
+    },
+    {
+      "path": "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart",
+      "base_sha256": "cf80e76bf6545df15da7aa86f67d2f90527ec00b8c93bcf5e40aa1d2f48c13cf",
+      "candidate_sha256": "a33f8d34e1a26656bf480f914f7669ec780bf42321d4654cdf151e5ef5c8c462",
+      "sealed_candidate_sha256": "ebb22c4b736f5bb046f7fbf0a4693ff5e68021e35107573750bed08cb2385cf0",
+      "base_matches_sealed_preimage": false,
+      "bytes": 25368
+    },
+    {
+      "path": "SOURCE/test/visual/line144_help_safety_audit_test.dart",
+      "base_sha256": null,
+      "candidate_sha256": "1e595e80d151cdeafb137e958248d6a64e3afe028b4540f4f1e07e40dec8d696",
+      "sealed_candidate_sha256": "1e595e80d151cdeafb137e958248d6a64e3afe028b4540f4f1e07e40dec8d696",
+      "base_matches_sealed_preimage": true,
+      "bytes": 5566
+    }
+  ],
+  "patch": "LINE144_D4C25483.patch",
+  "patch_sha256": "4848609f80f4c2fd8bf479ecc494a83462020a399a401b9c56f10d4f0cfe67de",
+  "held_patch_sha256": "5897f3a1705926bff00ef9cb6f11aa3f69d373cf9e5de3e9bb3b37f4739a4ea3",
+  "held_manifest_sha256": "b34b5c34ff5d243f35dacc45de0124eb2f2922328ee39c4e5cfbbbeafe528a87",
+  "exact_forward_validation": true,
+  "local_checks": {
+    "analyzer": {
+      "path": "Q231_ANALYZER_SEQUENTIAL.log",
+      "result": "clean, exit 0",
+      "sha256": "cd3007d0a75fd77c30ec4db9a0a7d86e77d562ddc3dc2c1ca64c92b037f0af6b"
+    },
+    "strict_replay": {
+      "path": "Q231_STRICT_RASTER.log",
+      "result": "15 tests passed, strict raw contrast teardown reported failure",
+      "sha256": "81c9eecefc24fd9e742473d61ef6183b7d3f5651b9698e83774e15a1bdab1991"
+    },
+    "proof": {
+      "path": "Q231_EVIDENCE.json",
+      "result": "31 selected obligations, 0 gaps, 52 raw contrast findings, artifact packing checks passed",
+      "sha256": "5930074bf85bd5c665296aca11f0ed3b3f8fe965d8e7f90794bfe4ac63feb621"
+    },
+    "secret_scan": {
+      "path": "PATCH_SECRET_SCAN.log",
+      "result": "no leaks",
+      "sha256": "cc4dee671e092cd508f09afe89f2144b9a8b3a380ba0ddadd5718d731f752d27"
+    },
+    "wrapper": {
+      "path": "WRAPPER_CHECK.log",
+      "result": "five SDK pins and both denial probes verified",
+      "sha256": "2f6531b564ccf2e8acbdfd1c0de442711621838a37885ca3a2fd8f8957b3acd9"
+    }
+  },
+  "remaining_gate": [
+    "ordinary regression",
+    "hosted required CI and full-audit timing/artifact proof",
+    "serial integration with later accepted base if needed"
+  ],
+  "integration": "zero-fuzz exact patch; all five current preimages and candidate hashes match"
+}

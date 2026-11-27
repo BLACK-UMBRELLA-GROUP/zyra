@@ -1,0 +1,89 @@
+{
+  "analyzer": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze"
+    ],
+    "exit_code": 0,
+    "analyzer_seconds": 7.5
+  },
+  "protected_wrapper": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS"
+  },
+  "focused": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--flavor",
+      "offline-ci",
+      "--reporter",
+      "expanded",
+      "test/visual/line144_help_safety_audit_test.dart",
+      "test/visual/oa316_seeker_baseline_capture_test.dart",
+      "test/zyra_rendered_text_audit_controls_test.dart"
+    ],
+    "exit_code": 0,
+    "passed": 144,
+    "skipped": 9,
+    "test_elapsed_seconds": 26
+  },
+  "strict_normal430": {
+    "label": "strict-normal430",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--flavor",
+      "offline-ci",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+      "--dart-define=ZYRA_TEXT_AUDIT_ITEM_REPORT=true",
+      "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=line144_help_seeker_one_contact/help_contact/Seeker_One,line144_help_seeker_one_contact/help_contact_sent/Seeker_One,line144_help_seeker_one_privacy_data/help_privacy/Seeker_One,line144_help_seeker_one_privacy_data/help_data/Seeker_One,line144_help_seeker_one_delete/help_advanced/Seeker_One,line144_help_seeker_one_delete/help_delete/Seeker_One,line144_help_seeker_one_delete/help_closed/Seeker_One,line144_help_seeker_one_report/help_report_sent/Seeker_One,line144_help_seeker_basic_contact/help_contact/Seeker_Basic,line144_help_seeker_basic_contact/help_contact_sent/Seeker_Basic,line144_help_seeker_basic_privacy_data/help_privacy/Seeker_Basic,line144_help_seeker_basic_privacy_data/help_data/Seeker_Basic,line144_help_seeker_basic_delete/help_advanced/Seeker_Basic,line144_help_seeker_basic_delete/help_delete/Seeker_Basic,line144_help_seeker_basic_delete/help_closed/Seeker_Basic,line144_help_seeker_basic_report/help_report_sent/Seeker_Basic,line144_help_guardian_one_contact/help_contact/Guardian_One,line144_help_guardian_one_contact/help_contact_sent/Guardian_One,line144_help_guardian_one_privacy_data/help_privacy/Guardian_One,line144_help_guardian_one_privacy_data/help_data/Guardian_One,line144_help_guardian_one_delete/help_advanced/Guardian_One,line144_help_guardian_one_delete/help_delete/Guardian_One,line144_help_guardian_one_delete/help_closed/Guardian_One,line144_help_guardian_basic_contact/help_contact/Guardian_Basic,line144_help_guardian_basic_contact/help_contact_sent/Guardian_Basic,line144_help_guardian_basic_privacy_data/help_privacy/Guardian_Basic,line144_help_guardian_basic_privacy_data/help_data/Guardian_Basic,line144_help_guardian_basic_delete/help_advanced/Guardian_Basic,line144_help_guardian_basic_delete/help_delete/Guardian_Basic,line144_help_guardian_basic_delete/help_closed/Guardian_Basic,profiles_photos/safety/Seeker_One",
+      "--name",
+      "baseline seeker missing Profiles options and utility states|LOCK 37",
+      "test/zyra_clearer_text_contrast_430_test.dart"
+    ],
+    "started_utc": "2026-11-27T16:03:18.846200+00:00",
+    "finished_utc": "2026-11-27T16:04:18.880430+00:00",
+    "duration_seconds": 60.034,
+    "exit_code": 1
+  },
+  "artifact_checker": {
+    "exit_code": 0,
+    "intentional_truncated_json_parse_error": "Expected; recovery retained complete records",
+    "complete_and_interrupted_packaging": "PASS",
+    "complete_union_and_missing_union_rejection": "PASS"
+  },
+  "ordinary": {
+    "label": "ordinary",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--flavor",
+      "offline-ci",
+      "--reporter",
+      "expanded"
+    ],
+    "started_utc": "2026-11-27T16:04:36.296405+00:00",
+    "finished_utc": "2026-11-27T16:13:21.062594+00:00",
+    "duration_seconds": 524.765,
+    "exit_code": 0,
+    "passed": 7989,
+    "skipped": 248,
+    "failed": 0
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Exact four completed hosted artifacts for4a3d3373; exact workflow union script replayed locally on them",
+  "shards": [
+    {
+      "label": "large-375-1",
+      "job_id": 140617449320,
+      "job_seconds": 853.0,
+      "complete": true,
+      "frames": 3787,
+      "items": 36274,
+      "failed_items": 0,
+      "raw_failures": 0,
+      "coverage_gap_count": 198,
+      "zip_sha256": "7f02348531862325f9f2e98776608af549dfde3fe102ca217facc4b19f0c6963"
+    },
+    {
+      "label": "large-375-2",
+      "job_id": 140617448984,
+      "job_seconds": 414.0,
+      "complete": true,
+      "frames": 1483,
+      "items": 17691,
+      "failed_items": 108,
+      "raw_failures": 108,
+      "coverage_gap_count": 258,
+      "zip_sha256": "4c0424a73037a38f140ce79a221d8490dd587ba60294877596ddfa3605f7ba0e"
+    },
+    {
+      "label": "large-375-3",
+      "job_id": 140617449347,
+      "job_seconds": 492.0,
+      "complete": true,
+      "frames": 1358,
+      "items": 16169,
+      "failed_items": 6,
+      "raw_failures": 6,
+      "coverage_gap_count": 331,
+      "zip_sha256": "27887df581c8bf84502d02266b9ebbec625cd3b58564c86fb9c8b6447943a30b"
+    },
+    {
+      "label": "large-375-4",
+      "job_id": 140617449069,
+      "job_seconds": 662.0,
+      "complete": true,
+      "frames": 2719,
+      "items": 27735,
+      "failed_items": 4,
+      "raw_failures": 14,
+      "coverage_gap_count": 227,
+      "zip_sha256": "faff86eda2eb832144f02471510d7a2445819c69c9d6a40211b6b8c7d5b43fe7"
+    }
+  ],
+  "all_four_complete_inside_25m": true,
+  "actual_union_gaps": [
+    "current_route:eid_gift_preview",
+    "route_plan_viewport:eid_gift_preview:Guardian Basic:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Guardian One:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Seeker Basic:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Seeker One:375x667@1.3",
+    "route_plan_viewport:switch_account_setup:Guardian Basic:375x667@1.3",
+    "route_plan_viewport:switch_account_setup:Guardian One:375x667@1.3",
+    "route_plan_viewport:switch_account_setup:Seeker Basic:375x667@1.3"
+  ],
+  "exact_combiner_exit": 1,
+  "exact_combiner_stdout": "true",
+  "exact_combiner_stderr": "Large-375 coverage gaps: [\"current_route:eid_gift_preview\",\"route_plan_viewport:eid_gift_preview:Guardian Basic:375x667@1.3\",\"route_plan_viewport:eid_gift_preview:Guardian One:375x667@1.3\",\"route_plan_viewport:eid_gift_preview:Seeker Basic:375x667@1.3\",\"route_plan_viewport:eid_gift_preview:Seeker One:375x667@1.3\",\"route_plan_viewport:switch_account_setup:Guardian Basic:375x667@1.3\",\"route_plan_viewport:switch_account_setup:Guardian One:375x667@1.3\",\"route_plan_viewport:switch_account_setup:Seeker Basic:375x667@1.3\"]",
+  "hosted_combined_job": "PENDING until other audit jobs finish"
+}

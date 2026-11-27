@@ -1,0 +1,11 @@
+# Hosted audit accounting — independent read-only investigation
+
+The normal375 snapshot contains477 raw failure records:24 contrast failures and453 `word_overflows_available_width` records. All453 geometry records concern Notifications with the same64.75 available width and64.75811767578125 selection-word box width (excess0.00811767578125). These are repeated frame observations:356 came from cached audit results and97 from uncached results, rather than453 independently established app defects.
+
+All24 false per-item records exactly match the24 raw contrast records as multisets including group/state/plan/scroll/text/ratio/threshold/ink/background. The collector writes item.pass using contrast, weight, opacity and supported-paint/background checks before it runs the paragraph word-geometry checks. Therefore a text run can have item.pass=true yet separately produce a raw paragraph word-overflow record. Cache hits copy both the existing failures and the new item array; no cache loss of known contrast failures is shown.
+
+Normal375 has an incomplete progress snapshot of6337 frames/76281 runs and an append-only item stream of6362 frames/76511 items. The snapshot frames exactly match the stream prefix. The25 tail frames contain230 items with0 false pass flags. That does not prove zero tail geometry/probe errors because the item stream does not include those later failure categories. Preserve both counts;477 is the known snapshot record total, not a completed-run total.
+
+Large375-4 is complete and reconciles differently:4 false items exactly match4 raw contrast records, plus10 separate text-coverage/probe errors. They are5 "Expected text-bearing fixture produced no visible text runs" errors and5 "Original painted scene changed or remained unstable during pixel readback" errors with dirty RenderTransform and same_pixels=true, all in line98 ended-journey fixtures. No valid text ratio exists for the empty/unstable probe observations, so they are raw audit failures rather than false per-text ratio items. All14 raw failure records must be retained and reported.
+
+No app-versus-metric fault has been determined. This accounting explains the category difference; it supplies no reason to lower a threshold, change app colours, suppress data or call the timed-out audit complete. No repository edits, Flutter run or network request was made.

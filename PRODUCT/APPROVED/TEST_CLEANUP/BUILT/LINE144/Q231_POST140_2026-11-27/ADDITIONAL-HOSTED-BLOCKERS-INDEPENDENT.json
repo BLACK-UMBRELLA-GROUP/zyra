@@ -1,0 +1,53 @@
+{
+  "exact_intersection_matches_root": true,
+  "actual_union_gaps": [
+    "current_route:eid_gift_preview",
+    "route_plan_viewport:eid_gift_preview:Guardian Basic:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Guardian One:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Seeker Basic:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Seeker One:375x667@1.3",
+    "route_plan_viewport:switch_account_setup:Guardian Basic:375x667@1.3",
+    "route_plan_viewport:switch_account_setup:Guardian One:375x667@1.3",
+    "route_plan_viewport:switch_account_setup:Seeker Basic:375x667@1.3"
+  ],
+  "switch_account_setup_actual_proof": [
+    {
+      "label": "large-375-1",
+      "switch_setup_proof": []
+    },
+    {
+      "label": "large-375-2",
+      "switch_setup_proof": [
+        {
+          "plan": "Seeker One",
+          "group": "lock15_1.0",
+          "state": "settled",
+          "runs": 28
+        }
+      ]
+    },
+    {
+      "label": "large-375-3",
+      "switch_setup_proof": []
+    },
+    {
+      "label": "large-375-4",
+      "switch_setup_proof": []
+    }
+  ],
+  "static_causes": {
+    "switch_account_setup": {
+      "registered_actual_opener": "lock15_focus_capture_test.dart:253-292 seeds guardian:false and seekerReadiness:unfinished, then taps focus-setup; this is only Seeker One",
+      "remaining_fixture": "line126_remaining_routes_test.dart:475-540 configures the OTHER role missing (concept_switch_needs_signup), taps Add role, and correctly asserts signup; its label/record switch_setup does not mean rendered route switch_account_setup",
+      "entry_fixture": "line126_coverage_entry_routes_test.dart has no switch_account_setup case",
+      "current_route_is_real": "shell:10081-10090 _walletSetup still opens switch_account_setup when role nextStep is finishSetup/startSetup; shell:10310 invokes it through current switch presenter",
+      "classification": "Three required plan fixtures absent. No app fault proven. Do not remove their route/plan obligations."
+    },
+    "line124_replay_settings": {
+      "failing_assertion": "line124_first_tour_capture_test.dart:330-331 finds Replay the walkthrough and immediately expects findsOneWidget; scrollUntilVisible is absent before this lookup",
+      "why_A1_does_not_help": "A1 exists in BaselineHarness.tapFinder; this body calls find.text/expect/tester.element directly and reaches none of the A1 discovery path before failing",
+      "retained_contract": "Current test must still prove row visible/hit-testable and Replay precedes Help in Support; no app fault proved by absent lazy widget",
+      "why_ordinary_skips": "skip: _output.isEmpty && !baselineTextAuditOnly; without capture output this body is opt-in and executes under full audit where baselineTextAuditOnly=true"
+    }
+  }
+}

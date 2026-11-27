@@ -1,0 +1,149 @@
+{
+  "measurement_scope": "strict selected 430x932@1.0 only",
+  "observed_routes": [
+    "help_advanced",
+    "help_closed",
+    "help_contact",
+    "help_contact_sent",
+    "help_data",
+    "help_delete",
+    "help_privacy",
+    "help_report_sent"
+  ],
+  "help_route_plan_runs": {
+    "Seeker One:help_advanced": 36,
+    "Seeker One:help_closed": 6,
+    "Seeker One:help_contact": 75,
+    "Seeker One:help_contact_sent": 10,
+    "Seeker One:help_data": 40,
+    "Seeker One:help_delete": 112,
+    "Seeker One:help_privacy": 27,
+    "Seeker One:help_report_sent": 39,
+    "Seeker Basic:help_advanced": 36,
+    "Seeker Basic:help_closed": 6,
+    "Seeker Basic:help_contact": 75,
+    "Seeker Basic:help_contact_sent": 10,
+    "Seeker Basic:help_data": 40,
+    "Seeker Basic:help_delete": 112,
+    "Seeker Basic:help_privacy": 27,
+    "Seeker Basic:help_report_sent": 26,
+    "Guardian One:help_advanced": 24,
+    "Guardian One:help_closed": 6,
+    "Guardian One:help_contact": 75,
+    "Guardian One:help_contact_sent": 10,
+    "Guardian One:help_data": 32,
+    "Guardian One:help_delete": 36,
+    "Guardian One:help_privacy": 27,
+    "Guardian Basic:help_advanced": 24,
+    "Guardian Basic:help_closed": 6,
+    "Guardian Basic:help_contact": 75,
+    "Guardian Basic:help_contact_sent": 10,
+    "Guardian Basic:help_data": 32,
+    "Guardian Basic:help_delete": 36,
+    "Guardian Basic:help_privacy": 27
+  },
+  "report_enabled_fixture_states": [
+    "browse_and_requests/report/opened",
+    "browse_and_requests/report/reason_selected"
+  ],
+  "direct_selected_coverage_obligations": 31,
+  "coverage_gaps": [],
+  "frames": 207,
+  "audited_runs": 3040,
+  "raster_items": 3040,
+  "finding_count": 52,
+  "finding_labels": {
+    "Send message": 20,
+    "Done": 8,
+    "Request my data": 8,
+    "Keep my account": 8,
+    "Close": 8
+  },
+  "items_jsonl_sha256": "bf34c0205113da16880901e5cc2f9e2d6c40f1fae3fe1db3263bb3abad202ce7",
+  "audit_json_sha256": "44ba04a1c03d0880aee4f702aa15a97d44a5f048a829e33f0b06a1717f157aa3",
+  "packaged_items_sha256": "ee12b06ff9781af412776ebd78b45738f52752a1754bff335e1727cbf89fb62c",
+  "matrix_jobs": [
+    {
+      "label": "normal-375",
+      "test": "test/zyra_clearer_text_contrast_test.dart",
+      "shard_index": 0,
+      "shard_count": 1
+    },
+    {
+      "label": "normal-430",
+      "test": "test/zyra_clearer_text_contrast_430_test.dart",
+      "shard_index": 0,
+      "shard_count": 1
+    },
+    {
+      "label": "large-375-1",
+      "test": "test/zyra_clearer_text_contrast_large_375_test.dart",
+      "shard_index": 0,
+      "shard_count": 4
+    },
+    {
+      "label": "large-375-2",
+      "test": "test/zyra_clearer_text_contrast_large_375_test.dart",
+      "shard_index": 1,
+      "shard_count": 4
+    },
+    {
+      "label": "large-375-3",
+      "test": "test/zyra_clearer_text_contrast_large_375_test.dart",
+      "shard_index": 2,
+      "shard_count": 4
+    },
+    {
+      "label": "large-375-4",
+      "test": "test/zyra_clearer_text_contrast_large_375_test.dart",
+      "shard_index": 3,
+      "shard_count": 4
+    },
+    {
+      "label": "large-430",
+      "test": "test/zyra_clearer_text_contrast_large_430_test.dart",
+      "shard_index": 0,
+      "shard_count": 1
+    }
+  ],
+  "large_375_shards": [
+    [
+      "Seeker",
+      "Walkthrough",
+      "Compatibility",
+      "Filters",
+      "Phone",
+      "Coverage entries"
+    ],
+    [
+      "Basic plans",
+      "Membership",
+      "Chat",
+      "Circle",
+      "Focus",
+      "Help and safety"
+    ],
+    [
+      "Guardian One",
+      "Menus",
+      "Settings",
+      "Family",
+      "Recovery"
+    ],
+    [
+      "Signup",
+      "Ended",
+      "Safety",
+      "Seekers",
+      "Remaining routes"
+    ]
+  ],
+  "syntax_checked_run_blocks": 12,
+  "required_workflow_jobs_identical_to_accepted": true,
+  "exact_packager_completed_and_truncated_cases": true,
+  "exact_combiner_rejects_synthetic_missing_obligation": true,
+  "hosted_timing_or_upload_measured": false,
+  "strict_exit_code": 1,
+  "behavior_cases_passed": 15,
+  "diagnostic_only": "Scope Report/route/proof passes; aggregate strict contrast run fails and is not labeled green."
+}

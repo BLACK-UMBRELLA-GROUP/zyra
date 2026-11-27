@@ -1,0 +1,70 @@
+{
+  "line": 144,
+  "status": "QUESTION Q239; not BUILT",
+  "lease_start_utc": "2026-11-27T16:01:02Z",
+  "l49_deadline_utc": "2026-11-27T22:01:02Z",
+  "source_release_utc": "2026-11-27T16:39:32.391651+00:00",
+  "published_test_ci_commit": "4a3d3373215bc869282d754214e5f3458cd52130",
+  "source_ci_worktree": "clean",
+  "source_ci_index": "empty",
+  "source_lib_diff_from_accepted": "empty",
+  "foreign_staged": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "index_sha256": "6deb49c9bb2ed18a25a1838be203ea68dc63f2ec8ce418d23667c4ab2ce9d179",
+      "index_preserved": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+      "index_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "index_preserved": true,
+      "worktree_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "worktree_preserved": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+      "index_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "index_preserved": true,
+      "worktree_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "worktree_preserved": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+      "index_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "index_preserved": true,
+      "worktree_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "worktree_preserved": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+      "index_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "index_preserved": true,
+      "worktree_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "worktree_preserved": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+      "index_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+      "index_preserved": true,
+      "worktree_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+      "worktree_preserved": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "index_sha256": "ae91e39960c51f32646c2a0dd0d3548f11c2445d20180e186b2f892607ed1d16",
+      "index_preserved": true
+    }
+  ],
+  "foreign_staged_count": 7,
+  "failed_full_gate_attempts": 1,
+  "gate_failure_reason": "Hosted full-corpus completeness/coverage and fixture proof; not a new app-colour gate",
+  "strict_normal430_exit": 1,
+  "ordinary_local_exit": 0,
+  "ordinary_hosted_shards": "3/3 success",
+  "hosted_scope_proof": "FAILED honestly; exact evidence retained",
+  "failed_network_attempts": 0,
+  "held_path": "SOURCE/build/held/LINE144/2026-11-27_Q231_POST140_HOSTED",
+  "disk_free_gb": 34.69,
+  "next_line_started": false,
+  "mixed_queue_questions": "Only own queue144/Q239 worktree edits; all seven index blobs unchanged"
+}

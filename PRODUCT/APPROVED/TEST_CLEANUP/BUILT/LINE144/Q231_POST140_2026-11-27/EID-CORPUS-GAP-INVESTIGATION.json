@@ -1,0 +1,16 @@
+{
+  "registered_suite_count": 22,
+  "registered_offer_fixture_hits": [],
+  "dynamic_route_detects_eid": true,
+  "dynamic_route_detects_ramadan": false,
+  "first_actual_shard": "large-375-2",
+  "actual_eid_gaps": [
+    "current_route:eid_gift_preview",
+    "route_plan_viewport:eid_gift_preview:Guardian Basic:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Guardian One:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Seeker Basic:375x667@1.3",
+    "route_plan_viewport:eid_gift_preview:Seeker One:375x667@1.3"
+  ],
+  "final_four_shard_union_observed": false,
+  "repo_mutations": false
+}

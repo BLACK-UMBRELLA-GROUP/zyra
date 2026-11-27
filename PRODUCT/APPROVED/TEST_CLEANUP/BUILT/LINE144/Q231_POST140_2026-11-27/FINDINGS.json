@@ -1,0 +1,62 @@
+[
+  {
+    "text": "Send message",
+    "observations": 20,
+    "contrast_min": 3.2570821575233944,
+    "contrast_max": 3.9692576107772752,
+    "required": [
+      4.5
+    ],
+    "routes": [
+      "help_contact"
+    ]
+  },
+  {
+    "text": "Done",
+    "observations": 8,
+    "contrast_min": 3.9692576107772752,
+    "contrast_max": 3.9692576107772752,
+    "required": [
+      4.5
+    ],
+    "routes": [
+      "help_contact_sent"
+    ]
+  },
+  {
+    "text": "Request my data",
+    "observations": 8,
+    "contrast_min": 3.9692576107772752,
+    "contrast_max": 3.9692576107772752,
+    "required": [
+      4.5
+    ],
+    "routes": [
+      "help_data"
+    ]
+  },
+  {
+    "text": "Keep my account",
+    "observations": 8,
+    "contrast_min": 3.9692576107772752,
+    "contrast_max": 3.9692576107772752,
+    "required": [
+      4.5
+    ],
+    "routes": [
+      "help_delete"
+    ]
+  },
+  {
+    "text": "Close",
+    "observations": 8,
+    "contrast_min": 3.9692576107772752,
+    "contrast_max": 3.9692576107772752,
+    "required": [
+      4.5
+    ],
+    "routes": [
+      "help_closed"
+    ]
+  }
+]

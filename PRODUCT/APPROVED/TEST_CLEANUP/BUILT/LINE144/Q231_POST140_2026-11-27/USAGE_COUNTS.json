@@ -1,0 +1,16 @@
+[
+  {
+    "file": "rollout-2026-11-27T16-00-44-01a21dbc-d53e-7691-9b64-b3a29936dd99.jsonl",
+    "usage": {
+      "timestamp": "2026-11-27T16:42:41.582Z",
+      "counts": {
+        "input_tokens": 22401924,
+        "cached_input_tokens": 22223488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 80389,
+        "reasoning_output_tokens": 40575,
+        "total_tokens": 22482313
+      }
+    }
+  }
+]

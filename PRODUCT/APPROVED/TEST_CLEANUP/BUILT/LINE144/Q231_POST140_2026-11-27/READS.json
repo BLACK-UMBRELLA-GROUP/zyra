@@ -1,0 +1,18 @@
+{
+  "start_pack_bytes": 17478,
+  "explicit_lessons_bytes": 25386,
+  "agents_bytes": 16748,
+  "startup_exceptions": [
+    "Explicit user instruction read whole short lessons file before start_pack (25386 bytes); repo AGENTS read before pack (16748 bytes).",
+    "No whole MAP/register read; Q228/Q231/Q237/Q238 and queue140/141/142/144 searched by row.",
+    "Named integration patch/manifests and independent source inputs read as required for exact merge."
+  ],
+  "registers": "searched by row/ID; not opened whole",
+  "masters_viewed": [
+    "UNITY_PASS/x05_report__sara.png",
+    "UNITY_PASS/x06_report__reason_chosen.png",
+    "HELP_SAFETY/h04_contact_support__sent.png"
+  ],
+  "standing_rule_file_size": "Foreign AGENTS.md is16748bytes, above16KiB; written refusal to change standing governance inside test/CI repair. Fable owns correction.",
+  "additional_read_exception": "A metadata-tail lookup unexpectedly printed QUESTIONS rows225\u2013238; corrected to count-only row-ID allocation and scoped row239 edits. No whole register read."
+}

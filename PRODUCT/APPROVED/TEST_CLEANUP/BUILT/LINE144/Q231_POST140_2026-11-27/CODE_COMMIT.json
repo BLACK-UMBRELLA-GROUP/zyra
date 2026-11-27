@@ -1,0 +1,29 @@
+{
+  "commit": "4a3d3373215bc869282d754214e5f3458cd52130",
+  "paths": [
+    ".github/workflows/zyra-ci.yml",
+    "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+    "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+    "SOURCE/test/visual/line144_help_safety_audit_test.dart",
+    "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart"
+  ],
+  "foreign_index_preserved": true,
+  "ordinary": {
+    "label": "ordinary",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--flavor",
+      "offline-ci",
+      "--reporter",
+      "expanded"
+    ],
+    "started_utc": "2026-11-27T16:04:36.296405+00:00",
+    "finished_utc": "2026-11-27T16:13:21.062594+00:00",
+    "duration_seconds": 524.765,
+    "exit_code": 0
+  }
+}

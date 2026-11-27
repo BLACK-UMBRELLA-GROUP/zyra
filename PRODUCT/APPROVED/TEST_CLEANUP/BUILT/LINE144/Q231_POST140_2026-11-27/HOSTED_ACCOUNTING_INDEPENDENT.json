@@ -1,0 +1,79 @@
+{
+  "repo_edits": false,
+  "network_calls": false,
+  "flutter_runs": false,
+  "artifacts": {
+    "normal-375": {
+      "zip_sha256": "bd97ac4dd38b01ec7ec750b2308846bb81cc37646c00a67540f3e3754ed0e342",
+      "complete": false,
+      "snapshot_frames": 6337,
+      "snapshot_runs": 76281,
+      "stream_frames": 6362,
+      "stream_items": 76511,
+      "stream_failed_items": 24,
+      "snapshot_raw_failure_records": 477,
+      "snapshot_contrast_records": 24,
+      "snapshot_word_overflow_records": 453,
+      "snapshot_probe_coverage_error_records": 0,
+      "exact_item_false_to_raw_contrast_multiset_match": true,
+      "snapshot_is_item_stream_prefix": true,
+      "tail_item_frames": 25,
+      "tail_failed_item_flags": 0,
+      "probe_error_categories": {},
+      "geometry_texts": {
+        "Notifications": 453
+      },
+      "geometry_cache_status": {
+        "cached": 356,
+        "uncached": 97
+      },
+      "geometry_constraints": [
+        {
+          "available_width": 64.75,
+          "word_boxes": [
+            [
+              0.0,
+              -0.7884416580200195,
+              64.75811767578125,
+              13.780477523803711
+            ]
+          ],
+          "observations": 453
+        }
+      ]
+    },
+    "large-375-4": {
+      "zip_sha256": "faff86eda2eb832144f02471510d7a2445819c69c9d6a40211b6b8c7d5b43fe7",
+      "complete": true,
+      "snapshot_frames": 2719,
+      "snapshot_runs": 27735,
+      "stream_frames": 2719,
+      "stream_items": 27735,
+      "stream_failed_items": 4,
+      "snapshot_raw_failure_records": 14,
+      "snapshot_contrast_records": 4,
+      "snapshot_word_overflow_records": 0,
+      "snapshot_probe_coverage_error_records": 10,
+      "exact_item_false_to_raw_contrast_multiset_match": true,
+      "snapshot_is_item_stream_prefix": true,
+      "tail_item_frames": 0,
+      "tail_failed_item_flags": 0,
+      "probe_error_categories": {
+        "Expected text-bearing fixture produced no visible text runs": 5,
+        "Original painted scene changed or remained unstable during pixel readback; build=true; dirty=(RenderTransform); same_pixels=true": 5
+      }
+    }
+  },
+  "source_explanation": {
+    "item_pass": "zyra_rendered_text_contrast.dart1696-1710 appends run result with contrast/weight/opacity/paint/background predicates",
+    "paragraph_geometry": "same file1740-1785 adds separate word overflow/split failures after the run item pass was already recorded",
+    "cache": "same file18-29 copies both failures and item records on a hit; cache key includes collectItems at1390",
+    "probe_errors": "corpus records expected-text-bearing no-runs and unstable-scene coverage errors without pretending an empty/unstable probe has a text ratio"
+  },
+  "interpretation": [
+    "The normal375 mismatch is24contrast+453paragraph geometry records, not477contrast failures.",
+    "The incomplete snapshot cannot establish a final run total or the absence of later geometry/probe errors in25additional item frames.",
+    "Large3754 has4contrast plus10probe errors; all categories remain raw audit failures.",
+    "No app-versus-audit-metric fault classification follows from these counts; no threshold, waiver or suppression is justified."
+  ]
+}

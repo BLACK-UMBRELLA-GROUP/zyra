@@ -1,0 +1,11 @@
+{
+  "A": "Code range scan0leaks; final owned-record precheck0leaks; final record-commit range scan required before push",
+  "B": "33files scanned. Three own reviewed false positives all refer to inherited numeric Dart tuple accessor in corpus972 and its technical review notes. Nine other hits are preexisting mixed queue/QUESTIONS rows outside our two edited rows; no own mixed-row hit. No foreign content staged or committed.",
+  "C": "No roadmap row completed by this test-tool repair",
+  "D": "No version change",
+  "E": "Neutral community wording",
+  "F": "Local test command unchanged; existing README documents nonblocking four-setting hosted audits",
+  "public_check_exit": 1,
+  "reviewed_own_false_positives": 3,
+  "preexisting_unpublished_foreign_table_hits": 9
+}
