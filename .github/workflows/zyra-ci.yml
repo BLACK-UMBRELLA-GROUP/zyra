@@ -121,25 +121,45 @@ jobs:
           flutter test --no-pub --flavor offline-ci --reporter expanded "${tests[@]}"
 
   full-text-audit:
-    name: Full text audit (${{ matrix.setting }})
+    name: Full text audit (${{ matrix.label }})
     if: github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     # Audit failures stay visible in this job's logs but cannot turn the
     # required Flutter checks or the workflow red for a later queue line.
     continue-on-error: true
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
         include:
-          - setting: normal-375
+          - label: normal-375
             test: test/zyra_clearer_text_contrast_test.dart
-          - setting: normal-430
+            shard_index: 0
+            shard_count: 1
+          - label: normal-430
             test: test/zyra_clearer_text_contrast_430_test.dart
-          - setting: large-375
+            shard_index: 0
+            shard_count: 1
+          - label: large-375-1
             test: test/zyra_clearer_text_contrast_large_375_test.dart
-          - setting: large-430
+            shard_index: 0
+            shard_count: 4
+          - label: large-375-2
+            test: test/zyra_clearer_text_contrast_large_375_test.dart
+            shard_index: 1
+            shard_count: 4
+          - label: large-375-3
+            test: test/zyra_clearer_text_contrast_large_375_test.dart
+            shard_index: 2
+            shard_count: 4
+          - label: large-375-4
+            test: test/zyra_clearer_text_contrast_large_375_test.dart
+            shard_index: 3
+            shard_count: 4
+          - label: large-430
             test: test/zyra_clearer_text_contrast_large_430_test.dart
+            shard_index: 0
+            shard_count: 1
     defaults:
       run:
         working-directory: SOURCE
@@ -167,15 +187,106 @@ jobs:
           cp lib/config/supabase_config.dart.example lib/config/supabase_config.dart
       - name: Resolve dependencies
         run: flutter pub get --enforce-lockfile
-      - name: Run all screens at this setting
+      - name: Run this audit setting and shard
         id: audit
-        run: flutter test --no-pub --flavor offline-ci --reporter expanded --dart-define=ZYRA_FULL_TEXT_AUDIT=true "${{ matrix.test }}"
-      - name: Record audit result
+        shell: bash
+        env:
+          AUDIT_TEST: ${{ matrix.test }}
+          AUDIT_SHARD_INDEX: ${{ matrix.shard_index }}
+          AUDIT_SHARD_COUNT: ${{ matrix.shard_count }}
+        run: |
+          # Reserve part of the 25-minute job for setup and artifact upload.
+          timeout --signal=INT --kill-after=15s 20m flutter test \
+            --no-pub --flavor offline-ci --reporter expanded \
+            --dart-define=ZYRA_FULL_TEXT_AUDIT=true \
+            --dart-define=ZYRA_TEXT_AUDIT_ITEM_REPORT=true \
+            "--dart-define=ZYRA_TEXT_AUDIT_SHARD_INDEX=$AUDIT_SHARD_INDEX" \
+            "--dart-define=ZYRA_TEXT_AUDIT_SHARD_COUNT=$AUDIT_SHARD_COUNT" \
+            "$AUDIT_TEST"
+      - name: Prepare audit report and record result
         if: always()
         shell: bash
         working-directory: ${{ github.workspace }}
         env:
           AUDIT_OUTCOME: ${{ steps.audit.outcome }}
-          AUDIT_SETTING: ${{ matrix.setting }}
+          AUDIT_LABEL: ${{ matrix.label }}
         run: |
-          printf 'Full text audit %s: **%s**. See this job log for the page and ratio details.\n' "$AUDIT_SETTING" "$AUDIT_OUTCOME" >> "$GITHUB_STEP_SUMMARY"
+          report_dir="$RUNNER_TEMP/zyra-text-audit"
+          mkdir -p "$report_dir"
+          shopt -s nullglob
+          frames=(SOURCE/build/line126-rebuild-contrast-*-items.jsonl)
+          reports=(SOURCE/build/line126-rebuild-contrast-*.json)
+          report=''
+          completed=false
+          for candidate in "${reports[@]}"; do
+            jq -e 'type == "object"' "$candidate" > /dev/null || continue
+            report="$candidate"
+            if [[ "$candidate" != *-progress.json ]]; then
+              completed=true
+              break
+            fi
+          done
+          if (( ${#frames[@]} == 1 )); then
+            if ! jq -s '.' "${frames[0]}" > "$report_dir/items.json"; then
+              # Recover complete frame records if a deadline cut an append short.
+              jq -Rs 'split("\n") | map(try fromjson catch empty)' \
+                "${frames[0]}" > "$report_dir/items.json"
+            fi
+          else
+            printf '[]\n' > "$report_dir/items.json"
+          fi
+          if [[ -n "$report" ]]; then
+            cp "$report" "$report_dir/audit.json"
+            jq --argjson complete "$completed" --arg outcome "$AUDIT_OUTCOME" \
+              '{setting, shard_index, shard_count, frames, coverage_gaps,
+                complete: $complete, audit_outcome: $outcome}' \
+              "$report" > "$report_dir/coverage.json"
+          else
+            jq -n --arg label "$AUDIT_LABEL" --arg outcome "$AUDIT_OUTCOME" \
+              '{label: $label, complete: false, audit_outcome: $outcome,
+                reason: "No raster report was written"}' > "$report_dir/coverage.json"
+          fi
+          printf 'Full text audit %s: **%s**. Item results and coverage are attached as artifacts.\n' \
+            "$AUDIT_LABEL" "$AUDIT_OUTCOME" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload per-item raster report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: zyra-text-audit-${{ matrix.label }}-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/zyra-text-audit/
+          if-no-files-found: error
+
+  large-375-coverage:
+    name: Full text audit (large-375 combined coverage)
+    needs: full-text-audit
+    if: always() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+    continue-on-error: true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: zyra-text-audit-large-375-*-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/zyra-large-375/
+      - name: Check that the shards cover the whole corpus
+        shell: bash
+        run: |
+          shopt -s nullglob
+          reports=("$RUNNER_TEMP"/zyra-large-375/*/coverage.json)
+          if (( ${#reports[@]} != 4 )); then
+            echo 'Expected all four large-375 coverage reports.' >&2
+            exit 1
+          fi
+          jq -es '
+            all(.[]; .setting == "large-375" and .shard_count == 4
+              and .complete and .frames > 0 and (.coverage_gaps | type == "array"))
+            and (map(.shard_index) | sort == [0, 1, 2, 3])
+          ' "${reports[@]}"
+          # An obligation is uncovered only when every shard reports that gap.
+          missing=$(jq -cs '[.[].coverage_gaps | unique[]] | group_by(.) |
+            map(select(length == 4) | .[0])' "${reports[@]}")
+          if [[ "$missing" != '[]' ]]; then
+            printf 'Large-375 coverage gaps: %s\n' "$missing" | tee -a "$GITHUB_STEP_SUMMARY" >&2
+            exit 1
+          fi
+          echo 'All large-375 coverage obligations were measured across four shards.' >> "$GITHUB_STEP_SUMMARY"

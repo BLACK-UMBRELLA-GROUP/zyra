@@ -36,9 +36,11 @@ import '../visual/lock15_focus_capture_test.dart' as focus;
 import '../visual/line120_recovery_removal_capture_test.dart' as recovery;
 import '../visual/line126_remaining_routes_test.dart' as remaining;
 import '../visual/line126_coverage_entry_routes_test.dart' as entries;
+import '../visual/line144_help_safety_audit_test.dart' as help_safety;
 
 const _reportOnly = bool.fromEnvironment('ZYRA_LINE126_REPORT_ONLY');
 const _alphaCheck = bool.fromEnvironment('ZYRA_LINE126_ALPHA_CHECK');
+const _collectItems = bool.fromEnvironment('ZYRA_TEXT_AUDIT_ITEM_REPORT');
 const _focusedReplay = String.fromEnvironment('ZYRA_FOCUSED_TEXT_REPLAY');
 
 typedef _FocusRequirement = ({String group, String location, String plan});
@@ -73,9 +75,19 @@ List<_FocusRequirement> _parseFocusRequirements(String value) {
 final _focusRequirements = _parseFocusRequirements(_focusedReplay);
 
 class ZyraContrastDriver {
-  const ZyraContrastDriver(this.id, this.viewports);
-  final String id;
+  const ZyraContrastDriver(
+    this.setting,
+    this.viewports, {
+    this.shardIndex = 0,
+    this.shardCount = 1,
+  }) : assert(shardCount > 0),
+       assert(shardIndex >= 0 && shardIndex < shardCount);
+
+  final String setting;
   final List<BaselineAuditViewport> viewports;
+  final int shardIndex, shardCount;
+  bool get isSharded => shardCount > 1;
+  String get id => isSharded ? '$setting-${shardIndex + 1}' : setting;
 }
 
 const zyraContrastNormal430 = ZyraContrastDriver('normal-430', [
@@ -87,9 +99,15 @@ const zyraContrastNormal = ZyraContrastDriver('normal', [
 const zyraContrastLarge430 = ZyraContrastDriver('large-430', [
   BaselineAuditViewport(Size(430, 932), 1.3),
 ]);
-const zyraContrastLarge375 = ZyraContrastDriver('large-375', [
-  BaselineAuditViewport(Size(375, 667), 1.3),
-]);
+const zyraContrastLarge375 = ZyraContrastDriver(
+  'large-375',
+  [BaselineAuditViewport(Size(375, 667), 1.3)],
+  shardIndex: int.fromEnvironment('ZYRA_TEXT_AUDIT_SHARD_INDEX'),
+  shardCount: int.fromEnvironment(
+    'ZYRA_TEXT_AUDIT_SHARD_COUNT',
+    defaultValue: 1,
+  ),
+);
 ZyraContrastDriver _driver = zyraContrastNormal;
 List<BaselineAuditViewport> get _viewports => _driver.viewports;
 String get _reportStem => _focusRequirements.isEmpty
@@ -97,6 +115,7 @@ String get _reportStem => _focusRequirements.isEmpty
     : 'build/line126-focused-contrast-${_driver.id}';
 String get _reportPath => '$_reportStem.json';
 String get _progressPath => '$_reportStem-progress.json';
+String get _itemsPath => '$_reportStem-items.jsonl';
 final _clock = Stopwatch();
 final _frames = <Map<String, Object?>>[];
 final _excludedLegacyWelcomeFrames = <Map<String, Object?>>[];
@@ -173,6 +192,9 @@ List<Map<String, Object?>> _routeMatrix() {
     'scan',
     'timeline',
     'developer_inactivity_email',
+    // The current Guardian chat report has no submit callback. Report sent
+    // is reached by the member report route with a selected sample person.
+    'help_report_sent',
   };
   const guardianOnly = {
     // Only _boundGuardianAction reaches _holdPreviewAction; it explicitly
@@ -282,6 +304,7 @@ List<String> _coverageGaps() {
     'line120',
     'line126_remaining_',
     'line126_entry_',
+    'line144_help_',
   ]) {
     if (!_groups.any((group) => group.startsWith(prefix))) {
       gaps.add('suite:$prefix');
@@ -399,13 +422,26 @@ List<String> _requiredCoverageGaps() => _focusRequirements.isEmpty
             '${proof.group}/${proof.location}/${proof.plan}/${proof.viewport}',
       ];
 
+bool get _requiresCompleteCoverage =>
+    !_driver.isSharded || _focusRequirements.isNotEmpty;
+
 Map<String, Object?> _report() => {
   'rule': 'LOCK14 V9 current locked clearer-text rules',
   'driver': _driver.id,
+  'setting': _driver.setting,
+  'shard_index': _driver.shardIndex,
+  'shard_count': _driver.shardCount,
   'report_only': _reportOnly,
-  'status': _failures.isEmpty && _requiredCoverageGaps().isEmpty
+  'status':
+      _frames.isNotEmpty &&
+          _failures.isEmpty &&
+          (!_requiresCompleteCoverage || _requiredCoverageGaps().isEmpty)
       ? 'pass'
       : 'fail',
+  if (_driver.isSharded && _focusRequirements.isEmpty) ...{
+    'proof_scope': 'individual shard only',
+    'whole_app_coverage_credit': false,
+  },
   if (_focusRequirements.isNotEmpty) ...{
     'proof_scope': 'explicit focused shell routes only',
     'whole_app_coverage_credit': false,
@@ -489,6 +525,12 @@ Map<String, Object?> _report() => {
       'plans': ['Guardian Basic'],
       'authority':
           '_guardianPrivateGuard requires Guardian One and an accepted Main-Guardian connection',
+    },
+    {
+      'routes': ['help_report_sent'],
+      'plans': ['Guardian One', 'Guardian Basic'],
+      'authority':
+          '_guardianChatReport has no onSubmit; the selected-person _safety action owns Help Report sent',
     },
   ],
   'coverage_gaps': _requiredCoverageGaps(),
@@ -608,6 +650,7 @@ Future<void> _measure(BaselineHarness h, String state) async {
           h.tester,
           boundary,
           collectRunDiagnostics: _alphaCheck,
+          collectItems: _collectItems,
           prepareBeforeCapture: () async {
             await h.prepareRasterFrame();
             // Readiness belongs inside the same unchanged driver deadline.
@@ -679,6 +722,25 @@ Future<void> _measure(BaselineHarness h, String state) async {
           'geometric_occlusion_aa_pixels': result.occlusionFringePixels,
         };
         _frames.add(row);
+        if (_collectItems) {
+          final itemFrame = {
+            'group': h.group,
+            'state': state,
+            'screen': currentRoute ?? '${h.group}:tab${h.latest.tab}',
+            'plan': plan,
+            if (signupController != null)
+              'signup_step': signupController.step.name,
+            'width': viewport.size.width,
+            'height': viewport.size.height,
+            'text_scale': viewport.scale,
+            'scroll_frame': row['scroll_frame'],
+            'items': result.items,
+          };
+          File(_itemsPath).writeAsStringSync(
+            '${jsonEncode(itemFrame)}\n',
+            mode: FileMode.append,
+          );
+        }
         if (renderError != null) {
           _failures.add({...row, 'render_error': renderError.toString()});
         }
@@ -845,7 +907,14 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
     }
   };
   remaining.line126RemainingAuditAllDimensions = false;
-  setUpAll(_clock.start);
+  setUpAll(() {
+    _clock.start();
+    if (_collectItems) {
+      final items = File(_itemsPath);
+      items.parent.createSync(recursive: true);
+      items.writeAsStringSync('');
+    }
+  });
   test(
     'the four CI drivers cover four locked tuples in adjacent shard order',
     () {
@@ -918,13 +987,16 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
     baselineNonTextObservation = null;
     baselineTextAuditOnly = false;
     if (!_reportOnly) {
-      expect(
-        _requiredCoverageGaps(),
-        isEmpty,
-        reason: _focusRequirements.isEmpty
-            ? 'Every current route and fixture group must contribute real raster proof; see $_reportPath'
-            : 'Every selected group, route, plan and viewport must contribute real raster proof; see $_reportPath',
-      );
+      expect(_frames, isNotEmpty, reason: 'The audit must measure real frames');
+      if (_requiresCompleteCoverage) {
+        expect(
+          _requiredCoverageGaps(),
+          isEmpty,
+          reason: _focusRequirements.isEmpty
+              ? 'Every current route and fixture group must contribute real raster proof; see $_reportPath'
+              : 'Every selected group, route, plan and viewport must contribute real raster proof; see $_reportPath',
+        );
+      }
       expect(
         _failures,
         isEmpty,
@@ -932,7 +1004,7 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
       );
     }
   });
-  for (final (name, register) in <(String, void Function())>[
+  final suites = <(String, void Function())>[
     ('Seeker', seeker.main),
     ('Basic plans', basic.main),
     ('Guardian One', guardian.main),
@@ -954,7 +1026,11 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
     ('Recovery', recovery.main),
     ('Remaining routes', remaining.main),
     ('Coverage entries', entries.main),
-  ]) {
-    group(name, register);
+    ('Help and safety', help_safety.main),
+  ];
+  for (final (index, (name, register)) in suites.indexed) {
+    if (index % _driver.shardCount == _driver.shardIndex) {
+      group(name, register);
+    }
   }
 }

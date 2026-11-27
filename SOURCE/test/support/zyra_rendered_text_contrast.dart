@@ -19,6 +19,7 @@ class ZyraRenderedTextAudit {
     failures.addAll(source.failures);
     diagnosticSamples.addAll(source.diagnosticSamples);
     diagnosticRuns.addAll(source.diagnosticRuns);
+    items.addAll(source.items);
     runs = source.runs;
     paintedPixels = source.paintedPixels;
     exemptPixels = source.exemptPixels;
@@ -30,6 +31,7 @@ class ZyraRenderedTextAudit {
   final failures = <Map<String, Object?>>[];
   final diagnosticSamples = <Map<String, Object?>>[];
   final diagnosticRuns = <Map<String, Object?>>[];
+  final items = <Map<String, Object?>>[];
   int runs = 0,
       paintedPixels = 0,
       exemptPixels = 0,
@@ -990,6 +992,7 @@ Future<ZyraRenderedTextAudit> auditZyraRenderedText(
   RenderRepaintBoundary boundary, {
   List<Offset> diagnosticPoints = const [],
   bool collectRunDiagnostics = false,
+  bool collectItems = false,
   Future<void> Function()? prepareBeforeCapture,
   VoidCallback? verifyBeforeCapture,
 }) async {
@@ -1014,6 +1017,7 @@ Future<ZyraRenderedTextAudit> auditZyraRenderedText(
       boundary,
       diagnosticPoints,
       collectRunDiagnostics,
+      collectItems,
       scene,
     );
   } on _ChangedProbeScene catch (error) {
@@ -1077,6 +1081,7 @@ Future<ZyraRenderedTextAudit> _audit(
   RenderRepaintBoundary boundary,
   List<Offset> diagnosticPoints,
   bool collectRunDiagnostics,
+  bool collectItems,
   _ProbeScene scene,
 ) async {
   final result = ZyraRenderedTextAudit();
@@ -1382,7 +1387,7 @@ Future<ZyraRenderedTextAudit> _audit(
         .convert(
           utf8.encode(
             [
-              '${boundary.size}|$holes|${tour != null}|$modalDims|${footerFades.map((fade) => '${fade.owner}/${fade.region}')}|$diagnosticPoints|$collectRunDiagnostics|',
+              '${boundary.size}|$holes|${tour != null}|$modalDims|${footerFades.map((fade) => '${fade.owner}/${fade.region}')}|$diagnosticPoints|$collectRunDiagnostics|$collectItems|',
               for (final node in nodes)
                 '${_runs(node.original).map((run) => '${run.start}/${run.text}/${run.style}/${run.style.foreground?.shader != null}/${run.style.foreground?.colorFilter != null}/${run.style.foreground?.blendMode}/${run.style.foreground?.style}/${run.style.foreground?.maskFilter}/${run.style.foreground?.imageFilter}')}|${node.boxes(0, node.original.toPlainText().length).map((box) => box.toRect())}|${node.object.getTransformTo(boundary)}|${node.opacity}|${node.initial}|${node.coach}|${node.paintOrder}|${node.path}|${node.masks.map((m) => '${m.object.blendMode}/${m.top}/${m.bottom}')}',
             ].join(),
@@ -1688,6 +1693,21 @@ Future<ZyraRenderedTextAudit> _audit(
       final weight = (run.style.fontWeight ?? FontWeight.w400).value;
       final required = node.initial || renderedSize >= 24 ? 3.0 : 4.5;
       final weightPass = (size >= 16 && renderedSize >= 16) || weight >= 400;
+      if (collectItems) {
+        result.items.add({
+          'text': run.text,
+          'ink': sample?['nominal_ink'],
+          'real_background': sample?['background'],
+          'ratio': worst,
+          'required_ratio': required,
+          'pass':
+              worst >= required &&
+              weightPass &&
+              node.opacity == 1 &&
+              !(unsupported && potentialUnexemptPixels) &&
+              nonOpaqueSample == null,
+        });
+      }
       if (worst < required || !weightPass || node.opacity < 1) {
         result.failures.add({
           'text': run.text,

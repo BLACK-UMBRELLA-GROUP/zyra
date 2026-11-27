@@ -558,7 +558,7 @@ void main() {
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 10)),
   );
-  // LOCK 41 V2 opens the full-profile menu and LOCK 37 owns the local Report receipt.
+  // LOCK 41 V2 owns the menu, LOCK 22 V2 the reasons, and LOCK 37 the receipt.
   testWidgets(
     'baseline seeker missing Profiles options and utility states',
     (tester) async {
@@ -638,25 +638,45 @@ void main() {
         );
         await h.tapText('Report Sara');
         h.assertPage('safety');
-        final reason = h.key('draft_report_reason_fakeProfile');
-        await h.tapFinder(reason);
-        final selected = tester.widgetList<Semantics>(
-          find.ancestor(of: reason, matching: find.byType(Semantics)),
-        );
-        expect(
-          selected.any((item) => item.properties.selected == true),
-          isTrue,
-        );
         final submit = h.key('draft_report_submit');
-        expect(tester.widget<OutlinedButton>(submit).onPressed, isNotNull);
         final receipt = find.text('Your report about Sara has been sent.');
-        expect(receipt, findsNothing);
+
+        void expectReadyToSubmit(String reason) {
+          final option = h.key('draft_report_reason_$reason');
+          final semantics = tester.widgetList<Semantics>(
+            find.ancestor(of: option, matching: find.byType(Semantics)),
+          );
+          expect(
+            semantics.any((item) => item.properties.selected == true),
+            isTrue,
+          );
+          expect(
+            find.descendant(
+              of: option,
+              matching: find.byIcon(Icons.radio_button_checked),
+            ),
+            findsOneWidget,
+          );
+          expect(find.byIcon(Icons.radio_button_checked), findsOneWidget);
+          expect(tester.widget<OutlinedButton>(submit).onPressed, isNotNull);
+          expect(receipt, findsNothing);
+          expect(find.text('Report sent'), findsNothing);
+        }
+
+        expectReadyToSubmit('fakeProfile');
+        await h.capture(
+          'browse_and_requests',
+          'report',
+          'opened',
+          'The first reason is selected when Report opens and Submit report is enabled.',
+        );
+        await h.tap('draft_report_reason_harassment');
+        expectReadyToSubmit('harassment');
         await h.capture(
           'browse_and_requests',
           'report',
           'reason_selected',
-          'Full profile → Report Sara → Impersonation or fake profile. '
-              'The preview shows a receipt only after submission.',
+          'Harassment is selected and Submit report remains enabled.',
         );
         final before = h.latest.model.states;
         await h.tapFinder(submit);
