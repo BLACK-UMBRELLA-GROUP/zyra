@@ -1,0 +1,14 @@
+{
+  "record_only": true,
+  "evidence_commit": "fddc3126f2b4ca639e1385c28c471d05751f1d93",
+  "evidence_pushed_origin_main": true,
+  "timestamp": "2026-11-27T17:30:30.332179+00:00",
+  "question": 240,
+  "queue141_status": "QUESTION working tree",
+  "SOURCE_released": "2026-11-27T17:25:58.308143+00:00",
+  "no_implementation_published": true,
+  "seven_foreign_staged_blobs_preserved": true,
+  "mixed_queue_questions_excluded": true,
+  "record_only_CI_wait_required": false,
+  "next_owner": "ZYRA Claude design question; coordinator may build independent line144"
+}

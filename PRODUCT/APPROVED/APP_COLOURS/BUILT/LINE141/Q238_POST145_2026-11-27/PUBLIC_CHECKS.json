@@ -24,5 +24,26 @@
   "D": "No version change",
   "E": "Neutral community wording",
   "F": "No app behavior or run instructions changed; no README update required",
-  "publication": "record-only; prepush range scan after commit still required; no duplicate CI wait"
+  "publication": "Evidence pushed; receipt finalizes records. No duplicate CI wait for record-only pushes.",
+  "prepush_evidence_history_scan": {
+    "commit": "fddc3126f2b4ca639e1385c28c471d05751f1d93",
+    "commits_scanned": 1,
+    "bytes_approximately": 4310000,
+    "leaks": 0,
+    "exit": 0
+  },
+  "postpush_evidence_history_scan": {
+    "leaks": 0,
+    "exit": 0
+  },
+  "evidence_push": {
+    "attempt": 1,
+    "success": true,
+    "origin_main_tracking_exact": true
+  },
+  "owned_text_recheck": {
+    "files": 21,
+    "hits": 0,
+    "exit": 0
+  }
 }
