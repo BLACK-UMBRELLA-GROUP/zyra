@@ -1,0 +1,52 @@
+{
+  "reviewed_utc": "2026-11-27T13:38:49.310425+00:00",
+  "base_commit": "f318e243949edce4a9aa1546cae2d78e8d7cad23",
+  "owned_change": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+  "sha256": "d98d965e341cd9af263adb14fada8edc3460054b62d59261e6fa5db35016b60e",
+  "source_CI_diff_paths": [
+    "SOURCE/test/visual/line126_remaining_routes_test.dart"
+  ],
+  "generic_readAll_exact_base_bytes": true,
+  "all_original_file_content_exact_after_undoing_only_helper_addition_and_three_reader_call_migrations": true,
+  "all_original_assertions_retained": true,
+  "A5_all_five_production_hashes_preserved": {
+    "SOURCE/lib/dev/zyra_full_profile_preview.dart": true,
+    "SOURCE/lib/dev/zyra_help_safety_preview.dart": true,
+    "SOURCE/lib/widgets/zyra_purchase_fine_print.dart": true,
+    "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart": true,
+    "SOURCE/lib/dev/zyra_guardian_before_pay_preview.dart": true
+  },
+  "scope_authority": "Q228 Part B migration of places/switch fixtures, including their actual Add-role sign-up entry, to LOCK46 pages",
+  "review_result": "No actionable issue or scope violation found in final one-file fixture correction. No assertion,coverage or contrast waiver. Root owns final validation.",
+  "properties": [
+    "Exact keyed owner and sole Scrollable descendant must exist; current route,vertical axis,content dimensions and positive viewport are asserted.",
+    "Current position resolved after each audit flush,before while condition and jump,and before final reset; no position retained across await.",
+    "Full min-to-max-to-min sweep,.7 viewport step,minimum1 increment,.5 bottom tolerance and less-than80 bound preserved.",
+    "Only locked places,switch_signup and Guardian-entered actual signup_preferences use keyed reader; Seeker-entered signup aboutYou retains generic reader.",
+    "All prior type,role,model,state and route assertions are exactly retained; all other file content reconstructed to exact f318 bytes.",
+    "Production,.github,A5,Replay fixture,whole-app coverage requirements,thresholds and masters unchanged."
+  ],
+  "public_check": {
+    "exit_code": 0,
+    "exact_file_count": 1,
+    "hits": 0,
+    "log": "FIX_FINAL_PUBLIC_REDACTED.log",
+    "classifications": []
+  },
+  "secret_stdin_check": {
+    "exit_code": 0,
+    "exact_file_count": 1,
+    "input_bytes": 26970,
+    "log": "FIX_FINAL_SECRET_REDACTED.log",
+    "report": "FIX_FINAL_SECRET_REDACTED.json",
+    "inline_allow_comments_ignored": true,
+    "suppression_flags": []
+  },
+  "limits": [
+    "Reviewer ran no analyzer,tests,replay or captures; root owns those results.",
+    "The correction does not establish broader optional audit success or repair separate Replay,coverage or25-minute time-bound faults."
+  ],
+  "source_CI_index_mutations_by_reviewer": false,
+  "tests_run_by_reviewer": false,
+  "suppression_or_waiver": false
+}

@@ -1,0 +1,14 @@
+{
+  "authority": "Q228 B current-page fixture migration; LOCK46",
+  "path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+  "before_sha256": "f5907c1bf897733067fb3b15637a5c96007ed0156b073c7eb5387d908b910da5",
+  "after_sha256": "d98d965e341cd9af263adb14fada8edc3460054b62d59261e6fa5db35016b60e",
+  "scope": "Exact keyed places/switch owners and Guardian-entered signup_preferences owner; all original assertions and generic reader retained, Seeker setup reader unchanged",
+  "reason": "Two new optional B large-setting fixture failures retain disposed ScrollPosition during audit reflow",
+  "utc": "2026-11-27T13:29:13.868364+00:00",
+  "first_partial_helper_sha256": "7f7f12297c0f1c28b989d5e836b0b01e64ba0fc378b23bd9cb6d774e1d8f448d",
+  "failed_targeted_repair_runs": 1,
+  "final_sha256": "d98d965e341cd9af263adb14fada8edc3460054b62d59261e6fa5db35016b60e",
+  "production_unchanged": true,
+  "last_checked_utc": "2026-11-27T13:38:00.733907+00:00"
+}

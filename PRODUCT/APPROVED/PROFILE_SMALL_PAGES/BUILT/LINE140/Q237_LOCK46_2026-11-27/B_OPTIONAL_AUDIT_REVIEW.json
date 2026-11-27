@@ -1,0 +1,275 @@
+{
+  "reviewed_utc": "2026-11-27T13:27:46.313077+00:00",
+  "run_receipt": {
+    "id": 46003007858,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "f318e243949edce4a9aa1546cae2d78e8d7cad23",
+    "updated_at": "2026-11-27T13:25:06Z",
+    "html_url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46003007858"
+  },
+  "scope": "Read-only initial published B optional full-audit diagnostics; no source/CI/index changes, tests or automations by reviewer",
+  "required_flutter_shards": [
+    {
+      "id": 140519365457,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140519365570,
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140519365667,
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "optional_jobs": [
+    {
+      "setting": "normal-430",
+      "job_id": 140519149254,
+      "status": "completed",
+      "conclusion": "failure",
+      "test_passed": 381,
+      "test_failed": 2,
+      "elapsed_test_mmss": "19:01",
+      "body_failure": "line124_first_tour_capture_test.dart:331 missing Replay the walkthrough widget; asserts lazy row before scrolling",
+      "additional_owned_fixture_failures": [],
+      "additional_timeout_test_failures": 0,
+      "bounded_25_minute_timeout": false,
+      "teardown_failure": "whole-app required coverage nonempty; contrast assertion follows this coverage failure and did not print raw findings",
+      "shown_coverage_gaps_not_complete": [
+        "current_route:help_advanced",
+        "current_route:help_closed",
+        "current_route:help_contact_sent",
+        "current_route:help_data",
+        "current_route:help_delete",
+        "current_route:help_privacy",
+        "route_plan_viewport:help_advanced:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_advanced:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_advanced:Seeker Basic:430x932@1.0",
+        "route_plan_viewport:help_advanced:Seeker One:430x932@1.0",
+        "route_plan_viewport:help_closed:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_closed:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_closed:Seeker Basic:430x932@1.0",
+        "route_plan_viewport:help_closed:Seeker One:430x932@1.0",
+        "route_plan_viewport:help_contact:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_contact:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_contact:Seeker Basic:430x932@1.0",
+        "route_plan_viewport:help_contact_sent:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_contact_sent:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_contact_sent:Seeker Basic:430x932@1.0",
+        "route_plan_viewport:help_contact_sent:Seeker One:430x932@1.0",
+        "route_plan_viewport:help_data:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_data:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_data:Seeker Basic:430x932@1.0"
+      ],
+      "last_raster_progress": {
+        "frames": 4954,
+        "aggregate_audit_observations": 24,
+        "timestamp": "2026-11-27T13:19:08.4487729Z",
+        "final_totals_claimed": false,
+        "all_contrast_findings_claimed": false
+      },
+      "raw_log": "B_OPTIONAL_NORMAL430_RAW.log",
+      "raw_log_sha256": "5b321fe687860b0aac7eaaa8d3e3fb346281ef6a79bd979de377bd3020ba1645",
+      "classification": "No blanket baseline label. Exact final aggregate categories/counts unavailable from logs alone."
+    },
+    {
+      "setting": "normal-375",
+      "job_id": 140519149571,
+      "status": "completed",
+      "conclusion": "failure",
+      "test_passed": 381,
+      "test_failed": 2,
+      "elapsed_test_mmss": "20:33",
+      "body_failure": "line124_first_tour_capture_test.dart:331 missing Replay the walkthrough widget; asserts lazy row before scrolling",
+      "additional_owned_fixture_failures": [],
+      "additional_timeout_test_failures": 0,
+      "bounded_25_minute_timeout": false,
+      "teardown_failure": "whole-app required coverage nonempty; contrast assertion follows this coverage failure and did not print raw findings",
+      "shown_coverage_gaps_not_complete": [
+        "current_route:help_advanced",
+        "current_route:help_closed",
+        "current_route:help_contact_sent",
+        "current_route:help_data",
+        "current_route:help_delete",
+        "current_route:help_privacy",
+        "route_plan_viewport:help_advanced:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_advanced:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_advanced:Seeker Basic:375x667@1.0",
+        "route_plan_viewport:help_advanced:Seeker One:375x667@1.0",
+        "route_plan_viewport:help_closed:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_closed:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_closed:Seeker Basic:375x667@1.0",
+        "route_plan_viewport:help_closed:Seeker One:375x667@1.0",
+        "route_plan_viewport:help_contact:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_contact:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_contact:Seeker Basic:375x667@1.0",
+        "route_plan_viewport:help_contact_sent:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_contact_sent:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_contact_sent:Seeker Basic:375x667@1.0",
+        "route_plan_viewport:help_contact_sent:Seeker One:375x667@1.0",
+        "route_plan_viewport:help_data:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_data:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_data:Seeker Basic:375x667@1.0"
+      ],
+      "last_raster_progress": {
+        "frames": 7097,
+        "aggregate_audit_observations": 479,
+        "timestamp": "2026-11-27T13:20:30.1042374Z",
+        "final_totals_claimed": false,
+        "all_contrast_findings_claimed": false
+      },
+      "raw_log": "B_OPTIONAL_NORMAL375_RAW.log",
+      "raw_log_sha256": "d9f08a8f55497ae47746a180a0eff45b56b6167a83d3e29e81790d764bfc9346",
+      "classification": "No blanket baseline label. Exact final aggregate categories/counts unavailable from logs alone."
+    },
+    {
+      "setting": "large-430",
+      "job_id": 140519149381,
+      "status": "completed",
+      "conclusion": "failure",
+      "test_passed": 379,
+      "test_failed": 4,
+      "elapsed_test_mmss": "24:27",
+      "body_failure": "line124_first_tour_capture_test.dart:331 missing Replay the walkthrough widget; asserts lazy row before scrolling",
+      "additional_owned_fixture_failures": [
+        {
+          "roles": [
+            "Guardian One",
+            "Guardian Basic"
+          ],
+          "case": "subscriptions and switch setup",
+          "error": "ScrollPositionWithSingleContext used after dispose",
+          "stack": [
+            "line126_remaining_routes_test.dart:126 _readAll while-loop jumpTo",
+            "line126_remaining_routes_test.dart:465 _registerAccountCases"
+          ],
+          "comparison": "Absent from matching A large-job logs; no accepted-baseline attribution",
+          "diagnosis": "_readAll snapshots ScrollPosition objects then awaits h.flush; audit reflow may replace/dispose them. Reacquire current exact owner position after each flush while preserving full range and80-step bound."
+        }
+      ],
+      "additional_timeout_test_failures": 0,
+      "bounded_25_minute_timeout": false,
+      "teardown_failure": "whole-app required coverage nonempty; contrast assertion follows this coverage failure and did not print raw findings",
+      "shown_coverage_gaps_not_complete": [
+        "current_route:help_advanced",
+        "current_route:help_closed",
+        "current_route:help_contact_sent",
+        "current_route:help_data",
+        "current_route:help_delete",
+        "current_route:help_privacy",
+        "route_plan_viewport:help_advanced:Guardian Basic:430x932@1.3",
+        "route_plan_viewport:help_advanced:Guardian One:430x932@1.3",
+        "route_plan_viewport:help_advanced:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:help_advanced:Seeker One:430x932@1.3",
+        "route_plan_viewport:help_closed:Guardian Basic:430x932@1.3",
+        "route_plan_viewport:help_closed:Guardian One:430x932@1.3",
+        "route_plan_viewport:help_closed:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:help_closed:Seeker One:430x932@1.3",
+        "route_plan_viewport:help_contact:Guardian Basic:430x932@1.3",
+        "route_plan_viewport:help_contact:Guardian One:430x932@1.3",
+        "route_plan_viewport:help_contact:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:help_contact_sent:Guardian Basic:430x932@1.3",
+        "route_plan_viewport:help_contact_sent:Guardian One:430x932@1.3",
+        "route_plan_viewport:help_contact_sent:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:help_contact_sent:Seeker One:430x932@1.3",
+        "route_plan_viewport:help_data:Guardian Basic:430x932@1.3",
+        "route_plan_viewport:help_data:Guardian One:430x932@1.3",
+        "route_plan_viewport:help_data:Seeker Basic:430x932@1.3"
+      ],
+      "last_raster_progress": {
+        "frames": 6051,
+        "aggregate_audit_observations": 10,
+        "timestamp": "2026-11-27T13:24:27.6914001Z",
+        "final_totals_claimed": false,
+        "all_contrast_findings_claimed": false
+      },
+      "raw_log": "B_OPTIONAL_LARGE430_RAW.log",
+      "raw_log_sha256": "859b8aeb501d6a8873be49ce569b43f7043bf2fd7f7681663af27945894646b0",
+      "classification": "No blanket baseline label. Exact final aggregate categories/counts unavailable from logs alone."
+    },
+    {
+      "setting": "large-375",
+      "job_id": 140519149624,
+      "status": "completed",
+      "conclusion": "failure",
+      "test_passed": 346,
+      "test_failed": 37,
+      "elapsed_test_mmss": "25:07",
+      "body_failure": "line124_first_tour_capture_test.dart:331 missing Replay the walkthrough widget; asserts lazy row before scrolling",
+      "additional_owned_fixture_failures": [
+        {
+          "roles": [
+            "Guardian One",
+            "Guardian Basic"
+          ],
+          "case": "subscriptions and switch setup",
+          "error": "ScrollPositionWithSingleContext used after dispose",
+          "stack": [
+            "line126_remaining_routes_test.dart:126 _readAll while-loop jumpTo",
+            "line126_remaining_routes_test.dart:465 _registerAccountCases"
+          ],
+          "comparison": "Absent from matching A large-job logs; no accepted-baseline attribution",
+          "diagnosis": "_readAll snapshots ScrollPosition objects then awaits h.flush; audit reflow may replace/dispose them. Reacquire current exact owner position after each flush while preserving full range and80-step bound."
+        }
+      ],
+      "additional_timeout_test_failures": 33,
+      "bounded_25_minute_timeout": true,
+      "teardown_failure": "whole-app required coverage nonempty; contrast assertion follows this coverage failure and did not print raw findings",
+      "shown_coverage_gaps_not_complete": [
+        "current_route:guardian_free_place_invite",
+        "current_route:help_advanced",
+        "current_route:help_closed",
+        "current_route:help_contact_sent",
+        "current_route:help_data",
+        "current_route:help_delete",
+        "current_route:help_privacy",
+        "route_plan_viewport:bio:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:bio_locked:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:compatibility:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:edit_profile:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:ended_archive:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:ended_bio:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:ended_compatibility:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:ended_guardians:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:filter_preferences:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:guardian_access_agreement:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:guardian_circle:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:guardian_free_place_invite:Guardian Basic:375x667@1.3",
+        "route_plan_viewport:help_advanced:Guardian Basic:375x667@1.3",
+        "route_plan_viewport:help_advanced:Guardian One:375x667@1.3",
+        "route_plan_viewport:help_advanced:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:help_advanced:Seeker One:375x667@1.3",
+        "route_plan_viewport:help_closed:Guardian Basic:375x667@1.3"
+      ],
+      "last_raster_progress": {
+        "frames": 7844,
+        "aggregate_audit_observations": 12,
+        "timestamp": "2026-11-27T13:24:54.6233492Z",
+        "final_totals_claimed": false,
+        "all_contrast_findings_claimed": false
+      },
+      "raw_log": "B_OPTIONAL_LARGE375_RAW.log",
+      "raw_log_sha256": "21ad23bb71888a9eb50ff90110af3e0c941808b69878b7b0c548d5fc984e34a2",
+      "classification": "No blanket baseline label. Exact final aggregate categories/counts unavailable from logs alone."
+    }
+  ],
+  "artifacts": {
+    "api_count": 0,
+    "existing_workflow_has_upload_step": false,
+    "limitation": "Exact final aggregate raster totals/categories and complete coverage gaps unavailable; last-progress counters are not final raw-contrast totals."
+  },
+  "scope_distinction": "Local Q237 selected strict proof and LOCK46 bounded captures passed with zero raw contrast failures. These additional whole-app routes/fixtures fail. Existing workflow continue-on-error means optional job failures do not make required shards or overall workflow fail. Focused success does not establish full-audit success.",
+  "trace": "Existing OA-ZYRA-371/Q231 owns wider corpus; parent investigating the two newly observed owned B fixture failures under Q228 migration scope. No Replay/coverage repair suggested here.",
+  "written_refusal": "Do not call optional full audits green, label all observations accepted baseline, suppress assertions or broaden fixture repair to Replay/whole-app coverage.",
+  "source_CI_index_mutations": false,
+  "tests_run_by_reviewer": false,
+  "suppression_or_waiver": false
+}

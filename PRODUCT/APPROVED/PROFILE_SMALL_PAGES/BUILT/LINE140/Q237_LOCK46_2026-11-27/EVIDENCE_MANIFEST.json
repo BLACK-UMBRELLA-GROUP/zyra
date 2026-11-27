@@ -1,19 +1,35 @@
 {
+  "B_SCROLL_FIX_PROOF.json": {
+    "sha256": "eb4a15018a2890bc6fcea5458b5854f8e38c5d14731fcfaed44e416343941d64",
+    "bytes": 958
+  },
   "B_ANALYZER.result.json": {
     "sha256": "371fe4992778d5b9495e4b3c97facab19cb934119fd077fb4d955e151bb19b55",
     "bytes": 253
   },
   "HANDOVER_2026-11-27.txt": {
-    "sha256": "e857371080422c397360719624946993d5acc770db4008eba35e6fbc2bb2a141",
-    "bytes": 6317
+    "sha256": "e33c6b812a40dcadaba73dc170b2c24dde35cf82abc248f1a30a457d06424f89",
+    "bytes": 8009
   },
   "AB_line126-focused-contrast-normal.json": {
     "sha256": "d7f0761935bd03062bc38b754c5ab3aac82ec03a7d3756d450698ae910ba3c1f",
     "bytes": 69226
   },
+  "FIX_ORDINARY.result.json": {
+    "sha256": "b38ded33c6fc645690d9035d7891bfb7e35230748fcaa59e157ea888e474a703",
+    "bytes": 285
+  },
+  "FIX_ANALYZER_SEALED.result.json": {
+    "sha256": "5360841c253c4da3d415478365ac14020ceddc27f08df7d4e9e1e392cddf3437",
+    "bytes": 253
+  },
   "FINAL_TEXT_SECRET_REVIEW.json": {
     "sha256": "706e5dce01f3849c905938651077a0bb95531f6d9099680159ad88c46863d70f",
     "bytes": 119
+  },
+  "B_ORIGINAL_HOSTED_FINAL.json": {
+    "sha256": "50446302143d818a5b68349d833369b7a2ab53b86ab9f69d4fa270230bc88b7f",
+    "bytes": 341
   },
   "AB_STRICT_SUMMARY.json": {
     "sha256": "5851d363617ef8e054ed5f0ed4f4bd21282f31e87f97aff091c8cd30fbca2a76",
@@ -27,9 +43,25 @@
     "sha256": "54a84fb0d2f0c76c8eedc470a8d17188e50e0cd8a49e0e5f3902cd0372e5faac",
     "bytes": 36310
   },
+  "FIX_COMPOSITION_PROOF.json": {
+    "sha256": "4c9b9ddbe850386f88f8a26b37be7b795f32a361f68f5f5b5e55b01e2d97f260",
+    "bytes": 831
+  },
+  "FIX_REFLOW_SEALED.result.json": {
+    "sha256": "e023fdbf3cbb1c610ea3a41aab0d7429ac4b9b3a73ecc9975a55167c5973453e",
+    "bytes": 1016
+  },
+  "FIX_FOCUSED_FINAL.result.json": {
+    "sha256": "a4dc543678dd013dcd13a8bd3ae77cd8a9f7d338dcbe96bde4a3e13700222874",
+    "bytes": 1362
+  },
   "B_ORDINARY.result.json": {
     "sha256": "b3de6c7395594992cb6780e46f4728e57e64b0dfe7bed5a36305bc657e2c46f4",
     "bytes": 285
+  },
+  "FIX_FINAL_INDEPENDENT_REVIEW.json": {
+    "sha256": "7b3c6556538d0040d130e2bd21b8faf3d43a95186621f1b2ef7fabe8a1589e27",
+    "bytes": 2880
   },
   "AB_STRICT_REPLAY.result.json": {
     "sha256": "59ae9e52a76397e1edca95938e7ff9d8442d970f04ec48ed0aaa1922c5bd0568",
@@ -43,17 +75,33 @@
     "sha256": "d0dc06c1de6317d34d143b9d659a347a26c7053e190b843d00027294c759e6cd",
     "bytes": 282
   },
+  "FIX_COMMIT.json": {
+    "sha256": "934e960b2b2cb997a903a6dce5988d879bad9c0f3dec74cb6867632fe833f93a",
+    "bytes": 436
+  },
+  "FIX_line126-focused-contrast-normal-430.json": {
+    "sha256": "19ce0b012af1442e314cc00b8c1e5465bf878bed2e0c748776fc28213daa3c48",
+    "bytes": 31113
+  },
   "B_FOCUSED.result.json": {
     "sha256": "9d1a8db5112bbe3e45394057ba21dcb29166bd0d1dda4c9cee19c5bbc4b26275",
     "bytes": 1363
   },
   "TASK_NOTE_2026-11-27.txt": {
-    "sha256": "f13a8362753843cde3c12d9a1eb5a13a467cfeab58554e928c1d4b5744121121",
-    "bytes": 1985
+    "sha256": "99cac1be0ff67cbd3441a729560e115ea7d2405c0fc58cce33d82a8ed40c001f",
+    "bytes": 2422
   },
   "AB_line126-focused-contrast-large-430.json": {
     "sha256": "065ab25d41bb8d5a4ab2e0ae3d1719181037817f79b1efb1bcfb9b4dd64c4e3d",
     "bytes": 51507
+  },
+  "B_HOSTED_JOBS.json": {
+    "sha256": "0a7c606b06f5063541ad9757a3d7e19b4f70feda85d2959761f977c1b30bbbfa",
+    "bytes": 12268
+  },
+  "FIX_line126-focused-contrast-large-375.json": {
+    "sha256": "007b600ac39f55b0f9fe681f902452fe81bff713b13d6f756b68ea844e3f4810",
+    "bytes": 47280
   },
   "B_INDEPENDENT_REVIEW.json": {
     "sha256": "1dd49c934d287e490a2f8336ff92aaa299a907aa7bd9d0ec2ade6133c7a4691b",
@@ -75,9 +123,21 @@
     "sha256": "3c2b866e9571519056719bd0ab7381a97c117ec056abab8732deb76d3206c4d1",
     "bytes": 677282
   },
+  "B_OPTIONAL_AUDIT_REVIEW.json": {
+    "sha256": "c2bbaa240de4ed71c7e60edbed494e8dd6057de10a5fa891d0e374b0ec030a8f",
+    "bytes": 14343
+  },
+  "FIX_REFLOW_SUMMARY.json": {
+    "sha256": "3c721c310fed8fb4504a2522cf994f5d1fd1a1de7c69ca3bbf151487352856be",
+    "bytes": 737
+  },
   "B_VISUAL_REVIEW.json": {
     "sha256": "bc95504e7cb4fa34daafd042ead4c0295885537fd8568ff3711498a1cedc9a0a",
     "bytes": 13360
+  },
+  "FIX_line126-focused-contrast-large-430.json": {
+    "sha256": "f8215dd959826c8589027e5bb1cbd552d53efb9100a71eba6b107accd1177886",
+    "bytes": 36135
   },
   "B_REPLAY_CAPTURES.result.json": {
     "sha256": "bac835074dcb1e9f579f35f0e8530a41702f22edbfc6e79a3037ac5ec11135d9",
@@ -88,8 +148,12 @@
     "bytes": 6254
   },
   "BUILD.json": {
-    "sha256": "c097c758b50b87d2a32510d02faa96890b6dd30c868289eed1efd12fd2f4f20e",
-    "bytes": 1429
+    "sha256": "cb62f91efd3ac5b97263babf0b7ca495959341f8bfa934aa242f44fcaad98737",
+    "bytes": 3247
+  },
+  "FIX_line126-focused-contrast-normal.json": {
+    "sha256": "278c1ba8bdf62d64f5e2fbeeedc640cb956c29c7a7b890019fdd9a185b696463",
+    "bytes": 36164
   },
   "AB_line126-focused-contrast-large-375.json": {
     "sha256": "be2772bf9a5c5111577fc81cba1670e9d28a67ba0d45155dc8a78b061d407213",

@@ -1,0 +1,16 @@
+{
+  "code_commit": "49f012af6ecb7392b4fc7523b90716b2a74d089e",
+  "production_commit": "64245355d8c01da75121a61b377247eed267d7bd",
+  "production_tree_sha": "f64419d751427594889e73525277c94c4238b0f3",
+  "production_unchanged": true,
+  "CI_unchanged": true,
+  "screenshots_and_628_run_audits_still_bound_to_identical_production_code": true,
+  "sealed_B_applied_and_verified_before_overlay": true,
+  "overlay_test_path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+  "overlay_sha256": "d98d965e341cd9af263adb14fada8edc3460054b62d59261e6fa5db35016b60e",
+  "original_B_optional_new_owned_failures": "2 Guardian fixture cases at each large setting; explicit f318 finding, not baseline",
+  "required_A_B_failures": 0,
+  "mandatory_failed_full_gates": 1,
+  "targeted_repair_failed_runs": 1,
+  "new_hosted_receipt": "PENDING"
+}

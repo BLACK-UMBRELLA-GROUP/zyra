@@ -1,0 +1,23 @@
+{
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+    "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=line126_remaining_430x932_1.0_guardian_one_subscriptions/subscriptions/Guardian_One,line126_remaining_430x932_1.0_guardian_basic_subscriptions/subscriptions/Guardian_Basic,line126_remaining_430x932_1.0_guardian_one_switch/switch_account_signup/Guardian_One,line126_remaining_430x932_1.0_guardian_basic_switch/switch_account_signup/Guardian_Basic",
+    "--name",
+    "Guardian (One|Basic) subscriptions and switch setup",
+    "test/zyra_clearer_text_contrast_test.dart",
+    "test/zyra_clearer_text_contrast_430_test.dart",
+    "test/zyra_clearer_text_contrast_large_375_test.dart",
+    "test/zyra_clearer_text_contrast_large_430_test.dart"
+  ],
+  "started_utc": "2026-11-27T13:37:04.620239+00:00",
+  "finished_utc": "2026-11-27T13:37:59.749213+00:00",
+  "seconds": 55.13,
+  "exit": 0
+}

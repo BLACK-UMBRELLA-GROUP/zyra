@@ -1,7 +1,7 @@
 {
   "line": 140,
   "part": "B LOCK46 over A5",
-  "status": "local gates PASS; B hosted receipt pending",
+  "status": "local gates and test-only fixture follow-up PASS; follow-up hosted receipt pending",
   "authority": [
     "Founder GO",
     "Q222",
@@ -53,5 +53,73 @@
     "failed": 0,
     "exit": 0,
     "seconds": 551.56
+  },
+  "original_B_hosted": {
+    "id": 46003007858,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "f318e243949edce4a9aa1546cae2d78e8d7cad23",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46003007858",
+    "created_at": "2026-11-27T12:57:49Z",
+    "updated_at": "2026-11-27T13:25:06Z",
+    "checked_utc": "2026-11-27T13:46:27.098Z"
+  },
+  "fixture_followup": {
+    "commit": "49f012af6ecb7392b4fc7523b90716b2a74d089e",
+    "path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+    "sha256": "d98d965e341cd9af263adb14fada8edc3460054b62d59261e6fa5db35016b60e",
+    "ordinary": {
+      "passed": 7959,
+      "skipped": 248,
+      "failed": 0,
+      "seconds": 515.77,
+      "exit": 0
+    },
+    "production_tree_unchanged_from_B": true,
+    "foreign7_exact": true,
+    "utc": "2026-11-27T13:45:21.498825+00:00"
+  },
+  "production_tree_sha": "f64419d751427594889e73525277c94c4238b0f3",
+  "reflow_replay": {
+    "tests_passed": 8,
+    "settings": 4,
+    "frames": 280,
+    "runs": 4062,
+    "tuples": 16,
+    "raw_failures": 0,
+    "reports": [
+      {
+        "setting": "normal",
+        "frames": 66,
+        "runs": 988,
+        "tuples": 4,
+        "raw_failures": 0,
+        "coverage_gaps": []
+      },
+      {
+        "setting": "normal-430",
+        "frames": 56,
+        "runs": 970,
+        "tuples": 4,
+        "raw_failures": 0,
+        "coverage_gaps": []
+      },
+      {
+        "setting": "large-375",
+        "frames": 92,
+        "runs": 1132,
+        "tuples": 4,
+        "raw_failures": 0,
+        "coverage_gaps": []
+      },
+      {
+        "setting": "large-430",
+        "frames": 66,
+        "runs": 972,
+        "tuples": 4,
+        "raw_failures": 0,
+        "coverage_gaps": []
+      }
+    ]
   }
 }

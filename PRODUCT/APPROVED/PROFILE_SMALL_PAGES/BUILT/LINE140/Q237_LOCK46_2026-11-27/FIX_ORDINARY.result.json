@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded"
+  ],
+  "started_utc": "2026-11-27T13:36:03.308016+00:00",
+  "finished_utc": "2026-11-27T13:44:39.082325+00:00",
+  "seconds": 515.77,
+  "exit": 0
+}

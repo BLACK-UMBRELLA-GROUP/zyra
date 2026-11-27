@@ -1,0 +1,42 @@
+{
+  "tests_passed": 8,
+  "settings": 4,
+  "frames": 280,
+  "runs": 4062,
+  "tuples": 16,
+  "raw_failures": 0,
+  "reports": [
+    {
+      "setting": "normal",
+      "frames": 66,
+      "runs": 988,
+      "tuples": 4,
+      "raw_failures": 0,
+      "coverage_gaps": []
+    },
+    {
+      "setting": "normal-430",
+      "frames": 56,
+      "runs": 970,
+      "tuples": 4,
+      "raw_failures": 0,
+      "coverage_gaps": []
+    },
+    {
+      "setting": "large-375",
+      "frames": 92,
+      "runs": 1132,
+      "tuples": 4,
+      "raw_failures": 0,
+      "coverage_gaps": []
+    },
+    {
+      "setting": "large-430",
+      "frames": 66,
+      "runs": 972,
+      "tuples": 4,
+      "raw_failures": 0,
+      "coverage_gaps": []
+    }
+  ]
+}

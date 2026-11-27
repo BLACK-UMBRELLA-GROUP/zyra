@@ -1,0 +1,15 @@
+{
+  "commit": "49f012af6ecb7392b4fc7523b90716b2a74d089e",
+  "path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+  "sha256": "d98d965e341cd9af263adb14fada8edc3460054b62d59261e6fa5db35016b60e",
+  "ordinary": {
+    "passed": 7959,
+    "skipped": 248,
+    "failed": 0,
+    "seconds": 515.77,
+    "exit": 0
+  },
+  "production_tree_unchanged_from_B": true,
+  "foreign7_exact": true,
+  "utc": "2026-11-27T13:45:21.498825+00:00"
+}
