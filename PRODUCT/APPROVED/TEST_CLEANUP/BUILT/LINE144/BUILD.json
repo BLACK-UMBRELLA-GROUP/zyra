@@ -1,8 +1,8 @@
 {
   "line": 144,
   "status": "QUESTION Q231; tooling candidate parked, not BUILT",
-  "commit_sha": "0bd83f47216c2b1d85ff4a4bd8d90aac22643650",
-  "commit_scope": "accepted intake record HEAD; implementation unchanged",
+  "commit_sha": "61f8d3f765f89c34bd95d37474c6fdea92c97dd4",
+  "commit_scope": "record-only handover, no implementation",
   "accepted_source_sha": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
   "flutter_version": "3.44.2",
   "build_mode": "protected analyzer/widget tests and targeted normal430 raster diagnostic; no app build",
@@ -12,5 +12,8 @@
   "source_release": "2026-11-27T08:46:32.443925+00:00",
   "live": false,
   "hosted_candidate_proof": "PENDING; candidate not published",
-  "implementation_commit": null
+  "implementation_commit": null,
+  "accepted_intake_head": "0bd83f47216c2b1d85ff4a4bd8d90aac22643650",
+  "record_commit": "61f8d3f765f89c34bd95d37474c6fdea92c97dd4",
+  "final_receipt_commit": "listed in daily task note"
 }
