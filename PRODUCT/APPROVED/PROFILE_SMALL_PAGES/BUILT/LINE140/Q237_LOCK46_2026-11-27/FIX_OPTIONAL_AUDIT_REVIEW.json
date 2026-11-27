@@ -1,0 +1,330 @@
+{
+  "reviewed_utc": "2026-11-27T14:16:27.744017+00:00",
+  "run_receipt": {
+    "id": 46010052916,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "5bd18e56a05351479c495e36000e39ac98247228",
+    "updated_at": "2026-11-27T14:14:51Z",
+    "html_url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46010052916"
+  },
+  "scope": "Read-only final fixture follow-up optional full-audit diagnostics; no source/CI/index changes,tests or automations by reviewer",
+  "required_flutter_shards": [
+    {
+      "id": 140543128821,
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140543128847,
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140543129147,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "optional_jobs": [
+    {
+      "setting": "normal-430",
+      "job_id": 140542961033,
+      "status": "completed",
+      "conclusion": "failure",
+      "test_passed": 381,
+      "test_failed": 2,
+      "elapsed_test_mmss": "22:27",
+      "owned_Guardian_subscriptions_switch_case_proof": [
+        {
+          "role": "Guardian One",
+          "executed": true,
+          "passed": true,
+          "start_progress_line": "2026-11-27T14:05:14.7908923Z 16:00 +302 -1: Remaining routes line126 430x932_1.0 Guardian One subscriptions and switch setup (variant: TargetPlatform.iOS)",
+          "next_progress_line": "2026-11-27T14:05:27.3981570Z 16:13 +303 -1: Remaining routes line126 430x932_1.0 Guardian One membership review (variant: TargetPlatform.iOS)",
+          "pass_count_increased_by_one": true,
+          "fail_count_unchanged": true
+        },
+        {
+          "role": "Guardian Basic",
+          "executed": true,
+          "passed": true,
+          "start_progress_line": "2026-11-27T14:06:11.4366307Z 16:57 +322 -1: Remaining routes line126 430x932_1.0 Guardian Basic subscriptions and switch setup (variant: TargetPlatform.iOS)",
+          "next_progress_line": "2026-11-27T14:06:18.4333027Z 17:04 +323 -1: Remaining routes line126 430x932_1.0 Guardian One linked profile (variant: TargetPlatform.iOS)",
+          "pass_count_increased_by_one": true,
+          "fail_count_unchanged": true
+        }
+      ],
+      "disposed_ScrollPosition_messages": 0,
+      "new_owned_case_failures": 0,
+      "remaining_body_failure": "line124_first_tour_capture_test.dart:331 missing Replay the walkthrough widget; asserts lazy row before scrolling",
+      "additional_timeout_test_failures": 0,
+      "bounded_25_minute_timeout": false,
+      "teardown_failure": "whole-app required coverage nonempty; following contrast assertion did not print full raw finding list",
+      "shown_coverage_gaps_not_complete": [
+        "current_route:help_advanced",
+        "current_route:help_closed",
+        "current_route:help_contact_sent",
+        "current_route:help_data",
+        "current_route:help_delete",
+        "current_route:help_privacy",
+        "route_plan_viewport:help_advanced:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_advanced:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_advanced:Seeker Basic:430x932@1.0",
+        "route_plan_viewport:help_advanced:Seeker One:430x932@1.0",
+        "route_plan_viewport:help_closed:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_closed:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_closed:Seeker Basic:430x932@1.0",
+        "route_plan_viewport:help_closed:Seeker One:430x932@1.0",
+        "route_plan_viewport:help_contact:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_contact:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_contact:Seeker Basic:430x932@1.0",
+        "route_plan_viewport:help_contact_sent:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_contact_sent:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_contact_sent:Seeker Basic:430x932@1.0",
+        "route_plan_viewport:help_contact_sent:Seeker One:430x932@1.0",
+        "route_plan_viewport:help_data:Guardian Basic:430x932@1.0",
+        "route_plan_viewport:help_data:Guardian One:430x932@1.0",
+        "route_plan_viewport:help_data:Seeker Basic:430x932@1.0"
+      ],
+      "last_raster_progress": {
+        "frames": 4956,
+        "aggregate_audit_observations": 22,
+        "timestamp": "2026-11-27T14:11:40.5647267Z",
+        "final_totals_claimed": false,
+        "all_contrast_findings_claimed": false
+      },
+      "raw_log": "FIX_OPTIONAL_NORMAL430_RAW.log",
+      "raw_log_sha256": "40a64d17265e420c0a1dc3e020c69417150e177db5bbaae4460f6badad0e351e",
+      "classification": "No blanket baseline label. Exact final aggregate categories/counts unavailable without raw report JSON."
+    },
+    {
+      "setting": "normal-375",
+      "job_id": 140542961428,
+      "status": "completed",
+      "conclusion": "failure",
+      "test_passed": 381,
+      "test_failed": 2,
+      "elapsed_test_mmss": "23:58",
+      "owned_Guardian_subscriptions_switch_case_proof": [
+        {
+          "role": "Guardian One",
+          "executed": true,
+          "passed": true,
+          "start_progress_line": "2026-11-27T14:06:35.3326971Z 17:28 +302 -1: Remaining routes line126 430x932_1.0 Guardian One subscriptions and switch setup (variant: TargetPlatform.iOS)",
+          "next_progress_line": "2026-11-27T14:06:47.8013135Z 17:40 +303 -1: Remaining routes line126 430x932_1.0 Guardian One membership review (variant: TargetPlatform.iOS)",
+          "pass_count_increased_by_one": true,
+          "fail_count_unchanged": true
+        },
+        {
+          "role": "Guardian Basic",
+          "executed": true,
+          "passed": true,
+          "start_progress_line": "2026-11-27T14:07:35.2501557Z 18:27 +322 -1: Remaining routes line126 430x932_1.0 Guardian Basic subscriptions and switch setup (variant: TargetPlatform.iOS)",
+          "next_progress_line": "2026-11-27T14:07:41.3153589Z 18:34 +323 -1: Remaining routes line126 430x932_1.0 Guardian One linked profile (variant: TargetPlatform.iOS)",
+          "pass_count_increased_by_one": true,
+          "fail_count_unchanged": true
+        }
+      ],
+      "disposed_ScrollPosition_messages": 0,
+      "new_owned_case_failures": 0,
+      "remaining_body_failure": "line124_first_tour_capture_test.dart:331 missing Replay the walkthrough widget; asserts lazy row before scrolling",
+      "additional_timeout_test_failures": 0,
+      "bounded_25_minute_timeout": false,
+      "teardown_failure": "whole-app required coverage nonempty; following contrast assertion did not print full raw finding list",
+      "shown_coverage_gaps_not_complete": [
+        "current_route:help_advanced",
+        "current_route:help_closed",
+        "current_route:help_contact_sent",
+        "current_route:help_data",
+        "current_route:help_delete",
+        "current_route:help_privacy",
+        "route_plan_viewport:help_advanced:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_advanced:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_advanced:Seeker Basic:375x667@1.0",
+        "route_plan_viewport:help_advanced:Seeker One:375x667@1.0",
+        "route_plan_viewport:help_closed:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_closed:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_closed:Seeker Basic:375x667@1.0",
+        "route_plan_viewport:help_closed:Seeker One:375x667@1.0",
+        "route_plan_viewport:help_contact:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_contact:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_contact:Seeker Basic:375x667@1.0",
+        "route_plan_viewport:help_contact_sent:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_contact_sent:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_contact_sent:Seeker Basic:375x667@1.0",
+        "route_plan_viewport:help_contact_sent:Seeker One:375x667@1.0",
+        "route_plan_viewport:help_data:Guardian Basic:375x667@1.0",
+        "route_plan_viewport:help_data:Guardian One:375x667@1.0",
+        "route_plan_viewport:help_data:Seeker Basic:375x667@1.0"
+      ],
+      "last_raster_progress": {
+        "frames": 7098,
+        "aggregate_audit_observations": 483,
+        "timestamp": "2026-11-27T14:13:04.7842445Z",
+        "final_totals_claimed": false,
+        "all_contrast_findings_claimed": false
+      },
+      "raw_log": "FIX_OPTIONAL_NORMAL375_RAW.log",
+      "raw_log_sha256": "cf772c102bbfa8159dca41f90fb0b27be8166d812b05ddacff8760168b20a7fd",
+      "classification": "No blanket baseline label. Exact final aggregate categories/counts unavailable without raw report JSON."
+    },
+    {
+      "setting": "large-430",
+      "job_id": 140542960947,
+      "status": "completed",
+      "conclusion": "failure",
+      "test_passed": 333,
+      "test_failed": 50,
+      "elapsed_test_mmss": "25:11",
+      "owned_Guardian_subscriptions_switch_case_proof": [
+        {
+          "role": "Guardian One",
+          "executed": true,
+          "passed": true,
+          "start_progress_line": "2026-11-27T14:12:02.9705372Z 22:26 +302 -1: Remaining routes line126 430x932_1.0 Guardian One subscriptions and switch setup (variant: TargetPlatform.iOS)",
+          "next_progress_line": "2026-11-27T14:12:21.2364037Z 22:45 +303 -1: Remaining routes line126 430x932_1.0 Guardian One membership review (variant: TargetPlatform.iOS)",
+          "pass_count_increased_by_one": true,
+          "fail_count_unchanged": true
+        },
+        {
+          "role": "Guardian Basic",
+          "executed": true,
+          "passed": true,
+          "start_progress_line": "2026-11-27T14:13:28.1469059Z 23:52 +322 -1: Remaining routes line126 430x932_1.0 Guardian Basic subscriptions and switch setup (variant: TargetPlatform.iOS)",
+          "next_progress_line": "2026-11-27T14:13:37.1267166Z 24:01 +323 -1: Remaining routes line126 430x932_1.0 Guardian One linked profile (variant: TargetPlatform.iOS)",
+          "pass_count_increased_by_one": true,
+          "fail_count_unchanged": true
+        }
+      ],
+      "disposed_ScrollPosition_messages": 0,
+      "new_owned_case_failures": 0,
+      "remaining_body_failure": "line124_first_tour_capture_test.dart:331 missing Replay the walkthrough widget; asserts lazy row before scrolling",
+      "additional_timeout_test_failures": 48,
+      "bounded_25_minute_timeout": true,
+      "teardown_failure": "whole-app required coverage nonempty; following contrast assertion did not print full raw finding list",
+      "shown_coverage_gaps_not_complete": [
+        "current_route:guardian_free_place_invite",
+        "current_route:help_advanced",
+        "current_route:help_closed",
+        "current_route:help_contact_sent",
+        "current_route:help_data",
+        "current_route:help_delete",
+        "current_route:help_privacy",
+        "route_plan_viewport:bio:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:bio_locked:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:compatibility:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:edit_profile:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:ended_archive:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:ended_bio:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:ended_compatibility:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:ended_guardians:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:filter_preferences:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:guardian_access_agreement:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:guardian_circle:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:guardian_free_place_invite:Guardian Basic:430x932@1.3",
+        "route_plan_viewport:help_advanced:Guardian Basic:430x932@1.3",
+        "route_plan_viewport:help_advanced:Guardian One:430x932@1.3",
+        "route_plan_viewport:help_advanced:Seeker Basic:430x932@1.3",
+        "route_plan_viewport:help_advanced:Seeker One:430x932@1.3",
+        "route_plan_viewport:help_closed:Guardian Basic:430x932@1.3"
+      ],
+      "last_raster_progress": {
+        "frames": 4540,
+        "aggregate_audit_observations": 8,
+        "timestamp": "2026-11-27T14:14:33.9021747Z",
+        "final_totals_claimed": false,
+        "all_contrast_findings_claimed": false
+      },
+      "raw_log": "FIX_OPTIONAL_LARGE430_RAW.log",
+      "raw_log_sha256": "d99ff59a8bf88acbf3826ea47f1253119abfd652e690a61d81471d5fe2cefa53",
+      "classification": "No blanket baseline label. Exact final aggregate categories/counts unavailable without raw report JSON."
+    },
+    {
+      "setting": "large-375",
+      "job_id": 140542961010,
+      "status": "completed",
+      "conclusion": "failure",
+      "test_passed": 340,
+      "test_failed": 43,
+      "elapsed_test_mmss": "25:08",
+      "owned_Guardian_subscriptions_switch_case_proof": [
+        {
+          "role": "Guardian One",
+          "executed": true,
+          "passed": true,
+          "start_progress_line": "2026-11-27T14:11:03.8314547Z 21:51 +302 -1: Remaining routes line126 430x932_1.0 Guardian One subscriptions and switch setup (variant: TargetPlatform.iOS)",
+          "next_progress_line": "2026-11-27T14:11:16.8260517Z 22:04 +303 -1: Remaining routes line126 430x932_1.0 Guardian One membership review (variant: TargetPlatform.iOS)",
+          "pass_count_increased_by_one": true,
+          "fail_count_unchanged": true
+        },
+        {
+          "role": "Guardian Basic",
+          "executed": true,
+          "passed": true,
+          "start_progress_line": "2026-11-27T14:12:09.9480503Z 22:57 +322 -1: Remaining routes line126 430x932_1.0 Guardian Basic subscriptions and switch setup (variant: TargetPlatform.iOS)",
+          "next_progress_line": "2026-11-27T14:12:17.6451438Z 23:05 +323 -1: Remaining routes line126 430x932_1.0 Guardian One linked profile (variant: TargetPlatform.iOS)",
+          "pass_count_increased_by_one": true,
+          "fail_count_unchanged": true
+        }
+      ],
+      "disposed_ScrollPosition_messages": 0,
+      "new_owned_case_failures": 0,
+      "remaining_body_failure": "line124_first_tour_capture_test.dart:331 missing Replay the walkthrough widget; asserts lazy row before scrolling",
+      "additional_timeout_test_failures": 41,
+      "bounded_25_minute_timeout": true,
+      "teardown_failure": "whole-app required coverage nonempty; following contrast assertion did not print full raw finding list",
+      "shown_coverage_gaps_not_complete": [
+        "current_route:guardian_free_place_invite",
+        "current_route:help_advanced",
+        "current_route:help_closed",
+        "current_route:help_contact_sent",
+        "current_route:help_data",
+        "current_route:help_delete",
+        "current_route:help_privacy",
+        "route_plan_viewport:bio:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:bio_locked:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:compatibility:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:edit_profile:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:ended_archive:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:ended_bio:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:ended_compatibility:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:ended_guardians:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:filter_preferences:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:guardian_access_agreement:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:guardian_circle:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:guardian_free_place_invite:Guardian Basic:375x667@1.3",
+        "route_plan_viewport:help_advanced:Guardian Basic:375x667@1.3",
+        "route_plan_viewport:help_advanced:Guardian One:375x667@1.3",
+        "route_plan_viewport:help_advanced:Seeker Basic:375x667@1.3",
+        "route_plan_viewport:help_advanced:Seeker One:375x667@1.3",
+        "route_plan_viewport:help_closed:Guardian Basic:375x667@1.3"
+      ],
+      "last_raster_progress": {
+        "frames": 7490,
+        "aggregate_audit_observations": 10,
+        "timestamp": "2026-11-27T14:14:10.5944593Z",
+        "final_totals_claimed": false,
+        "all_contrast_findings_claimed": false
+      },
+      "raw_log": "FIX_OPTIONAL_LARGE375_RAW.log",
+      "raw_log_sha256": "7c9e0a901ccbd0bee36da026598b455745e5abaab5bb03a7ecec04184dd71850",
+      "classification": "No blanket baseline label. Exact final aggregate categories/counts unavailable without raw report JSON."
+    }
+  ],
+  "owned_fix_conclusion": "Both Guardian One and Guardian Basic subscriptions-and-switch setup cases executed and passed in large430 and large375,with pass counts incrementing and failure counts unchanged; also passed in both normal settings. No disposed ScrollPosition errors in any complete job log.",
+  "artifacts": {
+    "api_count_after_run_completed": 0,
+    "existing_workflow_has_upload_step": false,
+    "limitation": "Exact final aggregate raster totals/categories and complete coverage gaps unavailable. Last-progress counters are not final raw-contrast totals."
+  },
+  "scope_distinction": "Sealed local Q237/LOCK46 proof and final8-body four-setting reflow replay have zero raw contrast failures/coverage gaps per parent. Broader optional corpus remains failed for Replay,whole-app coverage and25-minute bound. Existing continue-on-error keeps these separate from required Flutter checks and overall run success.",
+  "trace": "Existing OA-ZYRA-371/Q231 owns wider corpus. Q228 owned B fixture correction is demonstrated by explicit hosted case progression; no broader repair or waiver applied.",
+  "written_refusal": "Do not call the broader full audits green,assert complete raw contrast counts,attribute all observations to baseline,suppress checks or expand this fixture change to Replay/coverage/time-bound fixes.",
+  "source_CI_index_mutations_by_reviewer": false,
+  "tests_run_by_reviewer": false,
+  "suppression_or_waiver": false
+}

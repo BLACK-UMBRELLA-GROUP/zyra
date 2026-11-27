@@ -16,8 +16,8 @@
     "bytes": 3856
   },
   "HANDOVER_2026-11-27.txt": {
-    "sha256": "d192270a97cf887e0709e3c7fcade9e88d53f8c8432f988d4093f8283ed844a6",
-    "bytes": 6617
+    "sha256": "a3444aa590a5c339cc5760b62eae30be3795308c1bbb5a6946045618a1518c87",
+    "bytes": 7003
   },
   "report_done.png": {
     "sha256": "b48901c0fc0e05fdbc1a5a6261045aab319e530efa41c566fd7fca5290d6d41d",
@@ -140,7 +140,7 @@
     "bytes": 51507
   },
   "BUILD.json": {
-    "sha256": "94d252e59fdbf6b2b813f67a64a77eae1bd56b6522daefa99526b1a0658eccdc",
-    "bytes": 1744
+    "sha256": "e8926bc36922c33981277f64e6c3ba01c6818fa6d24d03938267f8e76868c14f",
+    "bytes": 2639
   }
 }

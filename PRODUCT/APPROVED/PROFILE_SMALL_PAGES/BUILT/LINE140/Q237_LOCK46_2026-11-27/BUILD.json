@@ -1,7 +1,7 @@
 {
   "line": 140,
   "part": "B LOCK46 over A5",
-  "status": "local gates and test-only fixture follow-up PASS; follow-up hosted receipt pending",
+  "status": "BUILT preview; final local/required hosted gates PASS",
   "authority": [
     "Founder GO",
     "Q222",
@@ -121,5 +121,21 @@
         "coverage_gaps": []
       }
     ]
-  }
+  },
+  "implementation_status": "BUILT in Founder preview; required local and hosted gates passed",
+  "final_fixture_hosted": {
+    "id": 46010052916,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "5bd18e56a05351479c495e36000e39ac98247228",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46010052916",
+    "created_at": "2026-11-27T13:46:51Z",
+    "updated_at": "2026-11-27T14:14:51Z",
+    "checked_utc": "2026-11-27T14:16:11.361Z"
+  },
+  "final_source_tree_sha": "38f5e80d4b677490580067dc39d2ba4544f356ca",
+  "final_fixture_commit": "49f012af6ecb7392b4fc7523b90716b2a74d089e",
+  "final_tested_head": "5bd18e56a05351479c495e36000e39ac98247228",
+  "actual_release_receipt": "Measured after final receipt publication: outputs/RELEASE.json and SOURCE/build/line140-q237/RELEASE.json",
+  "fixture_followup_hosted": "SUCCESS; original two disposed-scroll fixture errors checked in final optional audit review"
 }
