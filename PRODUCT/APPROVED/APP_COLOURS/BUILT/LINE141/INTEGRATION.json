@@ -1,0 +1,191 @@
+{
+  "base": "0c4a7008",
+  "accepted_source": "b4dcadd2",
+  "patch_sha256": "7f3d48bab4a88b6da542566ddab7498761846753a22ef3fc63c71c783e45c442",
+  "files": [
+    {
+      "path": "SOURCE/README.md",
+      "before_sha256": "030c7e8ba448512e084a5245c67044bc9c0ffcf61e4f6da8afe7eb643f2c2522",
+      "candidate_sha256": "69ae0cb2ebcaa6cf1efafb56a67777f8da326bd87c88d0c53f14e1ff45f38116",
+      "bytes": 14578
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_local_code_page.dart",
+      "before_sha256": "55ec5797f6422cae3552169afc82aa8dd6e50465fb336d723196a2e322473fc7",
+      "candidate_sha256": "9b24bf5ead89ec37b39a25430133d58266103e647d8e93b8dca75f28315b2f39",
+      "bytes": 44922
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_help_safety_preview.dart",
+      "before_sha256": "36e0878ef68f4306eb301eb39891279fb40662b2fe6769c92ef40da536f675ad",
+      "candidate_sha256": "05d445ba47383572b7631665477de3c2a80cc2700abbf7610f993a8440019894",
+      "bytes": 22486
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "before_sha256": "e52ea189499754da93864e9f782863b385ea58cffbe0b5b4979e8aef7b318f97",
+      "candidate_sha256": "e5fa635955c161b757ca553351fe4a61890ffcd5ff61a2e2e6b96a8e5d1353c4",
+      "bytes": 46206
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "before_sha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea",
+      "candidate_sha256": "53f01b45ed3260a0035ccc8a3fe604d25d493c14162cf34eb97dcf89d3088c8f",
+      "bytes": 437705
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "before_sha256": "bb95d92f93bccf2bdf4b69bfff4666cfae2f466c627f9d51f99f3e8a27d5a2fd",
+      "candidate_sha256": "843ece610decd8a34b226680c41e32d957c0ba3c18986e645d1ac4b22b3d2a25",
+      "bytes": 47130
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "before_sha256": "5ad5f45fac347968b4cfd769b4a3a17466b5b2e3fc3765ba643dda3b46fa5598",
+      "candidate_sha256": "f580b7dfb7db8c3bf41f0c66f3f537ff40e7c934046a2bf33c4436a49afb15b6",
+      "bytes": 78762
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "before_sha256": "7f52edfe21027b6eb189d9bfe5b669232f7d72823e8f0e32905c59b1240fa7ea",
+      "candidate_sha256": "86e585923529e217dda3f3fc458afcbd9c507eb2ce66522b64f3135c6b946771",
+      "bytes": 35842
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/zyra_profile_video_trim_screen.dart",
+      "before_sha256": "283a66f7794fe53ebe6ea5a76253d2c01cba9f997c2ec4e409731e82fb1e28a5",
+      "candidate_sha256": "d9d7b8522bb1cd2d425cd30037361554b539443dcc14d2d44c93a06afa637c69",
+      "bytes": 16926
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "before_sha256": "bb6baedf209093e09ec7eb0974720315e873dad4e593b01db85d1f6c53959506",
+      "candidate_sha256": "a96af03b81613e3e372171595851b219d4ec017c9146048711350ce3407fc319",
+      "bytes": 21598
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "before_sha256": "d876eff9258e0fa55c070eaedd932f4380b73ea2e75f0175b618453e9a36a5bf",
+      "candidate_sha256": "42d1fcd450d5a684fea5d4dd900abf23b76f64ef3f81733c592a6a61e5dfebe4",
+      "bytes": 26673
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "before_sha256": "0021387a5d8dcce248d500622321b36e9aade8721aad8aecf67fc1343da386ab",
+      "candidate_sha256": "2d89006245366d32053a63d4ff39f1a6c8b8ba82420bb6717cb85874d978f174",
+      "bytes": 16012
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_video_player.dart",
+      "before_sha256": "de4524aecd81a2bda419d0ad94e6f3109e9b9590d0dd339ff5bcdc4270ca978e",
+      "candidate_sha256": "342d25806eed305a205cd1ed91a4812a71101e3c65a0d5e8525585b9038819bd",
+      "bytes": 16823
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_reference_label.dart",
+      "before_sha256": null,
+      "candidate_sha256": "e94544f52a2458d277b659709830a89b405530dc5cb4486927841e93b4e66c74",
+      "bytes": 617
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_state_widgets.dart",
+      "before_sha256": "e9195a8fd479094ff47dbcff83743f5cbaf26315cc7b003266c72aeb19448e2e",
+      "candidate_sha256": "111d791cacdb1c23dfdd754ec3c7e1205c13d5f6ec419583661f14aed05d45b2",
+      "bytes": 10724
+    },
+    {
+      "path": "SOURCE/test/full_screen_error_test.dart",
+      "before_sha256": "843a5d81f943129d43c2488c49571652780c322c5e1d060f08a4285a734542ff",
+      "candidate_sha256": "109fcd0ed0412a7dc9d910d383577c685ada4afacb39d19eaed9d5771800a914",
+      "bytes": 13390
+    },
+    {
+      "path": "SOURCE/test/guardian_card_interaction_test.dart",
+      "before_sha256": "fa395965854b030d06beec8fbddd71b3fa7c2dfb939c2ee2b04f9d5db261469e",
+      "candidate_sha256": "42d5c9215758a53bf2a1d04b6973c6b955cc286242adc187c44ef595b21bdac9",
+      "bytes": 54258
+    },
+    {
+      "path": "SOURCE/test/line141_small_screen_fit_test.dart",
+      "before_sha256": null,
+      "candidate_sha256": "15d1367c9c3dca162832872c03c3aff6bbdf521846f1728fdba621fe1fc114a9",
+      "bytes": 5134
+    },
+    {
+      "path": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "before_sha256": "d82124856db3e2d5f7f4fcb9e710e880e199d06618de42639e5230ac516f21fc",
+      "candidate_sha256": "7c275cd710a27ae9bc38db46b6b0ba4d3b97b0d280c0e1a0909cb95f51d9025c",
+      "bytes": 53327
+    },
+    {
+      "path": "SOURCE/test/photo_gallery_add_page_test.dart",
+      "before_sha256": "b60676689ff91d5c167cb0d7c02cae4ba00d45fbb375b5b037d27d6161382023",
+      "candidate_sha256": "2fd8a307ade4a2596c196cddb78e5496960e8743762cf46c4649a8e05506f2cc",
+      "bytes": 25462
+    },
+    {
+      "path": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "before_sha256": "bdb39a4dc32f45cfa44d2866042d15ca87d10fae59c340793a80d69656189410",
+      "candidate_sha256": "bda093052b9fc7ffe6d28f25c1b8d81fcac18f6e0d1075799ca616b7a698afe6",
+      "bytes": 20955
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "before_sha256": "e3ef05089305c166d8f6e0ae44f6028f3bd171418959f0497199037c7514f3d1",
+      "candidate_sha256": "355e0951b3e0c71c9067f6fe7701f9d48f6a44d1e42cf59714c5c151d13c5b65",
+      "bytes": 27508
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "before_sha256": "e388cf970509e94187b2acf8dedb5ff2a953702346796b034deee167592a18e5",
+      "candidate_sha256": "9b9e2ed1590e16d6b76b1c4be9ab7dac7129e2c78ca3e21abdc1f8d977b5e030",
+      "bytes": 16718
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_label_fit_test.dart",
+      "before_sha256": "dd95d21feb6e201920dab515b66ea14e858e8af647a4d0879d035a308b54063a",
+      "candidate_sha256": "8d59e94ec5e23db29881791a9c29a75150b001e71b858fa2cbb6f3db4ca94c85",
+      "bytes": 9278
+    },
+    {
+      "path": "SOURCE/test/zyra_request_activity_presentation_test.dart",
+      "before_sha256": "9a12739276f8e7e24256aa41a0196b35fd50c2510f7c7e3a79eb89d6b9e6fc23",
+      "candidate_sha256": "618fc7abfd41d92a5d8a19572deaf8caf78bcbc07005f295f74f1f7df1741e30",
+      "bytes": 43438
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "before_sha256": "23d0c45bddb31462e4e5fc989dcc519fee487eefe0af2be217e17913571c4229",
+      "candidate_sha256": "64fd56d43fc6b055f36e6acc1a9b263986daed6b6a7336841ebec4475b212d51",
+      "reason": "Newly triggered lazy-sliver fixture failure; retain all assertions and scroll actual Profile viewport before element discovery."
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "before_sha256": "5fd45f317d2b145de45504186a028a6033a4d5bc9b9d9cda5abc86097f38023a",
+      "candidate_sha256": "aba20d39336d30534c94fc8766aa1ae43424f31a82cbe16f173d0338a493ef65",
+      "reason": "Q209 master capture requires real shadows; restore debugDisableShadows after scoped capture. No app behavior changed."
+    },
+    {
+      "path": "SOURCE/test/auth_gate_recovery_test.dart",
+      "before_sha256": "0ff0a09a727e6910edc718bde43464c17fa522a5174aef0af0a8ca8b60e98a82",
+      "candidate_sha256": "4412d09b1541246104b86bdb2269f2a28fd5a7c544c8d31995f2e71ab461a0dc",
+      "reason": "Reference label uses invisible word joiners; assert unchanged accessible and visible reference while preserving AuthGate lifecycle checks."
+    }
+  ],
+  "status": "QUESTION",
+  "question": "Q229",
+  "held_path": "SOURCE/build/held/LINE141/2026-11-27_01a21bf6_GATES",
+  "held_patch_sha256": "21189c34f187857b09deb0223c0a36108ccc043a8101de2708ad33898d6d4a38",
+  "lease_acquired": "2026-11-27T07:45:31.181231+00:00",
+  "source_index_released": "2026-11-27T08:07:01.464404+00:00",
+  "head_at_release": "0c4a700852056463282429debfdae8790ec56e1c",
+  "foreign_index": [
+    "100644 f1915859e9eb592f2db782df5889d66f3d06bb02 0\tPRODUCT/APPROVED/BUILD_QUEUE.md",
+    "100644 0935e25eeea8b6ffe3ce64b614fcbf9468606b71 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+    "100644 341b615843c7227166868b6f025c30baed513281 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+    "100644 0531f5ad6daa081e49990b9c03427b7b4a7f3291 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+    "100644 b890726e53fbb2c4fdc8bf5ebd27811996fcd5f3 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+    "100644 4e002f5d53b681c5bbccc6617181b7264555d3ea 0\tPRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+    "100644 7b9d76e6b1b22dd40b24dd8824a52fb95a300c8a 0\tPRODUCT/APPROVED/QUESTIONS.md"
+  ]
+}

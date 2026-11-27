@@ -1,0 +1,6 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/membership_wallet_visual_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: component: Profile row targets and arrows compact=false
+00:04 +1: component: Profile row targets and arrows compact=true
+00:05 +2: (tearDownAll)
+00:05 +2: All tests passed!

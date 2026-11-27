@@ -1,0 +1,80 @@
+{
+  "status": "QUESTION Q229; mandatory gates not passed",
+  "commands": {
+    "analyzer": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "ordinary": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded",
+    "rendered": "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_FULL_TEXT_AUDIT=true --name \"^(Seeker|Basic plans|Guardian One|Family|Seekers|Safety|Phone|Focus) \" test/zyra_clearer_text_contrast_test.dart test/zyra_clearer_text_contrast_430_test.dart test/zyra_clearer_text_contrast_large_375_test.dart test/zyra_clearer_text_contrast_large_430_test.dart --reporter expanded",
+    "scan": "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_FULL_TEXT_AUDIT=true --name \"^Coverage entries line126 Seeker Basic actual Scan entry\" test/zyra_clearer_text_contrast_test.dart test/zyra_clearer_text_contrast_430_test.dart test/zyra_clearer_text_contrast_large_375_test.dart test/zyra_clearer_text_contrast_large_430_test.dart --reporter expanded",
+    "profile_repair": "node tooling/no_git_driver.mjs flutter test --no-pub test/membership_wallet_visual_test.dart --name \"component: Profile row targets and arrows\" --reporter expanded",
+    "auth_repair": "node tooling/no_git_driver.mjs flutter test --no-pub test/auth_gate_recovery_test.dart --reporter expanded",
+    "card_captures": "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LOCK19_REVIEW_DIR=<owner-work>/captures/guardian-card test/visual/lock19_guardian_card_capture_test.dart test/visual/lock8_v5_guardian_journeys_test.dart --reporter expanded",
+    "journey_captures": "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LINE102_GUARDIAN_JOURNEYS_DIR=<owner-work>/captures/guardian-journeys test/visual/lock8_v5_guardian_journeys_test.dart --reporter expanded"
+  },
+  "analyzer": {
+    "status": "pass",
+    "seconds": 18.5,
+    "scope": "final 28paths integrated whole-project analyzer"
+  },
+  "ordinary": {
+    "status": "failed then deliberately interrupted; remaining AuthGate tests not completed",
+    "before_interrupt": {
+      "passed": 7945,
+      "skipped": 244,
+      "failed": 4,
+      "elapsed": "18:51"
+    },
+    "shutdown": {
+      "additional_load_error": 1,
+      "elapsed": "19:53",
+      "details": "Bad state closing/adding a stream during intentional SIGINT shutdown"
+    },
+    "runner_return": 0,
+    "runner_return_is_not_a_pass": true,
+    "failed_log_lines": [
+      "00:06 +63 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/membership_wallet_visual_test.dart: component: Profile row targets and arrows compact=true [E]",
+      "08:50 +4154 ~4 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/auth_gate_recovery_test.dart: Help returns to the same AuthGate error without retrying [E]",
+      "11:07 +4883 ~160 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false [E]",
+      "18:51 +7945 ~244 -4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/auth_gate_recovery_test.dart: non-success and wrong-session events keep recovery held [E]",
+      "19:53 +7945 ~244 -5: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/auth_gate_recovery_test.dart [E]"
+    ],
+    "final_repaired_full_suite": "not rerun; no ordinary gate pass claimed"
+  },
+  "rendered": {
+    "status": "failed",
+    "passed_cases": 252,
+    "stale_case_failures": 12,
+    "coverage_teardown_failures": 4,
+    "elapsed": "16:30",
+    "frames": 6894,
+    "runs": 80008,
+    "raster_observations": 44,
+    "observation_categories": [
+      "Request a Journey",
+      "Continue to Apple",
+      "Maryam Hussain",
+      "Guardian One upgrade helper"
+    ],
+    "baseline_scope": "Each category and the three stale case causes reproduced through narrow exact-b4dcadd2 checks; not every frame/viewport rerun at baseline.",
+    "report_only": false,
+    "whole_app_coverage_credit": false
+  },
+  "scan": {
+    "behavioral_cases_passed": 4,
+    "retained_coverage_teardowns_failed": 4,
+    "elapsed": "00:08",
+    "frames": 40,
+    "runs": 542,
+    "raster_observations": 0,
+    "report_only": false,
+    "whole_app_coverage_credit": false
+  },
+  "repairs": {
+    "profile_row_complete_cases_passed": 2,
+    "authgate_full_file_passed": 12,
+    "guardian_card_capture_combined_passed": 20,
+    "final_real_shadow_journey_suite_passed": 13
+  },
+  "full_gate_attempts": 1,
+  "lease_seconds": 1290.283173,
+  "live": false
+}

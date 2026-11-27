@@ -1,0 +1,62 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/auth_gate_recovery_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: returning member hydrates the first photo before opening Profile
+00:00 +1: healthy same-owner events do not restart routing
+ZYRA: fetchCandidates — 0 male candidates match.
+00:01 +2: AuthChangeEvent.tokenRefreshed recovers a same-owner stream failure once
+ZYRA: fetchCandidates — 0 male candidates match.
+00:02 +2: returning member hydrates the first photo before opening Profile
+ZYRA: unlock auth lifetime could not be confirmed.
+00:02 +2: AuthChangeEvent.tokenRefreshed recovers a same-owner stream failure once
+ZYRA route failed [ZY-KYEL] (ClientException).
+ZYRA: fetchCandidates — 0 male candidates match.
+00:02 +3: AuthChangeEvent.signedIn recovers a same-owner stream failure once
+ZYRA: fetchCandidates — 0 male candidates match.
+00:02 +3: returning member hydrates the first photo before opening Profile
+ZYRA: unlock auth lifetime could not be confirmed.
+00:02 +3: AuthChangeEvent.signedIn recovers a same-owner stream failure once
+ZYRA route failed [ZY-1CS5] (ClientException).
+ZYRA: fetchCandidates — 0 male candidates match.
+00:03 +4: fast retry failure changes words on the same AuthGate page
+ZYRA: fetchCandidates — 0 male candidates match.
+00:03 +4: returning member hydrates the first photo before opening Profile
+ZYRA: unlock auth lifetime could not be confirmed.
+00:03 +4: fast retry failure changes words on the same AuthGate page
+ZYRA route failed [ZY-73NA] (ClientException).
+ZYRA resolveHome failed [ZY-0NSX] (PostgrestException) — recovery page required.
+ZYRA route failed [ZY-0NSX] (PostgrestException).
+00:03 +5: Help returns to the same AuthGate error without retrying
+ZYRA: fetchCandidates — 0 male candidates match.
+00:04 +5: returning member hydrates the first photo before opening Profile
+ZYRA: unlock auth lifetime could not be confirmed.
+00:04 +5: Help returns to the same AuthGate error without retrying
+ZYRA route failed [ZY-3S9O] (ClientException).
+00:04 +6: non-success and wrong-session events keep recovery held
+ZYRA: fetchCandidates — 0 male candidates match.
+00:04 +6: returning member hydrates the first photo before opening Profile
+ZYRA: unlock auth lifetime could not be confirmed.
+00:04 +6: non-success and wrong-session events keep recovery held
+ZYRA route failed [ZY-HKDY] (ClientException).
+00:05 +7: replacement owner routes itself and old callbacks stay inert
+ZYRA: fetchCandidates — 0 male candidates match.
+00:05 +7: returning member hydrates the first photo before opening Profile
+ZYRA: unlock auth lifetime could not be confirmed.
+00:05 +7: replacement owner routes itself and old callbacks stay inert
+ZYRA route failed [ZY-EDC9] (ClientException).
+ZYRA: fetchCandidates — 0 male candidates match.
+00:05 +8: disposed recovery ignores later events and retained actions
+ZYRA: fetchCandidates — 0 male candidates match.
+00:06 +8: returning member hydrates the first photo before opening Profile
+ZYRA: unlock auth lifetime could not be confirmed.
+00:06 +8: disposed recovery ignores later events and retained actions
+ZYRA route failed [ZY-5F8L] (ClientException).
+00:06 +9: recovery still requires fresh proof and cannot admit preview
+ZYRA route failed [ZY-E9AA] (ZyraPreviewAuthorizationException).
+00:06 +9: returning member hydrates the first photo before opening Profile
+ZYRA: unlock auth lifetime could not be confirmed.
+00:06 +9: recovery still requires fresh proof and cannot admit preview
+ZYRA route failed [ZY-8T1X] (ClientException).
+00:06 +10: route diagnostic log contains opaque code and type only
+00:07 +11: resolver failure logs no raw response before recovery
+00:07 +12: (tearDownAll)
+00:07 +12: All tests passed!

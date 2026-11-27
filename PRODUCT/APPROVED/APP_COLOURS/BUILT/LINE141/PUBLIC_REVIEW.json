@@ -1,0 +1,141 @@
+{
+  "candidate_paths": 28,
+  "scanner_exit": 1,
+  "hits": [
+    {
+      "path": "ZYRA/SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "line": 1004,
+      "kind": "money",
+      "reason": "Unchanged layout property or Dart record accessor; scanner token collision."
+    },
+    {
+      "path": "ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2954,
+      "kind": "money",
+      "reason": "Unchanged layout property or Dart record accessor; scanner token collision."
+    },
+    {
+      "path": "ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10609,
+      "kind": "money",
+      "reason": "Unchanged layout property or Dart record accessor; scanner token collision."
+    },
+    {
+      "path": "ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10610,
+      "kind": "money",
+      "reason": "Unchanged layout property or Dart record accessor; scanner token collision."
+    },
+    {
+      "path": "ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1987,
+      "kind": "money",
+      "reason": "Unchanged layout property or Dart record accessor; scanner token collision."
+    },
+    {
+      "path": "ZYRA/SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 10,
+      "kind": "email",
+      "reason": "Existing public support address; unchanged."
+    },
+    {
+      "path": "ZYRA/SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 79,
+      "kind": "email",
+      "reason": "Existing public support address; unchanged."
+    },
+    {
+      "path": "ZYRA/SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 548,
+      "kind": "email",
+      "reason": "Existing public support address; unchanged."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 269,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 276,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 278,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 313,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 315,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 362,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "line": 405,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 533,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 534,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 551,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 564,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 586,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 651,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    },
+    {
+      "path": "ZYRA/SOURCE/test/membership_wallet_visual_test.dart",
+      "line": 685,
+      "kind": "money",
+      "reason": "Existing approved public UI fixture/selector and expected wording, unchanged by this line."
+    }
+  ],
+  "new_private_material": false,
+  "secrets_exit": 0,
+  "leaks": 0
+}

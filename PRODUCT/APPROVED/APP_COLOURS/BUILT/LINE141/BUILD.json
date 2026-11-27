@@ -1,0 +1,13 @@
+{
+  "commit_sha": "0c4a700852056463282429debfdae8790ec56e1c",
+  "accepted_source_sha": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "flutter_version": "3.44.2",
+  "build_mode": "protected Flutter widget tests; uncommitted candidate parked",
+  "timestamp": "2026-11-27T08:07:01.464404+00:00",
+  "status": "QUESTION Q229",
+  "candidate_patch_sha256": "21189c34f187857b09deb0223c0a36108ccc043a8101de2708ad33898d6d4a38",
+  "source_index_release": "2026-11-27T08:07:01.464404+00:00",
+  "lease_acquired": "2026-11-27T07:45:31.181231+00:00",
+  "lease_seconds": 1290.283173,
+  "live": false
+}

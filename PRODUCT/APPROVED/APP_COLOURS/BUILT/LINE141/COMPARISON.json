@@ -1,0 +1,131 @@
+{
+  "screens": [
+    {
+      "master": "k02",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k02.png",
+      "sha256": "b6945d547d548fa282681bc3702d2378c3db47ec10fb3c2e0d3b4f52d66c7c7a",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "k03",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k03.png",
+      "sha256": "e732c5f3cbbc8d502ad022ad5ff41d25eefb28294fa9ca04783088e40284dafb",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "k06",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k06.png",
+      "sha256": "f6784385ac9f4c49010ac875cec77af977ab4228c56f54e7a536c6082e26f870",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "k10",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k10.png",
+      "sha256": "dc219006191f369bc69fbfc385117c007c792d53c3d47bc19b702c6eb3bd8b8d",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "k13",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k13.png",
+      "sha256": "7b05530e5d40ae44d23e60b2d56b82693b94564f33f838bbc2073d3c512a2a9b",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "k14",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k14.png",
+      "sha256": "c72f734cb166d58c0c3dc9e0aff1b85a5dcd78473c56e76ba5df26d8b31f9ce6",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "k15",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k15.png",
+      "sha256": "3259685a505ef0805da517aed5f0fb770b163d80fdd871c73faafb65b6b1dc9a",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "k16",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k16.png",
+      "sha256": "44cb0efbfc57b13e3131e152a48002fe6668b07a98c8e3d6cd9d1381b4a011d9",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "k18",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/k18.png",
+      "sha256": "eba0d8f2320df8381fc7e42bddaab675711ae46884ffbda6fb1e8ae355f43304",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "g09",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/g09.png",
+      "sha256": "3ecac7de69b08265ba7dc36b9888c3f31cf17bb89fd9ac24c64abda759294104",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "g09b",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/g09b.png",
+      "sha256": "88b6f192715382a38e3c88c3444b4b396b55ae08f374da23a8cffffa88ab9d97",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    },
+    {
+      "master": "g09c",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/screens/g09c.png",
+      "sha256": "9997863dea3cf13339eb54a810e9be397a2c566ca54049b7471b1e160aa47bd4",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "scope": "correction4; real shadows enabled; no full-screen pixel parity claim"
+    }
+  ],
+  "result": "No actionable correction4 mismatch found by independent review",
+  "baseline_differences": [
+    "Native/prototype spacing and navigation",
+    "Existing modal position and translucency",
+    "Existing sample toast and expiry-copy difference"
+  ],
+  "written_refusal": "Do not redraw or alter unrelated locked layouts/copy in this line."
+}

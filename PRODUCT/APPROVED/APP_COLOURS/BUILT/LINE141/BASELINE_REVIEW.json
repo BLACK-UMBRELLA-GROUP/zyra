@@ -1,0 +1,321 @@
+{
+  "line": 141,
+  "timestamp": "2026-11-27T08:02:29.074597+00:00",
+  "baseline": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "runtime": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-accepted/SOURCE",
+  "method": "Read-only git archive b4dcadd2 SOURCE into isolated scratch test runtime; existing prepared package metadata; ignored config files only from tracked public .example placeholders. No shared SOURCE/index writes.",
+  "protected_driver_check": {
+    "pins": 5,
+    "sdk": "3.44.2",
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS"
+  },
+  "checks": [
+    {
+      "name": "Help and Welcome accepted-base witness",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --name 'LOCK43 actual entry points|Welcome controls|late thrown provider' test/visual/line137_help_support_capture_test.dart test/welcome_auth_failure_recovery_test.dart",
+      "exit": 1,
+      "passed": 5,
+      "failed": 1,
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-help-welcome.log",
+      "outcomes": [
+        "Seeker Help actual entry fails: concept_settings_helpSupport absent in lazy Settings list (line137 test147 / baseline support1082).",
+        "Guardian Help entry passes.",
+        "All four Welcome recovery tests pass locally; hosted MissingPluginException app_links/events not reproduced in this Mac runtime. Do not claim locally proven."
+      ]
+    },
+    {
+      "name": "Three stale rendered-text fixtures, exact accepted source",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_FULL_TEXT_AUDIT=true --name '^(Seeker baseline seeker missing Profiles options and utility states|Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite|Basic plans capture Guardian Basic five current roots, upgrade and locked Network)' test/zyra_clearer_text_contrast_test.dart",
+      "exit": 1,
+      "passed": 0,
+      "failed_cases": 3,
+      "failed_teardown": 1,
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-stale-rendered.log",
+      "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-stale-rendered-report.json",
+      "report_only": false,
+      "viewport": "375x667@1.0",
+      "frames": 86,
+      "text_runs": 1410,
+      "raster_observations": [
+        {
+          "text": "Request a Journey",
+          "contrast": 3.9692576107772752,
+          "group": "profiles_photos",
+          "scroll_frame": 0
+        },
+        {
+          "text": "Request a Journey",
+          "contrast": 3.9692576107772752,
+          "group": "profiles_photos",
+          "scroll_frame": 1
+        },
+        {
+          "text": "Request a Journey",
+          "contrast": 3.9692576107772752,
+          "group": "profiles_photos",
+          "scroll_frame": 2
+        },
+        {
+          "text": "Continue to Apple",
+          "contrast": 2.352092200185422,
+          "group": "basic_guardian",
+          "scroll_frame": 0
+        }
+      ],
+      "outcomes": [
+        "Missing concept_browse_menu on accepted Seeker missing Profiles options utility case.",
+        "Removed Membership setup is being prepared copy in accepted Seeker Basic and Guardian Basic fixtures.",
+        "Unfiltered coverage assertion retained; expected incomplete coverage teardown also fails on intentionally selected subset. No whole-app coverage credit."
+      ]
+    },
+    {
+      "name": "Membership compact-profile row targets baseline control",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --name '^component: Profile row targets and arrows compact=' test/membership_wallet_visual_test.dart",
+      "exit": 0,
+      "passed": 2,
+      "failed": 0,
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-membership-row.log",
+      "outcomes": [
+        "compact=false passes",
+        "compact=true passes",
+        "Candidate compact=true failure is newly triggered; cannot attribute to baseline."
+      ]
+    },
+    {
+      "name": "Family pronoun behavior and Focus Guardian upgrade baseline at normal375",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_FULL_TEXT_AUDIT=true --name '^(Family Family copy uses the invited Seeker pronoun and denies before haptics|Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic)' test/zyra_clearer_text_contrast_test.dart",
+      "exit": 1,
+      "passed": 2,
+      "failed_cases": 0,
+      "failed_teardown": 1,
+      "frames": 58,
+      "text_runs": 775,
+      "raster_observations": [],
+      "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-family-focus-report.json",
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-family-focus.log",
+      "outcomes": [
+        "Focus normal375 emitted58 frames /775 runs with no raster observations.",
+        "Family direct pronoun/haptics behavior passes but this case emits no corpus capture, so no Maryam caption raster credit.",
+        "Retained partial-coverage teardown fails; no whole-app gate pass claimed."
+      ]
+    },
+    {
+      "name": "Family Maryam caption baseline",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_FULL_TEXT_AUDIT=true --name '^(Family k20-k22 actual pending page, verified acceptance and Profile at 1.0|Family existing free-place invite survives role switch and preserves access facts)' test/zyra_clearer_text_contrast_test.dart",
+      "exit": 1,
+      "passed": 2,
+      "failed_cases": 0,
+      "failed_teardown": 1,
+      "frames": 56,
+      "text_runs": 738,
+      "report_only": false,
+      "raster_observations": [
+        {
+          "text": "Maryam Hussain",
+          "contrast": 1.3083445123333874,
+          "required_contrast": 3.0,
+          "group": "lock19_v3_source",
+          "viewport": "375x667@1.0",
+          "scroll_frame": 0,
+          "pages": [],
+          "rendered_route": null
+        },
+        {
+          "text": "Maryam Hussain",
+          "contrast": 1.3083445123333874,
+          "required_contrast": 3.0,
+          "group": "lock19_v3_source",
+          "viewport": "375x667@1.0",
+          "scroll_frame": 1,
+          "pages": [],
+          "rendered_route": null
+        },
+        {
+          "text": "Maryam Hussain",
+          "contrast": 1.3083445123333874,
+          "required_contrast": 3.0,
+          "group": "lock19_v3_source",
+          "viewport": "375x667@1.0",
+          "scroll_frame": 2,
+          "pages": [],
+          "rendered_route": null
+        }
+      ],
+      "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-family-caption-report.json",
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-family-caption.log",
+      "outcomes": [
+        "Behavioral cases pass; retained partial-coverage teardown fails.",
+        "Not a full gate or whole-app coverage pass."
+      ]
+    },
+    {
+      "name": "Focus Guardian One upgrade helper baseline",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_FULL_TEXT_AUDIT=true --name '^Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic' test/zyra_clearer_text_contrast_large_375_test.dart",
+      "exit": 1,
+      "passed": 1,
+      "failed_cases": 0,
+      "failed_teardown": 1,
+      "frames": 66,
+      "text_runs": 707,
+      "report_only": false,
+      "raster_observations": [
+        {
+          "text": "A Seeker can also cover you with a ZYRA Family place.",
+          "contrast": 4.48373254417806,
+          "required_contrast": 4.5,
+          "group": "lock15_1.0",
+          "viewport": "375x667@1.3",
+          "scroll_frame": 0,
+          "pages": [
+            "one_upgrade"
+          ],
+          "rendered_route": "one_upgrade"
+        },
+        {
+          "text": "A Seeker can also cover you with a ZYRA Family place.",
+          "contrast": 4.48373254417806,
+          "required_contrast": 4.5,
+          "group": "lock15_1.0",
+          "viewport": "375x667@1.3",
+          "scroll_frame": 1,
+          "pages": [
+            "one_upgrade"
+          ],
+          "rendered_route": "one_upgrade"
+        }
+      ],
+      "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-focus-helper-large-report.json",
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-focus-helper-large.log",
+      "outcomes": [
+        "Behavioral cases pass; retained partial-coverage teardown fails.",
+        "Not a full gate or whole-app coverage pass."
+      ]
+    },
+    {
+      "name": "AuthGate Help reference baseline",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --name '^Help returns to the same AuthGate error without retrying$' test/auth_gate_recovery_test.dart",
+      "exit": 0,
+      "passed": 1,
+      "failed": 0,
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-authgate-reference.log",
+      "outcomes": [
+        "Exact accepted b4dcadd2 passes both original plain REFERENCE text finders.",
+        "Original timer, refresh counter, navigation pop and same-error return assertions all retained and pass.",
+        "Candidate word-joiner finder failure is newly triggered; exact baseline is not a failing case."
+      ]
+    },
+    {
+      "name": "Seeker Basic actual Scan entry baseline",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_FULL_TEXT_AUDIT=true --name '^Coverage entries line126 Seeker Basic actual Scan entry' test/zyra_clearer_text_contrast_test.dart",
+      "exit": 1,
+      "passed": 1,
+      "failed_cases": 0,
+      "failed_teardown": 1,
+      "frames": 13,
+      "text_runs": 191,
+      "report_only": false,
+      "raster_observations": [],
+      "report": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-scan-entry-report.json",
+      "log": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-small-screen-fit-integrate-fresh-ultra/work/baseline-scan-entry.log",
+      "outcomes": [
+        "Exact accepted b4dcadd2 case reaches Scan through concept_browse_menu successfully; no missing-key failure reproduced.",
+        "Scan behavioral assertions pass; zero raster observations at375x667@1.0.",
+        "Command fails only retained partial-coverage teardown. No whole-app pass claimed."
+      ]
+    }
+  ],
+  "accepted_file_hashes": [
+    {
+      "path": "SOURCE/test/visual/line137_help_support_capture_test.dart",
+      "sha256": "e1742c3a2a5285afe20c173acc3479d1aa2f168ac6b1a5471e8d73fdbb897c66",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "sha256": "c8f6f0ca67eacf331a4a99e4c06fe31cf0d7100feaefab7c3c690dfee4ebbc47",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/welcome_auth_failure_recovery_test.dart",
+      "sha256": "7c2d06f69318419017ffe43cde962746c36f02673af8da06a51c60c77cd98356",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+      "sha256": "d6f3284b41844142371931b64d614ab518b4b9464c4beaebf4f1de4f70976045",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart",
+      "sha256": "dc0166152e7571a22ec2f744cd0f31d6d75945e07950f8b13e543d5d622bd399",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/visual/basic_plans_capture_test.dart",
+      "sha256": "7531f0d039352f5554a604f3bb93c382554ab42812b0ee6facf1c6fc504ad95c",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "sha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/pubspec.yaml",
+      "sha256": "9827f6c3f9f7cc97ae8d021d09f296612b048dd45bc2c017bbe00f5daef86e02",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/pubspec.lock",
+      "sha256": "1456bc466a68411eaadb94947e044c9643c385da608473e4c21a0036c3a860dc",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/tooling/no_git_driver.mjs",
+      "sha256": "518527ff1025f3611952c97a059de752de32b11ff68fc1d658fa6406ab76dfc2",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/tooling/sdk_pins.json",
+      "sha256": "6a12ab7d1db5f91d8c69eb425342c2f2ab090ae9fbef10559c873cf2f78fcd1d",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "sha256": "23d0c45bddb31462e4e5fc989dcc519fee487eefe0af2be217e17913571c4229",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "sha256": "f2e126cb5ec075447264064dfee914b568b39ef6b63bd6b3e211f408976270b5",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/visual/lock15_focus_capture_test.dart",
+      "sha256": "7cfd2b72167a04a24fc9d8961fb81f0033303d744752ee15484ad53b7fbd968a",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart",
+      "sha256": "e8f70c554318857487a9a147317c2e0b4cf8ac26c316f81bbec5dd7bbbecedca",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/auth_gate_recovery_test.dart",
+      "sha256": "0ff0a09a727e6910edc718bde43464c17fa522a5174aef0af0a8ca8b60e98a82",
+      "matches_accepted_git_object": true
+    },
+    {
+      "path": "SOURCE/test/visual/line126_coverage_entry_routes_test.dart",
+      "sha256": "e65b4751245d48677431d6a36e064749056c5a9578812c39fe3374b98536d6df",
+      "matches_accepted_git_object": true
+    }
+  ],
+  "limitations": [
+    "Only targeted isolated witnesses; no full baseline gate.",
+    "Prepared Mac dependencies differ in platform from hosted CI; Welcome hosted failure not locally reproduced."
+  ],
+  "repairs_applied": false,
+  "shared_source_index_mutations": false
+}

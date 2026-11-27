@@ -1,0 +1,43 @@
+{
+  "scope": "Independent original candidate and final integrated diff; no test gate waiver",
+  "result": "No actionable source defect found",
+  "original_hash_verified": true,
+  "paths": 25,
+  "exact_original_candidates": 21,
+  "expected_merges": [
+    "SOURCE/README.md",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/screens/settings/help_support_screen.dart"
+  ],
+  "preserved": [
+    "Canonical line137 Help imports/content",
+    "LOCK44 profilePaused/privateMode fields and rows"
+  ],
+  "checks": [
+    "git diff --check -- SOURCE passed",
+    "k02 spot comparison confirms two-line stages; prior full-screen fixture drift disclosed"
+  ],
+  "fixture_followup": "Both complete compact Profile cases passed; all original row, arrow, target and route-return assertions remain.",
+  "final_paths": 28,
+  "actionable_correction4_findings": 0,
+  "guardian_card_masters": [
+    "k02",
+    "k03",
+    "k06",
+    "k10",
+    "k13",
+    "k14",
+    "k15",
+    "k16",
+    "k18"
+  ],
+  "guardian_journeys_masters": [
+    "g09",
+    "g09b",
+    "g09c"
+  ],
+  "q209_capture_finding": "Closed: scoped save/enable/repaint/pump/capture/restore; real shadow bands verified gone; espresso Open Journey retained.",
+  "limitations": "Whole-screen spacing/navigation/modal/toast/expiry differences reproduce in earlier baseline evidence; correction4 comparison only, not full pixel parity or gate waiver.",
+  "reference_fixture_review": "Exact original accessible and displayed reference preserved after removing only invisible joiners; both Help/error uniqueness, refresh/timer/pop assertions retained; targeted1pass."
+}

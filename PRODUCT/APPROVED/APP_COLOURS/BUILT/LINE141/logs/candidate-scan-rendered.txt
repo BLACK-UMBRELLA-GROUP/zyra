@@ -1,0 +1,172 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:02 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; line126_entry_Seeker_Basic_scan 375x667@1.0
+00:03 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; line126_entry_Seeker_Basic_scan 430x932@1.0
+00:03 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; line126_entry_Seeker_Basic_scan 375x667@1.3
+00:04 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; line126_entry_Seeker_Basic_scan 430x932@1.3
+00:06 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:06 +1 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:06 +1 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: (tearDownAll) [E]
+  Expected: empty
+    Actual: [
+              'current_route:account_action',
+              'current_route:bio',
+              'current_route:bio_locked',
+              'current_route:compatibility',
+              'current_route:compatibility_store',
+              'current_route:developer_inactivity_email',
+              'current_route:edit_profile',
+              'current_route:ended',
+              'current_route:ended_archive',
+              'current_route:ended_bio',
+              'current_route:ended_compatibility',
+              'current_route:ended_guardians',
+              'current_route:ended_restart',
+              'current_route:filter_preferences',
+              'current_route:filters',
+              'current_route:guardian',
+              'current_route:guardian_access_agreement',
+              'current_route:guardian_chat_report',
+              'current_route:guardian_circle',
+              'current_route:guardian_compatibility',
+              'current_route:guardian_compatibility_upgrade',
+              'current_route:guardian_connect',
+              'current_route:guardian_family_identity',
+              'current_route:guardian_family_offer',
+              ...
+            ]
+  Every current route and fixture group must contribute real raster proof; see build/line126-rebuild-contrast-normal-430.json
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/support/zyra_clearer_text_corpus.dart 835:7    runZyraTextContrastCorpus.<fn>
+  
+00:07 +2 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:07 +2 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:07 +2 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: (tearDownAll) [E]
+  Expected: empty
+    Actual: [
+              'current_route:account_action',
+              'current_route:bio',
+              'current_route:bio_locked',
+              'current_route:compatibility',
+              'current_route:compatibility_store',
+              'current_route:developer_inactivity_email',
+              'current_route:edit_profile',
+              'current_route:ended',
+              'current_route:ended_archive',
+              'current_route:ended_bio',
+              'current_route:ended_compatibility',
+              'current_route:ended_guardians',
+              'current_route:ended_restart',
+              'current_route:filter_preferences',
+              'current_route:filters',
+              'current_route:guardian',
+              'current_route:guardian_access_agreement',
+              'current_route:guardian_chat_report',
+              'current_route:guardian_circle',
+              'current_route:guardian_compatibility',
+              'current_route:guardian_compatibility_upgrade',
+              'current_route:guardian_connect',
+              'current_route:guardian_family_identity',
+              'current_route:guardian_family_offer',
+              ...
+            ]
+  Every current route and fixture group must contribute real raster proof; see build/line126-rebuild-contrast-large-430.json
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/support/zyra_clearer_text_corpus.dart 835:7    runZyraTextContrastCorpus.<fn>
+  
+00:07 +2 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 11 frames, 0 failures; line126_entry_Seeker_Basic_scan 375x667@1.0
+00:08 +3 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:08 +3 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:08 +3 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: (tearDownAll) [E]
+  Expected: empty
+    Actual: [
+              'current_route:account_action',
+              'current_route:bio',
+              'current_route:bio_locked',
+              'current_route:compatibility',
+              'current_route:compatibility_store',
+              'current_route:developer_inactivity_email',
+              'current_route:edit_profile',
+              'current_route:ended',
+              'current_route:ended_archive',
+              'current_route:ended_bio',
+              'current_route:ended_compatibility',
+              'current_route:ended_guardians',
+              'current_route:ended_restart',
+              'current_route:filter_preferences',
+              'current_route:filters',
+              'current_route:guardian',
+              'current_route:guardian_access_agreement',
+              'current_route:guardian_chat_report',
+              'current_route:guardian_circle',
+              'current_route:guardian_compatibility',
+              'current_route:guardian_compatibility_upgrade',
+              'current_route:guardian_connect',
+              'current_route:guardian_family_identity',
+              'current_route:guardian_family_offer',
+              ...
+            ]
+  Every current route and fixture group must contribute real raster proof; see build/line126-rebuild-contrast-normal.json
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/support/zyra_clearer_text_corpus.dart 835:7    runZyraTextContrastCorpus.<fn>
+  
+00:08 +3 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 10 frames, 0 failures; line126_entry_Seeker_Basic_scan 375x667@1.3
+00:08 +4 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Coverage entries (tearDownAll)
+00:08 +4 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: (tearDownAll)
+00:08 +4 -4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: (tearDownAll) [E]
+  Expected: empty
+    Actual: [
+              'current_route:account_action',
+              'current_route:bio',
+              'current_route:bio_locked',
+              'current_route:compatibility',
+              'current_route:compatibility_store',
+              'current_route:developer_inactivity_email',
+              'current_route:edit_profile',
+              'current_route:ended',
+              'current_route:ended_archive',
+              'current_route:ended_bio',
+              'current_route:ended_compatibility',
+              'current_route:ended_guardians',
+              'current_route:ended_restart',
+              'current_route:filter_preferences',
+              'current_route:filters',
+              'current_route:guardian',
+              'current_route:guardian_access_agreement',
+              'current_route:guardian_chat_report',
+              'current_route:guardian_circle',
+              'current_route:guardian_compatibility',
+              'current_route:guardian_compatibility_upgrade',
+              'current_route:guardian_connect',
+              'current_route:guardian_family_identity',
+              'current_route:guardian_family_offer',
+              ...
+            ]
+  Every current route and fixture group must contribute real raster proof; see build/line126-rebuild-contrast-large-375.json
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/support/zyra_clearer_text_corpus.dart 835:7    runZyraTextContrastCorpus.<fn>
+  
+00:08 +4 -4: Some tests failed.
+
+Failing tests:
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: (tearDownAll)
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: (tearDownAll)
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: (tearDownAll)
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: (tearDownAll)

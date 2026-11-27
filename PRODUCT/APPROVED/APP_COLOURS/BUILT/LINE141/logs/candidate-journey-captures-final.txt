@@ -1,0 +1,17 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: V5 active Sara fixture uses open review and shared photo card
+00:06 +1: V5 active Sara fixture uses paused review and shared photo card
+00:09 +2: V5 active Sara fixture uses continued review and shared photo card
+00:11 +3: V5 Basic remains View only and uses the existing permitted Journey target
+00:13 +4: V5 default requests never become cards; Yusuf and removed link expose no Adam card
+00:15 +5: V5 Additional permitted View and Chat=false retain actual role and access
+00:17 +6: V5 Additional permitted View and Chat=true retain actual role and access
+00:19 +7: V5 activity order, dots/swipe and Open Journey follow each actual person
+00:24 +8: V5 retained card and dot actions expire across seeker, route and account changes
+00:25 +9: V5 Ended Journeys retains its existing held sharing target
+00:26 +10: V5 card admission denial permanently expires retained Open and dot handlers
+00:26 +11: V5 200 percent text wraps and keeps the One Journey action reachable
+00:28 +12: V5 200 percent text wraps and keeps the Basic Journey action reachable
+00:30 +13: (tearDownAll)
+00:30 +13: All tests passed!

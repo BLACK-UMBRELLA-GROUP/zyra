@@ -1,0 +1,55 @@
+{
+  "candidate_secret_scan": "pass0leaks",
+  "record_secret_scan": "pass0leaks",
+  "candidate_public": {
+    "paths": 28,
+    "reviewed_hits": 22,
+    "classification": "unchanged technical syntax, public support address and existing approved sample UI expectations"
+  },
+  "record_public": {
+    "paths": 39,
+    "owned_text_hits": [
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/logs/candidate-captures.txt",
+        "line": 17,
+        "kind": "money",
+        "reason": "Existing technical scanner-label description or public UI test name; no private document content."
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/logs/candidate-captures.txt",
+        "line": 18,
+        "kind": "money",
+        "reason": "Existing technical scanner-label description or public UI test name; no private document content."
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/logs/candidate-ordinary.txt",
+        "line": 1259,
+        "kind": "money",
+        "reason": "Existing technical scanner-label description or public UI test name; no private document content."
+      },
+      {
+        "path": "ZYRA/PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/logs/candidate-ordinary.txt",
+        "line": 1262,
+        "kind": "money",
+        "reason": "Existing technical scanner-label description or public UI test name; no private document content."
+      }
+    ],
+    "foreign_existing_hits_in_uncommitted_queue_questions": 9,
+    "new_queue_question_row_hits": 0,
+    "classification": "Final text hits are existing approved UI test names. Preliminary binary matches are compressed PNG data with no textual metadata. Mixed-file old hits remain outside this line and uncommitted.",
+    "final_text_paths": 27,
+    "final_png_paths": 12,
+    "preliminary_owned_paths": 38,
+    "preliminary_scan_total_including_mixed_files": 40,
+    "final_owned_text_hit_count": 4,
+    "png_binary_false_matches_preliminary": 708
+  },
+  "map": {
+    "exit": 0,
+    "before_sha256": "66b8ce80c7cff8c57dffbcad39dae32621628f0c442a605e1f22dfeceded380a",
+    "after_sha256": "2e36a62878d10e049b4cb69d1040253f1eb9c38fdedf466e3599d22e7cc45497",
+    "summary": "MAP.md written: 455 documents, 67 without a header, 41 problems",
+    "written_refusal": "Do not repair unrelated metadata or commit mixed MAP/queue/questions.",
+    "evidence_note": "The two new dated evidence notes account for the count rising from65to67 unheaded files. They are not promoted governed documents; Fable owns any formal registration. No new app gate or global blocker is invented."
+  }
+}
