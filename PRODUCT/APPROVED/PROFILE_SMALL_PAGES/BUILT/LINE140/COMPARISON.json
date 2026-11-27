@@ -1,0 +1,138 @@
+{
+  "review": "Independent LOCK46 visual comparison",
+  "atUtc": "2026-11-27T07:27:26.300482+00:00",
+  "scope": {
+    "masters": "ls01-ls11 at 430x932 text scale 1.0; ls05 sheet only",
+    "replays": [
+      "430x932 1.0",
+      "430x932 1.3",
+      "375x667 1.0",
+      "375x667 1.3"
+    ],
+    "additionalStates": [
+      "Guardian Family place",
+      "Request sent",
+      "Basic restart unavailable",
+      "First-day restart unavailable",
+      "Scrolled bottoms"
+    ]
+  },
+  "result": "No actionable visual findings",
+  "pixelIdentical": false,
+  "observedDifferences": [
+    "Shared native text metrics and weights change a few line wraps relative to prototype PNGs.",
+    "Shared floating surfaces cast visibly stronger shadows than prototype exports; approved V9 darker reading ink is used."
+  ],
+  "checked": [
+    "Approved headings, words and sample links",
+    "Current-role gold edge and green Using now",
+    "Gold Add buttons with absent-role plan line omitted",
+    "Guardian One, Basic and no-Seeker variants",
+    "Journey, shield, person, plus, visibility and time/history icons",
+    "Outline Copy link and gold Share",
+    "Restart gold action, disabled sent/unavailable states, and at least 14pt content gap",
+    "Sheet monogram, B1 wording, rectangular gold confirmation and Cancel",
+    "No on-screen Back or tab bar on small pages",
+    "Words wrap without ellipses; scroll-bottom images retain footer and action access"
+  ],
+  "audit": {
+    "pairs": 66,
+    "hashVerification": "66 of 66 matched in audit-verification.json",
+    "failures": 0,
+    "allRealShadows": true,
+    "sampledRuns": 628
+  },
+  "readBytes": {
+    "AGENTS": 16748
+  },
+  "comparisons": [
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls01_your_places.png",
+      "masterSha256": "a7b622a31926b2b43a32debca4370aade0114d182393655deb946fd87d32e4b0",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls01_your_places.png",
+      "builtSha256": "3396928f482b4f0c6480cb565a46ecfd93e5e0511048e8efc916c126cd2b568c",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls01.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls02_switch_profile.png",
+      "masterSha256": "45ed1e556bd56661fdad020620777dd627239a3202bb031bf4fe4c15755f9131",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls02_switch_profile.png",
+      "builtSha256": "52322e03c0a4a458bbb5fa0aba11da045671b95abc037e3536b8a2b1a7a1d821",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls02.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls03_invite_someone.png",
+      "masterSha256": "6a595b18e772f34254cf4ea21eb2c31fd2fc198413337d9b9a821ba3343dd1a0",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls03_invite_someone.png",
+      "builtSha256": "dc0ebd28a0d3860bba6e0c4cba70b5f54b630a490cb641c7c9bd8cfe88c26d43",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls03.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls04_request_restart.png",
+      "masterSha256": "51c922f6109d212731a6b5f674ec754da0fc66586f7597b2b013ca9a8cb31c38",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls04_request_restart.png",
+      "builtSha256": "9b5740bf22c845fceff569f44435c0d748f0b3ebdda2f3297515ce56e7bd8178",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls04.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls05_make_main_sheet.png",
+      "masterSha256": "bda00aaa350001349fe4b8d714be1b8955bce171c1b64984ddb153eba3ee03b3",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls05_make_main_sheet.png",
+      "builtSha256": "491c365e412dcccc85a9deff8bc7ada14975dd2dfb1a5c11a72c14d248609219",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls05.png",
+      "scope": "sheet only"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls06_guardian_your_places.png",
+      "masterSha256": "1b9270d694733b4cd7c1613b00ae10476177baa429b59ddafe010b0c6c081476",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls06_guardian_your_places.png",
+      "builtSha256": "8cff6de30ea71a631f10deca19e268a9b2ae9a99b2f0dcc20f6553be56d564dc",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls06.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls07_guardian_invite.png",
+      "masterSha256": "1a1713ae40b6883cc59ea17d07b9bae4d889bef8e9c47f067b106c50e496b3f4",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls07_guardian_invite.png",
+      "builtSha256": "d487ee45be4eb7cbed29a3a5f6538967599384d47a0171c7ed07985cc3e0348e",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls07.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls08_switch_profile__seeker_only.png",
+      "masterSha256": "2008fc412d172510dc3b9f580f57757cf2aabd50f8797eea825e9753fd9cc685",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls08_switch_profile__seeker_only.png",
+      "builtSha256": "ae318475dc6c79e3cdc7d5bf01ae5922a02ae54057256c87c099405a2075222f",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls08.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls09_switch_profile__guardian_only.png",
+      "masterSha256": "a6c5cde079bb8a8510efee174b994f2a3fd4d7ba99629f8aebda19fbf9858fc9",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls09_switch_profile__guardian_only.png",
+      "builtSha256": "eedf22f818c27f62af59a3a781830a620bde290234de11903562ebc6792ca48a",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls09.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls10_guardian_your_places__basic.png",
+      "masterSha256": "c048cd35130e6917a4ace7c2fd8b28a5cd346c5e05e014f3fc8c13b94bc65ef5",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls10_guardian_your_places__basic.png",
+      "builtSha256": "64cb538af904257eb66f2ab9682fb53e027d37d3331ef165306d7945ecb3240f",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls10.png",
+      "scope": "whole page"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/MASTERS/ls11_guardian_your_places__no_seekers.png",
+      "masterSha256": "e2f4f5bc1b9fd53e2c16f36c8e054334087667c0811cc8c9194e525baf0795e5",
+      "built": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/screens/ls11_guardian_your_places__no_seekers.png",
+      "builtSha256": "ba31aa89a74ef36dfd642dfe5b341eea0dc15733bb1ccb2a77b666384b5c4515",
+      "comparison": "PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/comparisons/ls11.png",
+      "scope": "whole page"
+    }
+  ]
+}

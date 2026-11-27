@@ -1,0 +1,21 @@
+{
+  "scope": "Exact written paths, restored source, held candidate, final record files and mixed MAP/queue/questions; no protected folders traversed",
+  "fableExit": 1,
+  "matchesByCategory": {
+    "money": 3251,
+    "email": 4,
+    "legal/company": 3
+  },
+  "review": "PNG files produce spurious matches when decoded as text by this scanner; all final PNGs were visually reviewed and hash-verified. Text money matches are approved UI/test tokens, generated document/path titles or pre-existing unrelated queue/question rows. Text emails are unchanged reserved example.invalid fixtures. No text key or private-material finding. Written refusal to alter approved app copy, PNG bytes or unrelated records for scanner false positives. The text legal/company match is the existing MAP assessment route reference, not private legal material.",
+  "ownedBytesGitleaksExit": 0,
+  "ownedBytesGitleaks": "No leaks",
+  "rangeScan": "Run after containing record commit; actual result and commit ID go in 27 Nov daily-report task note.",
+  "newFileLimitBytes": 52428800,
+  "publication": "Paused; no push",
+  "binaryParserFalsePositives": 3223,
+  "textMatchCategories": {
+    "money": 33,
+    "email": 1,
+    "legal/company": 1
+  }
+}

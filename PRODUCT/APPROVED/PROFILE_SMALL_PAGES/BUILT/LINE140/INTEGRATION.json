@@ -1,0 +1,190 @@
+{
+  "status": "QUESTION",
+  "baseline": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "originalExportSha256": "d382dc0a49d56dbf06dc7073a93df31cad5ed34f9494f5fc4f8a84cb73c697cf",
+  "heldPatchSha256": "014c67c02475a76ce848bbf50bb772354578fa1c5edcd7ad5552acaea14a710c",
+  "heldPath": "SOURCE/build/held/LINE140/2026-11-27_01a21be1_CI",
+  "paths": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "baselineSha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea",
+      "candidateSha256": "727b273f1d6620780fe984455327f4c7acc14ea2ec157af5cf3b6d0137170758"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "baselineSha256": "bb95d92f93bccf2bdf4b69bfff4666cfae2f466c627f9d51f99f3e8a27d5a2fd",
+      "candidateSha256": "8ced80d5d840ed59f815381c1fcef05e1c73d5a6ac5b668a10de90773a0e0982"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_profile_small_pages_preview.dart",
+      "baselineSha256": null,
+      "candidateSha256": "169c62ad80ebf737c5f2ff946e89e6b55e83d4d049c8779b35a0365c3da28381"
+    },
+    {
+      "path": "SOURCE/lib/models/zyra_developer_preview.dart",
+      "baselineSha256": "d2cdffc80ca9a49b4b11a47e3e8a7c0bcfa568820b256fc4f62ea929f8325617",
+      "candidateSha256": "0a333ecbeab077445653497b9dc0899fa53e6355b407134556f1dff8b0f614ef"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+      "baselineSha256": "4fda8524e20acc54d4f90f6f67e925e2e4d11551ddd3e45306b19460cd94e348",
+      "candidateSha256": "ad48d10ef0f4e5dfa58b7fa887bab0cad35c78996c421e73c2f32f72e7b90ac7"
+    },
+    {
+      "path": "SOURCE/lib/state/zyra_developer_samples.dart",
+      "baselineSha256": "42d922ed5c0c3d0342bfc73384524cb887a376bb422aa50ed5f85c102e3a5711",
+      "candidateSha256": "31df0a70b3481b57eb054b1c8b4d4d3da66afbc71a7cc6f6c4af97dde9ea1a80"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_confirm_sheet.dart",
+      "baselineSha256": "aad99d8e2cb3622047a324ea4aa87695895b8d43e39636914cf25f19ef87d8cb",
+      "candidateSha256": "94995cae65ea07c534f51737183d66aca826694d4c041a29db03419b95566845"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_panel.dart",
+      "baselineSha256": "c24792181a31d54736e8bb1c2633bc035de7770f2d1eb04941833c67f6c3a2d7",
+      "candidateSha256": "1d3d865c03f331a63a2341693af6e24fbb3db8d11a0a42a1c06a73ff663301fa"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_title.dart",
+      "baselineSha256": "33a4039ce9e4033a8d2e92c4c3aee1eacddf36fbef46f1987ec003c0ecb4d694",
+      "candidateSha256": "b6bf3683abe10622d6722bdd0f294b69d42258fdcbff0b9e6f49e628f8dd5444"
+    },
+    {
+      "path": "SOURCE/test/founder_launch_style_test.dart",
+      "baselineSha256": "db05f2b9cae93b562bc08c6ad5f3777c9110bd64f7ab220c565f4a01089280ad",
+      "candidateSha256": "ee4bff3dda83bc6eefef9d0fd8703267cfd400d5f36518070bbad6f3fc028299"
+    },
+    {
+      "path": "SOURCE/test/guardian_card_shell_test.dart",
+      "baselineSha256": "1cdafb6a6f276d6df18bbd11c7ec6b3b673ac99c58d8ad5f287aeba3f7563a79",
+      "candidateSha256": "2071b35111e5673624cf1a5156104f6811c3e32722a2035a95d489131268ecfe"
+    },
+    {
+      "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+      "baselineSha256": "7a6ed7a0070958c5aa0981a1adbfd3fca56ef6c3dad6fbcdd55fc1e90823654e",
+      "candidateSha256": "a8afb730b19ece4b25b95e2e5a0e4bc9870b9f1e474c0f2b5704af92d3ab797e"
+    },
+    {
+      "path": "SOURCE/test/one_journey_ended_card_test.dart",
+      "baselineSha256": "911c2231a2597baf5e6b7c5f9e7fc39d1b518dcf85a1f13fda7d7e4b38907ebc",
+      "candidateSha256": "c3b1ccb7e344bd12d411e0359f403461bb54712ddd1ce0a09d2fb2618794e8ee"
+    },
+    {
+      "path": "SOURCE/test/one_journey_guardian_details_polish_test.dart",
+      "baselineSha256": "9b6fb48f01daf7018bf6c94c27cb346d2ac61dc84bdb64515e0e2bea7d2972e2",
+      "candidateSha256": "1f99bf859dc661256558edda4225c6ea2e9c2dff93b23c51eb89023e05071c99"
+    },
+    {
+      "path": "SOURCE/test/one_journey_pull_down_routes_test.dart",
+      "baselineSha256": "7e3ed83cf8a32ea022b32871df84ba22d394facbfb0e79d19a630441f0fd217a",
+      "candidateSha256": "80a94e02538c2cfdbcaa60f88b26217520ce302e6b52cdc04510167d4eafccbf"
+    },
+    {
+      "path": "SOURCE/test/one_journey_switch_signup_preview_test.dart",
+      "baselineSha256": "9cda8561ffce6b02843b079975bfaaef2ec9764f7e53d88576dac97382a2faed",
+      "candidateSha256": "97d70572d381a59a2510deb311e89e0b69e558e00b25e01a9bea8b0c7a3f201c"
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "baselineSha256": "e3ef05089305c166d8f6e0ae44f6028f3bd171418959f0497199037c7514f3d1",
+      "candidateSha256": "adcd38f9fb443e44eab8bf9fc5c29c1f7f4869c61eea24f1da723c4c3facee1d"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "baselineSha256": "d0d284e53895c2ad288d9572a8f601fc9584dbf44f3de94b83ee10601b52df26",
+      "candidateSha256": "7140c05fb1dfac0bc80984bd086c3ffed1118daf311ec41ddf1bec6c9b4d6978"
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_widget_test.dart",
+      "baselineSha256": "ef61b70b075be2ba348cca0ef5076842a4bd7d0aeffd2c4513722f132692d752",
+      "candidateSha256": "3e719c31d74623fe825357f8c7cb165eade6ac3d56eb146e8a87efa9d264f81b"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "baselineSha256": "c8f6f0ca67eacf331a4a99e4c06fe31cf0d7100feaefab7c3c690dfee4ebbc47",
+      "candidateSha256": "7fef11a06431b51c210e9d9c293aa9a6b234599418b543e1ad4cbe2d26b6dd80"
+    },
+    {
+      "path": "SOURCE/test/visual/line118_menu_sheet_capture_test.dart",
+      "baselineSha256": "63f4c341386bcc8ce6a0f6f9cb69637e036f3b61b09fc6ba2b93152f0ce8aaf4",
+      "candidateSha256": "aaf93ae77109016508c8853646476e6c3c8b63a338059b7df1e75651e99f0603"
+    },
+    {
+      "path": "SOURCE/test/visual/line126_coverage_entry_routes_test.dart",
+      "baselineSha256": "e65b4751245d48677431d6a36e064749056c5a9578812c39fe3374b98536d6df",
+      "candidateSha256": "fe865ee79e5db9eb148c60f60df7ff29e1e6f0a629e5c1cd5639d427c29cafd0"
+    },
+    {
+      "path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+      "baselineSha256": "028cf05376b33b16115efef4830ddec85dd4db1d02b4105aff5f5de767d0553b",
+      "candidateSha256": "2f5311b0ce81ceefe5f37d5e54d99474d5cc2588f1430df0a4931b2f540f40dd"
+    },
+    {
+      "path": "SOURCE/test/visual/line140_profile_small_pages_capture_test.dart",
+      "baselineSha256": null,
+      "candidateSha256": "0fdf01a997b6bba6d9f343831d443db7fd048a6753620d71fde27c1ca20c9a42"
+    },
+    {
+      "path": "SOURCE/test/visual/line93_time_rules_visual_test.dart",
+      "baselineSha256": "dc4379b6549ca9b7ea4c4185222802c2ecd9cc847bb30b6ca22a74248864a9a0",
+      "candidateSha256": "7b76339fc6879fa4c271386441db5ab39e4806c86e480cb13de028f0f4576044"
+    },
+    {
+      "path": "SOURCE/test/visual/lock2_requests_guardians_capture_test.dart",
+      "baselineSha256": "b005131497c73e933a0ec0eec78c065bfc344ec7948ad302ce9f450dec339b8f",
+      "candidateSha256": "ebac498f32bc5774649087bbc55f3621fbf482b001f46e28226ce401560b74d5"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_baseline_guardian_account_visual_test.dart",
+      "baselineSha256": "45304ad09b4fba2b91818636c6445dd5b16a8d19745b22f90a77aa5627085ce4",
+      "candidateSha256": "760cbc6d414eb6142f08a75dbcc02b198fdec947ef587bd7f2569388c243acd6"
+    },
+    {
+      "path": "SOURCE/README.md",
+      "baselineSha256": "030c7e8ba448512e084a5245c67044bc9c0ffcf61e4f6da8afe7eb643f2c2522",
+      "candidateSha256": "c21455fb052ff8b15329d55a8585ac9baef47a8c0b3c48fa5243e5e6468b11dc"
+    },
+    {
+      "path": "PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md",
+      "baselineSha256": "e385757eba8b2070fe5c5241a73f66143d4c6c5b694b1de3f7558382f194c0f4",
+      "candidateSha256": "3e6279dfce6f6e03905353ecd9988e2a9f381deb4be8ae54524d920b27b944a1"
+    }
+  ],
+  "failures": [
+    "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart: V6 Guardian One saved advice callbacks reject role return [E]",
+    "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart: V6 Guardian Basic saved advice callbacks reject role return [E]",
+    "SOURCE/test/request_shell_titles_circle_test.dart: all five actual tabs in each role share title style and position at both phone sizes [E]",
+    "SOURCE/test/request_shell_titles_circle_test.dart: LOCK 20 Circle writing follows guardian_one [E]",
+    "SOURCE/test/request_shell_titles_circle_test.dart: LOCK 20 Circle writing follows guardian_basic [E]",
+    "SOURCE/test/request_shell_titles_circle_test.dart: LOCK 20 refuses a send captured before the role switched [E]",
+    "SOURCE/test/one_journey_basic_joining_history_test.dart: payment history stays independent of plan comparison and role switching [E]",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart: Seeker One retains membership, wallet and settings destinations [E]",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart: Seeker Basic retains membership, wallet and settings destinations [E]",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart: Guardian One retains membership, wallet and settings destinations [E]",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart: Guardian Basic retains membership, wallet and settings destinations [E]",
+    "SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart [E]",
+    "SOURCE/test/zyra_clearer_text_contrast_test.dart [E]",
+    "SOURCE/test/zyra_clearer_text_contrast_430_test.dart [E]",
+    "SOURCE/test/view_request_draft_widget_test.dart: locked card dismissed compatibility handlers refuse after role ABA and preserve a fresh addressed page [E]",
+    "SOURCE/test/view_request_draft_widget_test.dart: locked card dismissed guardians handlers refuse after role ABA and preserve a fresh addressed page [E]",
+    "SOURCE/test/view_request_draft_widget_test.dart: Guardian Seekers ignores optional Gold and keeps the local roster [E]",
+    "SOURCE/test/lock22_safety_advice_contract_test.dart: V5 saved advice callbacks reject role change [E]",
+    "SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false [E]",
+    "SOURCE/test/visual/line126_remaining_routes_test.dart [E]",
+    "SOURCE/test/visual/lock18_page_dots_capture_test.dart: LOCK18 real routes: scale 1.0, narrow false (variant: TargetPlatform.iOS) [E]",
+    "SOURCE/test/visual/lock18_page_dots_capture_test.dart: LOCK18 real routes: scale 2.0, narrow false (variant: TargetPlatform.iOS) [E]",
+    "SOURCE/test/visual/lock18_page_dots_capture_test.dart: LOCK18 real routes: scale 2.0, narrow true (variant: TargetPlatform.iOS) [E]",
+    "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart: existing free-place invite survives role switch and preserves access facts [E]",
+    "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart: decline closes, removes Needs-you, returns Basic and frees one place [E]",
+    "SOURCE/test/visual/line104_own_photo_test.dart: empty photo one uses the shared placeholder on Seeker and Guardian routes [E]",
+    "SOURCE/test/visual/line104_own_photo_test.dart: promoting photo two updates photo one across the same Founder session [E]",
+    "SOURCE/test/whole_app_settings_destinations_test.dart: saved email switch callbacks deny after page, role and owner changes [E]",
+    "SOURCE/test/request_page_options_context_test.dart: Guardian My ZYRA never inherits Seeker-only controls [E]",
+    "SOURCE/test/request_page_options_context_test.dart: 200 percent member actions remain readable and reachable [E]",
+    "SOURCE/test/guardian_circle_topic_options_test.dart: Seeker parent role ABA refuses the retained Topics actions [E]",
+    "SOURCE/test/guardian_circle_topic_options_test.dart: Guardian parent role ABA refuses the retained Topics actions [E]",
+    "SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart [E]"
+  ],
+  "note": "Wallet import restored after first-run compilation error. Only Guardian Basic expectation migrated; prepared remaining migrations were not applied because hosted CI is red."
+}

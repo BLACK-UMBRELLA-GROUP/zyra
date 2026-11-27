@@ -1,0 +1,12 @@
+{
+  "result": "Safe parking verified; no implementation approval",
+  "readOnly": true,
+  "exactReplayHashes": 29,
+  "trackedPathsRestored": 27,
+  "movedNewFiles": 2,
+  "foreignIndexEntriesUnchanged": 7,
+  "foreignEvidenceWorktreeHashesUnchanged": 5,
+  "sourceAndGithubClean": true,
+  "patchSha256": "014c67c02475a76ce848bbf50bb772354578fa1c5edcd7ad5552acaea14a710c",
+  "note": "Independent reviewer replayed patch in memory with exact context. Candidate code/visual review is separate from failing regression and hosted CI."
+}

@@ -1,0 +1,228 @@
+[
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "ls01_your_places__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls01_your_places__375x667_1.0",
+    "file": "ls01_your_places__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "subscriptions"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "ls01_your_places__375x667_1.0__bottom",
+    "state": "lock46",
+    "reached": "ls01_your_places__375x667_1.0__bottom",
+    "file": "ls01_your_places__375x667_1.0__bottom.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "subscriptions"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "ls02_switch_profile__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls02_switch_profile__375x667_1.0",
+    "file": "ls02_switch_profile__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "switch_account_signup"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "ls03_invite_someone__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls03_invite_someone__375x667_1.0",
+    "file": "ls03_invite_someone__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "account_action"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "ls04_request_restart__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls04_request_restart__375x667_1.0",
+    "file": "ls04_request_restart__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "ended",
+      "ended_restart"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "request_sent__375x667_1.0",
+    "state": "lock46",
+    "reached": "request_sent__375x667_1.0",
+    "file": "request_sent__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "ended",
+      "ended_restart"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "restart_first_day__375x667_1.0",
+    "state": "lock46",
+    "reached": "restart_first_day__375x667_1.0",
+    "file": "restart_first_day__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "ended",
+      "ended_restart"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "restart_basic_unavailable__375x667_1.0",
+    "state": "lock46",
+    "reached": "restart_basic_unavailable__375x667_1.0",
+    "file": "restart_basic_unavailable__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "ended",
+      "ended_restart"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "ls05_make_main_sheet__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls05_make_main_sheet__375x667_1.0",
+    "file": "ls05_make_main_sheet__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [],
+    "tab": 3
+  },
+  {
+    "role": "Guardian",
+    "area": "profile_small_pages",
+    "page": "ls06_guardian_your_places__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls06_guardian_your_places__375x667_1.0",
+    "file": "ls06_guardian_your_places__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "subscriptions"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Guardian",
+    "area": "profile_small_pages",
+    "page": "ls07_guardian_invite__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls07_guardian_invite__375x667_1.0",
+    "file": "ls07_guardian_invite__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "account_action"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Guardian",
+    "area": "profile_small_pages",
+    "page": "guardian_family_places__375x667_1.0",
+    "state": "lock46",
+    "reached": "guardian_family_places__375x667_1.0",
+    "file": "guardian_family_places__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "subscriptions"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "profile_small_pages",
+    "page": "ls08_switch_profile__seeker_only__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls08_switch_profile__seeker_only__375x667_1.0",
+    "file": "ls08_switch_profile__seeker_only__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "switch_account_signup"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Guardian",
+    "area": "profile_small_pages",
+    "page": "ls09_switch_profile__guardian_only__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls09_switch_profile__guardian_only__375x667_1.0",
+    "file": "ls09_switch_profile__guardian_only__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "switch_account_signup"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Guardian",
+    "area": "profile_small_pages",
+    "page": "ls10_guardian_your_places__basic__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls10_guardian_your_places__basic__375x667_1.0",
+    "file": "ls10_guardian_your_places__basic__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "subscriptions"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Guardian",
+    "area": "profile_small_pages",
+    "page": "ls11_guardian_your_places__no_seekers__375x667_1.0",
+    "state": "lock46",
+    "reached": "ls11_guardian_your_places__no_seekers__375x667_1.0",
+    "file": "ls11_guardian_your_places__no_seekers__375x667_1.0.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "subscriptions"
+    ],
+    "tab": 4
+  }
+]

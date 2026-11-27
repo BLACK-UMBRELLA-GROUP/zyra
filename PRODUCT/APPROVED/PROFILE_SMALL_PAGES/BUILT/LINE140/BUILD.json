@@ -1,0 +1,107 @@
+{
+  "status": "QUESTION",
+  "question": 228,
+  "live": false,
+  "sourceCommit": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "implementationCommit": null,
+  "recordCommit": "See containing commit and exact ID in 27 Nov daily report task note",
+  "flutterVersion": "3.44.2",
+  "buildMode": "protected Flutter widget-test preview only",
+  "timestampUtc": "2026-11-27T07:38:33.783032+00:00",
+  "sourceLease": {
+    "startedUtc": "2026-11-27T07:22:46.389649+00:00",
+    "releasedUtc": "2026-11-27T07:38:33.783032+00:00",
+    "seconds": 947.393383,
+    "failedFullGates": 1,
+    "limitSeconds": 21600,
+    "limitFailedFullGates": 3,
+    "stopReason": "Accepted-base hosted CI red; combined ordinary regression failed. Parked below L49 limits."
+  },
+  "authority": [
+    "DR-ZYRA-378",
+    "LOCK46 spec V1 + 25 Nov correction",
+    "Q222 ANSWERED",
+    "Q223 ANSWERED"
+  ],
+  "inputPatchSha256": "d382dc0a49d56dbf06dc7073a93df31cad5ed34f9494f5fc4f8a84cb73c697cf",
+  "held": {
+    "releasedUtc": "2026-11-27T07:38:33.783032+00:00",
+    "baseline": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+    "sourceAndGithubClean": true,
+    "foreignIndexEntriesUnchanged": 7,
+    "held": "SOURCE/build/held/LINE140/2026-11-27_01a21be1_CI",
+    "patchSha256": "014c67c02475a76ce848bbf50bb772354578fa1c5edcd7ad5552acaea14a710c",
+    "paths": 29
+  },
+  "checks": {
+    "analyzer": {
+      "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+      "result": "No issues found; 11.3 seconds",
+      "scope": "Integrated candidate before test-expectation/import edits; not rerun after parking."
+    },
+    "focused": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_LINE140_CAPTURE=true test/visual/line140_profile_small_pages_capture_test.dart test/one_journey_switch_signup_preview_test.dart test/one_journey_ended_card_test.dart test/zyra_rendered_text_audit_controls_test.dart",
+      "passed": 197,
+      "failed": 0,
+      "durationSeconds": 59
+    },
+    "renderedText": {
+      "hashVerifiedPngAuditPairs": 66,
+      "sampledTextRuns": 628,
+      "failures": 0,
+      "realShadows": true,
+      "settings": [
+        "430x932 1.0",
+        "430x932 1.3",
+        "375x667 1.0",
+        "375x667 1.3"
+      ]
+    },
+    "ordinaryRegression": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded",
+      "passed": 7837,
+      "skipped": 244,
+      "failed": 33,
+      "exitCode": 1,
+      "durationSeconds": 642,
+      "note": "One full gate failed. Five load failures were caused by owner removing a still-needed import; that import was restored before parking. Remaining old-UI/fixture migrations were diagnosed but not applied."
+    },
+    "hostedCI": {
+      "run": 45958031712,
+      "commit": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+      "result": "Red: Flutter shards 1 and 2 failed; whole run still in progress for nonblocking audits when read",
+      "shard2Failure": "line137_help_support_capture_test: lazy Help row offscreen after Private mode row",
+      "shard1Failure": "welcome_auth_failure_recovery_test: missing app_links/events mock",
+      "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/45958031712"
+    },
+    "independentCodeReview": "Initial Guardian Basic expectation corrected; combined source guards reviewed. Subsequent regression migrations remain unresolved, so no passing landing review is claimed.",
+    "independentVisualReview": "No actionable findings; not pixel identical. COMPARISON.json records native typography/shadow differences.",
+    "preservationReview": {
+      "result": "Safe parking verified; no implementation approval",
+      "readOnly": true,
+      "exactReplayHashes": 29,
+      "trackedPathsRestored": 27,
+      "movedNewFiles": 2,
+      "foreignIndexEntriesUnchanged": 7,
+      "foreignEvidenceWorktreeHashesUnchanged": 5,
+      "sourceAndGithubClean": true,
+      "patchSha256": "014c67c02475a76ce848bbf50bb772354578fa1c5edcd7ad5552acaea14a710c",
+      "note": "Independent reviewer replayed patch in memory with exact context. Candidate code/visual review is separate from failing regression and hosted CI."
+    },
+    "secretScan": "Exact written text/candidate bytes scanned with gitleaks stdin --redact: no leaks. Record-commit range check follows in daily report.",
+    "publicFileScan": "Completed exact written-path scan. Text-only matches are approved UI/test tokens, existing MAP routing references and unrelated queue/question rows; PNG binary-parser matches reviewed as spurious. PUBLIC_CHECK.json records categories and written refusal.",
+    "map": {
+      "result": "455 documents; 65 without header; 41 metadata problems",
+      "scope": "Regenerated mixed MAP worktree only, not staged. Written refusal to change unrelated metadata/governance in this feature stop; coordinator owns follow-up."
+    }
+  },
+  "scope": {
+    "phone": false,
+    "nativeBuild": false,
+    "production": false,
+    "migrations": false,
+    "pushAttempted": false,
+    "otherLineDispatched": false
+  },
+  "nextOwner": "Coordinator/Fable: answer Q228 with bounded CI/test-tool repair and fresh owner restart; transport verification before publication."
+}
