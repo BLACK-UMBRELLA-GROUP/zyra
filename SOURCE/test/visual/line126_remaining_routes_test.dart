@@ -105,6 +105,61 @@ void _record(BaselineHarness h, String state, {String kind = 'shell_route'}) {
   });
 }
 
+// Q228 / LOCK46: these pages and the entered sign-up can remount during the
+// real audit reflow. Resolve their exact keyed owner after every flush;
+// never retain a ScrollPosition across that asynchronous reflow.
+Future<void> _readCurrentPage(
+  BaselineHarness h,
+  String state,
+  String ownerKey,
+) async {
+  ScrollPosition currentPosition() {
+    final owner = _key(ownerKey);
+    expect(
+      owner,
+      findsOneWidget,
+      reason: 'Current migrated page scroll owner: $state',
+    );
+    final scroll = find.descendant(
+      of: owner,
+      matching: find.byType(Scrollable),
+    );
+    expect(
+      scroll,
+      findsOneWidget,
+      reason: 'Unique current page reader: $state',
+    );
+    final current = h.tester.state<ScrollableState>(scroll);
+    expect(ModalRoute.of(current.context)?.isCurrent ?? true, isTrue);
+    final position = current.position;
+    expect(position.axis, Axis.vertical);
+    expect(position.hasContentDimensions, isTrue);
+    expect(position.viewportDimension, greaterThan(0));
+    return position;
+  }
+
+  await h.flush();
+  final first = currentPosition();
+  first.jumpTo(first.minScrollExtent);
+  await h.flush();
+  var count = 0;
+  while (true) {
+    final position = currentPosition();
+    if (position.pixels >= position.maxScrollExtent - .5) break;
+    position.jumpTo(
+      math.min(
+        position.maxScrollExtent,
+        position.pixels + math.max(1, position.viewportDimension * .7),
+      ),
+    );
+    await h.flush();
+    expect(++count, lessThan(80), reason: 'Bounded reading scroll: $state');
+  }
+  final last = currentPosition();
+  last.jumpTo(last.minScrollExtent);
+  await h.flush();
+}
+
 Future<void> _readAll(BaselineHarness h, String state) async {
   await h.flush();
   final positions = h.tester
@@ -435,7 +490,13 @@ void _registerAccountCases(
       ),
       findsOneWidget,
     );
-    await _readAll(h, 'subscriptions');
+    await _readCurrentPage(
+      h,
+      'subscriptions',
+      guardian
+          ? 'small_pages_guardian_places_scroll'
+          : 'small_pages_seeker_places_scroll',
+    );
     _record(h, 'subscriptions');
     final profile = await _mount(
       tester,
@@ -454,7 +515,11 @@ void _registerAccountCases(
       find.byType(ZyraSwitchProfilePreview),
     );
     expect(switchProfile.otherRoleMissing, isTrue);
-    await _readAll(profile, 'switch_signup');
+    await _readCurrentPage(
+      profile,
+      'switch_signup',
+      'small_pages_switch_profile_scroll',
+    );
     _record(profile, 'switch_signup');
     await profile.tap('small_pages_add_role');
     profile.assertPage('signup');
@@ -462,7 +527,11 @@ void _registerAccountCases(
       find.byType(ZyraSignupPreview),
     );
     expect(signup.controller.guardian, !guardian);
-    await _readAll(profile, 'switch_setup');
+    if (guardian) {
+      await _readCurrentPage(profile, 'switch_setup', 'signup_preferences');
+    } else {
+      await _readAll(profile, 'switch_setup');
+    }
     expect(profile.latest.guardian, guardian);
     _record(profile, 'switch_setup');
   });
