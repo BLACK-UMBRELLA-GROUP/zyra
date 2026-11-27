@@ -1,0 +1,12 @@
+{
+  "retained_focused_failed_item_flags": 52,
+  "retained_focused_item_frames": 207,
+  "retained_focused_items_sha256": "bf34c0205113da16880901e5cc2f9e2d6c40f1fae3fe1db3263bb3abad202ce7",
+  "inherited_focused_audit_note": "At acquisition shared normal430 audit was already line145 934frames/12340runs; it does not pair with earlier207frame item stream. Original line144 audit digest remains recorded in prior handover. Preserved each file exactly; no reconstruction or paired-proof claim.",
+  "inherited_audit_frames": 934,
+  "prior_original_audit_recorded_sha256": "44ba04a1c03d0880aee4f702aa15a97d44a5f048a829e33f0b06a1717f157aa3",
+  "prior_hosted_normal375_raw_records": 477,
+  "prior_hosted_normal375_contrast": 24,
+  "prior_hosted_normal375_geometry": 453,
+  "scope_action": "OA-ZYRA-371; retain original observations and raw findings; no app or measurement correction in line144."
+}

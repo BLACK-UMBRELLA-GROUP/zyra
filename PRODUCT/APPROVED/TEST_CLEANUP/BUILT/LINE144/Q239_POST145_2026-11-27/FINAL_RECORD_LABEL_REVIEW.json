@@ -1,0 +1,20 @@
+{
+  "result": "PASS; descriptive checksum aliases preserve accuracy and trace with no privacy issue",
+  "at": "2026-11-27T18:15:21.960885+00:00",
+  "scope": "Read-only JSON comparison; no tests, Git, network or source edits. Only this held review record was written.",
+  "original_held_sha256": "55f114cd2c5f22278468a29239cc8d10d672b73030bee1e0c43920dc457ae292",
+  "public_copy_sha256": "7a60d6a4212869438d6782b5e72a15c6ec2695717d74f6fafb1a952a8cd34ee7",
+  "checks": {
+    "original_held_hash_unchanged": true,
+    "exact_only_two_aliases_and_three_trace_fields": true,
+    "two_values_are_64_lowercase_hex": true,
+    "values_preserved": true,
+    "raw_totals_classifications_other_fields_unchanged": true,
+    "explicit_trace_to_original": true,
+    "historical_metadata_note": true
+  },
+  "difference": "Exactly two historical metadata checksum keys renamed, plus aliases map, original independent accounting digest and publication note. All checksum values, totals, classifications, per-shard/fixture results and other original fields remain exact.",
+  "scanner_note": "The affected values are 64-character lowercase hexadecimal SHA256 checksum metadata, not credentials. Root reports unchanged scanner configuration and zero findings after label correction; scanner was not rerun by this reviewer.",
+  "supersedes": "The earlier FINAL_RECORD_REVIEW copy-exact statement was true at its timestamp. This review records the subsequent publication-only metadata alias change; original held accounting remains exact.",
+  "blockers": []
+}

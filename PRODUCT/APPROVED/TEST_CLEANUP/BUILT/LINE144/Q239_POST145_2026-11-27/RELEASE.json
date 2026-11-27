@@ -1,0 +1,17 @@
+{
+  "source_released_at": "2026-11-27T18:09:51.085368+00:00",
+  "source_head": "83f74fd74a436aac7bd153a26cd60499f70114fe",
+  "remote_source_head_verified": "83f74fd74a436aac7bd153a26cd60499f70114fe",
+  "source_ci_worktree_clean": true,
+  "source_ci_index_clean": true,
+  "foreign7_index_exact": true,
+  "line138_5_worktree_exact": true,
+  "prior80_raw_hashes_exact": true,
+  "prior_focused52_items_preserved": true,
+  "source_acquired_at": "2026-11-27T17:32:36.035091+00:00",
+  "deadline": "2026-11-27T23:32:36.035091+00:00",
+  "source_pushes": 1,
+  "failed_pushes": 0,
+  "final_record_publication": "verify in owner completion and held FINAL_RELEASE.json; no duplicate CI wait",
+  "next_owner": "coordinator dispatches146 after final record publication/index verification"
+}

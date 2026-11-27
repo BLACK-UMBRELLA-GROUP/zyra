@@ -1,0 +1,70 @@
+{
+  "action": "OA-ZYRA-371",
+  "question": "Q239",
+  "at": "2026-11-27T17:41:04.985911+00:00",
+  "reviewer": "fixtures subagent; independent of corpus/CI/proof author; original author of Switch/walkthrough fixtures",
+  "scope": "Final read-only source review before provisional publication. No tests, source edits or Git mutations. Root-reported analyzer/focused/regression/drycheck results are not independently executed here.",
+  "result": "PASS for bounded code publication pending root gate evidence and required hosted attempt; no source defect found",
+  "hashes": {
+    ".github/scripts/zyra_text_audit_proof.py": "b8d4fea391b5c44f5d9e99ec9e79dfe7bc8c7ae1c86437f699f4dbfb06272e64",
+    ".github/scripts/test_zyra_text_audit_proof.py": "146c0b3f2289bd9de800df6184234364e728a0eb5d0b71e756e67ff41f8f4e9d",
+    ".github/workflows/zyra-ci.yml": "46951f2d0f2ba355b3d97115f406748cce55a86cd4d38136c9c4fcc3ce42bec2",
+    "SOURCE/README.md": "9541368aab310620c771a71d7841c7a7641e1aa3ccbe2b0820bb98a09c9caa5c",
+    "SOURCE/test/support/zyra_clearer_text_corpus.dart": "19479c2e6b53a50a0ac7b94dd3e055402501a16276bf2f8c039aadf2646d7b94",
+    "SOURCE/test/visual/line124_first_tour_capture_test.dart": "d53a960e98d3da8cc098f7c0c907b671915b352c6cb3a20ac1e1d273b4285e61",
+    "SOURCE/test/visual/line126_remaining_routes_test.dart": "fa622372072b27c3d096016c6b7774733b272d200ebd38af950fc9e49c7d2328",
+    "SOURCE/test/visual/line142_offers_preview_test.dart": "c49fa50ebc493d15bd93e7d448ef4d3c4a512575d7202fec41bd92aea03bd74f"
+  },
+  "static_checks": {
+    "measurement_unchanged": true,
+    "strict_teardown_unchanged": true,
+    "ordinary_workflow_jobs_unchanged": true,
+    "no_lib_change": true,
+    "offers_motion_trial_absent": true,
+    "no_raster_auditor_change": true
+  },
+  "reviewed_behavior": {
+    "fixtures": "Existing five Eid variants/four plans use scoped offerChoices and real tap plus eid_gift_preview assertion; exact three unfinished covered Seeker setup obligations, real wallet/My ZYRA entry and actor plans; original Seeker One and missing-role Add signup retained. Tour discovery only scrolls real Settings owner before unchanged LOCK36 assertions.",
+    "partition": "23 exact registered suites, old four large375 buckets preserved with Eid#3, five fixed groups for other3settings; every suite appears exactly once per setting. Existing wrapper names and normal375 source setting/viewport preserved.",
+    "strict_defaults": "Default shard count1/index0 and focused strict contract unchanged; measurement and strict teardown source compare equal modulo whitespace. No threshold, measurement, classification or exemption change.",
+    "report_only": "Existing named report-only mode still retains all raw auditor failures with actual status fail and actual per-item pass flags. It adds aggregate positive frames/runs/pixels. It does not catch fixture body assertions/exceptions. Newly invented blanket raw coverage_error/render_error gate was removed. This preserves existing mode rather than classifying retained observations as passes.",
+    "hosted_proof": "Requires exact19artifact directory labels; paired raw audit/items hashes and exact metadata; complete final report and successful audit process; exact head/run/attempt, suite list, viewport and index/count; real aggregate frames/runs/pixels/images; frame/item identity and totals; actual successful job and three named steps; end-to-end25min and process/audit20min budgets. Four setting unions reject any gap present in every expected shard. Fixture-red with completeJSON, missing evidence, malformed provenance and duplicate/missing artifact paths have rejection paths.",
+    "workflow": "Ordinary required jobs untouched. Audit/process20m within job25m; nonblocking generic reports retained; dedicated proof step fails on invalid evidence/nonzero union, and line144 must require actual proof success. No app design or production behavior change."
+  },
+  "residual_strict_observations": [
+    {
+      "setting": "normal375",
+      "sha256": "a506208623774feae30a12019829f6d795299ed498751fd2f2e11ff44528aa1c",
+      "status": "fail",
+      "frames": 120,
+      "runs": 1509,
+      "painted_pixels": 1388850,
+      "selected_coverage_gaps": [],
+      "raw_findings": 6,
+      "raw_failure_classes": [
+        "coverage_error"
+      ]
+    },
+    {
+      "setting": "large375",
+      "sha256": "cc4a17031e69208414f0832adfbf6511ef739bfe2bc871ca6c475d6c0852ddb7",
+      "status": "fail",
+      "frames": 155,
+      "runs": 1592,
+      "painted_pixels": 2269190,
+      "selected_coverage_gaps": [],
+      "raw_findings": 6,
+      "raw_failure_classes": [
+        "coverage_error"
+      ]
+    }
+  ],
+  "limitations": [
+    "Current strict selected3751.0 and3751.3 reports retain six raw coverage_error observations each and status fail despite all selected route obligations having real positive evidence and zero gaps. These are probe/readiness observations, not colour passes; report them explicitly and preserve raw files.",
+    "Earlier INITIAL_FIXTURE_REVIEW/CORPUS_INDEPENDENT_REVIEW snapshots included a temporary proposed blanket raw-error rejection; this final review supersedes that detail only.",
+    "An initial review concern that every raw auditor coverage_error/render_error should block was withdrawn: that would add a gate not prescribed by Q239 existing named report-only mode. Actual fixture process failures remain hard red.",
+    "This review does not establish hosted completion, zero full-corpus gaps or actual job timing. BUILT still requires the one exact-head hosted attempt and strict proof.",
+    "No product colour gate passes are claimed."
+  ],
+  "blockers": []
+}

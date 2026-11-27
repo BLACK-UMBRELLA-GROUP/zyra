@@ -1,0 +1,18 @@
+{
+  "files_checked": 28,
+  "scan_exit": 1,
+  "hit_count": 9,
+  "reviewed_false_positives": "Dart tuple access syntax in corpus/source review records and unchanged existing LOCK47 sample fixture strings. No private business document or new app wording. No key/email/legal/prohibited wording hits.",
+  "source_secret_scan_before_push": "pass0leaks",
+  "source_secret_scan_after_push": "pass0leaks",
+  "records_secret_scan": "content scan pass0leaks after clarifying two metadata checksum labels; exact committed range gate enforced before/afterpush, final result in held FINAL_RELEASE.json",
+  "public_A_F": {
+    "A": "source clean before/afterpush; record content scan clean; exact committed range enforced before/afterpush",
+    "B": "technical test/evidence records only; reviewed scanner false positives",
+    "C": "none",
+    "D": "none",
+    "E": "neutral prose, app copy unchanged",
+    "F": "README updated"
+  },
+  "record_label_correction": "Two SHA-256 metadata receipt keys reworded after generic detector matches; checksum values/rawreports unchanged; no scanner waiver/config change."
+}

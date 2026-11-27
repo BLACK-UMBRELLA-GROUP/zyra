@@ -1,0 +1,60 @@
+{
+  "result": "PASS; record publication may proceed after root final public/secret checks",
+  "at": "2026-11-27T18:11:43.410813+00:00",
+  "scope": "Independent final record-to-local-evidence review; no source edits, tests, network or Git calls.",
+  "checks": {
+    "head_run_attempt_agree": true,
+    "four_unions_zero": true,
+    "summary_settings_exact": true,
+    "independent_accounting_copy_exact": true,
+    "artifact_receipts_exact": true,
+    "exact19_shards_20_receipts_59members": true,
+    "raw_aggregate_matches_summary": true,
+    "record_manifest_livefilehashes_exact": true,
+    "required_ordinary_3success": true,
+    "job_and_process_budgets": true,
+    "build_release_identity": true,
+    "usage_snapshot_exact": true,
+    "prior_preservation_exact": true
+  },
+  "raw_members_hash_checked": 59,
+  "raw_totals": {
+    "frames": 29458,
+    "runs": 351683,
+    "pixels": 350216485,
+    "raw_findings": 1036
+  },
+  "accounting_totals": {
+    "frames": 29458,
+    "runs": 351683,
+    "pixels": 350216485,
+    "items": 351683,
+    "false_item_flags": 426,
+    "raw_findings": 1036
+  },
+  "accounting_kinds": {
+    "word_geometry": 544,
+    "contrast_or_style": 426,
+    "coverage_error": 66
+  },
+  "fixture_proofs": 36,
+  "records_reviewed": [
+    "HANDOVER.md",
+    "TASK_NOTE_2026-11-27.md",
+    "CHECKS_AND_READS.json",
+    "BUILD.json",
+    "RELEASE.json",
+    "HOSTED_SUMMARY.json",
+    "MANIFEST.json",
+    "UNION_PROOF.json",
+    "ARTIFACT_RECEIPTS.json",
+    "HOSTED_INDEPENDENT_ACCOUNTING.json",
+    "USAGE_COUNTS.json"
+  ],
+  "accuracy_privacy_review": "No inaccurate green claim, product-colour pass, secret value or private-business document content found. Strict diagnostic exit1/raw6errors each and all retained1036findings/426falseflags are disclosed. Prior shared-audit mismatch is disclosed without false pairing. Conversation17:31:49 and source17:32:36/release18:09:51 match receipts.",
+  "remaining_finalization": [
+    "Scoped record commit/push, record secret scan and final index verification are still root work, accurately deferred in RELEASE/PUBLIC_CHECKS/task note.",
+    "HANDOVER reference to held FINAL_RELEASE.json is a completion pointer; root must create it after publication before finishing. No duplicate record-only CI wait is required."
+  ],
+  "blockers": []
+}

@@ -1,0 +1,57 @@
+{
+  "at": "2026-11-27T17:41:42.347841+00:00",
+  "base_head": "86a0f72212edfa8c332ccffd231ddf7c7b823726",
+  "paths": [
+    {
+      "path": ".github/workflows/zyra-ci.yml",
+      "bytes": 13511,
+      "sha256": "46951f2d0f2ba355b3d97115f406748cce55a86cd4d38136c9c4fcc3ce42bec2",
+      "base_sha256": "9171caba0d3e044e311266e2dac44eda245907e07c8188c01dc561a18f2d354a"
+    },
+    {
+      "path": ".github/scripts/zyra_text_audit_proof.py",
+      "bytes": 14926,
+      "sha256": "b8d4fea391b5c44f5d9e99ec9e79dfe7bc8c7ae1c86437f699f4dbfb06272e64",
+      "base_sha256": null
+    },
+    {
+      "path": ".github/scripts/test_zyra_text_audit_proof.py",
+      "bytes": 14232,
+      "sha256": "146c0b3f2289bd9de800df6184234364e728a0eb5d0b71e756e67ff41f8f4e9d",
+      "base_sha256": null
+    },
+    {
+      "path": "SOURCE/README.md",
+      "bytes": 17586,
+      "sha256": "9541368aab310620c771a71d7841c7a7641e1aa3ccbe2b0820bb98a09c9caa5c",
+      "base_sha256": "c8032f9191a2978dbd6b30051e5ec4c37f3833cb06e261ff23c7c64b58fb89b8"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+      "bytes": 41631,
+      "sha256": "19479c2e6b53a50a0ac7b94dd3e055402501a16276bf2f8c039aadf2646d7b94",
+      "base_sha256": "1c5e5a8ee5b426354f9df957cc3ed01a213bcfaa8f3da47c163744f95b921310"
+    },
+    {
+      "path": "SOURCE/test/visual/line124_first_tour_capture_test.dart",
+      "bytes": 11373,
+      "sha256": "d53a960e98d3da8cc098f7c0c907b671915b352c6cb3a20ac1e1d273b4285e61",
+      "base_sha256": "437295d4e317e3d537092ff562c05d8c8f1952de42417dd4e0cb973926a3cf1d"
+    },
+    {
+      "path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+      "bytes": 29978,
+      "sha256": "fa622372072b27c3d096016c6b7774733b272d200ebd38af950fc9e49c7d2328",
+      "base_sha256": "d98d965e341cd9af263adb14fada8edc3460054b62d59261e6fa5db35016b60e"
+    },
+    {
+      "path": "SOURCE/test/visual/line142_offers_preview_test.dart",
+      "bytes": 14211,
+      "sha256": "c49fa50ebc493d15bd93e7d448ef4d3c4a512575d7202fec41bd92aea03bd74f",
+      "base_sha256": "865597d78e7188779db2356a07c3589e2d68addfa126e3c57158304719274b1f"
+    }
+  ],
+  "source_lib_diff": "",
+  "foreign7_index_exact": true,
+  "line138_5_worktree_exact": true
+}

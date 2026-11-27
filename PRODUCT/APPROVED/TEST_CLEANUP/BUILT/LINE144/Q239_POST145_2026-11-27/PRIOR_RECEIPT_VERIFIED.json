@@ -1,0 +1,32 @@
+{
+  "patch_sha256": "dddebb921afe7f3550fa1e9c35017ddfb6ce5097e62a5cda13a8f56a43e507d9",
+  "patch_expected": "dddebb921afe7f3550fa1e9c35017ddfb6ce5097e62a5cda13a8f56a43e507d9",
+  "accepted_commit": "4a3d3373215bc869282d754214e5f3458cd52130",
+  "files": [
+    {
+      "path": ".github/workflows/zyra-ci.yml",
+      "published_sha256": "9171caba0d3e044e311266e2dac44eda245907e07c8188c01dc561a18f2d354a",
+      "matches_manifest": true
+    },
+    {
+      "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+      "published_sha256": "1c5e5a8ee5b426354f9df957cc3ed01a213bcfaa8f3da47c163744f95b921310",
+      "matches_manifest": true
+    },
+    {
+      "path": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "published_sha256": "ca7025b3a6ae8777596d8f6abe39492e9f5537865ac7b3d3b2a563805db5ad6a",
+      "matches_manifest": true
+    },
+    {
+      "path": "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart",
+      "published_sha256": "a33f8d34e1a26656bf480f914f7669ec780bf42321d4654cdf151e5ef5c8c462",
+      "matches_manifest": true
+    },
+    {
+      "path": "SOURCE/test/visual/line144_help_safety_audit_test.dart",
+      "published_sha256": "1e595e80d151cdeafb137e958248d6a64e3afe028b4540f4f1e07e40dec8d696",
+      "matches_manifest": true
+    }
+  ]
+}

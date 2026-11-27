@@ -1,0 +1,20 @@
+{
+  "as_of": "2026-11-27T18:09:49.873878+00:00",
+  "conversation": "new",
+  "started_at": "2026-11-27T17:31:49.121Z",
+  "root_thread": "01a21e10-37b0-7aa0-8cc9-fcca8dbe0822",
+  "matching_rollouts": 1,
+  "count_events": 147,
+  "actual_count_snapshot": {
+    "timestamp": "2026-11-27T18:09:39.495Z",
+    "total_token_usage": {
+      "input_tokens": 23405025,
+      "cached_input_tokens": 23225600,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 71425,
+      "reasoning_output_tokens": 38307,
+      "total_tokens": 23476450
+    }
+  },
+  "helper_usage": "not available; no estimate"
+}

@@ -1,0 +1,100 @@
+{
+  "authority": "Founder GO, Q239 ANSWERED, OA-ZYRA-371",
+  "at": "2026-11-27T18:05:47.484230+00:00",
+  "start_pack_printed_bytes": 17478,
+  "start_pack_command": "python3 /Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/TOOLS/start_pack.py ZYRA ZYRA/PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/AUDIT_TOOL_REPAIR_BRIEF_2026-11-24.md",
+  "required_reads": [
+    "ZYRA AGENTS.md",
+    "start-pack bounded MAP/review/lessons/brief",
+    "exact answered Q231 and Q239",
+    "SOURCE README Rendered text audit",
+    "named LOCK36/46/47 records/spec sections",
+    "existing real route fixtures, corpus, protected driver and CI sources",
+    "prior Q231 receipt/manifest and raw reports"
+  ],
+  "startup_exception": "Initial whole active lessons and ZYRA AGENTS were read under direct user before-work instruction; no whole MAP/OA/decision register. First relative start-pack invocation refused; corrected absolute invocation succeeded.",
+  "local_checks": {
+    "ANALYZE_FINAL": {
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "analyze",
+        "--no-pub"
+      ],
+      "started_at": "2026-11-27T17:40:06.235416+00:00",
+      "seconds": 9.195331625,
+      "exit": 0
+    },
+    "FOCUSED": {
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "test/visual/line142_offers_preview_test.dart",
+        "test/visual/line144_help_safety_audit_test.dart",
+        "test/zyra_rendered_text_audit_controls_test.dart",
+        "test/visual/oa316_seeker_baseline_capture_test.dart"
+      ],
+      "started_at": "2026-11-27T17:34:28.442989+00:00",
+      "seconds": 26.256587625,
+      "exit": 0
+    },
+    "ORDINARY": {
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--flavor",
+        "offline-ci",
+        "--reporter",
+        "expanded"
+      ],
+      "started_at": "2026-11-27T17:40:23.832550+00:00",
+      "seconds": 557.037525333,
+      "exit": 0
+    },
+    "REPORT_ONLY_SELECTED": {
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--flavor",
+        "offline-ci",
+        "--reporter",
+        "expanded",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--dart-define=ZYRA_TEXT_AUDIT_ITEM_REPORT=true",
+        "--dart-define=ZYRA_LINE126_REPORT_ONLY=true",
+        "--name",
+        "unfinished covered Seeker setup|Eid card and the gift|real Settings has Replay first|four CI drivers",
+        "test/zyra_clearer_text_contrast_test.dart"
+      ],
+      "started_at": "2026-11-27T17:39:39.652351+00:00",
+      "seconds": 26.517609125,
+      "exit": 0,
+      "scope": "selected fixtures diagnostic, not whole corpus or line proof",
+      "raw_status": "fail",
+      "frames": 120,
+      "runs": 1509,
+      "pixels": 1388850,
+      "raw_findings": 6
+    }
+  },
+  "python_tests": 35,
+  "strict_diagnostic": "Both selected375 settings have all10 bodies pass,9proof tuples andzero gaps; strict teardown exit1 retains6 raw probe/coverage observations each. Not a colourpass. Motion trial didnotchange result and is absent.",
+  "hosted_run_id": 46044884390,
+  "hosted_run_attempt": 1,
+  "hosted_proof_status": "pass",
+  "hosted_ordinary": "all three required ordinary shards success",
+  "held_root": "SOURCE/build/held/LINE144/2026-11-27_Q239_POST145",
+  "hosted_final_status": "24/24 jobs success, exact attempt1, strict union proof pass"
+}

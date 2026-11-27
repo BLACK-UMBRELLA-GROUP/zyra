@@ -1,0 +1,19 @@
+{
+  "head": "83f74fd74a436aac7bd153a26cd60499f70114fe",
+  "at": "2026-11-27T17:49:54.876164+00:00",
+  "paths": [
+    ".github/workflows/zyra-ci.yml",
+    ".github/scripts/zyra_text_audit_proof.py",
+    ".github/scripts/test_zyra_text_audit_proof.py",
+    "SOURCE/README.md",
+    "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+    "SOURCE/test/visual/line124_first_tour_capture_test.dart",
+    "SOURCE/test/visual/line126_remaining_routes_test.dart",
+    "SOURCE/test/visual/line142_offers_preview_test.dart"
+  ],
+  "foreign7_index_exact": true,
+  "line138_5_worktree_exact": true,
+  "ordinary_passed": 7995,
+  "ordinary_skipped": 252,
+  "ordinary_failed": 0
+}

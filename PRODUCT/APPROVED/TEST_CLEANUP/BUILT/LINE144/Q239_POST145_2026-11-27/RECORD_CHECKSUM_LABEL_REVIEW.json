@@ -1,0 +1,8 @@
+{
+  "scanner_rule": "generic-api-key",
+  "actual_values": "two SHA-256 checksum strings in review-time API-listing hash labels",
+  "all_values_lowercase_hex64": true,
+  "original_independent_accounting_sha256": "55f114cd2c5f22278468a29239cc8d10d672b73030bee1e0c43920dc457ae292",
+  "publication_change": "two descriptive labels plus alias/history note; values and raw reports unchanged",
+  "scanner_config_or_allowlist_changed": false
+}

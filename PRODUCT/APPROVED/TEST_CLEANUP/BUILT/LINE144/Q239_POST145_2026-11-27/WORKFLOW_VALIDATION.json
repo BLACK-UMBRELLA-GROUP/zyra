@@ -1,0 +1,71 @@
+{
+  "matrix_count": 19,
+  "ordinary_jobs_identical": true,
+  "bash_checks": [
+    {
+      "job": "scope",
+      "step": "Select affected tests or full suite shards",
+      "exit": 0
+    },
+    {
+      "job": "flutter",
+      "step": "Set up Flutter 3.44.2",
+      "exit": 0
+    },
+    {
+      "job": "flutter",
+      "step": "Set up offline app configuration",
+      "exit": 0
+    },
+    {
+      "job": "flutter",
+      "step": "Resolve dependencies",
+      "exit": 0
+    },
+    {
+      "job": "flutter",
+      "step": "Analyze",
+      "exit": 0
+    },
+    {
+      "job": "flutter",
+      "step": "Run the assigned Flutter tests",
+      "exit": 0
+    },
+    {
+      "job": "full-text-audit",
+      "step": "Set up Flutter 3.44.2",
+      "exit": 0
+    },
+    {
+      "job": "full-text-audit",
+      "step": "Set up offline app configuration",
+      "exit": 0
+    },
+    {
+      "job": "full-text-audit",
+      "step": "Resolve dependencies",
+      "exit": 0
+    },
+    {
+      "job": "full-text-audit",
+      "step": "Run this audit setting and shard",
+      "exit": 0
+    },
+    {
+      "job": "full-text-audit",
+      "step": "Prepare audit report and record result",
+      "exit": 0
+    },
+    {
+      "job": "full-text-audit-proof",
+      "step": "Collect completed shard job timings",
+      "exit": 0
+    },
+    {
+      "job": "full-text-audit-proof",
+      "step": "Prove all four complete corpus unions",
+      "exit": 0
+    }
+  ]
+}
