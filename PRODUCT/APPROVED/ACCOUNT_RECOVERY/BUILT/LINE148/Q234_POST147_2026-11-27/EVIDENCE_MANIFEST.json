@@ -10,8 +10,8 @@
     },
     {
       "path": "BUILD.json",
-      "bytes": 3202,
-      "sha256": "8df5318fbef6a1c35db33283a9578b6548dd1696ef2dbb9c3f8e40ccd9428481"
+      "bytes": 3266,
+      "sha256": "bcb486912c39faff65db2cbe9f4ee2b96deab3ec6ce22e875bc7c0c4e041b8db"
     },
     {
       "path": "CAPTURES.json",
@@ -30,8 +30,8 @@
     },
     {
       "path": "HANDOVER.txt",
-      "bytes": 8458,
-      "sha256": "b62ffa2431cc6960b8ba565cc60830ec841186869fa7d5fa2ded6361e9905939"
+      "bytes": 8735,
+      "sha256": "7caeccc1fc9ca3731bdd72aa0039da23b8df532d635a0dd514456cbc5281b2f5"
     },
     {
       "path": "HASH_SCAN_REVIEW.json",
@@ -52,6 +52,11 @@
       "path": "PRIOR_EVIDENCE_HASHES.json",
       "bytes": 583001,
       "sha256": "035b6e8c28bc46e79b0111cd8630075337e9ea247cd6d7ee33bd009db31e3acd"
+    },
+    {
+      "path": "PUBLICATION.json",
+      "bytes": 760,
+      "sha256": "c154d1bd394a7187982e0890e1d99e6200dc78aa8803274972dacecfdc22ebce"
     },
     {
       "path": "PUBLIC_REVIEW.json",
@@ -80,8 +85,8 @@
     },
     {
       "path": "TASK_NOTE.txt",
-      "bytes": 1158,
-      "sha256": "0a18d8e68bc5e2b8d01530ae49ac09045bd7492e7338b29057c8a053f3046142"
+      "bytes": 1239,
+      "sha256": "f5cb60a2ee961e0dc68fdfa960884be3e9e3f70ada8ffc641aaa254dc6828dcf"
     },
     {
       "path": "USAGE.json",

@@ -70,5 +70,6 @@
   "gates": "strict focused matrix fails;implementation not published",
   "native_phone_live_backend_actions": 0,
   "migrations": [],
-  "source_ci_released_utc": "2026-11-27T22:10:02.318929+00:00"
+  "source_ci_released_utc": "2026-11-27T22:10:02.318929+00:00",
+  "records_commit": "1d72552354c7cf9bb0bc1f35829c6ccaa42f9410"
 }

@@ -1,0 +1,19 @@
+{
+  "line": 148,
+  "status": "QUESTION",
+  "question": 243,
+  "records_commit": "1d72552354c7cf9bb0bc1f35829c6ccaa42f9410",
+  "implementation_commit": null,
+  "source_release": "2026-11-27T22:10:02.318929+00:00",
+  "public_checks": {
+    "A": "candidate/history/record scans clean",
+    "B": "no private material;public matches classified",
+    "C": "none",
+    "D": "none",
+    "E": "neutral wording",
+    "F": "README implementation remains held"
+  },
+  "publish_scope": "Only this ACCOUNT_RECOVERY/BUILT/LINE148/Q234_POST147_2026-11-27 directory;noqueue/questions/indexforeign snapshots incommit",
+  "push_status": "not yet attempted;published state is verified by origin/main after this receipt commit",
+  "timestamp": "2026-11-27T22:13:51.929973+00:00"
+}
