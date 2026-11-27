@@ -1,0 +1,26 @@
+{
+  "prepared_at": "2026-11-27T18:44:28.190966+00:00",
+  "records_commit": "f901606b98771773a4ab0b6c2c8abd120912fa5c",
+  "records_paths": 97,
+  "all_commit_paths_owned": true,
+  "implementation_committed_or_published": false,
+  "accepted_source_head": "0b50384af1d756bc6d580e9e24956a1005a12bdf",
+  "source_ci_clean": true,
+  "seven_foreign_staged_blobs_exact": true,
+  "source_release": {
+    "released_at": "2026-11-27T18:40:43.888056+00:00",
+    "accepted_head": "0b50384af1d756bc6d580e9e24956a1005a12bdf",
+    "source_ci_exact_files": 2359,
+    "foreign_staged_exact": true,
+    "foreign_line138_exact": true,
+    "tracked_built_pngs_exact": 1141,
+    "held_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_POST144",
+    "patch_sha256": "167306318944461d491e2a478a2dd18693c8dc0dc140bd5432995f7f63909511",
+    "manifest_sha256": "f9eea434bfa6920d097e77d7086418bf1582184d6c2bbb638f2da808b60d3843",
+    "source_status": "clean",
+    "implementation_published": false,
+    "failed_full_gates": 1
+  },
+  "public_checks": "97initial files plus2new receipts reviewed;0unreviewed public hits;owned/record redacted secret scans clean",
+  "publication": "Final record receipt commit and exact origin verification follow. Final remote SHA/index release is retained in ignored held/FINAL_RELEASE.json and the completion note. No duplicate records-only CI wait."
+}
