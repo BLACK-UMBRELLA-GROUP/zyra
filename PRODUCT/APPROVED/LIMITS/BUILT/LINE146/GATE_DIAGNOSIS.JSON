@@ -1,0 +1,126 @@
+{
+  "line": 146,
+  "lock": "LOCK 48",
+  "reviewed_at_utc": "2026-11-27T09:25:44.167080+00:00",
+  "scope": "Read-only diagnosis of candidate ordinary regression gate failures; no fixes",
+  "candidate_sha256": "d440a4f190f5f8bfb3573ea205c1e2531ab9bc1ca6428a64ed4e2158bfb1c41b",
+  "gate_failure_labels_observed": [
+    "test/zyra_one_upgrade_fit_test.dart: Q194 Seeker Basic 430.0/1.0 [E]",
+    "test/zyra_one_upgrade_fit_test.dart: Q194 Seeker Basic 430.0/1.3 [E]",
+    "test/zyra_one_upgrade_fit_test.dart: Q194 Seeker Basic 375.0/1.0 [E]",
+    "test/zyra_one_upgrade_fit_test.dart: Q194 Seeker Basic 375.0/1.3 [E]",
+    "test/zyra_one_upgrade_fit_test.dart: Q194 measures inherited bold text before selecting one table mode [E]",
+    "test/zyra_one_upgrade_fit_test.dart: Q194 responds at the measured original plan-word boundary [E]",
+    "test/view_request_draft_widget_test.dart: Requests has three swipe pages and Introductions has Received/Past separately compact200 reduce=false [E]",
+    "test/view_request_draft_widget_test.dart: Requests has three swipe pages and Introductions has Received/Past separately compact200 reduce=true [E]",
+    "test/view_request_draft_widget_test.dart: fresh whole-app real-font candidates are not approval_compact200_final [E]",
+    "test/visual/lock24_tab_spacing_test.dart: LOCK24 Seeker-Basic-430-default (variant: TargetPlatform.iOS) [E]",
+    "test/visual/lock24_tab_spacing_test.dart: LOCK24 Seeker-Basic-430-large (variant: TargetPlatform.iOS) [E]",
+    "test/visual/lock24_tab_spacing_test.dart: LOCK24 Seeker-Basic-375-default (variant: TargetPlatform.iOS) [E]",
+    "test/visual/lock24_tab_spacing_test.dart: LOCK24 Seeker-Basic-375-large (variant: TargetPlatform.iOS) [E]"
+  ],
+  "groups": [
+    {
+      "count": 6,
+      "classification": "Candidate-triggered test expectation mismatch, product layout fault not established by these failures",
+      "test": "SOURCE/test/zyra_one_upgrade_fit_test.dart",
+      "failure_line": 127,
+      "evidence": [
+        "The _seeker expected rows at lines12–20 omit Requests waiting at once.",
+        "Expected list at126 combines header plus seven Seeker feature rows:8.",
+        "Candidate SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart:45–49 adds LOCK48 Requests waiting at once after Browse profiles; observed row count9.",
+        "Failures stop at row-count assertion before geometry checks; these failures cannot establish fit of the new row."
+      ],
+      "baseline_status": "Integration owner will run restored accepted SOURCE comparison."
+    },
+    {
+      "count": 2,
+      "classification": "Candidate-associated compact200 discovery/layout interaction; baseline comparison pending; no proven clipping or reachability defect",
+      "test": "SOURCE/test/view_request_draft_widget_test.dart",
+      "failure_line": 2133,
+      "states": [
+        "320×568, text scale2.0, reduce=false",
+        "320×568, text scale2.0, reduce=true"
+      ],
+      "evidence": [
+        "find.text(No sent requests yet.) returned0, expected1 immediately after changing to Sent.",
+        "Candidate SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:5123–5134 returns [_sentCount(), ZyraRequestActivityEmpty(...)] for empty Sent.",
+        "SOURCE/lib/dev/zyra_request_activity_presentation.dart:176–202 uses its centered eager empty presentation only when content.length==1 and content.single is ZyraRequestActivityEmpty.",
+        "With count prepended, empty Sent instead enters ListView.separated at204–216, whose itemBuilder builds content lazily.",
+        "The assertion neither scrolls the Sent list nor inspects source.pages for the empty item; missing Text discovery does not by itself prove removed copy, clipping, overflow or a user-unreachable empty state."
+      ],
+      "baseline_status": "Integration owner will run restored accepted SOURCE comparison."
+    },
+    {
+      "count": 1,
+      "classification": "Candidate-associated compact200 action discovery failure; exact product-versus-test cause unproven",
+      "test": "SOURCE/test/view_request_draft_widget_test.dart",
+      "test_name": "fresh whole-app real-font candidates are not approval_compact200_final",
+      "failure_line": 509,
+      "call_site_line": 5002,
+      "evidence": [
+        "Expected draft_recipient_draft-sara key, found0; diagnostic reports stage=none, page=none.",
+        "Test opens real Sent page at5000 after sending the request at4995, then asks _press for recipient action at5002.",
+        "_press at420–430 attempts to expand the request only if its existing header is already built.",
+        "Its lazy-list scroll search at437–455 handles draft_journey_* targets, while fallback at493–506 only searches dashboard/settings/profile scroll owners, not Sent.",
+        "Candidate shell5137–5139 inserts the count before request cards in the Sent ListView. This can alter which card/header is built or discoverable at compact200; the log does not establish that real scrolling cannot reveal it."
+      ],
+      "baseline_status": "Integration owner will run restored accepted SOURCE comparison."
+    },
+    {
+      "count": 4,
+      "classification": "Candidate-triggered old geometry expectation mismatch; no independent evidence of a new clipping or overflow fault",
+      "test": "SOURCE/test/visual/lock24_tab_spacing_test.dart",
+      "failure_line": 395,
+      "metric_call_line": 418,
+      "profiles_call_line": 438,
+      "metric": "Profiles · title block to dot slot",
+      "expected": {
+        "value": 12.0,
+        "tolerance": 0.02
+      },
+      "observed": [
+        {
+          "viewport_width": 430,
+          "scale_label": "default",
+          "actual": 49.0,
+          "difference": 37.0
+        },
+        {
+          "viewport_width": 430,
+          "scale_label": "large (text scale2.0)",
+          "actual": 100.0,
+          "difference": 88.0
+        },
+        {
+          "viewport_width": 375,
+          "scale_label": "default",
+          "actual": 49.0,
+          "difference": 37.0
+        },
+        {
+          "viewport_width": 375,
+          "scale_label": "large (text scale2.0)",
+          "actual": 100.0,
+          "difference": 88.0
+        }
+      ],
+      "evidence": [
+        "The test titleToDots helper at411–422 assumes direct adjacency between title block and photo dot slot with no count bar between them.",
+        "LOCK48 spec §2 requires the Basic Profiles count bar under the Profiles title; Q219 directs comparison of the new Basic count bar rather than the older surrounding card.",
+        "Candidate SOURCE/lib/widgets/zyra_browse_designs.dart:1067–1078 inserts the header accessory and a10px gap before photo pagination, while the header retains its existing titleToDots spacing before the accessory.",
+        "Candidate SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:4248–4249 passes the Basic limitBar as headerAccessory; One receives null.",
+        "Observed increases37/default and88/large are consistent with the inserted scaled count bar plus its gap. These failures do not establish that the LOCK48 bar itself violates its master, clips, overflows or makes controls inaccessible."
+      ],
+      "baseline_status": "Integration owner will run restored accepted SOURCE comparison."
+    }
+  ],
+  "accepted_baseline_faults": "Known Settings Help and broad filtered coverage faults from Q228/Q229/Q231/Q232 are separate; not relabelled as novel line146 defects.",
+  "recommended_question": "For Fable: line146 mandatory ordinary gate is red. On this exact candidate six upgrade-fit cases still expect8 rows although LOCK48 adds9; four LOCK24 Basic Profiles cases retain the old12px title-to-dots expectation despite the approved inserted count bar (actual49/default,100/large); three compact200 request widget cases fail discovery after the new Sent count changes list composition. Please specify the scoped expectation/empty-Sent integration repair; baseline rerun evidence will distinguish introduced failures. Known accepted Settings Help and broad coverage faults remain separate. Candidate stays parked unchanged until the gate issue is resolved.",
+  "shared_source_writes": false,
+  "git_writes": false,
+  "tests_run_by_reviewer": false,
+  "total_candidate_ordinary_failures_reported_by_integration_owner": 14,
+  "candidate_associated_failure_groups_count": 13,
+  "known_accepted_ordinary_failures_reported_by_integration_owner": 1
+}

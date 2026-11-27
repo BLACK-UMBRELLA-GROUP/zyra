@@ -1,0 +1,29 @@
+ZYRA line146 LOCK48 — QUESTION 233 — 27 Nov 2026
+
+Outcome: exact integrated candidate was parked unchanged. No implementation commit or push. Accepted SOURCE restored; seven unrelated staged entries retained. This is preview-only work. No live connection, migration, device, or other line.
+
+Authority: Founder GO; DR-ZYRA-381; LIMITS brief24Nov/specV1/LOCK48; Q219 scopes comparison to new LOCK48 parts; Q220 permits owned test/capture seeds only. Candidate patch SHA256 d440a4f190f5f8bfb3573ea205c1e2531ab9bc1ca6428a64ed4e2158bfb1c41b; accepted source b4dcadd2; local record HEAD adfbb8ef.
+
+Built candidate: one waiting-outbound request policy (Basic5/One20), shared admission on Profiles/full profile/Introduction/restart, correct count release, full sheets and Sent count, Basic25-per4-hour bar/card, no One bar, upgrade comparison row. Current Pause/Private authority is preserved before capacity checks. Fixtures do not create people, real requests or controls. Exact18 live-file roles/hashes are in LINE146-MERGED.json and BUILD.json; runtime state remains owner/route scoped and uses local sample data. Server enforcement remains outside this preview line.
+
+Measured verification:
+- Protected driver: five SDK pins and both executable denial checks PASS; Flutter3.44.2.
+- Analyzer: no issues,8.8s.
+- Focused12-file run:177passed/23skipped,39.88s,including Pause-before-capacity and restart. Exact command in BUILD.json.
+- Visual:32PNG,4geometry and28scoped raster reports hash-identical to merge isolate;0scoped failures. Both viewports375x667/430x932 and scales1.0/1.3 covered. Q219 content/control comparison PASS; native placement is not claimed pixel-identical to static masters.
+- Ordinary: 11:30 +7946 ~244 -14: Some tests failed.; 695.41s.
+- Required expanded-group replay: 08:14 +108 -16: Some tests failed.; 504.23s. Membership was included for the touched upgrade page. Filtered run receives no whole-app coverage credit. 3644frames/38999runs,36raster observations across3historically reproduced text categories and288coverage gaps per driver. Exact text/contrast sets match prior isolated baseline atnormal430/large375; no fresh full accepted replay is claimed. Raw failed raster/coverage observations retained in replay/.
+- Targeted restored-accepted comparison: 00:21 +30: All tests passed!; 25.4s. Same upgrade, compact200 and LOCK24 cases. No full gate retry.
+- Accepted hosted CI45958031712 remains failed on b4dcadd2. Source/API/phone publication is not approved by this work.
+
+Failure distinction: thirteen candidate-triggered ordinary failures were absent from the accepted targeted comparison: six upgrade expectations omit the ninth locked row, three compact200 Sent-list discovery checks cannot find lazy content, and four LOCK24 Basic header-spacing checks reject the added count-bar gap. The assertions alone do not prove clipping or user-unreachable content. Accepted Help lazy Settings failure is separate (Q228). Broad filtered coverage/stale/copy/raster categories remain Q229 and the prior isolated baseline comparisons. No findings were relabelled, fixed or suppressed. Fable owns one bounded repair/restart route in Q233; written refusal to broaden or ship this failing candidate.
+
+Seed record: pr01=11 then first actual exposure12; pr02/pr03=25viewed; rl01=20waiting; rl02=5waiting; rl03=3actual model requests; rl04=3actual+2seeded; restart=20waiting; Pause regression=4seeded then fifth actual after resume. Normal preview counts actual eight approved people only. All state inputs belong to each test/capture.
+
+Parking: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_INTEGRATED_Q233. Original early candidate and merged isolate remain intact. Candidate files were moved to held/worktree, then15accepted files forward-written from Git objects; three additions are absent from shared SOURCE. No reset/restore/checkout, .orig, index rewrite or deletion. All2347tracked SOURCE/CI hashes restored, all7foreign staged blobs exact, all5LINE138working hashes exact, all931tracked BUILT PNGs unchanged. Release: 2026-11-27T09:26:36.193529+00:00.
+
+Records: BUILD.json; INTEGRATION_MANIFEST.json; CAPTURE_MANIFEST.json; INDEPENDENT_REVIEW.json; GATE_DIAGNOSIS.json; VISUAL_REVIEW.json; PUBLIC_SECRET_REVIEW.json; evidence screens/audit/replay. Queue/Q edits remain unstaged and are excluded from record commits. Existing mixed edits were preserved byte-for-byte apart from the146row and one new Q row.
+
+Next: Fable supplies bounded scope and accepted-base gate route; a fresh owner rechecks status and manifests before another lease. This chat starts no next line, as instructed. No admin sweep. Public source scan:12pre-existing exact accepted lines; no new private/wording/key/email hit. Gitleaks:6existing unpushed commits and owned contents clean. Final record-only checks follow before local commit.
+
+Final public check: initial 81 written files scanned; additional review JSON checked by text replay (82 total). 1,231 compressed-PNG text matcher false positives and 9 unrelated existing queue/question money hits reviewed; 0 owned text/key/email/wording findings. Text-only replay and 47-file redacted record Gitleaks clean. PNG hashes retained; written refusal to alter foreign rows. PUBLIC_RECORD_REVIEW.json records exact dispositions.

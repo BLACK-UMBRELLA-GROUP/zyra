@@ -1,0 +1,108 @@
+{
+  "line": 146,
+  "lock": "LOCK 48",
+  "scope": "Independent static pre-commit review of current shared source",
+  "reviewed_at_utc": "2026-11-27T09:13:31.100335+00:00",
+  "result": "PASS",
+  "novel_findings": [],
+  "patch_sha256": "d440a4f190f5f8bfb3573ea205c1e2531ab9bc1ca6428a64ed4e2158bfb1c41b",
+  "manifest_sha256": "6bea26f8383936550ce96456eae8cd48151b651424680e833e495ee7f7bbba7d",
+  "verified_current_shared_paths": [
+    {
+      "path": "SOURCE/README.md",
+      "sha256": "3f151bf5763c3077dd2dd0ed8dfdd938b376af4336561470cc5ea1d0255815c2"
+    },
+    {
+      "path": "SOURCE/lib/data/zyra_seeker_basic_policy.dart",
+      "sha256": "67a6ed930448aa00c6ab1b2596312fb43a25d3f42be998c31dbc9d5a26f570e1"
+    },
+    {
+      "path": "SOURCE/lib/data/zyra_seeker_plan_limits.dart",
+      "sha256": "381487acdd9449b38d13a44550466816c1d1c1f581cfe7d0dfadd0a4d82e05c1"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_full_profile_preview.dart",
+      "sha256": "beb3725fb52aebd747e863a114f406c67206b42d61aa823b533438aaad7c84fc"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_limits_preview.dart",
+      "sha256": "af08c5a3cf5d4fa02298d9a606d761ff02255818cf4bf1c5d0a6fc158581f1ba"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart",
+      "sha256": "0943fb4393a71126d97dde59f8344283c5e0985c663102a56e19da7ad7bf41cc"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "sha256": "83feb5568e6324468244d76210eaebb5ce5dde192e7cc54122a5c30c6a380784"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+      "sha256": "f67601ae608027c7d24f1c43e23b3ec5709fe95d322d96ec2407a854405c7c98"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "sha256": "7b6c3e41f02d2969a4f9c8137cca8e7dd74d013fa41131d9e64409cb41b612b0"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+      "sha256": "95745e5253124e3b72a3c0fb79415691034ec35776e5c6162d91b6ca32450c11"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "sha256": "e70c9df606c525f3b37ee45d59537298a4990fe0ed8a3c280e11643b41b37833"
+    },
+    {
+      "path": "SOURCE/lib/state/zyra_developer_samples.dart",
+      "sha256": "5ceee22ae3c04420fc96d886e872de89db2d42e564bc3de32cf022d896d03bd2"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_browse_designs.dart",
+      "sha256": "852a4cd35e54bab665631e759a2bd31c27d7ec9283e67ba4c9494fc6ca4aca7d"
+    },
+    {
+      "path": "SOURCE/test/line146_limits_test.dart",
+      "sha256": "0504cec31df3261a9f5e93a07a3cb1062cf230e83943e0d49fddce17b1db07c9"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "sha256": "aad50f5e6d13f115781b784a6e4edb0b9eb6a91f1e182e9c0db14cefe3b57c97"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "sha256": "12f7ac5c9c3588311999e32b4e53177e6ded998f47f2e69ed3a6adbdb7613b31"
+    },
+    {
+      "path": "SOURCE/test/visual/line146_limits_capture_test.dart",
+      "sha256": "b0c01c331698ec17c049eda8255e95dd05e646d5a83f58f158a116338f952171"
+    },
+    {
+      "path": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+      "sha256": "5e2752cc09f99e9b2d35f388a7df3cd8b69142f00070e457b36ca66f30e1306f"
+    }
+  ],
+  "reviewed_contracts": [
+    "LIMITS_SPEC_CURRENT_VERSION_V1.md",
+    "LIMITS/RECORD/LOCK_RECORD.md",
+    "QUESTIONS 219",
+    "QUESTIONS 220"
+  ],
+  "reviewed_behaviour": [
+    "Profiles and full-profile sends share LOCK48 waiting capacity admission",
+    "Introduction tile and full-profile request paths invoke the same admission policy",
+    "Restart paths check admission before request and after confirmation",
+    "Only waiting outbound requests are counted; model and developer IDs are deduplicated",
+    "Cancellation, acceptance and expiry release waiting capacity",
+    "Pause/Private send policy is checked before capacity; prior authoritative model and developer send guards remain",
+    "Full sheet actions revalidate account generation, UI revision and route ownership",
+    "Q220 seeds are caller-owned fixture state with no new sample people or app controls",
+    "Basic browse window counts distinct exposures and checkpoint state; One has no visible browse cap",
+    "New focused tests cover threshold sheets, count release, Introduction contexts, restart and cross-feature Pause precedence"
+  ],
+  "limitations": [
+    "Static review only; integration owner runs protected analyzer, tests, raster/master checks and public/secret checks",
+    "Known accepted Settings Help and broad coverage faults are not novel line146 findings"
+  ],
+  "shared_writes": false,
+  "git_writes": false
+}
