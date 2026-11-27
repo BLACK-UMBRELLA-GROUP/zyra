@@ -1,0 +1,329 @@
+{
+  "recorded": "2026-11-27T20:08:49.993522+00:00",
+  "accepted_head": "2ad41424aaf49d73ef1a2fa05adade33fbf7ee59",
+  "file_count": 30,
+  "source_bytes": 1167850,
+  "file_sha256": {
+    "SOURCE/README.md": "4fdbf1878811ac6cdde465325b6c9b3e251c2b65d6a3aaa2757964f4c4375f4a",
+    "SOURCE/lib/dev/zyra_draft_local_code_page.dart": "9b24bf5ead89ec37b39a25430133d58266103e647d8e93b8dca75f28315b2f39",
+    "SOURCE/lib/dev/zyra_help_safety_preview.dart": "273c80c16d9bc693a4b20d176281fff8ac5e4535c013dcbf2cfdf9696a4b86f1",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart": "d21878e56e2db5e168d48e838e3864d40ed69c4342813d372adb8eb58e700990",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "a43303029642cca8d2af335c0f72d14388a2189dccc0f924b96347ccd7e9daab",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart": "a2628c27c85409cd6e75e9a44f77cfd17d60ff7b37c2bee14d487cac9015818a",
+    "SOURCE/lib/dev/zyra_request_activity_presentation.dart": "86e585923529e217dda3f3fc458afcbd9c507eb2ce66522b64f3135c6b946771",
+    "SOURCE/lib/screens/profile/zyra_profile_video_trim_screen.dart": "d9d7b8522bb1cd2d425cd30037361554b539443dcc14d2d44c93a06afa637c69",
+    "SOURCE/lib/screens/settings/help_support_screen.dart": "a96af03b81613e3e372171595851b219d4ec017c9146048711350ce3407fc319",
+    "SOURCE/lib/widgets/zyra_focus_dashboard.dart": "42d1fcd450d5a684fea5d4dd900abf23b76f64ef3f81733c592a6a61e5dfebe4",
+    "SOURCE/lib/widgets/zyra_full_screen_error.dart": "6d19833d447f92c08fa67f68f0eca9d71fcc48bab6633ad0552363a6ec83ad58",
+    "SOURCE/lib/widgets/zyra_profile_video_player.dart": "342d25806eed305a205cd1ed91a4812a71101e3c65a0d5e8525585b9038819bd",
+    "SOURCE/lib/widgets/zyra_reference_label.dart": "e94544f52a2458d277b659709830a89b405530dc5cb4486927841e93b4e66c74",
+    "SOURCE/lib/widgets/zyra_state_widgets.dart": "111d791cacdb1c23dfdd754ec3c7e1205c13d5f6ec419583661f14aed05d45b2",
+    "SOURCE/test/full_screen_error_test.dart": "109fcd0ed0412a7dc9d910d383577c685ada4afacb39d19eaed9d5771800a914",
+    "SOURCE/test/guardian_card_interaction_test.dart": "42d5c9215758a53bf2a1d04b6973c6b955cc286242adc187c44ef595b21bdac9",
+    "SOURCE/test/line141_small_screen_fit_test.dart": "15d1367c9c3dca162832872c03c3aff6bbdf521846f1728fdba621fe1fc114a9",
+    "SOURCE/test/one_journey_current_presentation_test.dart": "7c275cd710a27ae9bc38db46b6b0ba4d3b97b0d280c0e1a0909cb95f51d9025c",
+    "SOURCE/test/photo_gallery_add_page_test.dart": "2fd8a307ade4a2596c196cddb78e5496960e8743762cf46c4649a8e05506f2cc",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart": "41c349b3635912d222b82a4ed93fd064b6b7220d1c762509ebcfc5c7eb941600",
+    "SOURCE/test/requests_guardians_lock2_shell_test.dart": "b641daa1676009ea492925c6800039c28e83fb473c201c5f045d2f04bd3913a6",
+    "SOURCE/test/visual/lock19_guardian_card_capture_test.dart": "9b9e2ed1590e16d6b76b1c4be9ab7dac7129e2c78ca3e21abdc1f8d977b5e030",
+    "SOURCE/test/zyra_clearer_text_label_fit_test.dart": "8d59e94ec5e23db29881791a9c29a75150b001e71b858fa2cbb6f3db4ca94c85",
+    "SOURCE/test/zyra_request_activity_presentation_test.dart": "618fc7abfd41d92a5d8a19572deaf8caf78bcbc07005f295f74f1f7df1741e30",
+    "SOURCE/test/membership_wallet_visual_test.dart": "64fd56d43fc6b055f36e6acc1a9b263986daed6b6a7336841ebec4475b212d51",
+    "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart": "782208c18ce6d20a58a77c17ff2dff4d8990004f09d120215c1f0067bb8f9fd8",
+    "SOURCE/test/auth_gate_recovery_test.dart": "4412d09b1541246104b86bdb2269f2a28fd5a7c544c8d31995f2e71ab461a0dc",
+    "SOURCE/lib/widgets/zyra_profile_details_page.dart": "8cd2ad4d554dd4dd2bbabbbb8ef1e180f7d53afeadf7fdbe1f398b102b717ab6",
+    "SOURCE/test/line141_details_gap_test.dart": "1b2ea3f5fc72a9d2477f1a785afd6aa0e28f8fd8a9c803e8fbd29c31e725b3c1",
+    "SOURCE/test/visual/line141_details_master_capture_test.dart": "51cb73cc4ed672a99828a38858effe2eea6af92ea81069896174a3b9aad743db"
+  },
+  "all_inputs_match_integration": true,
+  "public_check": {
+    "exit_code": 1,
+    "hit_count": 26,
+    "hits": [
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+        "line": 1004,
+        "kind": "money",
+        "line_sha256": "81ecc23ead4e5719cc047bde996cafe09e9e626dbad19b851923dc28a16e0182",
+        "exact_accepted_head_line_numbers": [
+          1008
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 3019,
+        "kind": "money",
+        "line_sha256": "43ce68bc397ce53879c280a1ec36430304c158bb812387c74b217a242d729f9f",
+        "exact_accepted_head_line_numbers": [
+          3019
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 11197,
+        "kind": "money",
+        "line_sha256": "2c20d8feb99937b46f186d4f27448508e9cd63e27895ca175622c4e5445fa327",
+        "exact_accepted_head_line_numbers": [
+          11198
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 11198,
+        "kind": "money",
+        "line_sha256": "9b988ca2d033a44d5969f56ef99aa30b668684acc0f463c4b7dbf9f8ce21e11c",
+        "exact_accepted_head_line_numbers": [
+          11199
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+        "line": 10,
+        "kind": "email",
+        "line_sha256": "1c9cb51e068710e39c30ab8d945e4e0aaec504a6e59f85e4a26cdbcb30a677b5",
+        "exact_accepted_head_line_numbers": [
+          9
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+        "line": 79,
+        "kind": "email",
+        "line_sha256": "432f0d29c5a28c2a93fdc0bc1bc83115ff4bfce0a181670135d9f33a7b54475a",
+        "exact_accepted_head_line_numbers": [
+          78
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+        "line": 548,
+        "kind": "email",
+        "line_sha256": "acda611b58c906cc97c6020e6aec5c25bb07369f17c6be826a5ef9bd1beffa8c",
+        "exact_accepted_head_line_numbers": [
+          546
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 269,
+        "kind": "money",
+        "line_sha256": "d1987331de1090f18e24eff4c8134902d1288d1c59fae083ed9131422eacd8a6",
+        "exact_accepted_head_line_numbers": [
+          269
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 276,
+        "kind": "money",
+        "line_sha256": "88c208b1af9f2dc0f361fac4ee86e5b88cc0da4e677bfe280dfcb0083d1f1ea2",
+        "exact_accepted_head_line_numbers": [
+          276
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 278,
+        "kind": "money",
+        "line_sha256": "8b169330a6bcd8846ee988263b9518fd756cc07945213c92482703a10e31f5b9",
+        "exact_accepted_head_line_numbers": [
+          278
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 313,
+        "kind": "money",
+        "line_sha256": "e1a30970f08aca6cf81688cc1a5dd2c2e81f73f48a8e118d26039b357c3378f7",
+        "exact_accepted_head_line_numbers": [
+          313
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 315,
+        "kind": "money",
+        "line_sha256": "b75511712e0e5729fafd8b0ac3f9a113a1d1f159bc55f3e7398ee0ae3fcbfbbf",
+        "exact_accepted_head_line_numbers": [
+          315
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 362,
+        "kind": "money",
+        "line_sha256": "6dda8898e836e2bb6fb221b1010479d1717ac0d2df4f275993394ee3a2ef9300",
+        "exact_accepted_head_line_numbers": [
+          362,
+          405
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 405,
+        "kind": "money",
+        "line_sha256": "6dda8898e836e2bb6fb221b1010479d1717ac0d2df4f275993394ee3a2ef9300",
+        "exact_accepted_head_line_numbers": [
+          362,
+          405
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 533,
+        "kind": "money",
+        "line_sha256": "10ad2c3f1375dd3a7ee50efd9cc0661f8aa25ffa37a5d38b126cac34b81ede67",
+        "exact_accepted_head_line_numbers": [
+          518
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 534,
+        "kind": "money",
+        "line_sha256": "b62cf8bb3c140f38e8b3244a5e27b6a68c6ba3aaa4e7333b909d389da2d1c71b",
+        "exact_accepted_head_line_numbers": [
+          519
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 551,
+        "kind": "money",
+        "line_sha256": "1442d85cdbaa91343d0a24d1c62fc5552992c177fe1d1c737427904ebcbd27c8",
+        "exact_accepted_head_line_numbers": [
+          536
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 564,
+        "kind": "money",
+        "line_sha256": "367f7d21fdd11685815453ce4be74e3b9096289de9299759a956f425b0b7a981",
+        "exact_accepted_head_line_numbers": [
+          549
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 586,
+        "kind": "money",
+        "line_sha256": "a013bb6395e56a43430e1beb0812dcc684a6be27699037e982b56d6e85ace70c",
+        "exact_accepted_head_line_numbers": [
+          571
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 651,
+        "kind": "money",
+        "line_sha256": "8cf6cc587558baf3aabd8e19dac03178f3e828e350ee061406264c4373ec18ab",
+        "exact_accepted_head_line_numbers": [
+          636
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 685,
+        "kind": "money",
+        "line_sha256": "148d226f8daa2da761e7f0bd4e6e44f12833dfda49dcb1ce7b5108f94b5c9ae5",
+        "exact_accepted_head_line_numbers": [
+          670
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 370,
+        "kind": "money",
+        "line_sha256": "5adb05dc7a85f33639d8862b34409bc1ba42f92ec84b9dfdfdb1222f3c3f8e66",
+        "exact_accepted_head_line_numbers": [
+          369
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 371,
+        "kind": "money",
+        "line_sha256": "d516771739305b8d0ba2d399ba6473a1d957075fc7700fdc69502f9be8c0508b",
+        "exact_accepted_head_line_numbers": [
+          370
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 446,
+        "kind": "money",
+        "line_sha256": "09ebc343c75cee24f6f869201d89becad9d99369fbfad73b3c6c1106a7e94fe0",
+        "exact_accepted_head_line_numbers": [
+          445
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 463,
+        "kind": "money",
+        "line_sha256": "1fbf271877f6c43cefeb679ef9499466b2b3bc1659a78a01b01ac696a9eb050e",
+        "exact_accepted_head_line_numbers": [
+          462
+        ],
+        "preexisting_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 465,
+        "kind": "money",
+        "line_sha256": "18378e0963087f5de9520cd118b71323391b04f5cc077020af4f8990108ac268",
+        "exact_accepted_head_line_numbers": [
+          464
+        ],
+        "preexisting_exact_line": true
+      }
+    ]
+  },
+  "gitleaks": {
+    "command": [
+      "gitleaks",
+      "stdin",
+      "--no-banner",
+      "--no-color",
+      "--redact=100",
+      "--ignore-gitleaks-allow",
+      "--report-format",
+      "json",
+      "--report-path",
+      "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/logs/gitleaks-candidate.json"
+    ],
+    "exit_code": 0,
+    "report": "logs/gitleaks-candidate.json",
+    "log": "logs/gitleaks-candidate.txt",
+    "redact": 100,
+    "source": "only 30 scoped contents supplied on stdin"
+  },
+  "no_source_writes": true,
+  "tests_run": false,
+  "git_mutation": false
+}

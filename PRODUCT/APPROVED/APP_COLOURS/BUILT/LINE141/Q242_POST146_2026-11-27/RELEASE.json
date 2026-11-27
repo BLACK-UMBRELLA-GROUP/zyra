@@ -1,0 +1,14 @@
+{
+  "released": "2026-11-27T20:46:50.103067+00:00",
+  "implementation_commit": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+  "required_hosted_checks_pass": true,
+  "hosted_run": 46064204081,
+  "SOURCE_and_CI_clean": true,
+  "foreign_staged_entries_exact": 7,
+  "foreign_line138_files_exact": 5,
+  "prior_evidence_files_exact": 2719,
+  "queue_only_line141_changed": true,
+  "mixed_queue_and_questions_not_staged": true,
+  "next_line_owner": "Coordinator; line147",
+  "source_owner_finished": true
+}

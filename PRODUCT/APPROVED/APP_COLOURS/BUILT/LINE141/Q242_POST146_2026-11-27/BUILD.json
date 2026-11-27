@@ -1,0 +1,29 @@
+{
+  "status": "BUILT (Preview); Live:no",
+  "line": 141,
+  "OA": "OA-ZYRA-371",
+  "commit_sha": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+  "accepted_base": "2ad41424aaf49d73ef1a2fa05adade33fbf7ee59",
+  "flutter": "3.44.2",
+  "build_mode": "Protected Flutter widget tests; no native build",
+  "timestamp": "2026-11-27T20:46:50.103067+00:00",
+  "authority": [
+    "Founder GO",
+    "LOCK14V9 correction4",
+    "LOCK4V5",
+    "Q229",
+    "Q238",
+    "Q240",
+    "Q242"
+  ],
+  "mandatory_pass": true,
+  "hosted_required_checks_pass": true,
+  "full_gate_attempts": 1,
+  "failed_full_gate_attempts": 0,
+  "lease_acquired": "2026-11-27T20:06:50.665503+00:00",
+  "deadline": "2026-11-28T02:06:50.665503+00:00",
+  "start_pack_bytes": 19793,
+  "conversation": "new; exact chat-start/count-only token usage unavailable through enabled tools; no estimate invented",
+  "migrations": [],
+  "source_files_changed": 30
+}

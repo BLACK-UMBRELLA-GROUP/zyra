@@ -1,0 +1,77 @@
+{
+  "checked_at": "2026-11-27 20:46:48 UTC",
+  "run_id": 46064204081,
+  "head_sha": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+  "run_attempt": 1,
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46064204081",
+  "event": "push",
+  "required_checks_pass": true,
+  "required_jobs": [
+    {
+      "id": 140725463730,
+      "name": "Select Flutter tests",
+      "run_id": 46064204081,
+      "head_sha": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T20:31:27Z",
+      "completed_at": "2026-11-27T20:31:54Z",
+      "test_step": null
+    },
+    {
+      "id": 140725644115,
+      "name": "Flutter checks (shard 2)",
+      "run_id": 46064204081,
+      "head_sha": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T20:36:47Z",
+      "completed_at": "2026-11-27T20:45:47Z",
+      "test_step": {
+        "name": "Run the assigned Flutter tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-27T20:39:04Z",
+        "completed_at": "2026-11-27T20:45:45Z"
+      }
+    },
+    {
+      "id": 140725644136,
+      "name": "Flutter checks (shard 1)",
+      "run_id": 46064204081,
+      "head_sha": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T20:31:56Z",
+      "completed_at": "2026-11-27T20:38:58Z",
+      "test_step": {
+        "name": "Run the assigned Flutter tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-27T20:33:38Z",
+        "completed_at": "2026-11-27T20:38:56Z"
+      }
+    },
+    {
+      "id": 140725644150,
+      "name": "Flutter checks (shard 0)",
+      "run_id": 46064204081,
+      "head_sha": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T20:37:21Z",
+      "completed_at": "2026-11-27T20:44:49Z",
+      "test_step": {
+        "name": "Run the assigned Flutter tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-27T20:39:28Z",
+        "completed_at": "2026-11-27T20:44:46Z"
+      }
+    }
+  ],
+  "optional_full_text_reporting": "Existing separate hosted audit; no whole-app credit or replacement for strict local selected replay; no records-only CI wait."
+}

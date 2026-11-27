@@ -1,0 +1,42 @@
+{
+  "implementation_commit": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+  "branch": "main",
+  "remote_head": "ced3f8915f4b6205804027c79c249dadbdee41c7",
+  "published": "2026-11-27T20:31:24.115422+00:00",
+  "before_push_scan": {
+    "command": [
+      "gitleaks",
+      "detect",
+      "--source",
+      ".",
+      "--log-opts=origin/main..HEAD",
+      "--redact",
+      "--no-banner",
+      "--report-format",
+      "json",
+      "--report-path",
+      "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/gitleaks-history-before-source-push.json"
+    ],
+    "exit_code": 0,
+    "findings": 0
+  },
+  "after_push_scan": {
+    "command": [
+      "gitleaks",
+      "detect",
+      "--source",
+      ".",
+      "--log-opts=origin/main..HEAD",
+      "--redact",
+      "--no-banner",
+      "--report-format",
+      "json",
+      "--report-path",
+      "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/gitleaks-history-after-source-push.json"
+    ],
+    "exit_code": 0,
+    "findings": 0
+  },
+  "foreign_index_exact": true,
+  "public_checks": "A clear; B no private documents; C none; D none; E neutral; F README included"
+}

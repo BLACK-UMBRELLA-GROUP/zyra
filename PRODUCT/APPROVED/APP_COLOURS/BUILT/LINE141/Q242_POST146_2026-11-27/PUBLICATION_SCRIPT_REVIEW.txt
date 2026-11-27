@@ -1,0 +1,13 @@
+Independent publication-script review
+Reviewed: 2026-11-27T20:19:21.610842+00:00
+Verdict: both reported guards are resolved; no actionable issue in the bounded scripts. This is static review, not execution or proof that pending gates have passed.
+
+1. summarize.py requires the exact ordered seven-run list: analyzer, focused, captures, q240-geometry-capture, main-replay, scan-replay, ordinary. Every exit must be zero. Focused411/captures20/Q24025 final pass lines are checked, and ordinary must end in All tests passed. Strict reports must be complete, not report-only, have zero raw failures and zero gaps, preserve all selected obligations with positive text frames, and carry84main/4Scan proof tuples. Missing or incomplete work therefore cannot produce mandatory_pass.
+2. commit_source.py requires mandatory_pass and witness strict exit0/raw0, exactly frames0/1/2, each gap>=12-.001pt, zero glyph-support/title-paint tile intersections, exact ON restoration, zero non-title changes and unchanged same-frame geometry/clock/scroll. All checks precede Git writes.
+3. Existing explicit30-path add/commit-only scope and exact seven-entry pre/post staged preservation remain intact. Candidate and every other tracked SOURCE/.github hash are checked against integration/start. Pre/post push history secret scans and remote exact-head verification remain.
+
+Reviewed script SHA256:
+summarize.py: 034f3f475ac1a5e3eb46a7b95aff868f8b2667cd7c0cea43ba891554764ef8f1
+commit_source.py: ad481712ec5f80d5cec98c7aa0fc2aa8742be52a9c586532fb72f1e125d51aa5
+
+No tests, source edits, repository writes or publication executed by reviewer.

@@ -1,0 +1,23 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Coverage entries (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:03 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; line126_entry_Seeker_Basic_scan 375x667@1.0
+00:03 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; line126_entry_Seeker_Basic_scan 430x932@1.0
+00:03 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; line126_entry_Seeker_Basic_scan 375x667@1.3
+00:04 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; line126_entry_Seeker_Basic_scan 430x932@1.3
+00:06 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 9 frames, 0 failures; line126_entry_Seeker_Basic_scan 375x667@1.0
+00:09 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 9 frames, 0 failures; line126_entry_Seeker_Basic_scan 375x667@1.3
+00:09 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:09 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+LINE126 raster 8 frames, 0 failures; line126_entry_Seeker_Basic_scan 430x932@1.3
+00:10 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Coverage entries line126 Seeker Basic actual Scan entry (variant: TargetPlatform.iOS)
+00:11 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Coverage entries (tearDownAll)
+00:11 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: (tearDownAll)
+00:11 +4: All tests passed!

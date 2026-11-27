@@ -1,0 +1,24 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 V6 Main card with two, three and zero active Journeys (variant: TargetPlatform.iOS)
+00:01 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 V6 Main card with two, three and zero active Journeys (variant: TargetPlatform.iOS)
+00:01 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart: V5 active Sara fixture uses paused review and shared photo card
+00:01 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 V6 Additional Basic, invited sample and Add last (variant: TargetPlatform.iOS)
+00:01 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 V6 Additional Basic, invited sample and Add last (variant: TargetPlatform.iOS)
+00:02 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 V6 Additional Basic, invited sample and Add last (variant: TargetPlatform.iOS)
+00:02 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 V6 Additional Basic, invited sample and Add last (variant: TargetPlatform.iOS)
+00:02 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart: V5 Additional permitted View and Chat=false retain actual role and access
+00:03 +8: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 k09-k16 Family price preview, free-place invite and accepted projection (variant: TargetPlatform.iOS)
+00:03 +9: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 k09-k16 Family price preview, free-place invite and accepted projection (variant: TargetPlatform.iOS)
+00:03 +10: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 k09-k16 Family price preview, free-place invite and accepted projection (variant: TargetPlatform.iOS)
+00:04 +11: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 k09-k16 Family price preview, free-place invite and accepted projection (variant: TargetPlatform.iOS)
+00:04 +12: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 k09-k16 Family price preview, free-place invite and accepted projection (variant: TargetPlatform.iOS)
+00:04 +13: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 k09-k16 Family price preview, free-place invite and accepted projection (variant: TargetPlatform.iOS)
+00:04 +14: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 k09-k16 Family price preview, free-place invite and accepted projection (variant: TargetPlatform.iOS)
+00:04 +15: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 k09-k16 Family price preview, free-place invite and accepted projection (variant: TargetPlatform.iOS)
+00:05 +16: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 V7 Seeker Basic Guardian and Add card (variant: TargetPlatform.iOS)
+00:05 +17: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 Larger Text tiles and all sheet controls remain reachable (variant: TargetPlatform.iOS)
+00:06 +18: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 narrow320 and200percent tiles/sheet/actions reachable (variant: TargetPlatform.iOS)
+00:07 +19: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: LOCK19 actual shell samples are captured separately from named master data (variant: TargetPlatform.iOS)
+00:08 +20: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock19_guardian_card_capture_test.dart: (tearDownAll)
+00:08 +20: All tests passed!

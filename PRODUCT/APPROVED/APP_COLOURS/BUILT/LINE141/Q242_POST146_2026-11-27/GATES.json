@@ -1,0 +1,932 @@
+{
+  "created": "2026-11-27T20:30:21.110429+00:00",
+  "runs": [
+    {
+      "name": "analyzer",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "analyze",
+        "--no-pub"
+      ],
+      "started": "2026-11-27T20:07:12.627340+00:00",
+      "finished": "2026-11-27T20:07:27.466121+00:00",
+      "exit_code": 0
+    },
+    {
+      "name": "focused",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "test/line141_small_screen_fit_test.dart",
+        "test/full_screen_error_test.dart",
+        "test/guardian_card_interaction_test.dart",
+        "test/one_journey_current_presentation_test.dart",
+        "test/photo_gallery_add_page_test.dart",
+        "test/profile_tab_monogram_contract_test.dart",
+        "test/requests_guardians_lock2_shell_test.dart",
+        "test/zyra_clearer_text_label_fit_test.dart",
+        "test/zyra_request_activity_presentation_test.dart",
+        "test/membership_wallet_visual_test.dart",
+        "test/auth_gate_recovery_test.dart",
+        "test/zyra_rendered_text_audit_controls_test.dart",
+        "test/line141_details_gap_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T20:07:27.474457+00:00",
+      "finished": "2026-11-27T20:08:18.528815+00:00",
+      "exit_code": 0
+    },
+    {
+      "name": "captures",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_LOCK19_REVIEW_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/captures/guardian-card",
+        "--dart-define=ZYRA_LINE102_GUARDIAN_JOURNEYS_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/captures/guardian-journeys",
+        "test/visual/lock19_guardian_card_capture_test.dart",
+        "test/visual/lock8_v5_guardian_journeys_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T20:08:18.535507+00:00",
+      "finished": "2026-11-27T20:08:42.474656+00:00",
+      "exit_code": 0
+    },
+    {
+      "name": "q240-geometry-capture",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_LINE141_DETAILS_REVIEW_DIR=/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/captures/details",
+        "test/line141_details_gap_test.dart",
+        "test/visual/line141_details_master_capture_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T20:08:42.475568+00:00",
+      "finished": "2026-11-27T20:08:55.539917+00:00",
+      "exit_code": 0
+    },
+    {
+      "name": "main-replay",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/requests/Seeker_One,seeker/tab3/Seeker_One,seeker/tab4/Seeker_One,profiles_photos/profile/Seeker_One,profiles_photos/help_report_sent/Seeker_One,basic_seeker/requests/Seeker_Basic,basic_seeker/tab4/Seeker_Basic,basic_guardian/tab4/Guardian_Basic,basic_guardian/tab1/Guardian_Basic,lock8_pages/tab4/Guardian_One,lock8_pages/tab1/Guardian_One,lock19_v3/tab3/Seeker_One,lock19_v3/tab4/Guardian_One,lock19_v3/tab4/Guardian_Basic,lock15_1.0/tab2/Seeker_One,lock15_1.0/tab2/Seeker_Basic,lock15_1.0/tab2/Guardian_One,lock15_1.0/tab2/Guardian_Basic,lock15_2.0/tab2/Seeker_One,lock15_2.0/tab2/Guardian_One,lock35/tab4/Guardian_One",
+        "--name",
+        "^(Seeker|Basic plans|Guardian One|Family|Seekers|Safety|Phone|Focus) ",
+        "test/zyra_clearer_text_contrast_test.dart",
+        "test/zyra_clearer_text_contrast_430_test.dart",
+        "test/zyra_clearer_text_contrast_large_375_test.dart",
+        "test/zyra_clearer_text_contrast_large_430_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T20:08:55.540495+00:00",
+      "finished": "2026-11-27T20:18:21.241720+00:00",
+      "exit_code": 0
+    },
+    {
+      "name": "scan-replay",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=line126_entry_Seeker_Basic_scan/scan/Seeker_Basic",
+        "--name",
+        "^Coverage entries line126 Seeker Basic actual Scan entry",
+        "test/zyra_clearer_text_contrast_test.dart",
+        "test/zyra_clearer_text_contrast_430_test.dart",
+        "test/zyra_clearer_text_contrast_large_375_test.dart",
+        "test/zyra_clearer_text_contrast_large_430_test.dart",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T20:18:21.266713+00:00",
+      "finished": "2026-11-27T20:18:38.963643+00:00",
+      "exit_code": 0
+    },
+    {
+      "name": "ordinary",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded"
+      ],
+      "started": "2026-11-27T20:18:38.975242+00:00",
+      "finished": "2026-11-27T20:29:56.728661+00:00",
+      "exit_code": 0
+    }
+  ],
+  "focused_original": 387,
+  "geometry": 24,
+  "focused_total": 411,
+  "capture_original": 20,
+  "Q240_geometry_and_capture": 25,
+  "rendered": [
+    {
+      "group": "main-replay",
+      "settings": [
+        {
+          "file": "line126-focused-contrast-normal.json",
+          "sha256": "90a16485b5424ce460e376745da9b4da7f83f9f74cf3535565334697a321d52f",
+          "status": "pass",
+          "complete": true,
+          "report_only": false,
+          "frames": 1983,
+          "runs": 23651,
+          "raw_findings": 0,
+          "coverage_gaps": [],
+          "proofs": [
+            {
+              "group": "seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 12
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 3
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 6
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "profile",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 8
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "help_report_sent",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 3
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 12
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 27
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 7
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab1",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 6
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 2
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab1",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 2
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 1
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 8
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 4
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 181
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 3
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 45
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 9
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.0",
+              "text_frames": 18
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 9
+            },
+            {
+              "group": "lock35",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.0",
+              "text_frames": 2
+            }
+          ],
+          "same_selected_obligations": true,
+          "raw_failures": []
+        },
+        {
+          "file": "line126-focused-contrast-normal-430.json",
+          "sha256": "262f262784c1ed664d391d8403c22963019b4f894dcc4a13c774511e1339bd04",
+          "status": "pass",
+          "complete": true,
+          "report_only": false,
+          "frames": 1182,
+          "runs": 14453,
+          "raw_findings": 0,
+          "coverage_gaps": [],
+          "proofs": [
+            {
+              "group": "seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 12
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 3
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 2
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "profile",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 4
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "help_report_sent",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 1
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 12
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 9
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 7
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab1",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 6
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 2
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab1",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 2
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 1
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 8
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 4
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 69
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 3
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 17
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 3
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.0",
+              "text_frames": 6
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 3
+            },
+            {
+              "group": "lock35",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.0",
+              "text_frames": 2
+            }
+          ],
+          "same_selected_obligations": true,
+          "raw_failures": []
+        },
+        {
+          "file": "line126-focused-contrast-large-375.json",
+          "sha256": "5bfc12fb90123cb518321ee78c47e2f9425535a79818f4a45e3537a251725df9",
+          "status": "pass",
+          "complete": true,
+          "report_only": false,
+          "frames": 2474,
+          "runs": 26737,
+          "raw_findings": 0,
+          "coverage_gaps": [],
+          "proofs": [
+            {
+              "group": "seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 16
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 9
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 6
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "profile",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 8
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "help_report_sent",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 3
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 16
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 27
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 21
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab1",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 6
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 6
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab1",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 2
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 3
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 24
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 12
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 181
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 9
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 51
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 9
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "375x667@1.3",
+              "text_frames": 18
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 9
+            },
+            {
+              "group": "lock35",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "375x667@1.3",
+              "text_frames": 6
+            }
+          ],
+          "same_selected_obligations": true,
+          "raw_failures": []
+        },
+        {
+          "file": "line126-focused-contrast-large-430.json",
+          "sha256": "ab75e93b945726523055e3f15335602ba705019cc49a9a6f79cb2b2c7edf824a",
+          "status": "pass",
+          "complete": true,
+          "report_only": false,
+          "frames": 1613,
+          "runs": 20367,
+          "raw_findings": 0,
+          "coverage_gaps": [],
+          "proofs": [
+            {
+              "group": "seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 12
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 3
+            },
+            {
+              "group": "seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 2
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "profile",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 4
+            },
+            {
+              "group": "profiles_photos",
+              "route_or_tab": "help_report_sent",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 1
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "requests",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 12
+            },
+            {
+              "group": "basic_seeker",
+              "route_or_tab": "tab4",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 9
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 7
+            },
+            {
+              "group": "basic_guardian",
+              "route_or_tab": "tab1",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 6
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 2
+            },
+            {
+              "group": "lock8_pages",
+              "route_or_tab": "tab1",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 2
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab3",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 1
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 8
+            },
+            {
+              "group": "lock19_v3",
+              "route_or_tab": "tab4",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 4
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 69
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 3
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 45
+            },
+            {
+              "group": "lock15_1.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 9
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Seeker One",
+              "viewport": "430x932@1.3",
+              "text_frames": 6
+            },
+            {
+              "group": "lock15_2.0",
+              "route_or_tab": "tab2",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 9
+            },
+            {
+              "group": "lock35",
+              "route_or_tab": "tab4",
+              "plan": "Guardian One",
+              "viewport": "430x932@1.3",
+              "text_frames": 2
+            }
+          ],
+          "same_selected_obligations": true,
+          "raw_failures": []
+        }
+      ],
+      "frames": 7252,
+      "runs": 85208,
+      "raw_findings": 0,
+      "proof_tuples": 84,
+      "all_selected_obligations_unchanged": true,
+      "all_proofs_positive": true,
+      "all_strict": true,
+      "all_complete": true,
+      "coverage_gaps": []
+    },
+    {
+      "group": "scan-replay",
+      "settings": [
+        {
+          "file": "line126-focused-contrast-normal.json",
+          "sha256": "9a01da03acb0f96aca05da4baef2d3059c5cc58d00401067047cdee91d57cb82",
+          "status": "pass",
+          "complete": true,
+          "report_only": false,
+          "frames": 13,
+          "runs": 197,
+          "raw_findings": 0,
+          "coverage_gaps": [],
+          "proofs": [
+            {
+              "group": "line126_entry_Seeker_Basic_scan",
+              "route_or_tab": "scan",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.0",
+              "text_frames": 4
+            }
+          ],
+          "same_selected_obligations": true,
+          "raw_failures": []
+        },
+        {
+          "file": "line126-focused-contrast-normal-430.json",
+          "sha256": "e86407a21e0a88e75737cf6e75e7d9e6c40fd2af281e36b5426d4d0d56acc50f",
+          "status": "pass",
+          "complete": true,
+          "report_only": false,
+          "frames": 7,
+          "runs": 101,
+          "raw_findings": 0,
+          "coverage_gaps": [],
+          "proofs": [
+            {
+              "group": "line126_entry_Seeker_Basic_scan",
+              "route_or_tab": "scan",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.0",
+              "text_frames": 4
+            }
+          ],
+          "same_selected_obligations": true,
+          "raw_failures": []
+        },
+        {
+          "file": "line126-focused-contrast-large-375.json",
+          "sha256": "119230d4b1dba8fac7bd8008faa799fe6855ba6a70a407da63033ec7888d8e5f",
+          "status": "pass",
+          "complete": true,
+          "report_only": false,
+          "frames": 13,
+          "runs": 164,
+          "raw_findings": 0,
+          "coverage_gaps": [],
+          "proofs": [
+            {
+              "group": "line126_entry_Seeker_Basic_scan",
+              "route_or_tab": "scan",
+              "plan": "Seeker Basic",
+              "viewport": "375x667@1.3",
+              "text_frames": 4
+            }
+          ],
+          "same_selected_obligations": true,
+          "raw_failures": []
+        },
+        {
+          "file": "line126-focused-contrast-large-430.json",
+          "sha256": "d1095ddb10758db8d53d9cbec9fa532da84b691fc884adc9abbe1f8c47d3e4c2",
+          "status": "pass",
+          "complete": true,
+          "report_only": false,
+          "frames": 13,
+          "runs": 215,
+          "raw_findings": 0,
+          "coverage_gaps": [],
+          "proofs": [
+            {
+              "group": "line126_entry_Seeker_Basic_scan",
+              "route_or_tab": "scan",
+              "plan": "Seeker Basic",
+              "viewport": "430x932@1.3",
+              "text_frames": 4
+            }
+          ],
+          "same_selected_obligations": true,
+          "raw_failures": []
+        }
+      ],
+      "frames": 46,
+      "runs": 677,
+      "raw_findings": 0,
+      "proof_tuples": 4,
+      "all_selected_obligations_unchanged": true,
+      "all_proofs_positive": true,
+      "all_strict": true,
+      "all_complete": true,
+      "coverage_gaps": []
+    }
+  ],
+  "ordinary_final_line": "11:12 +8044 ~253: All tests passed!",
+  "full_gate_attempts": 1,
+  "threshold_auditor_classification_route_coverage_changes": false,
+  "prior_Q240_raw_reports_preserved_at": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q240_POST146_HOLD_2026-11-27",
+  "all_named_commands_exit_zero": true,
+  "exact_named_runs_complete": true,
+  "log_final_lines": {
+    "analyzer": "No issues found! (ran in 13.1s)",
+    "focused": "00:45 +411: All tests passed!",
+    "captures": "00:08 +20: All tests passed!",
+    "q240-geometry-capture": "00:02 +25: All tests passed!",
+    "main-replay": "09:21 +264: All tests passed!",
+    "scan-replay": "00:11 +4: All tests passed!",
+    "ordinary": "11:12 +8044 ~253: All tests passed!"
+  },
+  "exact_focused_capture_counts_complete": true,
+  "mandatory_pass": true
+}

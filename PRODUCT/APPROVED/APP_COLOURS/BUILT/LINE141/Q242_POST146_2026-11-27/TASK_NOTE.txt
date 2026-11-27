@@ -1,0 +1,5 @@
+Task: ZYRA141 — BUILT Preview; Live:no. OA-ZYRA-371; Q229/Q238/Q240/Q242. Conversation:new; lease2026-11-27T20:06:50.665503+00:00; exact count-only token usage unavailable, no estimate.
+Built from: LOCK14V9 correction4 brief items1–9 and LOCK4V5 Name row; exact sealed30-path candidate integrated on post146 accepted2ad41424aaf49d73ef1a2fa05adade33fbf7ee59. Start pack19793bytes.
+Checks: analyzer clean;411focused/20captures/25Q240 pass; strict main84positive proofs/0raw/0gaps; Scan4pass/0raw; ordinary0failures; fresh3frame12pt/0overlap proof;14master pairs viewed. Required exact-head hosted selector+3Flutter shards pass run46064204081.
+Commit: implementationced3f8915f4b6205804027c79c249dadbdee41c7; scoped records commit reported in final publication receipt. PublicA–F:A clear,B clear,C none,D none,E clear,F README. No migrations, phone/install/server/live/dependencies. No new question; prior raw findings retained.
+Handover: APP_COLOURS/BUILT/LINE141/Q242_POST146_2026-11-27/HANDOVER.txt. SOURCE/index released2026-11-27T20:46:50.103067+00:00;7staged/5LINE138/2719prior evidence exact. Coordinator takes147. Receiver copies this task note into27Nov daily report.

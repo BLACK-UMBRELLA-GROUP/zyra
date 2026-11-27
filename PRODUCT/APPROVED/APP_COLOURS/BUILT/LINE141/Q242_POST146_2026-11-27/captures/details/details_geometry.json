@@ -1,0 +1,72 @@
+[
+  {
+    "state": "details_card_photo",
+    "person_id": "draft-sara",
+    "logical_size": [
+      430,
+      932
+    ],
+    "device_pixel_ratio": 3,
+    "has_photo": true,
+    "name_rect": {
+      "left": 102.06201171875,
+      "top": 371.5,
+      "right": 275.1659851074219,
+      "bottom": 402.5,
+      "width": 173.10397338867188,
+      "height": 31.0
+    },
+    "first_tile_rect": {
+      "left": 36.0,
+      "top": 453.0,
+      "right": 210.0,
+      "bottom": 517.0,
+      "width": 174.0,
+      "height": 64.0
+    },
+    "visible_name_to_tile_gap": 50.5,
+    "avatar_rect": {
+      "left": 140.0,
+      "top": 209.5,
+      "right": 290.0,
+      "bottom": 359.5,
+      "width": 150.0,
+      "height": 150.0
+    }
+  },
+  {
+    "state": "details_card_no_photo",
+    "person_id": "draft-sara",
+    "logical_size": [
+      430,
+      932
+    ],
+    "device_pixel_ratio": 3,
+    "has_photo": false,
+    "name_rect": {
+      "left": 102.06201171875,
+      "top": 371.0,
+      "right": 275.1659851074219,
+      "bottom": 402.0,
+      "width": 173.10397338867188,
+      "height": 31.0
+    },
+    "first_tile_rect": {
+      "left": 36.0,
+      "top": 453.0,
+      "right": 210.0,
+      "bottom": 517.0,
+      "width": 174.0,
+      "height": 64.0
+    },
+    "visible_name_to_tile_gap": 51.0,
+    "avatar_rect": {
+      "left": 140.0,
+      "top": 209.0,
+      "right": 290.0,
+      "bottom": 359.0,
+      "width": 150.0,
+      "height": 150.0
+    }
+  }
+]

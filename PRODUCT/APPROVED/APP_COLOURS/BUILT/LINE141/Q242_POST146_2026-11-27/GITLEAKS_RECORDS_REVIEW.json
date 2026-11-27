@@ -1,0 +1,52 @@
+{
+  "recorded": "2026-11-27T20:52:23.261675+00:00",
+  "reviewer": "independent q242_review subagent",
+  "scope": "Exact 136 owned Q242 records listed in RECORD_PATHS.json, including INDEPENDENT_GATE_REVIEW.txt",
+  "files": 136,
+  "repository_writes_by_reviewer": false,
+  "source_changes": false,
+  "git_mutation": false,
+  "tests_run": false,
+  "historical_raw_observations_and_app_sample_text_preserved": true,
+  "unresolved_findings": [],
+  "verdict": "CLEAR after exact artifact-byte verification",
+  "redaction_percent": 100,
+  "allow_comment_ignores_disabled": true,
+  "full_scan_exit_code": 1,
+  "text_only_replay_exit_code": 1,
+  "full_findings": 27,
+  "text_only_findings": 27,
+  "all_findings_verified_artifact_SHA256": true,
+  "verified_false_positive_counts": {
+    "full_byte_scan": 27,
+    "text_only_replay": 27
+  },
+  "data_sha256": "3a955f4213031313a20d5f99770a603bf497deca1c3dcfb7334808818c6e6523",
+  "full_scan_bytes": 30647604,
+  "verification": "Every digest finding matched SHA256 of actual scoped current/base/candidate/proof/input/published artifact bytes; a declaration in JSON alone did not establish provenance. Unknown findings would remain unresolved.",
+  "review_groups": [
+    {
+      "scan": "full_byte_scan",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q242_POST146_2026-11-27/witness/Q240_WITNESS_INPUTS.json",
+      "rule": "generic-api-key",
+      "count": 27,
+      "disposition": "verified artifact digest, no credential"
+    },
+    {
+      "scan": "text_only_replay",
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q242_POST146_2026-11-27/witness/Q240_WITNESS_INPUTS.json",
+      "rule": "generic-api-key",
+      "count": 27,
+      "disposition": "verified artifact digest, no credential"
+    }
+  ],
+  "raw_redacted_logs_retained_in_work": {
+    "gitleaks-records.txt": "d8a018b5d165817c4ffe34de81277a4fc20550419a3a83730134580814a5f33a",
+    "gitleaks-records.json": "a8dbe1072bd770e718c9f65551711af7f741a962c439583aed1e0f63320927e7",
+    "gitleaks-records-text-only.txt": "de9a682f26c490cc6353dee6e06652af918f7b2a2462fe050810b12af99c6155",
+    "gitleaks-records-text-only.json": "317087d7ad95bed9cb2313ffb6469015f02afd22327ce2df162ab21e184e3289"
+  },
+  "full_detail_sha256": "71dd8547e9b3c81f27815a5e5f99749c716b5e89f4899acf801360860b5f5d6c",
+  "unresolved": [],
+  "all_findings_proven_sha256": true
+}

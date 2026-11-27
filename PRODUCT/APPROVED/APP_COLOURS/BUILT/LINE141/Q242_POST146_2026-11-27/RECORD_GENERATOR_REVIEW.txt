@@ -1,0 +1,21 @@
+Independent record-generator review
+Reviewed: 2026-11-27T20:23:16.764548+00:00
+Script SHA256: 463ef56dd6302575eef0527c7f2b7eeb9cde5c0c1a168c024510f123fce657bd
+Scope: static read-only re-review of write_records.py; no execution or repository writes.
+Verdict: reported preflight concerns resolved. No actionable issue in the bounded record generator. This review does not claim pending witness, hosted CI or publication has completed.
+
+Preflight before D.mkdir now checks:
+- Actual local mandatory_pass, implementation publication and matching current HEAD. HOSTED_CI requires exact four job names (Select Flutter tests plus shard0/1/2), all success, and matching implementation head.
+- Every required copied file and all five copied/iterated input directories exist. Locked-input hashes are checked before the first repository write.
+- Exactly witness frames0/1/2, strict exit0, no raw findings/gaps/report-only; all gap>=12-.001, zero glyph/title tile intersections, exact restoration, no non-title change and same-frame geometry/clock/scroll invariants.
+- Cleanup receipt says source unchanged, original proof tree absent and moved destination exists.
+- All14master pairs actually viewed, masters and captures unchanged from priorQ240, and actual current hashes match their receipts. Fresh geometry50.5/51.0pt gaps and150pt avatar sizes asserted.
+- Exact current Requests row is basic_seeker/basic_plans/requests/pending_3_sent, frame0,route requests,tab2,SeekerBasic,11runs/6623pixels/0failures. This was independently verified in current raw normal430 report.
+- Scoped source public review identifies30files/1167850bytes with no unresolved new findings. SOURCE/.github clean, exact seven staged raw entries, five LINE138 working files and all prior evidence hashes preserved.
+
+Scope and prose:
+- Queue write replaces only WAITING row141 and proves reversal restores every other working byte. It does not stage mixed queue/questions. Record path list contains only new141folder.
+- Pixel/hosted statements occur only after their actual input guards. Fresh14capture comparison and Requests positive row are observed facts; three-frame witness/CI must still satisfy preflight at execution time. No whole-screen MATCH is claimed; historical raw findings remain retained and unwaived.
+- Public record scans/publication receipt correctly remain subsequent work, not assumed complete.
+
+No tests, source edits, Git mutation, record generation, publication or other-line work performed by reviewer.

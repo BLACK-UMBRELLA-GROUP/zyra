@@ -1,0 +1,310 @@
+{
+  "verdict": "PASS: Q240 12pt gap and no name pixels under fact tiles in the same three actual Family witness frames",
+  "created": "2026-11-27T20:31:01.548848+00:00",
+  "raw_name_findings": 0,
+  "all_raw_findings_in_narrow_witness": 0,
+  "coverage_gaps": [],
+  "strict_report_only": false,
+  "strict_command_exit_code": 0,
+  "scope": "Exact historical Family source-group witness only; no full replay or whole-app credit",
+  "instrumentation": "Disposable paint-only proxy and proof hook; app auditor, inks, thresholds and route selection unchanged",
+  "prior_proof_preserved_at": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q238_POST145_2026-11-27",
+  "before_image_source": "Previously published Q238 exact integrated candidate PNGs; no new baseline claim",
+  "crop_method": "Original decoded PNG pixels at 1x; no resizing, retouching or synthesis; labels outside source rectangles",
+  "frame_results": [
+    {
+      "frame": 0,
+      "group": "lock19_v3_source",
+      "state": "settled",
+      "viewport": "375x667@1.0",
+      "plan": "Seeker One",
+      "tab": 0,
+      "name_block_to_first_tile_gap_pt": 12.000000000000057,
+      "title_box": [
+        45.642005920410156,
+        251.41000000000003,
+        276.5859909057617,
+        282.41
+      ],
+      "fact_tile_boxes": {
+        "AGE": [
+          36.0,
+          294.4100000000001,
+          182.5,
+          358.4100000000001
+        ],
+        "LOCATION": [
+          192.5,
+          294.4100000000001,
+          339.0,
+          358.4100000000001
+        ],
+        "NATIONALITY": [
+          36.0,
+          368.4100000000001,
+          182.5,
+          432.4100000000001
+        ],
+        "ETHNICITY": [
+          192.5,
+          368.4100000000001,
+          339.0,
+          432.4100000000001
+        ]
+      },
+      "glyph_paint_box_pixels": [
+        47,
+        254,
+        275,
+        284
+      ],
+      "title_paint_changed_pixels": 1611,
+      "glyph_support_pixels_inside_fact_tiles": 0,
+      "visible_name_pixels_inside_fact_tiles": 0,
+      "restored_on_changed_pixels": 0,
+      "non_title_changed_pixels": 0,
+      "same_frame_geometry_clock_and_scroll_exact": true,
+      "png_sha256": {
+        "on": "086a01747e2abae1f2295fab3833cc93c13c7686df9e02381dfe4f98eb776840",
+        "off": "98afb71ec6cd071905be9a8eb81466de03866414084a9f1b89f94ad7360c60cf",
+        "restored-on": "086a01747e2abae1f2295fab3833cc93c13c7686df9e02381dfe4f98eb776840",
+        "post-control": "086a01747e2abae1f2295fab3833cc93c13c7686df9e02381dfe4f98eb776840",
+        "visible-control-on": "a0d5538e40d07a79142cc7086238b97436bddc6294099b8bb50542a1da370037",
+        "visible-control-off": "9999be87171b02d287707301754695e4605985830e16b623d5507c2543482bad",
+        "visible-control-restored-on": "a0d5538e40d07a79142cc7086238b97436bddc6294099b8bb50542a1da370037"
+      },
+      "raw_rgba_on_sha256": "ac98939263aeb75f2e798d66aded05e173d1869c20d417ac6d1f1ce1c7178e81",
+      "prior_q238_on_path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q238_POST145_2026-11-27/candidate/frame0/on.png",
+      "prior_q238_on_sha256": "a789b6ff0269071d53a32530d7e12e875ea1cf95fd8298a0c98172519c79e22c",
+      "prior_q238_proof_sha256": "a81331f0f91832e808eacd566d61c3bd4a348b46c57d0d55a084e2f720a78dc0",
+      "prior_title_box": [
+        45.642005920410156,
+        251.41000000000003,
+        276.5859909057617,
+        282.41
+      ],
+      "gap_crop_box_1x": [
+        0,
+        233,
+        375,
+        331
+      ]
+    },
+    {
+      "frame": 1,
+      "group": "lock19_v3_source",
+      "state": "settled",
+      "viewport": "375x667@1.0",
+      "plan": "Seeker One",
+      "tab": 0,
+      "name_block_to_first_tile_gap_pt": 12.000000000000057,
+      "title_box": [
+        45.642005920410156,
+        251.41000000000003,
+        276.5859909057617,
+        282.41
+      ],
+      "fact_tile_boxes": {
+        "AGE": [
+          36.0,
+          294.4100000000001,
+          182.5,
+          358.4100000000001
+        ],
+        "LOCATION": [
+          192.5,
+          294.4100000000001,
+          339.0,
+          358.4100000000001
+        ],
+        "NATIONALITY": [
+          36.0,
+          368.4100000000001,
+          182.5,
+          432.4100000000001
+        ],
+        "ETHNICITY": [
+          192.5,
+          368.4100000000001,
+          339.0,
+          432.4100000000001
+        ]
+      },
+      "glyph_paint_box_pixels": [
+        47,
+        254,
+        275,
+        284
+      ],
+      "title_paint_changed_pixels": 1611,
+      "glyph_support_pixels_inside_fact_tiles": 0,
+      "visible_name_pixels_inside_fact_tiles": 0,
+      "restored_on_changed_pixels": 0,
+      "non_title_changed_pixels": 0,
+      "same_frame_geometry_clock_and_scroll_exact": true,
+      "png_sha256": {
+        "on": "086a01747e2abae1f2295fab3833cc93c13c7686df9e02381dfe4f98eb776840",
+        "off": "98afb71ec6cd071905be9a8eb81466de03866414084a9f1b89f94ad7360c60cf",
+        "restored-on": "086a01747e2abae1f2295fab3833cc93c13c7686df9e02381dfe4f98eb776840",
+        "post-control": "086a01747e2abae1f2295fab3833cc93c13c7686df9e02381dfe4f98eb776840",
+        "visible-control-on": "a0d5538e40d07a79142cc7086238b97436bddc6294099b8bb50542a1da370037",
+        "visible-control-off": "9999be87171b02d287707301754695e4605985830e16b623d5507c2543482bad",
+        "visible-control-restored-on": "a0d5538e40d07a79142cc7086238b97436bddc6294099b8bb50542a1da370037"
+      },
+      "raw_rgba_on_sha256": "ac98939263aeb75f2e798d66aded05e173d1869c20d417ac6d1f1ce1c7178e81",
+      "prior_q238_on_path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q238_POST145_2026-11-27/candidate/frame1/on.png",
+      "prior_q238_on_sha256": "a789b6ff0269071d53a32530d7e12e875ea1cf95fd8298a0c98172519c79e22c",
+      "prior_q238_proof_sha256": "24a24a36cab976cd49a71c848524e33ce4869436c445574a112b1ebdd41c381e",
+      "prior_title_box": [
+        45.642005920410156,
+        251.41000000000003,
+        276.5859909057617,
+        282.41
+      ],
+      "gap_crop_box_1x": [
+        0,
+        233,
+        375,
+        331
+      ]
+    },
+    {
+      "frame": 2,
+      "group": "lock19_v3_source",
+      "state": "settled",
+      "viewport": "375x667@1.0",
+      "plan": "Seeker One",
+      "tab": 0,
+      "name_block_to_first_tile_gap_pt": 12.000000000000057,
+      "title_box": [
+        45.642005920410156,
+        144.99999999999994,
+        276.5859909057617,
+        175.99999999999994
+      ],
+      "fact_tile_boxes": {
+        "AGE": [
+          36.0,
+          188.0,
+          182.5,
+          252.0
+        ],
+        "LOCATION": [
+          192.5,
+          188.0,
+          339.0,
+          252.0
+        ],
+        "NATIONALITY": [
+          36.0,
+          262.0,
+          182.5,
+          326.0
+        ],
+        "ETHNICITY": [
+          192.5,
+          262.0,
+          339.0,
+          326.0
+        ]
+      },
+      "glyph_paint_box_pixels": [
+        47,
+        148,
+        275,
+        178
+      ],
+      "title_paint_changed_pixels": 1611,
+      "glyph_support_pixels_inside_fact_tiles": 0,
+      "visible_name_pixels_inside_fact_tiles": 0,
+      "restored_on_changed_pixels": 0,
+      "non_title_changed_pixels": 0,
+      "same_frame_geometry_clock_and_scroll_exact": true,
+      "png_sha256": {
+        "on": "863584ad2be660604e27cd3c1326af91fc1f9b2ad6919b2cdc98f00c09bca59f",
+        "off": "3935d43a50a3efc878ddc4fb8426879432eaf3d6ca4ce826be266a6ad281a06f",
+        "restored-on": "863584ad2be660604e27cd3c1326af91fc1f9b2ad6919b2cdc98f00c09bca59f",
+        "post-control": "863584ad2be660604e27cd3c1326af91fc1f9b2ad6919b2cdc98f00c09bca59f",
+        "visible-control-on": "29e0f53d93c6b5b1cc36aa3f96702e2153d9bf6a8a7d1a5f93ccc6eefadaf89f",
+        "visible-control-off": "9999be87171b02d287707301754695e4605985830e16b623d5507c2543482bad",
+        "visible-control-restored-on": "29e0f53d93c6b5b1cc36aa3f96702e2153d9bf6a8a7d1a5f93ccc6eefadaf89f"
+      },
+      "raw_rgba_on_sha256": "4200ef8bece16f2e34cc5e5263b2675205243ede6775ee2582044b16acfb352b",
+      "prior_q238_on_path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q238_POST145_2026-11-27/candidate/frame2/on.png",
+      "prior_q238_on_sha256": "e060383934c79f7a557b8a6361530c5244c081244dc388da8423a6215a3e2f01",
+      "prior_q238_proof_sha256": "f67f750db7afc23aeefc546231138fe94531d46035df7b7631e117b5e0fcf48e",
+      "prior_title_box": [
+        45.642005920410156,
+        156.99999999999994,
+        276.5859909057617,
+        187.99999999999994
+      ],
+      "gap_crop_box_1x": [
+        0,
+        126,
+        375,
+        224
+      ]
+    }
+  ],
+  "selected_audit_frames": [
+    {
+      "group": "lock19_v3_source",
+      "state": "settled",
+      "viewport": "375x667@1.0",
+      "plan": "Seeker One",
+      "tab": 0,
+      "pages": [],
+      "rendered_route": null,
+      "proof_kind": "shell_navigation",
+      "scroll_frame": 0,
+      "runs": 15,
+      "pixels": 7235,
+      "exempt_pixels": 0,
+      "modal_backdrop_exempt_pixels": 0,
+      "failures": 0,
+      "cache_hit": false,
+      "raster_images": 91,
+      "geometric_occlusion_aa_pixels": 0
+    },
+    {
+      "group": "lock19_v3_source",
+      "state": "settled",
+      "viewport": "375x667@1.0",
+      "plan": "Seeker One",
+      "tab": 0,
+      "pages": [],
+      "rendered_route": null,
+      "proof_kind": "shell_navigation",
+      "scroll_frame": 1,
+      "runs": 15,
+      "pixels": 7235,
+      "exempt_pixels": 0,
+      "modal_backdrop_exempt_pixels": 0,
+      "failures": 0,
+      "cache_hit": true,
+      "raster_images": 4,
+      "geometric_occlusion_aa_pixels": 0
+    },
+    {
+      "group": "lock19_v3_source",
+      "state": "settled",
+      "viewport": "375x667@1.0",
+      "plan": "Seeker One",
+      "tab": 0,
+      "pages": [],
+      "rendered_route": null,
+      "proof_kind": "shell_navigation",
+      "scroll_frame": 2,
+      "runs": 18,
+      "pixels": 9959,
+      "exempt_pixels": 0,
+      "modal_backdrop_exempt_pixels": 0,
+      "failures": 0,
+      "cache_hit": false,
+      "raster_images": 85,
+      "geometric_occlusion_aa_pixels": 0
+    }
+  ],
+  "raw_audit_report_sha256": "fe8cae93ebe35e4b8fac87f9b99c6c17b2441bd80b2c774d4fb9513984802383"
+}

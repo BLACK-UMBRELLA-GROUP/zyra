@@ -1,0 +1,36 @@
+{
+  "recorded": "2026-11-27T20:52:23.261675+00:00",
+  "reviewer": "independent q242_review subagent",
+  "scope": "Exact 136 owned Q242 records listed in RECORD_PATHS.json, including INDEPENDENT_GATE_REVIEW.txt",
+  "files": 136,
+  "repository_writes_by_reviewer": false,
+  "source_changes": false,
+  "git_mutation": false,
+  "tests_run": false,
+  "historical_raw_observations_and_app_sample_text_preserved": true,
+  "unresolved_findings": [],
+  "verdict": "CLEAR after independent review",
+  "full_scan_exit_code": 1,
+  "text_only_replay_exit_code": 1,
+  "full_hit_count": 2550,
+  "text_only_hit_count": 104,
+  "reviewed_categories": {
+    "layout_term_in_prior_review": 1,
+    "prior_source_check_disposition": 14,
+    "compressed_png_IDAT": 2443,
+    "PNG_IDAT_checksum_bytes": 3,
+    "existing_app_behavior_test_name": 88,
+    "layout_test_name": 1
+  },
+  "png_verification": "CRC-valid PNGs; native zlib validates full payload, scanline lengths and filter tags. No textual metadata. 2443 hits lie wholly inside compressed IDAT; 3 lie in its checksum bytes or payload/checksum boundary. Image QA remains separate.",
+  "png_files_with_hits": 64,
+  "text_dispositions": "104 hits: prior scanner descriptions, existing app behavior test names, and layout terms; no private business document or credential. Every hit repeated in text-only replay.",
+  "scoped_input_path_list_sha256": "9a7606225c4cf8e8ebb4f87b3fc9f044d08c31deb01abe42b81a70257e7e59b2",
+  "raw_logs_retained_in_work": {
+    "public-records-full.txt": "b13fcfe903b071a3468e63fa636806ed5781d0a4c2f2c77053fb258d646e3ffc",
+    "public-records-text-only.txt": "bce1d739cb66b7a6aead3dbcc05637c4a9d0bf12c1cd91ae706a8b88c2df8eaf"
+  },
+  "full_detail_sha256": "70d74be5b5926c797cebc41b1c2e87fc8614d9367832ebace4ac6f90e42ced36",
+  "unresolved": [],
+  "semantic_review_complete": true
+}

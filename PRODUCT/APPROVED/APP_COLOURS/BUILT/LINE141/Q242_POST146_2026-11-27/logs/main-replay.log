@@ -1,0 +1,969 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; seeker 375x667@1.0
+00:03 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; seeker 430x932@1.0
+00:03 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; seeker 375x667@1.3
+00:04 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 1 frames, 0 failures; seeker 430x932@1.3
+00:07 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 15 frames, 0 failures; seeker 375x667@1.0
+00:08 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 11 frames, 0 failures; seeker 430x932@1.0
+00:09 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 15 frames, 0 failures; seeker 375x667@1.3
+00:09 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 11 frames, 0 failures; seeker 430x932@1.3
+00:14 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 23 frames, 0 failures; seeker 430x932@1.0
+00:14 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 33 frames, 0 failures; seeker 375x667@1.0
+00:14 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 31 frames, 0 failures; seeker 375x667@1.3
+00:14 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 22 frames, 0 failures; seeker 430x932@1.3
+00:19 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 40 frames, 0 failures; seeker 430x932@1.0
+00:19 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 47 frames, 0 failures; seeker 375x667@1.0
+00:19 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 43 frames, 0 failures; seeker 375x667@1.3
+00:20 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 35 frames, 0 failures; seeker 430x932@1.3
+00:24 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 54 frames, 0 failures; seeker 430x932@1.0
+00:24 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 67 frames, 0 failures; seeker 375x667@1.0
+00:24 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 61 frames, 0 failures; seeker 375x667@1.3
+00:25 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 51 frames, 0 failures; seeker 430x932@1.3
+00:26 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+00:26 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+00:28 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+00:29 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 70 frames, 0 failures; seeker 430x932@1.0
+00:29 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 86 frames, 0 failures; seeker 375x667@1.0
+00:29 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker roots and safe pages (variant: TargetPlatform.iOS)
+LINE126 raster 82 frames, 0 failures; seeker 375x667@1.3
+00:31 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 69 frames, 0 failures; seeker 430x932@1.3
+00:32 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 88 frames, 0 failures; seeker 430x932@1.0
+00:34 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 107 frames, 0 failures; seeker 375x667@1.0
+00:35 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 101 frames, 0 failures; seeker 375x667@1.3
+00:37 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 88 frames, 0 failures; seeker 430x932@1.3
+00:39 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 111 frames, 0 failures; seeker 430x932@1.0
+00:39 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 133 frames, 0 failures; seeker 375x667@1.0
+00:40 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 123 frames, 0 failures; seeker 375x667@1.3
+00:42 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 111 frames, 0 failures; seeker 430x932@1.3
+00:44 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 130 frames, 0 failures; seeker 430x932@1.0
+00:44 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 157 frames, 0 failures; seeker 375x667@1.0
+00:45 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 149 frames, 0 failures; seeker 375x667@1.3
+00:47 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 129 frames, 0 failures; seeker 430x932@1.3
+00:50 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 179 frames, 0 failures; seeker 375x667@1.0
+00:50 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 143 frames, 0 failures; seeker 430x932@1.0
+00:50 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 178 frames, 0 failures; seeker 375x667@1.3
+00:52 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 142 frames, 0 failures; seeker 430x932@1.3
+00:55 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 198 frames, 0 failures; seeker 375x667@1.0
+00:55 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 166 frames, 0 failures; seeker 430x932@1.0
+00:55 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 193 frames, 0 failures; seeker 375x667@1.3
+00:57 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 161 frames, 0 failures; seeker 430x932@1.3
+01:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 231 frames, 0 failures; seeker 375x667@1.0
+01:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 181 frames, 0 failures; seeker 430x932@1.0
+01:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 218 frames, 0 failures; seeker 375x667@1.3
+01:03 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 178 frames, 0 failures; seeker 430x932@1.3
+01:05 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 247 frames, 0 failures; seeker 375x667@1.0
+01:05 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 200 frames, 0 failures; seeker 430x932@1.0
+01:06 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 239 frames, 0 failures; seeker 375x667@1.3
+01:08 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 191 frames, 0 failures; seeker 430x932@1.3
+01:11 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 273 frames, 0 failures; seeker 375x667@1.0
+01:11 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 211 frames, 0 failures; seeker 430x932@1.0
+01:11 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 258 frames, 0 failures; seeker 375x667@1.3
+01:13 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 212 frames, 0 failures; seeker 430x932@1.3
+01:16 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 286 frames, 0 failures; seeker 375x667@1.0
+01:16 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 276 frames, 0 failures; seeker 375x667@1.3
+01:16 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 233 frames, 0 failures; seeker 430x932@1.0
+01:18 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 221 frames, 0 failures; seeker 430x932@1.3
+01:21 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 317 frames, 0 failures; seeker 375x667@1.0
+01:21 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 302 frames, 0 failures; seeker 375x667@1.3
+01:21 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 244 frames, 0 failures; seeker 430x932@1.0
+01:24 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 240 frames, 0 failures; seeker 430x932@1.3
+01:26 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 334 frames, 0 failures; seeker 375x667@1.0
+01:26 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 316 frames, 0 failures; seeker 375x667@1.3
+01:26 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 267 frames, 0 failures; seeker 430x932@1.0
+01:29 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 260 frames, 0 failures; seeker 430x932@1.3
+01:31 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 366 frames, 0 failures; seeker 375x667@1.0
+01:31 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 347 frames, 0 failures; seeker 375x667@1.3
+01:31 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 285 frames, 0 failures; seeker 430x932@1.0
+01:34 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 269 frames, 0 failures; seeker 430x932@1.3
+01:36 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 392 frames, 0 failures; seeker 375x667@1.0
+01:36 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 361 frames, 0 failures; seeker 375x667@1.3
+01:36 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 299 frames, 0 failures; seeker 430x932@1.0
+01:40 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 289 frames, 0 failures; seeker 430x932@1.3
+01:41 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 421 frames, 0 failures; seeker 375x667@1.0
+01:41 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 387 frames, 0 failures; seeker 375x667@1.3
+01:41 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 322 frames, 0 failures; seeker 430x932@1.0
+01:45 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 309 frames, 0 failures; seeker 430x932@1.3
+01:47 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 442 frames, 0 failures; seeker 375x667@1.0
+01:47 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 411 frames, 0 failures; seeker 375x667@1.3
+01:47 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 337 frames, 0 failures; seeker 430x932@1.0
+01:50 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 318 frames, 0 failures; seeker 430x932@1.3
+01:52 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 466 frames, 0 failures; seeker 375x667@1.0
+01:52 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 359 frames, 0 failures; seeker 430x932@1.0
+01:52 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 435 frames, 0 failures; seeker 375x667@1.3
+01:55 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 339 frames, 0 failures; seeker 430x932@1.3
+01:57 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 464 frames, 0 failures; seeker 375x667@1.3
+01:57 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 376 frames, 0 failures; seeker 430x932@1.0
+01:57 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 481 frames, 0 failures; seeker 375x667@1.0
+02:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 359 frames, 0 failures; seeker 430x932@1.3
+02:02 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 484 frames, 0 failures; seeker 375x667@1.3
+02:02 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 497 frames, 0 failures; seeker 375x667@1.0
+02:03 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 387 frames, 0 failures; seeker 430x932@1.0
+02:03 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+02:05 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 378 frames, 0 failures; seeker 430x932@1.3
+02:08 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 511 frames, 0 failures; seeker 375x667@1.0
+02:08 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 396 frames, 0 failures; seeker 430x932@1.0
+02:08 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 505 frames, 0 failures; seeker 375x667@1.3
+02:11 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 396 frames, 0 failures; seeker 430x932@1.3
+02:13 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 409 frames, 0 failures; seeker 430x932@1.0
+02:13 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 532 frames, 0 failures; seeker 375x667@1.0
+02:14 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+02:14 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 519 frames, 0 failures; seeker 375x667@1.3
+02:15 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 409 frames, 0 failures; seeker 430x932@1.3
+02:18 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 420 frames, 0 failures; seeker 430x932@1.0
+02:18 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline current Guardian Circle topics for both roles (variant: TargetPlatform.iOS)
+LINE126 raster 547 frames, 0 failures; seeker 375x667@1.0
+02:19 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 533 frames, 0 failures; seeker 375x667@1.3
+02:20 +8: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+02:20 +9: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 418 frames, 0 failures; seeker 430x932@1.3
+02:23 +9: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 433 frames, 0 failures; seeker 430x932@1.0
+02:24 +9: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker Guardian invite and paid agreement (variant: TargetPlatform.iOS)
+LINE126 raster 562 frames, 0 failures; seeker 375x667@1.0
+02:25 +10: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+02:25 +10: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 549 frames, 0 failures; seeker 375x667@1.3
+02:26 +11: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 428 frames, 0 failures; seeker 430x932@1.3
+02:28 +11: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline current Guardian Circle topics for both roles (variant: TargetPlatform.iOS)
+LINE126 raster 444 frames, 0 failures; seeker 430x932@1.0
+02:29 +11: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 585 frames, 0 failures; seeker 375x667@1.0
+02:31 +11: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 568 frames, 0 failures; seeker 375x667@1.3
+02:32 +12: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker live Journey stages and disclosure (variant: TargetPlatform.iOS)
+LINE126 raster 439 frames, 0 failures; seeker 430x932@1.3
+02:33 +12: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker Guardian invite and paid agreement (variant: TargetPlatform.iOS)
+LINE126 raster 454 frames, 0 failures; seeker 430x932@1.0
+02:34 +13: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+02:34 +13: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 606 frames, 0 failures; seeker 375x667@1.0
+02:35 +14: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 584 frames, 0 failures; seeker 375x667@1.3
+02:37 +15: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+02:38 +15: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 450 frames, 0 failures; seeker 430x932@1.3
+02:38 +15: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 468 frames, 0 failures; seeker 430x932@1.0
+02:39 +15: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 631 frames, 0 failures; seeker 375x667@1.0
+02:41 +15: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline current Guardian Circle topics for both roles (variant: TargetPlatform.iOS)
+LINE126 raster 598 frames, 0 failures; seeker 375x667@1.3
+02:42 +16: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+02:43 +17: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+02:44 +17: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 481 frames, 0 failures; seeker 430x932@1.0
+02:44 +17: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+LINE126 raster 462 frames, 0 failures; seeker 430x932@1.3
+02:44 +18: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+02:44 +18: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 652 frames, 0 failures; profiles_photos 375x667@1.0
+02:45 +19: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker browse and real transient routes (variant: TargetPlatform.iOS)
+02:46 +20: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker Guardian invite and paid agreement (variant: TargetPlatform.iOS)
+LINE126 raster 607 frames, 0 failures; seeker 375x667@1.3
+02:47 +21: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker Guardian invite and paid agreement (variant: TargetPlatform.iOS)
+02:49 +21: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 496 frames, 0 failures; profiles_photos 430x932@1.0
+02:49 +21: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline current Guardian Circle topics for both roles (variant: TargetPlatform.iOS)
+LINE126 raster 473 frames, 0 failures; seeker 430x932@1.3
+02:49 +21: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 676 frames, 0 failures; profiles_photos 375x667@1.0
+02:50 +22: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+02:52 +22: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 629 frames, 0 failures; seeker 375x667@1.3
+02:52 +23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+02:54 +23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 510 frames, 0 failures; profiles_photos 430x932@1.0
+02:54 +23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker Guardian invite and paid agreement (variant: TargetPlatform.iOS)
+LINE126 raster 482 frames, 0 failures; seeker 430x932@1.3
+02:54 +23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 693 frames, 0 failures; profiles_photos 375x667@1.0
+02:56 +24: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+02:57 +25: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+02:57 +25: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 649 frames, 0 failures; seeker 375x667@1.3
+02:58 +26: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+02:59 +26: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 493 frames, 0 failures; seeker 430x932@1.3
+02:59 +26: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 706 frames, 0 failures; profiles_photos 375x667@1.0
+03:00 +27: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+03:00 +27: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 518 frames, 0 failures; basic_seeker 430x932@1.0
+03:02 +28: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 668 frames, 0 failures; seeker 375x667@1.3
+03:04 +28: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 504 frames, 0 failures; seeker 430x932@1.3
+03:05 +28: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 719 frames, 0 failures; basic_seeker 375x667@1.0
+03:05 +28: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 530 frames, 0 failures; basic_seeker 430x932@1.0
+03:07 +28: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+LINE126 raster 688 frames, 0 failures; seeker 375x667@1.3
+03:08 +29: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+03:09 +29: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker Details-first photo pages (variant: TargetPlatform.iOS)
+LINE126 raster 518 frames, 0 failures; profiles_photos 430x932@1.3
+03:10 +30: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker actual activity checklist states (variant: TargetPlatform.iOS)
+03:10 +31: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+03:10 +31: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 736 frames, 0 failures; basic_seeker 375x667@1.0
+03:11 +31: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 543 frames, 0 failures; basic_seeker 430x932@1.0
+03:11 +32: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+03:11 +33: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+03:12 +33: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 710 frames, 0 failures; profiles_photos 375x667@1.3
+03:15 +33: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 534 frames, 0 failures; profiles_photos 430x932@1.3
+03:15 +33: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 754 frames, 0 failures; basic_seeker 375x667@1.0
+03:16 +33: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 555 frames, 0 failures; basic_seeker 430x932@1.0
+03:17 +34: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+03:17 +34: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 738 frames, 0 failures; profiles_photos 375x667@1.3
+03:19 +35: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+03:20 +35: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seeker baseline seeker current Browse motion and actual controls (variant: TargetPlatform.iOS)
+LINE126 raster 545 frames, 0 failures; seeker 430x932@1.3
+03:20 +36: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 566 frames, 0 failures; basic_seeker 430x932@1.0
+03:21 +37: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+03:21 +37: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 770 frames, 0 failures; basic_seeker 375x667@1.0
+03:22 +37: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker missing Profiles options and utility states (variant: TargetPlatform.iOS)
+LINE126 raster 757 frames, 0 failures; profiles_photos 375x667@1.3
+03:25 +37: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 552 frames, 0 failures; basic_seeker 430x932@1.3
+03:26 +37: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Seeker Basic three pending requests, full place and Ended archive (variant: TargetPlatform.iOS)
+LINE126 raster 583 frames, 0 failures; basic_seeker 430x932@1.0
+03:26 +37: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 782 frames, 0 failures; basic_seeker 375x667@1.0
+03:27 +38: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+03:28 +38: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seeker baseline seeker current Browse motion and actual controls (variant: TargetPlatform.iOS)
+LINE126 raster 773 frames, 0 failures; seeker 375x667@1.3
+03:29 +39: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+03:29 +40: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+03:30 +40: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 567 frames, 0 failures; basic_seeker 430x932@1.3
+03:31 +40: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 597 frames, 0 failures; basic_guardian 430x932@1.0
+03:31 +40: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 799 frames, 0 failures; basic_seeker 375x667@1.0
+03:33 +40: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 784 frames, 0 failures; basic_seeker 375x667@1.3
+03:35 +40: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 579 frames, 0 failures; basic_seeker 430x932@1.3
+03:36 +41: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+03:36 +41: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 610 frames, 0 failures; basic_guardian 430x932@1.0
+03:37 +41: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic three pending requests, full place and Ended archive (variant: TargetPlatform.iOS)
+LINE126 raster 816 frames, 0 failures; basic_seeker 375x667@1.0
+03:38 +42: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+03:38 +42: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 809 frames, 0 failures; basic_seeker 375x667@1.3
+03:42 +42: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Seeker Basic three pending requests, full place and Ended archive (variant: TargetPlatform.iOS)
+LINE126 raster 837 frames, 0 failures; basic_seeker 375x667@1.0
+03:42 +42: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 592 frames, 0 failures; basic_seeker 430x932@1.3
+03:42 +42: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 623 frames, 0 failures; basic_guardian 430x932@1.0
+03:43 +42: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+LINE126 raster 825 frames, 0 failures; basic_seeker 375x667@1.3
+03:43 +43: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+03:46 +44: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic five tab roots and its full-place surfaces (variant: TargetPlatform.iOS)
+03:47 +44: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 858 frames, 0 failures; basic_guardian 375x667@1.0
+03:47 +44: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Basic plans capture Guardian Basic linked view-only Journey and no-current-Journey states (variant: TargetPlatform.iOS)
+LINE126 raster 641 frames, 0 failures; basic_guardian 430x932@1.0
+03:47 +45: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+03:48 +45: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 850 frames, 0 failures; basic_seeker 375x667@1.3
+03:48 +45: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 604 frames, 0 failures; basic_seeker 430x932@1.3
+03:49 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+03:52 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 877 frames, 0 failures; basic_guardian 375x667@1.0
+03:52 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 658 frames, 0 failures; lock8_root 430x932@1.0
+03:53 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 859 frames, 0 failures; basic_seeker 375x667@1.3
+03:53 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 616 frames, 0 failures; basic_seeker 430x932@1.3
+03:57 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 896 frames, 0 failures; basic_guardian 375x667@1.0
+03:58 +46: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 669 frames, 0 failures; lock8_root 430x932@1.0
+03:58 +47: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+03:58 +47: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic three pending requests, full place and Ended archive (variant: TargetPlatform.iOS)
+LINE126 raster 628 frames, 0 failures; basic_seeker 430x932@1.3
+03:59 +48: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+03:59 +48: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 871 frames, 0 failures; basic_seeker 375x667@1.3
+04:00 +49: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+04:02 +49: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Basic plans capture Guardian Basic linked view-only Journey and no-current-Journey states (variant: TargetPlatform.iOS)
+LINE126 raster 925 frames, 0 failures; basic_guardian 375x667@1.0
+04:03 +49: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+LINE126 raster 685 frames, 0 failures; lock8_network 430x932@1.0
+04:03 +50: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+04:04 +50: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Seeker Basic three pending requests, full place and Ended archive (variant: TargetPlatform.iOS)
+LINE126 raster 648 frames, 0 failures; basic_seeker 430x932@1.3
+04:04 +50: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 875 frames, 0 failures; basic_seeker 375x667@1.3
+04:05 +51: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+04:07 +51: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 949 frames, 0 failures; lock8_root 375x667@1.0
+04:07 +52: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+04:08 +52: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Guardian One LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)
+LINE126 raster 697 frames, 0 failures; lock8_connect 430x932@1.0
+04:09 +52: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 665 frames, 0 failures; basic_guardian 430x932@1.3
+04:10 +52: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite (variant: TargetPlatform.iOS)
+LINE126 raster 895 frames, 0 failures; basic_seeker 375x667@1.3
+04:12 +52: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 971 frames, 0 failures; lock8_root 375x667@1.0
+04:13 +52: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Guardian One LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)
+LINE126 raster 710 frames, 0 failures; lock8_connect 430x932@1.0
+04:14 +53: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+04:14 +53: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 679 frames, 0 failures; basic_guardian 430x932@1.3
+04:15 +54: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+04:15 +55: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:15 +55: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic three pending requests, full place and Ended archive (variant: TargetPlatform.iOS)
+LINE126 raster 919 frames, 0 failures; basic_seeker 375x667@1.3
+04:17 +55: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+LINE126 raster 990 frames, 0 failures; lock8_network 375x667@1.0
+04:18 +55: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Guardian One LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)
+LINE126 raster 723 frames, 0 failures; lock8_pages 430x932@1.0
+04:19 +55: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 690 frames, 0 failures; basic_guardian 430x932@1.3
+04:20 +55: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Seeker Basic three pending requests, full place and Ended archive (variant: TargetPlatform.iOS)
+LINE126 raster 943 frames, 0 failures; basic_seeker 375x667@1.3
+04:21 +56: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:21 +57: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:22 +58: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:22 +58: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+LINE126 raster 1008 frames, 0 failures; lock8_network 375x667@1.0
+04:23 +59: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:23 +60: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:23 +60: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Guardian One LOCK8 Yusuf Circle isolates the local seeker identity and topics (variant: TargetPlatform.iOS)
+LINE126 raster 738 frames, 0 failures; lock8_circle 430x932@1.0
+04:24 +61: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 705 frames, 0 failures; basic_guardian 430x932@1.3
+04:25 +61: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 965 frames, 0 failures; basic_guardian 375x667@1.3
+04:26 +62: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:26 +63: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:27 +64: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:28 +64: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)
+LINE126 raster 1028 frames, 0 failures; lock8_connect 375x667@1.0
+04:28 +64: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Guardian One LOCK8 all five tabs remain readable on compact phone at 200 percent text (variant: TargetPlatform.iOS)
+LINE126 raster 755 frames, 0 failures; lock8_accessibility 430x932@1.0
+04:29 +65: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:29 +66: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:29 +66: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Basic plans capture Guardian Basic linked view-only Journey and no-current-Journey states (variant: TargetPlatform.iOS)
+LINE126 raster 731 frames, 0 failures; basic_guardian 430x932@1.3
+04:30 +66: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 991 frames, 0 failures; basic_guardian 375x667@1.3
+04:31 +67: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:32 +68: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:33 +69: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:33 +69: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)
+LINE126 raster 1046 frames, 0 failures; lock8_pages 375x667@1.0
+04:33 +69: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:34 +69: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+LINE126 raster 765 frames, 0 failures; safety_v6_true_1.0_false 430x932@1.0
+04:34 +69: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 749 frames, 0 failures; lock8_root 430x932@1.3
+04:35 +69: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 1012 frames, 0 failures; basic_guardian 375x667@1.3
+04:36 +70: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:37 +71: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:38 +72: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:38 +72: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 Additional authority and revoked connection fail closed (variant: TargetPlatform.iOS)
+LINE126 raster 1070 frames, 0 failures; lock8_authority 375x667@1.0
+04:39 +73: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:39 +74: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:39 +74: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=true
+LINE126 raster 790 frames, 0 failures; safety_v6_true_2.0_true 430x932@1.0
+04:39 +75: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:40 +75: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 765 frames, 0 failures; lock8_root 430x932@1.3
+04:41 +76: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 1037 frames, 0 failures; basic_guardian 375x667@1.3
+04:42 +77: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:43 +77: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 local private chat report and block end only this connection (variant: TargetPlatform.iOS)
+LINE126 raster 1092 frames, 0 failures; lock8_report 375x667@1.0
+04:43 +78: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:44 +79: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:44 +79: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+LINE126 raster 809 frames, 0 failures; safety_v6_false_1.0_false 430x932@1.0
+04:45 +79: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 777 frames, 0 failures; lock8_root 430x932@1.3
+04:46 +80: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 1052 frames, 0 failures; basic_guardian 375x667@1.3
+04:47 +81: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:48 +81: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Guardian One LOCK8 Network arrows stop at both boundaries and keep the master colours (variant: TargetPlatform.iOS)
+LINE126 raster 1108 frames, 0 failures; lock8_boundaries 375x667@1.0
+04:49 +82: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:49 +83: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+04:49 +83: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=true
+LINE126 raster 830 frames, 0 failures; safety_v6_false_2.0_true 430x932@1.0
+04:50 +83: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+LINE126 raster 792 frames, 0 failures; lock8_network 430x932@1.3
+04:50 +84: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic five current roots, upgrade and locked Network (variant: TargetPlatform.iOS)
+LINE126 raster 1086 frames, 0 failures; basic_guardian 375x667@1.3
+04:51 +85: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+04:52 +86: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+04:54 +86: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+LINE126 raster 1124 frames, 0 failures; safety_v6_true_1.0_false 375x667@1.0
+04:55 +86: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+LINE126 raster 848 frames, 0 failures; lock19_v3 430x932@1.0
+04:55 +86: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+LINE126 raster 806 frames, 0 failures; lock8_network 430x932@1.3
+04:56 +87: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+04:56 +87: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Basic plans capture Guardian Basic linked view-only Journey and no-current-Journey states (variant: TargetPlatform.iOS)
+LINE126 raster 1114 frames, 0 failures; basic_guardian 375x667@1.3
+04:57 +88: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+04:58 +89: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+04:58 +90: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+04:59 +90: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+LINE126 raster 1159 frames, 0 failures; safety_v6_true_2.0_false 375x667@1.0
+04:59 +91: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+05:01 +91: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)
+LINE126 raster 820 frames, 0 failures; lock8_connect 430x932@1.3
+05:01 +91: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 870 frames, 0 failures; lock19_v3_source 430x932@1.0
+05:01 +91: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 1138 frames, 0 failures; lock8_root 375x667@1.3
+05:03 +92: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+05:04 +92: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=true
+LINE126 raster 1195 frames, 0 failures; safety_v6_true_2.0_true 375x667@1.0
+05:06 +92: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)
+LINE126 raster 835 frames, 0 failures; lock8_connect 430x932@1.3
+05:06 +93: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+LINE126 raster 1160 frames, 0 failures; lock8_root 375x667@1.3
+05:07 +93: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 874 frames, 0 failures; lock19_v3_source 430x932@1.0
+05:08 +94: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)
+05:09 +94: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+LINE126 raster 1228 frames, 0 failures; safety_v6_false_1.0_false 375x667@1.0
+05:11 +95: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:11 +95: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)
+LINE126 raster 852 frames, 0 failures; lock8_pages 430x932@1.3
+05:11 +95: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+LINE126 raster 1182 frames, 0 failures; lock8_network 375x667@1.3
+05:12 +95: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 884 frames, 0 failures; lock19_v3_source 430x932@1.0
+05:13 +96: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:13 +97: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:13 +98: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:14 +98: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=false
+LINE126 raster 1263 frames, 0 failures; safety_v6_false_2.0_false 375x667@1.0
+05:14 +99: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:15 +100: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:16 +101: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:16 +101: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 Yusuf Circle isolates the local seeker identity and topics (variant: TargetPlatform.iOS)
+LINE126 raster 869 frames, 0 failures; lock8_circle 430x932@1.3
+05:17 +101: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family decline closes, removes Needs-you, returns Basic and frees one place
+LINE126 raster 894 frames, 0 failures; lock19_v3 430x932@1.0
+05:17 +102: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+LINE126 raster 1201 frames, 0 failures; lock8_network 375x667@1.3
+05:17 +103: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:19 +104: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:19 +105: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:19 +105: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=true
+LINE126 raster 1300 frames, 0 failures; safety_v6_false_2.0_true 375x667@1.0
+05:20 +106: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:20 +107: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:21 +108: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:21 +108: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Guardian One LOCK8 all five tabs remain readable on compact phone at 200 percent text (variant: TargetPlatform.iOS)
+LINE126 raster 888 frames, 0 failures; lock8_accessibility 430x932@1.3
+05:22 +108: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Family leaving identity without a verified result and stale callback grant nothing
+LINE126 raster 917 frames, 0 failures; lock19_v3 430x932@1.0
+05:22 +109: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:22 +110: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+LINE126 raster 1217 frames, 0 failures; lock8_network 375x667@1.3
+05:23 +111: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)
+05:24 +112: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=true
+05:24 +113: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seekers LOCK35 real swipes settle identity and dots, then reach Invite
+05:24 +114: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seekers LOCK35 real swipes settle identity and dots, then reach Invite
+05:25 +114: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+LINE126 raster 1334 frames, 0 failures; lock19_v3 375x667@1.0
+05:25 +115: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)
+05:27 +115: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seekers LOCK35 One header and each Circle row use the selected Seeker
+LINE126 raster 936 frames, 0 failures; lock35 430x932@1.0
+05:27 +115: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+LINE126 raster 900 frames, 0 failures; safety_v6_true_1.0_false 430x932@1.3
+05:28 +116: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)
+LINE126 raster 1239 frames, 0 failures; lock8_connect 375x667@1.3
+05:29 +117: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)
+05:30 +117: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+LINE126 raster 1354 frames, 0 failures; lock19_v3 375x667@1.0
+05:30 +118: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+05:31 +119: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+LINE126 raster 913 frames, 0 failures; safety_v6_true_1.0_false 430x932@1.3
+05:32 +119: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seekers LOCK35 Journey selects the existing tab; no-Journey and details rows use existing details
+LINE126 raster 949 frames, 0 failures; lock35 430x932@1.0
+05:33 +119: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)
+LINE126 raster 1257 frames, 0 failures; lock8_pages 375x667@1.3
+05:35 +119: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+LINE126 raster 1382 frames, 0 failures; lock19_v3 375x667@1.0
+05:36 +120: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+05:37 +121: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)
+05:37 +122: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)
+05:37 +122: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seekers LOCK35 swipe revokes retained card and route callbacks
+LINE126 raster 964 frames, 0 failures; lock35 430x932@1.0
+05:37 +122: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+LINE126 raster 934 frames, 0 failures; safety_v6_true_2.0_false 430x932@1.3
+05:38 +122: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)
+LINE126 raster 1277 frames, 0 failures; lock8_pages 375x667@1.3
+05:39 +123: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)
+05:40 +124: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:40 +125: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:40 +126: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:41 +127: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:41 +128: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:42 +128: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1395 frames, 0 failures; lock19_v3_source 375x667@1.0
+05:42 +129: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:42 +129: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Seekers LOCK35 card fits or scrolls above navigation Size(430.0, 932.0) scale 2.0
+LINE126 raster 987 frames, 0 failures; lock35 430x932@1.0
+05:42 +130: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+LINE126 raster 961 frames, 0 failures; safety_v6_true_2.0_false 430x932@1.3
+05:43 +131: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:43 +131: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 long return retains local decisions while returning My ZYRA (variant: TargetPlatform.iOS)
+LINE126 raster 1303 frames, 0 failures; lock8_longreturn 375x667@1.3
+05:43 +132: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:44 +133: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+05:44 +134: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:44 +135: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:44 +136: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:46 +137: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:47 +138: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:48 +138: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=true
+LINE126 raster 987 frames, 0 failures; safety_v6_true_2.0_true 430x932@1.3
+05:48 +138: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Phone Seeker Settings NEW opens real Phone access and clears receipt
+LINE126 raster 1000 frames, 0 failures; lock12_phone_access 430x932@1.0
+05:48 +138: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1401 frames, 0 failures; lock19_v3_source 375x667@1.0
+05:49 +138: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 all five tabs remain readable on compact phone at 200 percent text (variant: TargetPlatform.iOS)
+LINE126 raster 1331 frames, 0 failures; lock8_accessibility 375x667@1.3
+05:49 +139: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:50 +140: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:51 +141: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:52 +142: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:53 +142: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+LINE126 raster 1013 frames, 0 failures; safety_v6_false_1.0_false 430x932@1.3
+05:53 +142: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Phone covered retained row callback cannot request after controls roundtrip
+LINE126 raster 1017 frames, 0 failures; lock12_phone_access 430x932@1.0
+05:53 +143: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1421 frames, 0 failures; lock19_v3_source 375x667@1.0
+05:54 +143: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Guardian One LOCK8 Network arrows stop at both boundaries and keep the master colours (variant: TargetPlatform.iOS)
+LINE126 raster 1349 frames, 0 failures; lock8_boundaries 375x667@1.3
+05:55 +144: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:56 +145: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:56 +146: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:57 +147: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+05:58 +147: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=false
+LINE126 raster 1040 frames, 0 failures; safety_v6_false_2.0_false 430x932@1.3
+05:58 +147: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m01 m02: exact targets, paging and separate request attention (variant: TargetPlatform.iOS)
+LINE126 raster 1033 frames, 0 failures; lock15_1.0 430x932@1.0
+05:59 +147: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+LINE126 raster 1367 frames, 0 failures; safety_v6_true_1.0_false 375x667@1.3
+05:59 +147: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1432 frames, 0 failures; lock19_v3_source 375x667@1.0
+05:59 +148: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+06:00 +149: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+06:01 +150: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+06:02 +151: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+06:03 +151: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=false
+LINE126 raster 1068 frames, 0 failures; safety_v6_false_2.0_false 430x932@1.3
+06:04 +151: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 1046 frames, 0 failures; lock15_1.0 430x932@1.0
+06:04 +151: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+LINE126 raster 1396 frames, 0 failures; safety_v6_true_1.0_false 375x667@1.3
+06:04 +151: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family missing, expired and unlinked offers never become Needs-you items
+LINE126 raster 1460 frames, 0 failures; lock19_v3 375x667@1.0
+06:04 +152: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+06:05 +153: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=1.0, narrow=false
+06:06 +154: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+06:08 +155: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+06:08 +155: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=true
+LINE126 raster 1093 frames, 0 failures; safety_v6_false_2.0_true 430x932@1.3
+06:09 +155: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 1061 frames, 0 failures; lock15_1.0 430x932@1.0
+06:09 +155: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Family leaving identity without a verified result and stale callback grant nothing
+LINE126 raster 1494 frames, 0 failures; lock19_v3 375x667@1.0
+06:09 +155: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+LINE126 raster 1423 frames, 0 failures; safety_v6_true_2.0_false 375x667@1.3
+06:11 +156: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+06:11 +157: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+06:11 +158: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+06:13 +159: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+06:13 +160: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+06:14 +160: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+LINE126 raster 1119 frames, 0 failures; lock19_v3 430x932@1.3
+06:14 +160: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seekers LOCK35 One header and each Circle row use the selected Seeker
+LINE126 raster 1522 frames, 0 failures; lock35 375x667@1.0
+06:14 +160: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+LINE126 raster 1461 frames, 0 failures; safety_v6_true_2.0_false 375x667@1.3
+06:14 +160: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 m06: Basic occupied places derive from model capacity (variant: TargetPlatform.iOS)
+LINE126 raster 1075 frames, 0 failures; lock15_1.0 430x932@1.0
+06:14 +161: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=false
+06:14 +162: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+06:15 +163: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+06:17 +164: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+06:18 +165: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+06:19 +165: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+LINE126 raster 1136 frames, 0 failures; lock19_v3 430x932@1.3
+06:19 +165: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seekers LOCK35 Journey selects the existing tab; no-Journey and details rows use existing details
+LINE126 raster 1544 frames, 0 failures; lock35 375x667@1.0
+06:19 +165: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian One actual advice: scale=2.0, narrow=true
+LINE126 raster 1496 frames, 0 failures; safety_v6_true_2.0_true 375x667@1.3
+06:20 +165: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+LINE126 raster 1091 frames, 0 failures; lock15_1.0 430x932@1.0
+06:22 +166: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+06:22 +167: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seekers LOCK35 Journey selects the existing tab; no-Journey and details rows use existing details
+06:22 +168: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+06:24 +169: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+06:24 +169: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+LINE126 raster 1520 frames, 0 failures; safety_v6_false_1.0_false 375x667@1.3
+06:25 +169: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seekers LOCK35 card fits or scrolls above navigation Size(393.0, 852.0) scale 1.0
+LINE126 raster 1567 frames, 0 failures; lock35 375x667@1.0
+06:25 +169: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+LINE126 raster 1160 frames, 0 failures; lock19_v3 430x932@1.3
+06:25 +170: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+06:25 +170: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1106 frames, 0 failures; lock15_1.0 430x932@1.0
+06:26 +171: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+06:26 +172: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+06:27 +173: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+06:28 +174: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+06:28 +175: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+LINE126 raster 1548 frames, 0 failures; safety_v6_false_1.0_false 375x667@1.3
+06:30 +175: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Seekers LOCK35 unchanged shared error gs91_error__offline
+LINE126 raster 1587 frames, 0 failures; lock35 375x667@1.0
+06:30 +175: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1122 frames, 0 failures; lock15_1.0 430x932@1.0
+06:30 +176: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=1.0, narrow=false
+06:31 +177: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+06:32 +178: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+06:34 +178: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1169 frames, 0 failures; lock19_v3_source 430x932@1.3
+06:34 +178: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=false
+LINE126 raster 1578 frames, 0 failures; safety_v6_false_2.0_false 375x667@1.3
+06:35 +178: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1139 frames, 0 failures; lock15_1.0 430x932@1.0
+06:37 +178: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Phone Seeker Settings NEW opens real Phone access and clears receipt
+LINE126 raster 1605 frames, 0 failures; lock12_phone_access 375x667@1.0
+06:39 +178: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1172 frames, 0 failures; lock19_v3_source 430x932@1.3
+06:39 +179: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+06:40 +179: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=false
+LINE126 raster 1605 frames, 0 failures; safety_v6_false_2.0_false 375x667@1.3
+06:40 +179: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1151 frames, 0 failures; lock15_1.0 430x932@1.0
+06:41 +180: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+06:42 +180: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Phone Guardian keeps the locked Privacy row and opens same permission page
+LINE126 raster 1617 frames, 0 failures; lock12_phone_access 375x667@1.0
+06:42 +181: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+06:44 +181: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1184 frames, 0 failures; lock19_v3_source 430x932@1.3
+06:45 +181: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Safety V6 Guardian Basic actual advice: scale=2.0, narrow=true
+LINE126 raster 1635 frames, 0 failures; safety_v6_false_2.0_true 375x667@1.3
+06:45 +182: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+06:45 +183: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+06:46 +183: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_430_test.dart: Focus LOCK15 Larger Text actual Seeker and Guardian scroll to all quick routes (variant: TargetPlatform.iOS)
+LINE126 raster 1169 frames, 0 failures; lock15_2.0 430x932@1.0
+06:47 +184: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+06:47 +184: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Phone small phone and Larger Text keep rows scrollable without overflow
+LINE126 raster 1648 frames, 0 failures; lock12_phone_access 375x667@1.0
+06:48 +185: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+06:48 +186: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+06:48 +187: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+06:49 +188: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+06:49 +189: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1190 frames, 0 failures; lock19_v3_source 430x932@1.3
+06:50 +189: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+LINE126 raster 1670 frames, 0 failures; lock19_v3 375x667@1.3
+06:50 +190: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 m01 m02: exact targets, paging and separate request attention (variant: TargetPlatform.iOS)
+LINE126 raster 1677 frames, 0 failures; lock15_1.0 375x667@1.0
+06:54 +191: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+06:54 +192: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+06:54 +192: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family missing, expired and unlinked offers never become Needs-you items
+LINE126 raster 1208 frames, 0 failures; lock19_v3 430x932@1.3
+06:55 +192: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+LINE126 raster 1688 frames, 0 failures; lock19_v3 375x667@1.3
+06:55 +193: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 1.0
+06:56 +194: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family missing, expired and unlinked offers never become Needs-you items
+06:57 +195: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 1696 frames, 0 failures; lock15_1.0 375x667@1.0
+06:59 +195: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Family retained accept/decline deny after navigation and account replacement
+LINE126 raster 1236 frames, 0 failures; lock19_v3 430x932@1.3
+07:00 +195: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family k20-k22 actual pending page, verified acceptance and Profile at 2.0
+LINE126 raster 1728 frames, 0 failures; lock19_v3 375x667@1.3
+07:01 +196: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+07:03 +197: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 1717 frames, 0 failures; lock15_1.0 375x667@1.0
+07:04 +198: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+07:04 +199: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+07:05 +199: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1750 frames, 0 failures; lock19_v3_source 375x667@1.3
+07:05 +199: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seekers LOCK35 real swipes settle identity and dots, then reach Invite
+LINE126 raster 1264 frames, 0 failures; lock35 430x932@1.3
+07:06 +200: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:07 +201: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:07 +202: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:08 +202: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+LINE126 raster 1739 frames, 0 failures; lock15_1.0 375x667@1.0
+07:09 +203: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:10 +203: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seekers LOCK35 Basic header and each Circle row use the selected Seeker
+LINE126 raster 1285 frames, 0 failures; lock35 430x932@1.3
+07:12 +204: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1754 frames, 0 failures; lock19_v3_source 375x667@1.3
+07:14 +204: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+LINE126 raster 1770 frames, 0 failures; lock15_1.0 375x667@1.0
+07:16 +204: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seekers LOCK35 Journey selects the existing tab; no-Journey and details rows use existing details
+LINE126 raster 1303 frames, 0 failures; lock35 430x932@1.3
+07:17 +205: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1762 frames, 0 failures; lock19_v3_source 375x667@1.3
+07:18 +206: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:19 +206: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1800 frames, 0 failures; lock15_1.0 375x667@1.0
+07:20 +207: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:21 +207: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seekers LOCK35 card fits or scrolls above navigation Size(393.0, 852.0) scale 1.0
+LINE126 raster 1328 frames, 0 failures; lock35 430x932@1.3
+07:21 +208: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:22 +209: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:23 +210: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:23 +211: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:24 +211: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1830 frames, 0 failures; lock15_1.0 375x667@1.0
+07:24 +211: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+LINE126 raster 1786 frames, 0 failures; lock19_v3_source 375x667@1.3
+07:24 +212: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:25 +213: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:26 +213: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Seekers LOCK35 unchanged shared error gs92_error__server
+LINE126 raster 1346 frames, 0 failures; lock35 430x932@1.3
+07:27 +214: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family existing free-place invite survives role switch and preserves access facts
+07:29 +215: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1858 frames, 0 failures; lock15_1.0 375x667@1.0
+07:29 +215: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family decline closes, removes Needs-you, returns Basic and frees one place
+LINE126 raster 1797 frames, 0 failures; lock19_v3 375x667@1.3
+07:32 +215: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Phone Seeker Settings NEW opens real Phone access and clears receipt
+LINE126 raster 1359 frames, 0 failures; lock12_phone_access 430x932@1.3
+07:34 +216: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1884 frames, 0 failures; lock15_1.0 375x667@1.0
+07:34 +216: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family missing, expired and unlinked offers never become Needs-you items
+LINE126 raster 1818 frames, 0 failures; lock19_v3 375x667@1.3
+07:35 +217: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+07:37 +217: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Phone Guardian keeps the locked Privacy row and opens same permission page
+LINE126 raster 1369 frames, 0 failures; lock12_phone_access 430x932@1.3
+07:37 +218: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+07:38 +219: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1911 frames, 0 failures; lock15_1.0 375x667@1.0
+07:39 +219: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Family retained accept/decline deny after navigation and account replacement
+LINE126 raster 1851 frames, 0 failures; lock19_v3 375x667@1.3
+07:40 +220: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+07:42 +221: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+07:42 +221: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Phone small phone and Larger Text keep rows scrollable without overflow
+LINE126 raster 1394 frames, 0 failures; lock12_phone_access 430x932@1.3
+07:44 +222: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+07:44 +223: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1939 frames, 0 failures; lock15_1.0 375x667@1.0
+07:45 +224: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+07:45 +225: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+07:45 +225: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 real swipes settle identity and dots, then reach Invite
+LINE126 raster 1887 frames, 0 failures; lock35 375x667@1.3
+07:47 +226: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 real swipes settle identity and dots, then reach Invite
+07:48 +226: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m01 m02: exact targets, paging and separate request attention (variant: TargetPlatform.iOS)
+LINE126 raster 1409 frames, 0 failures; lock15_1.0 430x932@1.3
+07:48 +227: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m01 m02: exact targets, paging and separate request attention (variant: TargetPlatform.iOS)
+07:49 +228: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 Larger Text actual Seeker and Guardian scroll to all quick routes (variant: TargetPlatform.iOS)
+LINE126 raster 1970 frames, 0 failures; lock15_2.0 375x667@1.0
+07:50 +229: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 One header and each Circle row use the selected Seeker
+LINE126 raster 1913 frames, 0 failures; lock35 375x667@1.3
+07:50 +230: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m03: grouped requests newest event order, no private row acknowledgement (variant: TargetPlatform.iOS)
+07:50 +231: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_test.dart: Focus LOCK15 320pt 200% Seeker last tiles scroll fully above navigation (variant: TargetPlatform.iOS)
+07:51 +232: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 Basic header and each Circle row use the selected Seeker
+07:51 +233: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 Basic header and each Circle row use the selected Seeker
+07:53 +233: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 1423 frames, 0 failures; lock15_1.0 430x932@1.3
+07:54 +234: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+07:55 +234: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 Journey selects the existing tab; no-Journey and details rows use existing details
+LINE126 raster 1944 frames, 0 failures; lock35 375x667@1.3
+07:58 +234: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 1436 frames, 0 failures; lock15_1.0 430x932@1.3
+08:00 +235: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+08:00 +235: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 swipe revokes retained card and route callbacks
+LINE126 raster 1978 frames, 0 failures; lock35 375x667@1.3
+08:01 +236: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+08:03 +237: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 1451 frames, 0 failures; lock15_1.0 430x932@1.3
+08:04 +238: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+08:04 +239: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 card fits or scrolls above navigation Size(430.0, 932.0) scale 1.0
+08:05 +240: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m06: Basic occupied places derive from model capacity (variant: TargetPlatform.iOS)
+08:05 +240: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 card fits or scrolls above navigation Size(430.0, 932.0) scale 2.0
+LINE126 raster 2020 frames, 0 failures; lock35 375x667@1.3
+08:07 +241: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 m06: Basic occupied places derive from model capacity (variant: TargetPlatform.iOS)
+08:07 +242: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 Reduce Motion uses the shared instant selection
+08:07 +243: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+LINE126 raster 1471 frames, 0 failures; lock15_1.0 430x932@1.3
+08:08 +244: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+08:10 +245: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+08:11 +245: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Phone Seeker Settings NEW opens real Phone access and clears receipt
+LINE126 raster 2048 frames, 0 failures; lock12_phone_access 375x667@1.3
+08:14 +245: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+LINE126 raster 1491 frames, 0 failures; lock15_1.0 430x932@1.3
+08:15 +246: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+08:16 +246: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Phone Guardian keeps the locked Privacy row and opens same permission page
+LINE126 raster 2068 frames, 0 failures; lock12_phone_access 375x667@1.3
+08:17 +247: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+08:19 +248: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+LINE126 raster 1511 frames, 0 failures; lock15_1.0 430x932@1.3
+08:20 +249: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Phone small phone and Larger Text keep rows scrollable without overflow
+LINE126 raster 2106 frames, 0 failures; lock12_phone_access 375x667@1.3
+08:21 +250: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+08:21 +251: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1535 frames, 0 failures; lock15_1.0 430x932@1.3
+08:26 +251: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 m01 m02: exact targets, paging and separate request attention (variant: TargetPlatform.iOS)
+LINE126 raster 2130 frames, 0 failures; lock15_1.0 375x667@1.3
+08:28 +252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1557 frames, 0 failures; lock15_1.0 430x932@1.3
+08:30 +253: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+08:32 +253: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 2156 frames, 0 failures; lock15_1.0 375x667@1.3
+08:34 +253: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 1579 frames, 0 failures; lock15_1.0 430x932@1.3
+08:37 +253: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+LINE126 raster 2181 frames, 0 failures; lock15_1.0 375x667@1.3
+08:37 +254: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+08:39 +254: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 Larger Text actual Seeker and Guardian scroll to all quick routes (variant: TargetPlatform.iOS)
+LINE126 raster 1604 frames, 0 failures; lock15_2.0 430x932@1.3
+08:40 +255: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+08:40 +256: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 m04 m05: caught up, actual preference counts, setup and Phone access (variant: TargetPlatform.iOS)
+08:40 +257: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_430_test.dart: Focus LOCK15 320pt 200% Guardian Basic last tiles scroll fully above navigation (variant: TargetPlatform.iOS)
+08:41 +258: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 m06: Basic occupied places derive from model capacity (variant: TargetPlatform.iOS)
+LINE126 raster 2204 frames, 0 failures; lock15_1.0 375x667@1.3
+08:43 +259: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 gm01-gm05: actual Guardian review, Connect, stable consumption and Basic (variant: TargetPlatform.iOS)
+LINE126 raster 2236 frames, 0 failures; lock15_1.0 375x667@1.3
+LINE126 raster 2268 frames, 0 failures; lock15_1.0 375x667@1.3
+08:53 +260: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 every existing Seeker activity kind reaches its exact current destination (variant: TargetPlatform.iOS)
+LINE126 raster 2305 frames, 0 failures; lock15_1.0 375x667@1.3
+LINE126 raster 2343 frames, 0 failures; lock15_1.0 375x667@1.3
+LINE126 raster 2373 frames, 0 failures; lock15_1.0 375x667@1.3
+LINE126 raster 2408 frames, 0 failures; lock15_1.0 375x667@1.3
+09:16 +261: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 Larger Text actual Seeker and Guardian scroll to all quick routes (variant: TargetPlatform.iOS)
+LINE126 raster 2448 frames, 0 failures; lock15_2.0 375x667@1.3
+09:18 +262: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 320pt 200% Seeker last tiles scroll fully above navigation (variant: TargetPlatform.iOS)
+09:19 +263: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus LOCK15 320pt 200% Guardian Basic last tiles scroll fully above navigation (variant: TargetPlatform.iOS)
+09:20 +264: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Focus (tearDownAll)
+09:20 +264: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: (tearDownAll)
+09:21 +264: All tests passed!

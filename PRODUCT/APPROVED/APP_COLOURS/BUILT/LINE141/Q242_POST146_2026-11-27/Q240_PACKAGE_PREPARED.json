@@ -1,0 +1,24 @@
+{
+  "created": "2026-11-27T20:12:19.164675+00:00",
+  "tests_or_packaging_run": false,
+  "repository_writes": false,
+  "changes": "Only WORK path in package_q240_witness.py; q240_png.py is byte-identical",
+  "script_sha256": {
+    "package_q240_witness.py": "8a723d56ca583910f6a382b327f73bdc2d80a99b3a30de79fdc5e11ee0b7dd77",
+    "q240_png.py": "92a3162824885dea4ca9b63e181494440d1fc4b560a37c5fa73ef592212b22b1"
+  },
+  "command": [
+    "python3",
+    "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/package_q240_witness.py"
+  ],
+  "dependencies": [
+    "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/Q240_WITNESS_RUN.json",
+    "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/proof-q240/build/line126-focused-contrast-normal.json",
+    "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/Q240_WITNESS_INPUTS.json",
+    "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/q240-witness.log",
+    "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/proof-pixels-q240/{frame0,frame1,frame2}/PROOF.json and seven original PNGs",
+    "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/APP_COLOURS/BUILT/LINE141/Q238_POST145_2026-11-27/candidate/{frame0,frame1,frame2}/PROOF.json and on.png"
+  ],
+  "output": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-141-q242-post-146-fresh-ultra/work/q240-witness-artifacts",
+  "validation": "Strict exit0 and zero raw findings/coverage gaps, three exact Family375x667/1.0 frames; >=12pt name clearance, 0 glyph/visible-title pixels in all tiles, geometry/clock/scroll exact, ON/restored/post-control exact, no outside-title change, independent PNG decode checks each same-frame delta and glyph alpha support; no resizing/retouching/synthesis"
+}

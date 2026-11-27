@@ -1,0 +1,320 @@
+{
+  "reviewer": "Independent source_visual_review subagent",
+  "recorded": "2026-11-27T20:11:16.796615+00:00",
+  "scope": "Fresh14actual430x932@3xmaster/capturepairs; bounded LOCK14 V9 correction4 and Q240 only",
+  "pairs_actually_viewed": 14,
+  "verdict": "No actionable bounded correction4/Q240 mismatch; whole-screen MATCH refused",
+  "pairs": [
+    {
+      "id": "k02",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k02_access__hassan_2_journeys.png",
+      "capture_path": "captures/guardian-card/main_card_2_active_journeys.png",
+      "master_sha256": "168b7c712b042fe0ac7b1c6e7da77339db657daaf0aa527deffb65b4824bd48f",
+      "capture_sha256": "61ae3e4ed9bcd2ca776bfc28f9bc6eebc44cfc70b8759d8675ede50be6977129",
+      "prior_Q240_capture_sha256": "61ae3e4ed9bcd2ca776bfc28f9bc6eebc44cfc70b8759d8675ede50be6977129",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "k03",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k03_access__hassan_3_journeys.png",
+      "capture_path": "captures/guardian-card/main_card_3_active_journeys.png",
+      "master_sha256": "7994995af0a7e3be4a1a4b63fdb552d09b80d03b9930ce1c3542635cc96af02b",
+      "capture_sha256": "85580d98865cc44059f2f5a3a0df73d1f80fd883e50d490d5bcc2c657d9cd0a9",
+      "prior_Q240_capture_sha256": "85580d98865cc44059f2f5a3a0df73d1f80fd883e50d490d5bcc2c657d9cd0a9",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "k06",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k06_access__ibrahim_chat_locked.png",
+      "capture_path": "captures/guardian-card/additional_basic_card.png",
+      "master_sha256": "c428b5edd30cab81229f4925cc14711043e789e70e576266445d4716f3135994",
+      "capture_sha256": "537068ce47d64ece89989ae81ffffe15b63d0985d6124f3bcdbbc955a66cfd26",
+      "prior_Q240_capture_sha256": "537068ce47d64ece89989ae81ffffe15b63d0985d6124f3bcdbbc955a66cfd26",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "k10",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k10_sheet__price_no_family.png",
+      "capture_path": "captures/guardian-card/k10_sheet__price_no_family.png",
+      "master_sha256": "b72dac2093f0f5b69a05652314980aee54dd452c3cbdf92ea5e446162df83687",
+      "capture_sha256": "def5021a15d5c75fb1d2272d1fbebb8e812bc3b9b29aa855f9874d5ecc8ef6aa",
+      "prior_Q240_capture_sha256": "def5021a15d5c75fb1d2272d1fbebb8e812bc3b9b29aa855f9874d5ecc8ef6aa",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "k13",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k13_sheet__price_family_full.png",
+      "capture_path": "captures/guardian-card/k13_sheet__price_family_full.png",
+      "master_sha256": "2ea2120b4cb9c27128fb7288a85f912e9085c90d3ac2a3d62aa6197ff3f95c08",
+      "capture_sha256": "126b5e67f6a33ca053112f041515b2ce6a5b3525d8effac9c8eedf3058813357",
+      "prior_Q240_capture_sha256": "126b5e67f6a33ca053112f041515b2ce6a5b3525d8effac9c8eedf3058813357",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "k14",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k14_sheet__invite_sent.png",
+      "capture_path": "captures/guardian-card/k14_sheet__invite_sent.png",
+      "master_sha256": "3655b946ba751e8b750c7df003fb85de54ca52d35d43c192ea5dfa405dec242a",
+      "capture_sha256": "5ad36f46570e942f87ffdf6187e2d30ef5aa994e588bcd5db3d9fd8f4d0f9205",
+      "prior_Q240_capture_sha256": "5ad36f46570e942f87ffdf6187e2d30ef5aa994e588bcd5db3d9fd8f4d0f9205",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "k15",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k15_access__ibrahim_invited.png",
+      "capture_path": "captures/guardian-card/additional_guardian_family_invited.png",
+      "master_sha256": "0b42a0fea50ebfce5743dc1e7f063ab248e2e7301b09255a4c83b5db29072d2c",
+      "capture_sha256": "c3d254e75e05e028f9715d72dd618629902bb05e42d6f6dda04171fb346980ea",
+      "prior_Q240_capture_sha256": "c3d254e75e05e028f9715d72dd618629902bb05e42d6f6dda04171fb346980ea",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "k16",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k16_access__ibrahim_accepted_chat_off.png",
+      "capture_path": "captures/guardian-card/additional_guardian_family_accepted.png",
+      "master_sha256": "72001f5c0bcdbd7a96f95da4adbc6269ae6751139800ca2231bc802d976863f1",
+      "capture_sha256": "11f9285190f7597163dd03cc177b3cbcd4696762e8a25a005e18373de54e4da9",
+      "prior_Q240_capture_sha256": "11f9285190f7597163dd03cc177b3cbcd4696762e8a25a005e18373de54e4da9",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "k18",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k18_basic__access_1_journey.png",
+      "capture_path": "captures/guardian-card/seeker_basic_guardian_card.png",
+      "master_sha256": "895526116fd3e8de34d9f0ffebb40cc9d175f994ce2488db81cb7d7764edb8e2",
+      "capture_sha256": "d99cd5cc6c1ef9905b3f7fec14865c69ea1808f89db2d13caf0fa9a766982fa8",
+      "prior_Q240_capture_sha256": "d99cd5cc6c1ef9905b3f7fec14865c69ea1808f89db2d13caf0fa9a766982fa8",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "g09",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+      "capture_path": "captures/guardian-journeys/g09_journeys__adam.png",
+      "master_sha256": "fd14430a1c0b5646daff24b569378bc7d1865fcbc96a10b8eb3127798055b63b",
+      "capture_sha256": "a109634c035d46d10a2894feeafd58d00db46423ffd320ed8a3c2747e3aa41c5",
+      "prior_Q240_capture_sha256": "a109634c035d46d10a2894feeafd58d00db46423ffd320ed8a3c2747e3aa41c5",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "g09b",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09b_journeys__adam_paused.png",
+      "capture_path": "captures/guardian-journeys/g09b_journeys__adam_paused.png",
+      "master_sha256": "9c828f6136a6ba09fb503c564d7bff40332ca90743034c965cb6c3cd19cafdef",
+      "capture_sha256": "51e041956808ef0d25395df68384f39e7f4a6bb476dad90ed24967d1d2e48377",
+      "prior_Q240_capture_sha256": "51e041956808ef0d25395df68384f39e7f4a6bb476dad90ed24967d1d2e48377",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "id": "g09c",
+      "master_path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "capture_path": "captures/guardian-journeys/g09c_journeys__adam_guardian_basic.png",
+      "master_sha256": "913560834e0ae309096f80c923102879d9326c0f3e184030b0f7592004de7758",
+      "capture_sha256": "ff233991d8874508e30936c91846172594fec6a9244865832387ccebc0258da1",
+      "prior_Q240_capture_sha256": "ff233991d8874508e30936c91846172594fec6a9244865832387ccebc0258da1",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "state": "photo",
+      "master_path": "PRODUCT/APPROVED/PROFILES_DETAILS_CARD/MASTERS/profiles_tab__details_card_photo.png",
+      "capture_path": "captures/details/profiles_tab__details_card_photo.png",
+      "master_sha256": "e3518ff301c6a2b67e3d44f5bea8bce76c5912fc0c83bc4b39094263c17201e3",
+      "capture_sha256": "39d34fd4392d9018b380f24089e1b6113cbc26b07f7bc7a50c51e49213c9bc72",
+      "prior_Q240_capture_sha256": "39d34fd4392d9018b380f24089e1b6113cbc26b07f7bc7a50c51e49213c9bc72",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    },
+    {
+      "state": "no_photo",
+      "master_path": "PRODUCT/APPROVED/PROFILES_DETAILS_CARD/MASTERS/profiles_tab__details_card_no_photo.png",
+      "capture_path": "captures/details/profiles_tab__details_card_no_photo.png",
+      "master_sha256": "67352b5ba4d06ae56d7cab28b6a9ed7e6a14ff1ee6a4bd2f9bc8dc456a6ce965",
+      "capture_sha256": "fdbf4a04d4454d1eb7753ad81f0e8ad89818453cf6c1150b77765efb12b735b1",
+      "prior_Q240_capture_sha256": "fdbf4a04d4454d1eb7753ad81f0e8ad89818453cf6c1150b77765efb12b735b1",
+      "master_unchanged_from_Q240": true,
+      "capture_unchanged_from_Q240": true,
+      "actually_viewed": true,
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "No actionable bounded LOCK14 correction4/Q240 mismatch; whole-screen MATCH not claimed"
+    }
+  ],
+  "current_details_geometry": [
+    {
+      "state": "details_card_photo",
+      "person_id": "draft-sara",
+      "logical_size": [
+        430,
+        932
+      ],
+      "device_pixel_ratio": 3,
+      "has_photo": true,
+      "name_rect": {
+        "left": 102.06201171875,
+        "top": 371.5,
+        "right": 275.1659851074219,
+        "bottom": 402.5,
+        "width": 173.10397338867188,
+        "height": 31.0
+      },
+      "first_tile_rect": {
+        "left": 36.0,
+        "top": 453.0,
+        "right": 210.0,
+        "bottom": 517.0,
+        "width": 174.0,
+        "height": 64.0
+      },
+      "visible_name_to_tile_gap": 50.5,
+      "avatar_rect": {
+        "left": 140.0,
+        "top": 209.5,
+        "right": 290.0,
+        "bottom": 359.5,
+        "width": 150.0,
+        "height": 150.0
+      }
+    },
+    {
+      "state": "details_card_no_photo",
+      "person_id": "draft-sara",
+      "logical_size": [
+        430,
+        932
+      ],
+      "device_pixel_ratio": 3,
+      "has_photo": false,
+      "name_rect": {
+        "left": 102.06201171875,
+        "top": 371.0,
+        "right": 275.1659851074219,
+        "bottom": 402.0,
+        "width": 173.10397338867188,
+        "height": 31.0
+      },
+      "first_tile_rect": {
+        "left": 36.0,
+        "top": 453.0,
+        "right": 210.0,
+        "bottom": 517.0,
+        "width": 174.0,
+        "height": 64.0
+      },
+      "visible_name_to_tile_gap": 51.0,
+      "avatar_rect": {
+        "left": 140.0,
+        "top": 209.0,
+        "right": 290.0,
+        "bottom": 359.0,
+        "width": 150.0,
+        "height": 150.0
+      }
+    }
+  ],
+  "bounded_observations": [
+    "Guardian access stage number and name remain complete on separate lines; View/Chat are horizontal at430pt as locked. Narrow stacking is established by the separately executed focused tests, not these430pt images.",
+    "All three Open Journey buttons show espresso on gold, real prepared sample avatar imagery, navigation and real shadows.",
+    "Photo/no-photo details states show the name clear of tiles, intact ONE pill, shared fact tiles and150pt avatar; current measured gaps exceed12pt. A fresh before/after centering differential is separate proof, not inferred from static masters."
+  ],
+  "retained_unrelated_differences": [
+    "Native font metrics and weights, icons, spacing, navigation geometry and shadow rendering differ from prototype exports. Current Main Guardian outline and History icons preserve accepted line145.",
+    "k10/k13/k14 sheets sit higher and are translucent, allowing the underlying card to show. k14 keeps existing14-day versus master7-day expiry copy and the sample subscription toast; k15 also retains the sample toast.",
+    "k16 current membership wraps Guardian One / Family place and retains its existing free Journey place row, unlike the master.",
+    "Profiles current actual fixture is Sara Ahmed/27/Birmingham/Pakistani while the locked master uses Amira Rahman/28/Manchester/British/Arab. The prepared photo color, no-photo gradient tone, page-dot count, typography, tile positions, card corners and navigation render differ. These are retained comparisons, not a claim of full-screenMATCH or permission to change them."
+  ],
+  "written_refusal": "OA-ZYRA-371: preexisting native/prototype differences in layout/typography/icons/sample data, translucent sheets, current145Mainoutline/History, fourteen-day invitation and toast do not authorize redesign/copy/ink/auditor work under141. This review does not waive strict raster observations.",
+  "source_writes": false,
+  "tests_run_by_reviewer": false,
+  "image_review_method": "All28originalPNG files (14 pairs) actually displayed via view_image; no generated/edited images or SDK preview."
+}

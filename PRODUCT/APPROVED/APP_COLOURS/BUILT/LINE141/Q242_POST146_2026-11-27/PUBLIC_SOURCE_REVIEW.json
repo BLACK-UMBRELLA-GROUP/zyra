@@ -1,0 +1,375 @@
+{
+  "reviewed": "2026-11-27T20:09:05.055575+00:00",
+  "reviewer": "independent q242_review subagent",
+  "scope": "exact 30 owned SOURCE paths in INTEGRATION.json",
+  "accepted_head": "2ad41424aaf49d73ef1a2fa05adade33fbf7ee59",
+  "file_count": 30,
+  "source_bytes": 1167850,
+  "all_input_hashes_match_integration": true,
+  "gitleaks": {
+    "exit_code": 0,
+    "finding_count": 0,
+    "redacted": true,
+    "stdin_scope_only": true,
+    "allow_comment_ignores_disabled": true
+  },
+  "public_check": {
+    "exit_code": 1,
+    "hits": 26,
+    "exact_preexisting_head_lines": 26,
+    "new_hits": 0,
+    "semantic_categories": {
+      "layout_margin": 1,
+      "dart_record_field": 8,
+      "public_support_contact": 3,
+      "existing_public_app_fixture": 14
+    },
+    "reviewed_hits": [
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+        "line": 1004,
+        "kind": "money",
+        "line_sha256": "81ecc23ead4e5719cc047bde996cafe09e9e626dbad19b851923dc28a16e0182",
+        "exact_accepted_head_line_numbers": [
+          1008
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "layout_margin",
+        "review": "Dart EdgeInsets margin property; scanner money-word collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 3019,
+        "kind": "money",
+        "line_sha256": "43ce68bc397ce53879c280a1ec36430304c158bb812387c74b217a242d729f9f",
+        "exact_accepted_head_line_numbers": [
+          3019
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "dart_record_field",
+        "review": "Dart record positional-field syntax; scanner dollar-digit collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 11197,
+        "kind": "money",
+        "line_sha256": "2c20d8feb99937b46f186d4f27448508e9cd63e27895ca175622c4e5445fa327",
+        "exact_accepted_head_line_numbers": [
+          11198
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "dart_record_field",
+        "review": "Dart record positional-field syntax; scanner dollar-digit collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 11198,
+        "kind": "money",
+        "line_sha256": "9b988ca2d033a44d5969f56ef99aa30b668684acc0f463c4b7dbf9f8ce21e11c",
+        "exact_accepted_head_line_numbers": [
+          11199
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "dart_record_field",
+        "review": "Dart record positional-field syntax; scanner dollar-digit collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+        "line": 10,
+        "kind": "email",
+        "line_sha256": "1c9cb51e068710e39c30ab8d945e4e0aaec504a6e59f85e4a26cdbcb30a677b5",
+        "exact_accepted_head_line_numbers": [
+          9
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "public_support_contact",
+        "review": "Existing public app support contact in member-facing source/comment; no private individual or business document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+        "line": 79,
+        "kind": "email",
+        "line_sha256": "432f0d29c5a28c2a93fdc0bc1bc83115ff4bfce0a181670135d9f33a7b54475a",
+        "exact_accepted_head_line_numbers": [
+          78
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "public_support_contact",
+        "review": "Existing public app support contact in member-facing source/comment; no private individual or business document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+        "line": 548,
+        "kind": "email",
+        "line_sha256": "acda611b58c906cc97c6020e6aec5c25bb07369f17c6be826a5ef9bd1beffa8c",
+        "exact_accepted_head_line_numbers": [
+          546
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "public_support_contact",
+        "review": "Existing public app support contact in member-facing source/comment; no private individual or business document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 269,
+        "kind": "money",
+        "line_sha256": "d1987331de1090f18e24eff4c8134902d1288d1c59fae083ed9131422eacd8a6",
+        "exact_accepted_head_line_numbers": [
+          269
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 276,
+        "kind": "money",
+        "line_sha256": "88c208b1af9f2dc0f361fac4ee86e5b88cc0da4e677bfe280dfcb0083d1f1ea2",
+        "exact_accepted_head_line_numbers": [
+          276
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 278,
+        "kind": "money",
+        "line_sha256": "8b169330a6bcd8846ee988263b9518fd756cc07945213c92482703a10e31f5b9",
+        "exact_accepted_head_line_numbers": [
+          278
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 313,
+        "kind": "money",
+        "line_sha256": "e1a30970f08aca6cf81688cc1a5dd2c2e81f73f48a8e118d26039b357c3378f7",
+        "exact_accepted_head_line_numbers": [
+          313
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 315,
+        "kind": "money",
+        "line_sha256": "b75511712e0e5729fafd8b0ac3f9a113a1d1f159bc55f3e7398ee0ae3fcbfbbf",
+        "exact_accepted_head_line_numbers": [
+          315
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 362,
+        "kind": "money",
+        "line_sha256": "6dda8898e836e2bb6fb221b1010479d1717ac0d2df4f275993394ee3a2ef9300",
+        "exact_accepted_head_line_numbers": [
+          362,
+          405
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+        "line": 405,
+        "kind": "money",
+        "line_sha256": "6dda8898e836e2bb6fb221b1010479d1717ac0d2df4f275993394ee3a2ef9300",
+        "exact_accepted_head_line_numbers": [
+          362,
+          405
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 533,
+        "kind": "money",
+        "line_sha256": "10ad2c3f1375dd3a7ee50efd9cc0661f8aa25ffa37a5d38b126cac34b81ede67",
+        "exact_accepted_head_line_numbers": [
+          518
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 534,
+        "kind": "money",
+        "line_sha256": "b62cf8bb3c140f38e8b3244a5e27b6a68c6ba3aaa4e7333b909d389da2d1c71b",
+        "exact_accepted_head_line_numbers": [
+          519
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 551,
+        "kind": "money",
+        "line_sha256": "1442d85cdbaa91343d0a24d1c62fc5552992c177fe1d1c737427904ebcbd27c8",
+        "exact_accepted_head_line_numbers": [
+          536
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 564,
+        "kind": "money",
+        "line_sha256": "367f7d21fdd11685815453ce4be74e3b9096289de9299759a956f425b0b7a981",
+        "exact_accepted_head_line_numbers": [
+          549
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 586,
+        "kind": "money",
+        "line_sha256": "a013bb6395e56a43430e1beb0812dcc684a6be27699037e982b56d6e85ace70c",
+        "exact_accepted_head_line_numbers": [
+          571
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 651,
+        "kind": "money",
+        "line_sha256": "8cf6cc587558baf3aabd8e19dac03178f3e828e350ee061406264c4373ec18ab",
+        "exact_accepted_head_line_numbers": [
+          636
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/test/membership_wallet_visual_test.dart",
+        "line": 685,
+        "kind": "money",
+        "line_sha256": "148d226f8daa2da761e7f0bd4e6e44f12833dfda49dcb1ce7b5108f94b5c9ae5",
+        "exact_accepted_head_line_numbers": [
+          670
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "existing_public_app_fixture",
+        "review": "Existing app-price label, component key or purchase-behavior assertion in public source test; no private pricing document",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 370,
+        "kind": "money",
+        "line_sha256": "5adb05dc7a85f33639d8862b34409bc1ba42f92ec84b9dfdfdb1222f3c3f8e66",
+        "exact_accepted_head_line_numbers": [
+          369
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "dart_record_field",
+        "review": "Dart record positional-field syntax; scanner dollar-digit collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 371,
+        "kind": "money",
+        "line_sha256": "d516771739305b8d0ba2d399ba6473a1d957075fc7700fdc69502f9be8c0508b",
+        "exact_accepted_head_line_numbers": [
+          370
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "dart_record_field",
+        "review": "Dart record positional-field syntax; scanner dollar-digit collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 446,
+        "kind": "money",
+        "line_sha256": "09ebc343c75cee24f6f869201d89becad9d99369fbfad73b3c6c1106a7e94fe0",
+        "exact_accepted_head_line_numbers": [
+          445
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "dart_record_field",
+        "review": "Dart record positional-field syntax; scanner dollar-digit collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 463,
+        "kind": "money",
+        "line_sha256": "1fbf271877f6c43cefeb679ef9499466b2b3bc1659a78a01b01ac696a9eb050e",
+        "exact_accepted_head_line_numbers": [
+          462
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "dart_record_field",
+        "review": "Dart record positional-field syntax; scanner dollar-digit collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+        "line": 465,
+        "kind": "money",
+        "line_sha256": "18378e0963087f5de9520cd118b71323391b04f5cc077020af4f8990108ac268",
+        "exact_accepted_head_line_numbers": [
+          464
+        ],
+        "preexisting_exact_line": true,
+        "semantic_category": "dart_record_field",
+        "review": "Dart record positional-field syntax; scanner dollar-digit collision",
+        "disposition": "reviewed non-private source hit; no new finding"
+      }
+    ]
+  },
+  "unresolved_new_findings": [],
+  "verdict": "CLEAR for the scoped source content: 0 secret findings; all 26 text hits are exact accepted lines and reviewed non-private source usages. History and records checks remain root owner responsibilities.",
+  "source_changed": false,
+  "tests_run": false,
+  "git_mutation": false
+}
