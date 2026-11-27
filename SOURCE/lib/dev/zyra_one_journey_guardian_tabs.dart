@@ -327,6 +327,7 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
                   scrollKey: ValueKey('guardian_journey_overlay_${card.id}'),
                   photo: card.photo,
                   fadeTone: ZyraPhotoFadeTone.guardian,
+                  goldOutline: true,
                   children: [
                     Text(
                       card.stageLine.toUpperCase(),
@@ -1709,7 +1710,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
             _tile(
               'Ended Journeys',
               'Only what ${state.seekerName} shares with you',
-              Icons.history,
+              Icons.history_outlined,
               'ended',
               bottomGap: 0,
             ),

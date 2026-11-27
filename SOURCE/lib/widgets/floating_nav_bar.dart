@@ -1013,7 +1013,7 @@ class _LockedFloatingTabBarState extends State<_LockedFloatingTabBar> {
         ? ZyraColors.ink(selected ? .58 : .28)
         : selected
         ? ZyraColors.foreground
-        : ZyraColors.ink(.45);
+        : const Color(0xFF7A6E62);
     return Expanded(
       child: Center(
         child: Semantics(
@@ -1085,7 +1085,7 @@ class _LockedFloatingTabBarState extends State<_LockedFloatingTabBar> {
                 key: const ValueKey('compact-nav-surface'),
                 height: ZyraNavBarMetrics.height,
                 decoration: BoxDecoration(
-                  color: ZyraColors.lowerSurface,
+                  color: const Color(0xFFF1EBDF),
                   borderRadius: BorderRadius.circular(ZyraNavBarMetrics.radius),
                   border: Border.all(color: ZyraColors.surfaceBorder),
                 ),

@@ -53,11 +53,13 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
     required this.children,
     this.photo,
     this.fadeTone = ZyraPhotoFadeTone.seeker,
+    this.goldOutline = false,
   });
   final Key surfaceKey, scrollKey;
   final ImageProvider? photo;
   final List<Widget> children;
   final ZyraPhotoFadeTone fadeTone;
+  final bool goldOutline;
 
   @override
   Widget build(BuildContext context) => ZyraFloatingSurface(
@@ -73,7 +75,11 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: ZyraColors.surfaceBorder),
+        border: Border.all(
+          color: goldOutline
+              ? ZyraColors.journeyGold
+              : ZyraColors.surfaceBorder,
+        ),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) => ZyraPhotoTextFade(

@@ -74,7 +74,7 @@ void main() {
         find.byType(ZyraFocusDashboard),
       );
       expect(focus.items.first.title, 'Welcome back, Adam');
-      expect(focus.items.first.icon, Icons.history);
+      expect(focus.items.first.icon, Icons.history_outlined);
       expect(focus.items.first.actionLabel, 'View Ended Journeys');
       expect(focus.items.length, greaterThan(1));
       await capture('welcome_back');

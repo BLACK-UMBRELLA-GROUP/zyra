@@ -29,7 +29,7 @@ class ZyraMyZyraNavigationCard extends StatelessWidget {
   IconData get _icon => switch (card.id) {
     'concept-my-requests' => Icons.inbox_outlined,
     'concept-my-introductions' => Icons.groups_outlined,
-    'concept-my-ended' => Icons.history_rounded,
+    'concept-my-ended' => Icons.history_outlined,
     _ => Icons.arrow_forward_rounded,
   };
 

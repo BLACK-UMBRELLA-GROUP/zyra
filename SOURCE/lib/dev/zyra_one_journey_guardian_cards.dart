@@ -766,7 +766,11 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           decoration: BoxDecoration(
             color: ZyraColors.cardSurface,
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: ZyraColors.surfaceBorder),
+            border: Border.all(
+              color: person?.person.isMain == true
+                  ? ZyraColors.journeyGold
+                  : ZyraColors.surfaceBorder,
+            ),
           ),
           child: LayoutBuilder(
             builder: (context, box) {

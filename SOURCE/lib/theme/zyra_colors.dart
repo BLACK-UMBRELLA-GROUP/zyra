@@ -184,13 +184,20 @@ class ZyraColors {
   /// The My ZYRA tile and Profile group surface used for app cards.
   static const Color cardSurface = Color(0xD9FAF5EC);
   static const cardShadows = [
-    BoxShadow(color: Color(0x1F3E2E1E), blurRadius: 24, offset: Offset(0, 10)),
-    BoxShadow(color: Color(0x123E2E1E), blurRadius: 6, offset: Offset(0, 2)),
+    BoxShadow(
+      color: Color(0x1F3E2E1E),
+      blurRadius: 19.92,
+      offset: Offset(0, 10),
+    ),
+    BoxShadow(color: Color(0x123E2E1E), blurRadius: 4.33, offset: Offset(0, 2)),
   ];
   static const Color lowerSurface = ivoryTop;
   static const Color sheetIvory = ivoryTop;
   static const Color confirmSheetSurface = Color(0xFFF7F2EA);
   static const Color divider = Color(0x1A3E2E1E);
+
+  /// Shared light-gold fill for the no-photo Seeker silhouette.
+  static const Color avatarPlaceholderFill = Color(0xFFEADFC8);
   static const Color avatarSand = Color(0xFF9C8A72);
   static const Color avatarDeepSand = Color(0xFF6B5B49);
   static const Color avatarWarmSand = Color(0xFF857560);

@@ -799,6 +799,7 @@ class _CircleTopicsMenu extends StatelessWidget {
       ),
     );
     return Stack(
+      clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
       children: [
         menu,
@@ -806,7 +807,7 @@ class _CircleTopicsMenu extends StatelessWidget {
           Positioned(
             left: 20,
             right: 20,
-            bottom: 100,
+            top: -62,
             child: IgnorePointer(
               child: Semantics(
                 liveRegion: true,

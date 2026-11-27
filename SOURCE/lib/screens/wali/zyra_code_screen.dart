@@ -1013,6 +1013,15 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
             ChoiceChip(
               label: Text(relation.name),
               selected: _relationship == relation.code,
+              showCheckmark: false,
+              backgroundColor: ZyraColors.surfaceFill,
+              selectedColor: ZyraColors.surfaceEmphasisFill,
+              side: BorderSide(
+                color: _relationship == relation.code
+                    ? ZyraColors.surfaceEmphasisBorder
+                    : ZyraColors.surfaceBorder,
+              ),
+              shape: const StadiumBorder(),
               onSelected: ZyraTapFeedback.onChanged(context, (selected) {
                 if (current()) {
                   setState(

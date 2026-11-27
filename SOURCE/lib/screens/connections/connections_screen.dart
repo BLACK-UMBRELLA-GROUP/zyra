@@ -2398,7 +2398,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(
-            icon: Icons.history,
+            icon: Icons.history_outlined,
             message: 'Ended Journeys will appear here.',
           ),
         )

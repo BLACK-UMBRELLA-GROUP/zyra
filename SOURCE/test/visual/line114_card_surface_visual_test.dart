@@ -11,8 +11,8 @@ const _captures = String.fromEnvironment('ZYRA_LINE114_CAPTURE_DIR');
 const _fill = Color(0xD9FAF5EC);
 const _border = BorderSide(color: Color(0x0F3E2E1E));
 const _shadows = [
-  BoxShadow(color: Color(0x1F3E2E1E), blurRadius: 24, offset: Offset(0, 10)),
-  BoxShadow(color: Color(0x123E2E1E), blurRadius: 6, offset: Offset(0, 2)),
+  BoxShadow(color: Color(0x1F3E2E1E), blurRadius: 19.92, offset: Offset(0, 10)),
+  BoxShadow(color: Color(0x123E2E1E), blurRadius: 4.33, offset: Offset(0, 2)),
 ];
 
 BaselineHarness _harness(WidgetTester tester) {
@@ -28,7 +28,11 @@ BaselineHarness _harness(WidgetTester tester) {
   );
 }
 
-void _expectCardSurface(WidgetTester tester, Finder content) {
+void _expectCardSurface(
+  WidgetTester tester,
+  Finder content, {
+  BorderSide border = _border,
+}) {
   expect(content, findsOneWidget);
   final floating = find.ancestor(
     of: content,
@@ -45,7 +49,7 @@ void _expectCardSurface(WidgetTester tester, Finder content) {
   final card = tester.widget<ZyraFloatingSurface>(floating).child;
   if (card is Material) {
     expect(card.color, _fill);
-    expect((card.shape! as RoundedRectangleBorder).side, _border);
+    expect((card.shape! as RoundedRectangleBorder).side, border);
     return;
   }
   final decoration =
@@ -58,7 +62,7 @@ void _expectCardSurface(WidgetTester tester, Finder content) {
           }
           as BoxDecoration;
   expect(decoration.color, _fill);
-  expect(decoration.border, Border.fromBorderSide(_border));
+  expect(decoration.border, Border.fromBorderSide(border));
 }
 
 Future<void> _capture(BaselineHarness harness, String name) async {
@@ -132,6 +136,7 @@ void main() {
       _expectCardSurface(
         tester,
         harness.key('guardian-card-content-draft-guardian-hassan'),
+        border: const BorderSide(color: ZyraColors.journeyGold),
       );
       await _capture(harness, 'guardian_card');
 

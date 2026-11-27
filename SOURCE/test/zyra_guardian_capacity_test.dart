@@ -115,6 +115,39 @@ void main() {
     }
   });
 
+  test('Basic reserves its free place in the Guardian One count', () {
+    expect(
+      ZyraGuardianCapacity.fromCount(
+        plan: ZyraPlan.basic,
+        linkedGuardianCount: 0,
+      ).guardianOnePlaces,
+      9,
+    );
+    expect(
+      ZyraGuardianCapacity.fromCount(
+        plan: ZyraPlan.basic,
+        linkedGuardianCount: 1,
+        linkedBasicGuardianCount: 0,
+      ).guardianOnePlaces,
+      8,
+    );
+    expect(
+      ZyraGuardianCapacity.fromCount(
+        plan: ZyraPlan.basic,
+        linkedGuardianCount: 1,
+        linkedBasicGuardianCount: 1,
+      ).guardianOnePlaces,
+      9,
+    );
+    expect(
+      ZyraGuardianCapacity.fromCount(
+        plan: ZyraPlan.one,
+        linkedGuardianCount: 0,
+      ).guardianOnePlaces,
+      10,
+    );
+  });
+
   test('unknown plan facts cannot spend a possibly used Basic place', () {
     final unknown = ZyraGuardianCapacity.fromCount(
       plan: ZyraPlan.basic,

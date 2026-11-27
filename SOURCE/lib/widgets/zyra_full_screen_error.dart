@@ -364,7 +364,8 @@ class _ErrorHelpCard extends StatelessWidget {
           copySize: 11.5,
           icon: Icons.lock_outline_rounded,
           title: 'Why this happens',
-          copy: 'Sessions end after a long time away or a password change.',
+          copy:
+              'Sessions end after a long time away, or when your Apple or Google sign-in changes.',
         ),
         ZyraInfoRow(
           iconGap: 9,

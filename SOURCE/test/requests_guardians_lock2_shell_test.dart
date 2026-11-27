@@ -292,7 +292,7 @@ void main() {
       final empty = _requests(
         tester,
       ).pages[2].whereType<ZyraRequestActivityEmpty>().single;
-      expect(empty.icon, Icons.history_rounded);
+      expect(empty.icon, Icons.history_outlined);
       expect(owner.latest.model.pastRequests, isEmpty);
       expect(find.textContaining('listed until'), findsNothing);
     },

@@ -273,6 +273,16 @@ covering 375/430 widths at normal and Larger Text with real shadows. Screens
 and audit records stay under `build/line140/`. The as-built record is
 `../PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/HANDOVER_2026-11-27.md`.
 
+## Founder preview build-check corrections
+
+Line 145 carries the approved outlined icons, Main Guardian border, ivory
+selected pills, shared avatar placeholder and prepared Guardian Journey photo.
+Floating surfaces retain the locked Flutter shadow values. Guardian Journeys
+keep the LOCK 24 clearance above the tab bar. Capture tests enable real shadows
+and write opt-in evidence under `build/line145/`; ordinary tests leave BUILT
+screenshots untouched. These corrections remain local Founder preview behavior.
+The g11/g12 goldens follow Q214, with matching SOURCE and SYSTEM manifest rows.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

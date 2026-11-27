@@ -358,7 +358,7 @@ class _ZyraHelpSafetyPreviewState extends State<ZyraHelpSafetyPreview> {
         ),
       ],
       _fact(
-        Icons.history,
+        Icons.history_outlined,
         'You have 30 days to change your mind',
         'Sign in again within 30 days and everything comes back. After that it is deleted for good.',
       ),

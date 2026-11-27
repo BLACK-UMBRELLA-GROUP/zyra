@@ -114,7 +114,7 @@ class ZyraGuardianAddCard extends StatelessWidget {
               child: Text(
                 'Seeker One: any 10 Guardians ›',
                 textAlign: TextAlign.center,
-                style: ZyraText.body(size: 13, color: ZyraColors.goldText),
+                style: ZyraText.body(size: 13, color: ZyraColors.foreground),
               ),
             ),
           ],

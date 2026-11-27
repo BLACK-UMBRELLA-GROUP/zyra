@@ -369,7 +369,7 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
           child: ZyraEmptyState(
             icon: index == 0
                 ? Icons.pause_circle_outline_rounded
-                : Icons.history_rounded,
+                : Icons.history_outlined,
             title: index == 0 ? 'No Paused Journeys yet' : 'No ended Journeys',
             message: index == 0
                 ? 'Journeys placed on hold will appear here until they continue or end.'

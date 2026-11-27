@@ -63,7 +63,7 @@ const Map<String, _PresetItem> _items = {
     detail:
         'This profile is no longer active. Your place is free for a new Journey.',
     action: 'Open Journey',
-    icon: Icons.history,
+    icon: Icons.history_outlined,
   ),
   'inact': (
     target: 'welcome_back',
@@ -71,7 +71,7 @@ const Map<String, _PresetItem> _items = {
     detail:
         'You were away for a while. Your Ended Journeys are kept — nothing was removed.',
     action: 'View Ended Journeys',
-    icon: Icons.history,
+    icon: Icons.history_outlined,
   ),
   'req': (
     target: 'requests',
@@ -155,6 +155,6 @@ const Map<String, _PresetItem> _items = {
     title: 'Your Journey with Noor has ended',
     detail: 'It stays in your read-only Ended Journeys.',
     action: 'View Ended Journeys',
-    icon: Icons.history,
+    icon: Icons.history_outlined,
   ),
 };

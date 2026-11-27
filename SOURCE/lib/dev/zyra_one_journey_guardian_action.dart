@@ -75,7 +75,7 @@ class ZyraGuardianActionPage extends StatelessWidget {
               'You stay ${invite.seekerName}’s ${invite.relationship} and ${invite.main ? 'Main' : 'Additional'} Guardian. Chat stays off until ${invite.seekerName} turns it on.',
             ),
             (
-              Icons.history,
+              Icons.history_outlined,
               'Choose by ${invite.chooseBy}',
               'If you don’t accept, the place stays free for ${invite.seekerName}.',
             ),
@@ -285,7 +285,7 @@ class ZyraGuardianFreePlacePage extends StatelessWidget {
       'Become Adam’s Guardian now. Chat in his Journeys when he turns it on, plus Connect with Guardian and Introductions.',
     ),
     (
-      Icons.history,
+      Icons.history_outlined,
       'Or wait for Adam',
       'If Adam moves to Seeker One, his Guardians can join on any plan. Your invitation stays open for 14 days.',
     ),

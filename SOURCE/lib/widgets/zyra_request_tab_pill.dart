@@ -40,7 +40,7 @@ class ZyraRequestTabPill extends StatelessWidget {
         radius: 999,
         child: Material(
           color: selected
-              ? selectedFill ?? ZyraColors.accentOnCanvas.withValues(alpha: .12)
+              ? selectedFill ?? ZyraColors.surfaceEmphasisFill
               : ZyraColors.surfaceFill,
           borderRadius: radius,
           child: InkWell(
@@ -54,7 +54,7 @@ class ZyraRequestTabPill extends StatelessWidget {
                 borderRadius: radius,
                 border: Border.all(
                   color: selected
-                      ? ZyraColors.accentOnCanvas.withValues(alpha: .70)
+                      ? ZyraColors.surfaceEmphasisBorder
                       : ZyraColors.surfaceBorder,
                 ),
               ),

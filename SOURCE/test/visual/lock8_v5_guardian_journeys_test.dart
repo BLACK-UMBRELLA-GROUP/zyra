@@ -131,7 +131,7 @@ void main() {
         final photo = t.widget<ZyraJourneyPhotoCard>(
           find.byType(ZyraJourneyPhotoCard),
         );
-        expect(photo.photo, isA<AssetImage>());
+        expect(photo.photo, isA<MemoryImage>());
         expect(photo.fadeTone, ZyraPhotoFadeTone.guardian);
         final fade = t.renderObject<RenderZyraPhotoTextFade>(
           find.byType(ZyraPhotoTextFade),

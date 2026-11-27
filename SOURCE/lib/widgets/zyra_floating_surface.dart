@@ -18,11 +18,19 @@ class ZyraFloatingSurface extends StatelessWidget {
 
   static const standardShadows = ZyraColors.cardShadows;
   static const tabShadows = [
-    BoxShadow(color: Color(0x293E2E1E), blurRadius: 28, offset: Offset(0, 12)),
-    BoxShadow(color: Color(0x143E2E1E), blurRadius: 8, offset: Offset(0, 3)),
+    BoxShadow(
+      color: Color(0x293E2E1E),
+      blurRadius: 23.38,
+      offset: Offset(0, 12),
+    ),
+    BoxShadow(color: Color(0x143E2E1E), blurRadius: 6.06, offset: Offset(0, 3)),
   ];
   static const goldShadows = [
-    BoxShadow(color: Color(0x40C08A3A), blurRadius: 18, offset: Offset(0, 8)),
+    BoxShadow(
+      color: Color(0x40A9792E),
+      blurRadius: 14.72,
+      offset: Offset(0, 8),
+    ),
   ];
   @override
   Widget build(BuildContext context) {

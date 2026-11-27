@@ -170,7 +170,7 @@ class _ZyraCircleDiscussionArchiveViewState
                                     context,
                                     'Journey ended',
                                     _archive.endedOn,
-                                    Icons.history_rounded,
+                                    Icons.history_outlined,
                                   ),
                                 ],
                               ],

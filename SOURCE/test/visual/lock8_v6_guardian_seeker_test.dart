@@ -1,8 +1,5 @@
 // LOCK 8 V6: real admitted shell, explicit active-Sara fixture for master g11.
-import 'dart:io';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_seeker.dart';
@@ -12,10 +9,15 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
 import 'baseline_capture_support.dart';
+import 'line145_capture_output.dart';
 
-const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
-const evidence = '$root/REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01';
-const capture = bool.fromEnvironment('ZYRA_LOCK8_V6_CAPTURE');
+final output =
+    checkedLine145CaptureOutput(
+      const String.fromEnvironment('ZYRA_LINE145_GUARDIAN_SEEKER_DIR'),
+    ) ??
+    '';
+const captureRequested = bool.fromEnvironment('ZYRA_LOCK8_V6_CAPTURE');
+final capture = captureRequested && output.isNotEmpty;
 const hassan = 'draft-guardian-hassan', yusuf = 'draft-guardian-yusuf';
 Finder key(String id) => find.byKey(ValueKey(id));
 
@@ -39,8 +41,8 @@ Future<BaselineHarness> mount(
   final h = BaselineHarness(
     t,
     group: 'lock8_v6',
-    outputRoot: '$root/PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6',
-    evidenceRoot: evidence,
+    outputRoot: output,
+    evidenceRoot: output,
     flatOutput: true,
     textScale: scale,
   );
@@ -62,28 +64,20 @@ Future<BaselineHarness> mount(
 ZyraGuardianTabsPresentation view(WidgetTester t) =>
     t.widget(find.byType(ZyraGuardianTabsPresentation));
 Future<void> cap(BaselineHarness h, String name, String reached) async {
-  if (capture && h.tester.view.physicalSize.width != 1290) {
-    await h.tester.runAsync(() async {
-      final boundary = h.tester.renderObject<RenderRepaintBoundary>(
-        key('zyra-founder-baseline-boundary'),
-      );
-      final image = await boundary.toImage(pixelRatio: 3);
-      try {
-        final data = await image.toByteData(format: ui.ImageByteFormat.png);
-        await File(
-          '$root/PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/$name',
-        ).writeAsBytes(data!.buffer.asUint8List());
-      } finally {
-        image.dispose();
-      }
-    });
-  } else if (capture) {
+  if (capture && h.tester.view.physicalSize.width == 1290) {
     await h.capture('seeker', name, 'fixture', reached, fileName: name);
   }
 }
 
 void main() {
-  setUpAll(() => baselineSetUp(evidenceRoot: evidence));
+  setUpAll(() {
+    if (captureRequested && !capture) {
+      throw StateError(
+        'Guardian Seeker capture requires an ignored build/line145/ path.',
+      );
+    }
+    return baselineSetUp(evidenceRoot: capture ? output : null);
+  });
   tearDownAll(baselineTearDown);
   setUp(() {
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);

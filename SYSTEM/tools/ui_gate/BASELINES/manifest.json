@@ -2313,12 +2313,13 @@
       "approved_by": "ZYRA chat, current LOCK BUILT checks",
       "governing_reference": "LOCK 8 V6 GUARDIAN_TABS/MASTERS/g11_seeker__adam_main.png",
       "version": "ZYRA-QUEUE75-R2",
-      "sha256": "340be2c560c878eee83c39ebaf5cf79e7821766f07a1e72d76195676ed9ef07d",
-      "bytes": 95888,
+      "sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+      "bytes": 94447,
       "questions_rows": [
         49
       ],
-      "type_update": {"line": 126, "date": "2026-11-23", "authority": "APP_COLOURS V9; Q181 item5; OA-ZYRA-371", "scope": "Reading ink and regular minimum for small text; layout, artwork and wording retained", "previous_sha256": "42b90a0c8125b40a41504e0ad80246f5a531a921b9a049b80c099315727f8fb8"}
+      "type_update": {"line": 126, "date": "2026-11-23", "authority": "APP_COLOURS V9; Q181 item5; OA-ZYRA-371", "scope": "Reading ink and regular minimum for small text; layout, artwork and wording retained", "previous_sha256": "42b90a0c8125b40a41504e0ad80246f5a531a921b9a049b80c099315727f8fb8"},
+      "line145_update": {"line": 145, "date": "2026-11-24", "authority": "Q214; Q212; PROFILE_TAB V5 §7", "scope": "Approved avatar and real shadow refresh; Q214 one-pixel layout tolerance verified", "previous_sha256": "340be2c560c878eee83c39ebaf5cf79e7821766f07a1e72d76195676ed9ef07d"}
     },
     {
       "id": "g12_seeker__yusuf_additional",
@@ -2332,13 +2333,14 @@
       "approved_by": "ZYRA chat, current LOCK BUILT checks",
       "governing_reference": "LOCK 8 V6 GUARDIAN_TABS/MASTERS/g12_seeker__yusuf_additional.png",
       "version": "ZYRA-QUEUE75-R2",
-      "sha256": "c289900ea800d0c954f3e65db1fb6085668184f8f89857c514d3785e63909c8c",
-      "bytes": 94913,
+      "sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+      "bytes": 93596,
       "questions_rows": [
         48,
         49
       ],
-      "type_update": {"line": 126, "date": "2026-11-23", "authority": "APP_COLOURS V9; Q181 item5; OA-ZYRA-371", "scope": "Reading ink and regular minimum for small text; layout, artwork and wording retained", "previous_sha256": "e5e036190053968c7dc669967da3b84c8afd771968511485782547cc51082c84"}
+      "type_update": {"line": 126, "date": "2026-11-23", "authority": "APP_COLOURS V9; Q181 item5; OA-ZYRA-371", "scope": "Reading ink and regular minimum for small text; layout, artwork and wording retained", "previous_sha256": "e5e036190053968c7dc669967da3b84c8afd771968511485782547cc51082c84"},
+      "line145_update": {"line": 145, "date": "2026-11-24", "authority": "Q214; Q212; PROFILE_TAB V5 §7", "scope": "Approved avatar and real shadow refresh; Q214 one-pixel layout tolerance verified", "previous_sha256": "c289900ea800d0c954f3e65db1fb6085668184f8f89857c514d3785e63909c8c"}
     },
     {
       "id": "k08_card__add_a_guardian",

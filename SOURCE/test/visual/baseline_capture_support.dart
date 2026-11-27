@@ -1184,70 +1184,88 @@ class BaselineHarness {
     final boundary = tester.renderObject<RenderRepaintBoundary>(
       find.byKey(_boundary),
     );
-    await tester.runAsync(() async {
-      final image = await boundary.toImage(pixelRatio: devicePixelRatio);
-      try {
-        expect(image.width, (logicalSize.width * devicePixelRatio).round());
-        expect(image.height, (logicalSize.height * devicePixelRatio).round());
-        final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-        final file = File(_capturePath('$outputRoot/$relative'));
-        if (_compareOnly) {
-          if (page == 'controls') {
-            _skippedControlPaths.add(relative);
+    final previousShadows = debugDisableShadows;
+    debugDisableShadows = false;
+    try {
+      void repaint(RenderObject object) {
+        object.markNeedsPaint();
+        object.visitChildren(repaint);
+      }
+
+      repaint(boundary);
+      await tester.pump();
+      await tester.runAsync(() async {
+        final image = await boundary.toImage(pixelRatio: devicePixelRatio);
+        try {
+          expect(image.width, (logicalSize.width * devicePixelRatio).round());
+          expect(image.height, (logicalSize.height * devicePixelRatio).round());
+          final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+          final file = File(_capturePath('$outputRoot/$relative'));
+          if (_compareOnly) {
+            if (page == 'controls') {
+              _skippedControlPaths.add(relative);
+              return;
+            }
+            expect(
+              file.existsSync(),
+              isTrue,
+              reason: 'Baseline must exist: $relative',
+            );
+            final actual = sha256
+                .convert(bytes!.buffer.asUint8List())
+                .toString();
+            final expected = sha256
+                .convert(await file.readAsBytes())
+                .toString();
+            if (actual != expected) {
+              _mismatchedBaselinePaths.add(relative);
+              final mismatch = File(
+                _capturePath(
+                  '${baselineEvidence.replaceFirst('BASELINE_2026-10-29', 'TIER4_TESTS_2026-10-29')}/PIXEL_PARITY_MISMATCHES/$relative',
+                ),
+              );
+              await mismatch.parent.create(recursive: true);
+              await mismatch.writeAsBytes(
+                bytes.buffer.asUint8List(),
+                flush: true,
+              );
+            }
+            expect(
+              actual,
+              expected,
+              reason:
+                  'Current pixels differ from preserved baseline: $relative',
+            );
+            _matchedBaselinePaths.add(relative);
             return;
           }
-          expect(
-            file.existsSync(),
-            isTrue,
-            reason: 'Baseline must exist: $relative',
+          await file.parent.create(recursive: true);
+          await file.writeAsBytes(bytes!.buffer.asUint8List(), flush: true);
+          rows.removeWhere((row) => row['file'] == relative);
+          rows.add({
+            'role': guardian ? 'Guardian' : 'Seeker',
+            'area': area,
+            'page': page,
+            'state': state,
+            'reached': reached,
+            'file': relative,
+            'width': image.width,
+            'height': image.height,
+            'route': latest.pages,
+            'tab': latest.tab,
+          });
+          final output = File(_capturePath('$evidenceRoot/rows_$group.json'));
+          await output.parent.create(recursive: true);
+          await output.writeAsString(
+            const JsonEncoder.withIndent('  ').convert(rows),
+            flush: true,
           );
-          final actual = sha256.convert(bytes!.buffer.asUint8List()).toString();
-          final expected = sha256.convert(await file.readAsBytes()).toString();
-          if (actual != expected) {
-            _mismatchedBaselinePaths.add(relative);
-            final mismatch = File(
-              _capturePath(
-                '${baselineEvidence.replaceFirst('BASELINE_2026-10-29', 'TIER4_TESTS_2026-10-29')}/PIXEL_PARITY_MISMATCHES/$relative',
-              ),
-            );
-            await mismatch.parent.create(recursive: true);
-            await mismatch.writeAsBytes(
-              bytes.buffer.asUint8List(),
-              flush: true,
-            );
-          }
-          expect(
-            actual,
-            expected,
-            reason: 'Current pixels differ from preserved baseline: $relative',
-          );
-          _matchedBaselinePaths.add(relative);
-          return;
+        } finally {
+          image.dispose();
         }
-        await file.parent.create(recursive: true);
-        await file.writeAsBytes(bytes!.buffer.asUint8List(), flush: true);
-        rows.removeWhere((row) => row['file'] == relative);
-        rows.add({
-          'role': guardian ? 'Guardian' : 'Seeker',
-          'area': area,
-          'page': page,
-          'state': state,
-          'reached': reached,
-          'file': relative,
-          'width': image.width,
-          'height': image.height,
-          'route': latest.pages,
-          'tab': latest.tab,
-        });
-        final output = File(_capturePath('$evidenceRoot/rows_$group.json'));
-        await output.parent.create(recursive: true);
-        await output.writeAsString(
-          const JsonEncoder.withIndent('  ').convert(rows),
-          flush: true,
-        );
-      } finally {
-        image.dispose();
-      }
-    });
+      });
+    } finally {
+      debugDisableShadows = previousShadows;
+    }
   }
 }

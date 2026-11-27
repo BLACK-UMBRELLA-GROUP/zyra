@@ -11,11 +11,13 @@ enum ZyraGuardianCapacityStatus {
 /// Client preflight for active, accepted Guardian links. Unknown plans are
 /// kept unknown. Existing links remain in place on a membership change.
 class ZyraGuardianCapacity {
+  final ZyraPlan plan;
   final int? linkedGuardianCount;
   final bool? basicPlaceUsed;
   final ZyraGuardianCapacityStatus status;
 
   const ZyraGuardianCapacity._(
+    this.plan,
     this.linkedGuardianCount,
     this.basicPlaceUsed,
     this.status,
@@ -47,11 +49,13 @@ class ZyraGuardianCapacity {
         ZyraGuardianCapacityStatus.basicPlaceUsed,
       _ => ZyraGuardianCapacityStatus.unavailable,
     };
-    return ZyraGuardianCapacity._(total, basicUsed, status);
+    return ZyraGuardianCapacity._(plan, total, basicUsed, status);
   }
 
   int get guardianOnePlaces =>
-      (ZyraSeekerPlanLimits.maxLinkedGuardians - (linkedGuardianCount ?? 0))
+      (ZyraSeekerPlanLimits.maxLinkedGuardians -
+              (linkedGuardianCount ?? 0) -
+              (plan == ZyraPlan.basic && basicPlaceUsed == false ? 1 : 0))
           .clamp(0, ZyraSeekerPlanLimits.maxLinkedGuardians);
 
   bool get canAdd => status == ZyraGuardianCapacityStatus.available;

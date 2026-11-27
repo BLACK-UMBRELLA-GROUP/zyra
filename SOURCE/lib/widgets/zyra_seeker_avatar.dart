@@ -25,12 +25,12 @@ class ZyraSeekerAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final source = photo;
     final placeholder = ColoredBox(
-      color: ZyraColors.iconButtonBg,
+      color: ZyraColors.avatarPlaceholderFill,
       child: Center(
         child: Icon(
           Icons.person,
-          color: ZyraColors.ink(0.38),
-          size: size * 30 / 64,
+          color: ZyraColors.avatarSand,
+          size: size * 0.98,
         ),
       ),
     );

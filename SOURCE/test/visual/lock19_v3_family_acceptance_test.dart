@@ -18,13 +18,16 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'baseline_capture_support.dart';
+import 'line145_capture_output.dart';
 import '../support/zyra_hidden_dev_controls_driver.dart';
 
-const output =
-    '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3';
-const scratch =
-    '/Users/shakeelahmad/Documents/Codex/2026-10-31/zyra-queue67-family-place-acceptance-v3/work/raw';
-const capture = bool.fromEnvironment('ZYRA_LOCK19_V3_CAPTURE');
+final output =
+    checkedLine145CaptureOutput(
+      const String.fromEnvironment('ZYRA_LINE129_FAMILY_CAPTURE_DIR'),
+    ) ??
+    '';
+const captureRequested = bool.fromEnvironment('ZYRA_LOCK19_V3_CAPTURE');
+final capture = captureRequested && output.isNotEmpty;
 const hassan = 'draft-guardian-hassan';
 final sent = DateTime.utc(2026, 10, 31, 12);
 Finder key(String id) => find.byKey(ValueKey(id));
@@ -70,7 +73,7 @@ Future<BaselineHarness> mount(
     t,
     group: 'lock19_v3',
     outputRoot: output,
-    evidenceRoot: scratch,
+    evidenceRoot: output,
     flatOutput: true,
     textScale: scale,
   );
@@ -164,7 +167,14 @@ Future<void> shadows(Future<void> Function() body) async {
 }
 
 void main() {
-  setUpAll(() => baselineSetUp(evidenceRoot: scratch));
+  setUpAll(() {
+    if (captureRequested && !capture) {
+      throw StateError(
+        'Family capture requires an ignored build/line145/ path.',
+      );
+    }
+    return baselineSetUp(evidenceRoot: capture ? output : null);
+  });
   tearDownAll(baselineTearDown);
   setUp(() {
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
@@ -252,7 +262,7 @@ void main() {
       final h = BaselineHarness(
         t,
         group: 'lock19_v3_source',
-        evidenceRoot: scratch,
+        evidenceRoot: output,
       );
       addTearDown(t.view.resetPhysicalSize);
       addTearDown(t.view.resetDevicePixelRatio);

@@ -168,6 +168,7 @@ void main() {
           contains('ZyraColors.surfaceEmphasisFill'),
           contains('ZyraColors.glassFill'),
           contains('ZyraColors.iconButtonBg'),
+          contains('ZyraColors.avatarPlaceholderFill'),
         ),
         reason: '${entry.key} must read the shared global surface tokens',
       );

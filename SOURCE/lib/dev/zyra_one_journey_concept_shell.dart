@@ -1190,7 +1190,7 @@ class _ZyraOneJourneyConceptShellState
           detail:
               'You were away for a while. Your Ended Journeys are kept — nothing was removed.',
           action: 'View Ended Journeys',
-          icon: Icons.history,
+          icon: Icons.history_outlined,
           occurredAt: at,
         ),
       if (received != null && received.isNotEmpty)
@@ -3294,9 +3294,11 @@ class _ZyraOneJourneyConceptShellState
                   child: Stack(
                     key: _firstTourViewport,
                     fit: StackFit.expand,
+                    clipBehavior: Clip.none,
                     children: [
                       Stack(
                         fit: StackFit.expand,
+                        clipBehavior: Clip.none,
                         children: [
                           if ((_pages.isNotEmpty ||
                                   _expandedJourneyOptionsId != null) &&
@@ -4766,7 +4768,7 @@ class _ZyraOneJourneyConceptShellState
     if (groups.isEmpty) {
       return const [
         ZyraRequestActivityEmpty(
-          icon: Icons.history_rounded,
+          icon: Icons.history_outlined,
           title: 'No past requests.',
           message:
               'Requests that were declined, expired or cancelled stay here.',
@@ -5706,7 +5708,7 @@ class _ZyraOneJourneyConceptShellState
       primary: _connectionAction(
         'draft_ended_view_$id',
         'View Timeline',
-        Icons.history,
+        Icons.history_outlined,
         () {
           if (current()) {
             _sampleEndedArchiveAttemptId = null;
@@ -5963,7 +5965,7 @@ class _ZyraOneJourneyConceptShellState
                   key: const ValueKey('concept_journey_timeline'),
                   tooltip: 'Timeline',
                   onPressed: _tap(_bound(() => _open('timeline'))),
-                  icon: const Icon(Icons.history),
+                  icon: const Icon(Icons.history_outlined),
                 ),
                 IconButton(
                   tooltip: 'Journey options',
@@ -6704,7 +6706,7 @@ class _ZyraOneJourneyConceptShellState
           detail:
               'You were away for a while. Your Ended Journeys are kept — nothing was removed.',
           action: 'View Ended Journeys',
-          icon: Icons.history,
+          icon: Icons.history_outlined,
           occurredAt: at,
         ),
       for (final notice in _model.departureNotices.entries)
@@ -6715,7 +6717,7 @@ class _ZyraOneJourneyConceptShellState
           detail:
               'This profile is no longer active. Your place is free for a new Journey.',
           action: 'Open Journey',
-          icon: Icons.history,
+          icon: Icons.history_outlined,
           occurredAt: notice.value,
           order: notice.key,
         ),
@@ -6845,7 +6847,7 @@ class _ZyraOneJourneyConceptShellState
             title: 'Your Journey with ${person.firstName} has ended',
             detail: 'It stays in your read-only Ended Journeys.',
             action: 'View Ended Journeys',
-            icon: Icons.history,
+            icon: Icons.history_outlined,
           ),
         );
       }
@@ -6925,7 +6927,7 @@ class _ZyraOneJourneyConceptShellState
                   _ => Icons.people_outline,
                 },
                 'timeline' => Icons.check,
-                'ended' => Icons.history,
+                'ended' => Icons.history_outlined,
                 'guardian' => Icons.verified_user_outlined,
                 _ => Icons.forum_outlined,
               },
@@ -7190,7 +7192,7 @@ class _ZyraOneJourneyConceptShellState
                 id: 'concept-my-ended',
                 label: 'Ended\nJourneys',
                 status: ended > 0 ? '$ended ended' : 'None',
-                icon: Icons.history,
+                icon: Icons.history_outlined,
                 onTap: action(() => _activity('ended', quickAccess: true)),
               ),
               ZyraFocusTile(
@@ -9018,11 +9020,17 @@ class _ZyraOneJourneyConceptShellState
       stageLine: person.id == 'draft-sara'
           ? _guardianTabs.stageLine
           : 'Stage ${stage?.order ?? 1} of 8 · ${stage?.label ?? _stateLabel(_model.stateFor(person.id)!)}',
-      photo: _photos == null
-          ? null
-          : AssetImage(
-              'assets/dev/one_journey_photos/${ZyraOneJourneySamplePhotos.seeds[draftProfiles.indexOf(person)].first}.jpg',
-            ),
+      photo: _preparedGuardianJourneyPhoto(person),
+    );
+  }
+
+  ImageProvider? _preparedGuardianJourneyPhoto(DraftProfile person) {
+    final index = draftProfiles.indexOf(person);
+    if (index < 0) return null;
+    return zyraGuardianJourneyPhoto(
+      allowed: _allowed,
+      blocked: _model.isBlocked(person.id),
+      preparedPhoto: _photos?.forIndex(index).firstOrNull,
     );
   }
 
@@ -12440,6 +12448,24 @@ class _BrowseOptionsBarCue extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// The Guardian Journey card only receives an already prepared, allowed photo.
+ImageProvider? zyraGuardianJourneyPhoto({
+  required bool allowed,
+  required bool blocked,
+  required String? preparedPhoto,
+}) {
+  if (!allowed || blocked || preparedPhoto == null) return null;
+  if (preparedPhoto.startsWith('assets/')) return AssetImage(preparedPhoto);
+  if (!preparedPhoto.startsWith('data:image/')) return null;
+  final comma = preparedPhoto.indexOf(',');
+  if (comma < 0) return null;
+  try {
+    return MemoryImage(base64Decode(preparedPhoto.substring(comma + 1)));
+  } on FormatException {
+    return null;
   }
 }
 

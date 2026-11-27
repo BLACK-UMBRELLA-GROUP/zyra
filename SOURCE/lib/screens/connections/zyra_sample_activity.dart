@@ -585,7 +585,7 @@ class _ZyraDeveloperJourneyRequestsScreenState
     if (rows.isEmpty) {
       return const [
         ZyraRequestActivityEmpty(
-          icon: Icons.history_rounded,
+          icon: Icons.history_outlined,
           title: 'No past requests.',
           message:
               'Requests that were declined, expired or cancelled stay here.',
@@ -742,7 +742,7 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
       },
       primary: ZyraOneJourneyConnectionsAction(
         label: 'View Timeline',
-        icon: Icons.history_rounded,
+        icon: Icons.history_outlined,
         onTap: () => _archive(context, generation),
       ),
       actions: [
@@ -1368,7 +1368,7 @@ class _ZyraSampleIntroductionsListState
     if (rows.isEmpty) {
       return const [
         ZyraRequestActivityEmpty(
-          icon: Icons.history_rounded,
+          icon: Icons.history_outlined,
           title: 'No past introductions.',
           message: 'Introductions you declined or took forward stay here.',
         ),
