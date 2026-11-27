@@ -1,0 +1,14 @@
+{
+  "verdict": "PASS after one past-tense clarification",
+  "scope": "four updated answer records only; no source or test rerun",
+  "reviewer": "independent q233_audit helper",
+  "exact_current_question_row": true,
+  "exact_current_queue146_row": true,
+  "source_ci_clean": true,
+  "foreign_staged_blobs_exact": 7,
+  "held_manifest_unchanged": true,
+  "historical_strict_replay_exit_code": 1,
+  "ink_fix_applied_claim": false,
+  "passed_replay_claim": false,
+  "correction": "Changed stale present-tense QUESTION paragraph to historical QUESTION followed by external WAITING/ANSWERED update."
+}
