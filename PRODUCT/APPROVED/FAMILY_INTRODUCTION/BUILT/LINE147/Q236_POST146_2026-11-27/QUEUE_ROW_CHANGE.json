@@ -1,0 +1,8 @@
+{
+  "line": 147,
+  "before_sha256": "3902a51f0ea02919b509d3df28bb174c0a3e4aa4f826a0adf3cf6fdc98e8059c",
+  "after_sha256": "dcb1ae4d9aca02f2f78c0bab9650536302298ec1b05e67c80d44549d85e92960",
+  "only_row147_changed": true,
+  "staged": false,
+  "new_status": "BUILT"
+}

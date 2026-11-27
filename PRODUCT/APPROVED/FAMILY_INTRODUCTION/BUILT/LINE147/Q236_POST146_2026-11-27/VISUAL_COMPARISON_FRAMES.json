@@ -1,0 +1,186 @@
+[
+  {
+    "capture": "ci01-actual-oneway-introduction.png",
+    "sha256": "bce6b8932dc7211fa20668cf368c895e933f20a9bf4c452bfd2ad14c9fd8dd5e",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/ci01_introductions__ask_my_guardians.png",
+    "master_sha256": "5fa18ceb8019018516e5c05f64eaba27b91408e15daf6200782492ce41de0cc4"
+  },
+  {
+    "capture": "ci02-actual-circle-main.png",
+    "sha256": "1bf71ed87f2cba8f80b1ca835dc91aacb18a0918f0d0219e311754ddc814994b",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/ci02_guardian_circle__introduction_shared.png",
+    "master_sha256": "459ab16dec650dc880ea57e0c1eb9c91b841c2b572c1fcdbc04c3ffb754f491b"
+  },
+  {
+    "capture": "fi01-actual-introductions-open.png",
+    "sha256": "6283bd0d06a573aecf012725663860779c9a46edc67f78497e18fa45b514dace",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi01_introductions__families_agree.png",
+    "master_sha256": "c87816a7e6337293b1e7fb2fe3acaeb30d1c217546396bc5b073ee4a95da3034"
+  },
+  {
+    "capture": "fi02-actual-full-profile.png",
+    "sha256": "90925737763090008be2f939a9490f523ea07d088294635dce936d32349da77a",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi02_profile__families_agree.png",
+    "master_sha256": "3f13429efca393bf5f72af1b63238f5605b659f5c4a7033c6422bf4f9796267b"
+  },
+  {
+    "capture": "fi03-actual-saved.png",
+    "sha256": "ff143f29fc02eff18acbe5a795ea86738f8b649f9f4008b0cdc12cd62a5fbdaf",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi03_introductions__answer_saved.png",
+    "master_sha256": "f0567ff2d5e4b0d09ca28ffe1b91b91a8ab6410a954ed7a5f5f33416c59c14ba"
+  },
+  {
+    "capture": "fi04-actual-past.png",
+    "sha256": "c4a542dada892d435febc76463ec0407bd0fb65922fa929544e0f35d79177490",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi04_introductions_past__journey_begun.png",
+    "master_sha256": "fc05703fb278f6d2c555ed7fcc62063a012b1759540d330240d1d5acec118ef0"
+  },
+  {
+    "capture": "fi05-actual-main-confirm.png",
+    "sha256": "76a61ef9c0ab90db734a350ccfdf44ad8bebae021d9721d5e1ee3b53a17e10aa",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi05_connect__confirm_main.png",
+    "master_sha256": "a8ba40820a407ecd796aca34457daa1c25ad5950a651c5afc73b12299f519ad7"
+  },
+  {
+    "capture": "fi06-actual-nonmain-confirm.png",
+    "sha256": "d6c5bba3f609d8a8b8534cc2694a73f197b92138745d8830d9d358f9acb28e0f",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi06_connect__confirm_needs_approval.png",
+    "master_sha256": "0e0e2ac6b9699abb9e756c6d774558b15fb0217b5095f4832ae5d33e6148c77a"
+  },
+  {
+    "capture": "fi07-actual-sent-approval.png",
+    "sha256": "d8f626869829b7f24fbf92ecb64ec69712f5132deb75c64831bcaed198db5585",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi07_connect_sent__waiting_approval.png",
+    "master_sha256": "4b06463997eb4ea407f07d540d35e9edced40f25e01501fb06960aa0f636844c"
+  },
+  {
+    "capture": "fi08-actual-sent-both-open.png",
+    "sha256": "62ebd17555147168cf035215f1e7375a9f2214a2e1a5918dbd5d0e85f6940e7b",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi08_connect_sent__both_open.png",
+    "master_sha256": "1b81a3752b83baecfd49332919413b95a02d86b94bf438e98014129a958f47f1"
+  },
+  {
+    "capture": "fi09-actual-received-and-approval.png",
+    "sha256": "d64748b9bf5d7114f6ea6bd8ac6e15d6b3805c9d3f8ef316766f9794711ec199",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi09_connect_received__set_replies_and_approval.png",
+    "master_sha256": "18b632ac8229fabd9509689545ed630013baecc7b091b3781cc6d0fb5f44ecfd"
+  },
+  {
+    "capture": "fi10-actual-received-families-open.png",
+    "sha256": "4acd56d56413aa48b9b5ce29fe8898a8eb58f65d27a9aea1316b692be41366a0",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi10_connect_received__families_open.png",
+    "master_sha256": "84b29d37c77ec6a8772d8c49f711b0492ff8f6c2aa7e80ded095945d01395f13"
+  },
+  {
+    "capture": "fi11-actual-sent-think.png",
+    "sha256": "51f863253f579083426f15c8df5756edb7ef77f9b093965068fcbd101489c01d",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi11_connect_sent__thinking.png",
+    "master_sha256": "c7c8809bd8dafd6600e54f8291f65fe1a265298946e87afa3f69565e1dee99e6"
+  },
+  {
+    "capture": "fi12-actual-received-think.png",
+    "sha256": "e644c81b4fa41cc48c41715bb199d7514a0cf7a7241a207b7d1db616b1b64ed1",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi12_connect_received__thinking_reply_later.png",
+    "master_sha256": "45f3e3e0715b84cec4e70792018baccb924120b80a7e1140576dcfd53fb4af7d"
+  },
+  {
+    "capture": "supplemental-circle-family.png",
+    "sha256": "6770e373628af329943c618cae183e799e10cd289e89eb2f6e857374faea863e",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": null,
+    "master_sha256": null
+  },
+  {
+    "capture": "requests-received-expanded.png",
+    "sha256": "8210bd2cf1f5cd29a68e99dd45f5940aa8f6ec9cb337b8904a1445e2acc9f79d",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__received_expanded.png",
+    "master_sha256": "7005f55fd310cff109e2878c25a3a283e64ac11ad700b3f7f9417fa8d5b599de"
+  },
+  {
+    "capture": "supplemental-fi08-main-adam-aisha.png",
+    "sha256": "9178bb8ac09239e18cf2e6960e1977279fd9dc50a9cb515dd3ad44882de49d80",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/fi08_connect_sent__both_open.png",
+    "master_sha256": "1b81a3752b83baecfd49332919413b95a02d86b94bf438e98014129a958f47f1",
+    "supplemental": true,
+    "comparison": "DIFFERENCE; see VISUAL_COMPARISON.md"
+  },
+  {
+    "capture": "supplemental-ci02-noor-with-sara-topic.png",
+    "sha256": "1291f0fa292dd7e525db48ddd39b5197194de409ca393d9644ecef6f88100534",
+    "size": [
+      1290,
+      2796
+    ],
+    "master": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/MASTERS/ci02_guardian_circle__introduction_shared.png",
+    "master_sha256": "459ab16dec650dc880ea57e0c1eb9c91b841c2b572c1fcdbc04c3ffb754f491b",
+    "supplemental": true,
+    "comparison": "DIFFERENCE; see VISUAL_COMPARISON.md"
+  }
+]

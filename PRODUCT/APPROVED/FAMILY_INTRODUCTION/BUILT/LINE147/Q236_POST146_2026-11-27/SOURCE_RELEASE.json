@@ -1,0 +1,16 @@
+{
+  "released_utc": "2026-11-27T21:48:32.296259+00:00",
+  "code_commit": "4dc8510ed0ea8b302307e583463e4f5d896f444f",
+  "record_head_before_publication": "4dc8510ed0ea8b302307e583463e4f5d896f444f",
+  "source_lease_seconds": 2473.666173,
+  "failed_full_cycles": 0,
+  "early_stopped_ordinary_start": 1,
+  "foreign_staged_exact": 7,
+  "protected_png_exact": 2457,
+  "preexisting_line138_exact": true,
+  "ordinary_passed": 8092,
+  "ordinary_failed": 0,
+  "hosted_required_success": 4,
+  "hosted_workflow_conclusion": "success",
+  "next_queue_line": 148
+}

@@ -1,0 +1,51 @@
+Line 147 — LOCK49 / Q227 / Q236 — 27 November 2026
+
+Current state: BUILT in the authorized Founder sample preview. Local ordinary regression8092pass/253skip/0fail; analyzer clean9.0s; exact-code full hosted workflow46070972009 SUCCESS, including test selection and all three Flutter shards. Members do not see this yet. Live:no.
+
+Authority: Founder GO for queue147; FAMILY_INTRODUCTION/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md; locked FAMILY_INTRODUCTION specV1 with24/27Nov corrections and LOCK_RECORD; Q227 and Q236 answered. Shared LOCK41 full profile, LOCK48 limits, GUARDIAN_TABS V9, GUARDIAN_CIRCLE and APP_COLOURS V9 preserved. OA-ZYRA-371. No migrations.
+
+Built: Main approval for Additional senders, Main-only Received with fixed replies and private paired Seeker choices; both yes enters existing Journey-place preparation, any no neutral Past; Q227 Change my answer until the other answers and continuing Think replies; no private Guardian-chat route in this sample flow. Ask my Guardians shares one local introduction attachment into the current owner's Circle Main and opens the same full profile. Ordinary introduction cards, family cards and Received Journey requests use locked bottom answer pairs. fi10 status uses the actual viewer's own Seeker first. fi02 family-only primary fill is goldTextFill, with a transparent Material boundary on that route.
+
+Boundaries: all new state belongs to ZyraDeveloperSamples' account/session generation and is in memory. No real member or live Circle path, server, send transport, phone install, version change or other queue line. Ordinary introduction sends still recheck current profile/card context and the accepted Basic5/One20 waiting cap and Pause/Block/departed policy immediately before requestIntroduction. Family private answers use reserved Journey places and create no waiting request. The sample profile helper retains actual onActionFromProfile(BuildContext), origin options/toasts and foreground ownership. Private individual answers have no public value accessor; final neutral no reveals no author. Guardian actions retain account, role, route, phase and Main ownership guards; local Circle scope never grants live authority.
+
+Reconciliation: original held19-path e6cbd62fc004e557f4786ff37e382d1d2ff1e9cf16638a5b756b821e049ac0de and manifest50c5289f0137f9b2b0d94c6d9a0a44810be0c0eafc057e0609592e4cb0da124e verified by exact base/new-file/output hashes. Independent21-path patch befe016df4e404c11d62b423d264aefda9058e7072d5cf18c1cfa96a9636caad and manifestd3e666dc66d1fd0f467c8d5c5f57266279ef049615d89e5bd41c2d8f981078cc verified. All21 independent outputs reproduced from d4c25483 preimages before merging with dca9b4c7. README, full profile, shell and sample activity reconciled manually; all other old hunks matched exactly, retaining unrelated newer edits. Current141 stage wrapping/Details gap,142 offers,144 corpus/docs,145 shadows/History outline/Guardian photo and146/Q241 Limits/disclosure were not rolled back. Two line98 count sites covering three cases change3 to4 and citeLOCK49; existing keyed card, single-expansion, local-only, action, Past and geometry assertions remain.
+
+Tests and visual proof: 218 initial focused cases; final24 permission/panel cases including Basic5/One20 full/free slots across card/profile/Circle, Pause, Block, departure, covered/stale account callbacks, Main stale role/account replies, idempotent Circle share and both family outcomes with zero waiting sends. Six affected line126 routes strict and unchanged thresholds. Focused raster24cases/14PNG+JSON/154text runs/0failures. Five whole-page scenarios passed with16frames (15master comparisons plus one family-share supplement),430x932@3x, real app theme/fonts/navigation/action footers, bundled stand-in photos,2600ms settle. The initial incorrect internal-Founder-flags focused run was stopped; normal panel-only flags are the tested configuration. New permission fixture omissions were repaired to match production currentPreview and owned-dialog admission, with role selection before sample seeding; no source guard was relaxed. The preparing-status test explicitly supplies a real spare sample place.
+
+Visual disposition: per-screen comparison is recorded separately; no full pixel MATCH is claimed. Benign existing shared-style and sample/history differences stay explicit underQ236; no names, words, styles, coverage or thresholds are changed to manufacture MATCH. Host widget capture does not prove native status-bar or platform fallback glyph rendering, and no native/phone proof is claimed. Any actual decision or mismatching locked state must be one question; none has been established so far.
+
+Reproduce: fromSOURCE use node tooling/no_git_driver.mjs flutter analyze --no-pub; flutter test --no-pub through that driver for ordinary regression and the named focused files. Capture component raster via --dart-define=ZYRA_LINE147_CAPTURE=true on test/line147_family_introduction_test.dart and test/line147_q227_test.dart. Strict line126 selection: test/visual/line126_coverage_entry_routes_test.dart and test/visual/line126_remaining_routes_test.dart --name '(Seeker Basic accepted introductions|Seeker Basic current Circle|Guardian (One|Basic) linked profile|Guardian (One|Basic) rejects dormant Network profile)'. Whole-page work driver path and hashes are in capture manifest; run with ZYRA_LINE147_WHOLE_DIR and --plain-name 'Q236 whole page', with no internal-Founder build flags. No full-screen corpus/report-only, waiver or browser gate was added.
+
+Live file responsibilities:
+SOURCE/README.md — preview behavior and replay commands
+SOURCE/lib/dev/zyra_circle_topics_presentation.dart — local attachment handoff
+SOURCE/lib/dev/zyra_family_introduction_preview.dart — private local approval/reply/answer/place state machine
+SOURCE/lib/dev/zyra_full_profile_preview.dart — family byline/pair and family-only fill while retaining shared profile gates
+SOURCE/lib/dev/zyra_guardian_circle_preview.dart — attachment callback type
+SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart — local attachment view propagation
+SOURCE/lib/dev/zyra_one_journey_concept_shell.dart — guarded routes, sample actions, Circle attachment and ordinary admission
+SOURCE/lib/dev/zyra_one_journey_guardian_action.dart — role-specific fixed-rule confirmation wording
+SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart — Main-only set-reply/approval lists and viewer-derived status
+SOURCE/lib/dev/zyra_request_activity_presentation.dart — paired bottom actions, family outline and saved-state control
+SOURCE/lib/screens/connections/zyra_sample_activity.dart — ordinary/family introduction list, private actions, Past and profile helper
+SOURCE/lib/screens/wali/family_messaging_screens.dart — owned local preview lifetime on existing chat surface
+SOURCE/lib/state/zyra_developer_samples.dart — account-owned sample state, idempotent shares and reserved places
+SOURCE/lib/widgets/zyra_developer_title.dart — verified owned Navigator identity predicate
+SOURCE/lib/widgets/zyra_guardian_preview_lifetime.dart — denial-only owned Circle lifetime
+SOURCE/lib/widgets/zyra_profile_details_page.dart — shared family byline
+SOURCE/test/line147_family_introduction_test.dart — locked state, private choices, place handling and focused raster
+SOURCE/test/line147_q227_test.dart — change-answer and Think continuation normal/Larger Text checks
+SOURCE/test/zyra_developer_panel_entry_test.dart — three real panel/network/Circle state replays
+SOURCE/test/line98_introductions_test.dart — authorized count migration for added family card
+SOURCE/test/visual/line98_introductions_visual_test.dart — same migration across two geometry fixtures
+SOURCE/test/line147_admission_test.dart — 21 actual guarded shell cap/privacy/stale-action tests
+
+Tooling observation (OA-ZYRA-371): the first protected analyzer invocation followed the brief literal analyze command without --no-pub, so Flutter invoked its automatic resolver and printed Resolving dependencies / Downloading packages. No project pubspec/lock/tooling change occurred, but no claim is made that the global cache received no downloads. All later checks explicitly use --no-pub; no dependency upgrade or install command was run. The command choice was corrected, not treated as a product failure or hidden.
+
+Written scope refusal (OA-ZYRA-371/Q236): no change to accepted shared UI, fixture names/data/history, Circle glyphs, report ownership, captured masters, test thresholds, coverage, waivers or full-app gates is made to manufacture visual equality. The recorded presentation/fixture comparisons are not newly approved designs. The same-person Main fi08 and Sara topic are exercised through existing preview controls as supplemental proof, not replaced in the original comparison.
+
+Publication: scoped22-file code commit 4dc8510ed0ea8b302307e583463e4f5d896f444f is on origin/main. Required hosted run46070972009 and the complete hosted workflow are SUCCESS on that exact code SHA. Complete local log/manifest proofs are adjacent; full masterMATCH remains unclaimed.
+
+Release: SOURCE/lib, SOURCE/test, SOURCE/README and their index entries are clean at code 4dc8510ed0ea8b302307e583463e4f5d896f444f. SOURCE released 2026-11-27T21:48:32.296259+00:00 after 2473.666seconds, with zero failed completed full cycles. One early ordinary start was stopped for static test-fixture fidelity review before the final full cycle. Coordinator may take148; record-only CI does not hold SOURCE. All seven foreign staged blobs, preexistingLINE138 files and2457recordedPNG hashes were verified exact at release. Only147 was markedBUILT in the working queue, which remains unstaged with the mixed QUESTIONS file. No new question was necessary; Q227/Q236 remainANSWERED.
+
+Visual final:18frames are15original master comparisons, one family-share supplement, and two existing-route supplements. The Main supplement waits for the accepted onPresentationReady callback before covering the route with Developer, then verifies its data-image and decoded image; the final frame replaced its rejected same-session black interim. Prior16frame hashes are exact. No product photo gate was changed. FullMATCH is not claimed; per-screen differences, shared/fixture boundaries and native glyph limitation are in VISUAL_COMPARISON.md.

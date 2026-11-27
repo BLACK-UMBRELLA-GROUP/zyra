@@ -1,0 +1,208 @@
+{
+  "findings": [
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 318,
+      "kind": "money",
+      "text": "final date = a.$2.message.createdAt.compareTo(b.$2.message.createdAt);",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 319,
+      "kind": "money",
+      "text": "return date == 0 ? a.$1.compareTo(b.$1) : date;",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 323,
+      "kind": "money",
+      "text": "item.$2.message.senderId == senderId &&",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 324,
+      "kind": "money",
+      "text": "item.$2.message.readBy.any((reader) => reader.userId != senderId),",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 327,
+      "kind": "money",
+      "text": "(item) => item.$2.message.id == unreadDividerId,",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 334,
+      "kind": "money",
+      "text": "final item = ordered[index].$2;",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 338,
+      "kind": "money",
+      "text": ": ordered[index - 1].$2.message.createdAt.toLocal();",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 3027,
+      "kind": "money",
+      "text": "(id) => key.$3?.startsWith('draft-circle-attempt-$id-') ?? false,",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 11553,
+      "kind": "money",
+      "text": "initialDraft: data.$1,",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 11554,
+      "kind": "money",
+      "text": "quickCheck: data.$2,",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "line": 152,
+      "kind": "money",
+      "text": "_row(rows[i].$1, rows[i].$2, rows[i].$3),",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1305,
+      "kind": "money",
+      "text": "_button(demo.$1, _familyAction(demo.$2, row)),",
+      "accepted_line": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1329,
+      "kind": "money",
+      "text": "decline.$1,",
+      "accepted_line": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1330,
+      "kind": "money",
+      "text": "_familyAction(decline.$2, row),",
+      "accepted_line": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1334,
+      "kind": "money",
+      "text": "accept.$1,",
+      "accepted_line": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1335,
+      "kind": "money",
+      "text": "_familyAction(accept.$2, row),",
+      "accepted_line": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1338,
+      "kind": "money",
+      "text": "if (!fits(decline.$1) || !fits(accept.$1)) {",
+      "accepted_line": false
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 2266,
+      "kind": "money",
+      "text": "margin: const EdgeInsets.only(",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 1894,
+      "kind": "money",
+      "text": "margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2166,
+      "kind": "money",
+      "text": "margin: EdgeInsets.only(",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2590,
+      "kind": "money",
+      "text": "margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2625,
+      "kind": "money",
+      "text": "if (contexts.any((item) => item.kind == group.$1)) ...[",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2629,
+      "kind": "money",
+      "text": "group.$2,",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2636,
+      "kind": "money",
+      "text": "(candidate) => candidate.kind == group.$1,",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 395,
+      "kind": "money",
+      "text": "(fact.$1, _labelStyle),",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 396,
+      "kind": "money",
+      "text": "(fact.$2, _valueStyle),",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 471,
+      "kind": "money",
+      "text": "key: ValueKey('profile-detail-tile-${fact.$1}'),",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 488,
+      "kind": "money",
+      "text": "_text(context, fact.$1, _labelStyle),",
+      "accepted_line": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 490,
+      "kind": "money",
+      "text": "_text(context, fact.$2, _valueStyle),",
+      "accepted_line": true
+    }
+  ],
+  "disposition": "Reviewed technical code identifiers, approved existing member UI and adaptive label measurement; no private commercial document or new pricing content."
+}

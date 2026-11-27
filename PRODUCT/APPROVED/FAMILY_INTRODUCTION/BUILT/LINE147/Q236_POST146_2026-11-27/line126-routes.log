@@ -1,0 +1,10 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_coverage_entry_routes_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_remaining_routes_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_remaining_routes_test.dart: line126 430x932_1.0 Guardian One linked profile (variant: TargetPlatform.iOS)
+00:00 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_coverage_entry_routes_test.dart: line126 Seeker Basic accepted introductions (variant: TargetPlatform.iOS)
+00:01 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_coverage_entry_routes_test.dart: line126 Seeker Basic accepted introductions (variant: TargetPlatform.iOS)
+00:01 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_coverage_entry_routes_test.dart: line126 Seeker Basic accepted introductions (variant: TargetPlatform.iOS)
+00:01 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_remaining_routes_test.dart: line126 430x932_1.0 Guardian Basic rejects dormant Network profile (variant: TargetPlatform.iOS)
+00:01 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_coverage_entry_routes_test.dart: line126 Seeker Basic current Circle (variant: TargetPlatform.iOS)
+00:01 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line126_coverage_entry_routes_test.dart: (tearDownAll)
+00:01 +6: All tests passed!

@@ -1,0 +1,54 @@
+{
+  "findings": [
+    {
+      "path": "MAP.md",
+      "line": 29,
+      "kind": "money",
+      "staged": false,
+      "amount_present": false
+    },
+    {
+      "path": "MAP.md",
+      "line": 33,
+      "kind": "legal/company",
+      "staged": false,
+      "amount_present": false
+    },
+    {
+      "path": "MAP.md",
+      "line": 636,
+      "kind": "money",
+      "staged": false,
+      "amount_present": false
+    },
+    {
+      "path": "MAP.md",
+      "line": 640,
+      "kind": "money",
+      "staged": false,
+      "amount_present": false
+    },
+    {
+      "path": "MAP.md",
+      "line": 676,
+      "kind": "money",
+      "staged": false,
+      "amount_present": false
+    },
+    {
+      "path": "MAP.md",
+      "line": 870,
+      "kind": "money",
+      "staged": false,
+      "amount_present": false
+    },
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "line": 169,
+      "kind": "money",
+      "staged": false,
+      "amount_present": false
+    }
+  ],
+  "publication": "Excluded mixed foreign files; no unrelated change, private material or register rewrite is published by this task."
+}

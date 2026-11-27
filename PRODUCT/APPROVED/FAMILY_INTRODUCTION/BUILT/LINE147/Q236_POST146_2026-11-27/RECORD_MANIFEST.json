@@ -1,0 +1,428 @@
+{
+  "line": 147,
+  "lock": 49,
+  "code_commit": "4dc8510ed0ea8b302307e583463e4f5d896f444f",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/BUILD.json",
+      "size": 1089,
+      "sha256": "fd66a670c964fc3ac7094525824eb6f0e309c7bf0b6fd5b52728297997807711"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/CAPTURE_MANIFEST.json",
+      "size": 7363,
+      "sha256": "3ebd6c02af9de5e7bef8b667d666051997156e30af0d35f8df312dfc117100ce"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/CODE_MANIFEST.json",
+      "size": 6254,
+      "sha256": "6e820db9907056dada9f7db1db7dc9fa3cb4886fc2e7c8708250359e84f784ac"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/COMPARISONS.md",
+      "size": 2920,
+      "sha256": "4d8865b369c9a2f68979bd61be0231e52666db538606b5982404e86f22a3bb92"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-introductions-430.json",
+      "size": 224,
+      "sha256": "5b3ee0bbee28c2e19b7086fced43c39ba42df6b60e11ae95a2f5c48eb3efbfe2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-introductions-430.png",
+      "size": 309780,
+      "sha256": "7f44ee432257ee30d09e05fcb1e900467e1ce9042f839a669a916e5d59b66557"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-larger-text-375.json",
+      "size": 225,
+      "sha256": "2d6cdcd5ba93c0f7361ea52bae62041495684db1d09c611e9fd7872f3029c6ad"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-larger-text-375.png",
+      "size": 256509,
+      "sha256": "47b3b39077a2dfc90bc20c86019b8596c0e23bd58160e57833fc7730ef1da365"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-q227-reopened-375-larger.json",
+      "size": 225,
+      "sha256": "de36a1db12cbd86b7919207b50337ffd45e1c47aa180ff95d4d7101cb895f454"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-q227-reopened-375-larger.png",
+      "size": 255653,
+      "sha256": "18e5676ea251a1ea4903aa51849a09424821eac815f6e58649540a7b9dbc9168"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-q227-reopened-430-normal.json",
+      "size": 224,
+      "sha256": "89421ac96f2a3a21e1f6ffe2be8b122a9ea13df33efcb39a48f22eca594aca34"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-q227-reopened-430-normal.png",
+      "size": 307106,
+      "sha256": "00e1bb87c9c5a85bea6253a6ac5b85eab343b8a04c6fcf6ce5812ce4462cddd5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-private-waiting-430.json",
+      "size": 225,
+      "sha256": "dfd93943b6ff8bd5a124444d0af266c5251bdeb093ecabf5eca8eb4742810fb1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-private-waiting-430.png",
+      "size": 321204,
+      "sha256": "656aa8dbc45e9f93f0316da1c6b3e74a84ccb5eea320ec0e13661e9ae03d2f20"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-q227-saved-375-larger.json",
+      "size": 225,
+      "sha256": "caaf700903364ea41ef4d3b8192cbeb301d6b4928f28f244c839f849dee77b32"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-q227-saved-375-larger.png",
+      "size": 238877,
+      "sha256": "37eaf12156c6f3b912bcf664df2eecf79ccfbae833d19305ecab63733e4eeea0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-q227-saved-430-normal.json",
+      "size": 225,
+      "sha256": "dfd93943b6ff8bd5a124444d0af266c5251bdeb093ecabf5eca8eb4742810fb1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-q227-saved-430-normal.png",
+      "size": 321204,
+      "sha256": "656aa8dbc45e9f93f0316da1c6b3e74a84ccb5eea320ec0e13661e9ae03d2f20"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi05-main-430.json",
+      "size": 226,
+      "sha256": "ef476ae5dca94ba63ac642b991f2d4f46300c2efd43efaef202e9662df1fa24f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi05-main-430.png",
+      "size": 199586,
+      "sha256": "eb20b883569ab07dc7876b5421bc9977936d4e66d4043aa3b83a3aa6924b78ad"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi06-additional-430.json",
+      "size": 226,
+      "sha256": "f51dbff02312e94e1797daff31b957fba536c35b63dcdf4e2aff9ef148b1d6ed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi06-additional-430.png",
+      "size": 216892,
+      "sha256": "32846a5cfae9c5642b33f15f9cd1c9c9e9d3b89925ae5753485a77e548a716f5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi09-received-430.json",
+      "size": 226,
+      "sha256": "26fbdf33f02c792592356781b11dcd08f911a171055d7f2ccfb5f07ab0ab25c3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi09-received-430.png",
+      "size": 270744,
+      "sha256": "37c64503ba5d654ea42c385667229648775b2b6934b128abd20c2085d7510852"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi11-q227-thinking-375-larger.json",
+      "size": 225,
+      "sha256": "6386c7bc14c938cd76ff768e0c5e31681b6f29f8460c71ad7e387060a5970664"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi11-q227-thinking-375-larger.png",
+      "size": 204831,
+      "sha256": "31643d8f9c03c36f84b8451fec4bccaf80d28471c94705a22a5c46a976c2f6af"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi11-q227-thinking-430-normal.json",
+      "size": 224,
+      "sha256": "1430031467c34ac8c49f490ff97475298670724efccc95ac1b4eaf67b7eb3fb6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi11-q227-thinking-430-normal.png",
+      "size": 121149,
+      "sha256": "bb4a828ea515f3f3961ba7bada3b30c3cbefac35f021476379a94d4d96dda875"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi12-q227-thinking-375-larger.json",
+      "size": 225,
+      "sha256": "add2fde8af4620b9e01da62eef158b1cb0c23ff0ec15b2e142df153e46933199"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi12-q227-thinking-375-larger.png",
+      "size": 209052,
+      "sha256": "5017224ac8451af925efeb8dfa72f8762f5e1b0b983c3414a4e592f57e10dae3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi12-q227-thinking-430-normal.json",
+      "size": 226,
+      "sha256": "e233f5c03655fb55a581ad6bf295a36ddcbc3f25acb87cc19b21e41be27c1c0a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi12-q227-thinking-430-normal.png",
+      "size": 257022,
+      "sha256": "9ec5455074a67f22b3174fb5153d14639ab76fa60ce6f1e90a0ae31e5e10c60b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/GATE_RESULTS.json",
+      "size": 1910,
+      "sha256": "d72c42194cb78bf14874221fd104be93e34d2328045f8353694c2c96e23a7448"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/HANDOVER_2026-11-27.txt",
+      "size": 10345,
+      "sha256": "67b3398794d29699a8d50ad1d43f5bd85037b80beaa8eaccf4c10f964a78976d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/HOSTED_CI.json",
+      "size": 42482,
+      "sha256": "7b4212cf96c5c73428c028d810c04e2a81f3a2968e94d9f1244498179b2db82c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/INDEPENDENT_REVIEW.json",
+      "size": 795,
+      "sha256": "ec274fb29b5cf2985b36c5150a60fdcbb5ea7f8cccc848996d9f9974a53bccda"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/INDEPENDENT_TEST_REVIEW.json",
+      "size": 4003,
+      "sha256": "a9762c7ce8ed9405f2cc4b416df5fef62688ac9ff81fe1c890354c4f04c8b2e8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/MIXED_FILE_REVIEW.json",
+      "size": 1112,
+      "sha256": "69535c3eae40e8efaaa2b074539baa702a59ed5358aea49aa801b7b962f3e7e1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "size": 6240,
+      "sha256": "4ddb89e97472b3afcc6ee984affae69a50b43fe78f30972d934d6ff3be588194"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/QUEUE_ROW_CHANGE.json",
+      "size": 265,
+      "sha256": "a236134cab65bf5d98ffa05dac071bffef05d5b561ed5c0a2708f95683b9c9ab"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/RECORD_PUBLIC_REVIEW.json",
+      "size": 21820,
+      "sha256": "98a1a8af469de3c4fb92625a0d569425ea1640279807d0b8f74aa708663a1450"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/SOURCE_RELEASE.json",
+      "size": 549,
+      "sha256": "cf93f1966d2492b9bb578f76f6b1d3d252c2855639db0449816efa441906127c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/TASK_NOTE_2026-11-27.txt",
+      "size": 2717,
+      "sha256": "e1ccb24f06b491cbd6f50875ae69fe042e87c9b23d6825a5766f69ffb53f6c3e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/TOOLING_OBSERVATION.json",
+      "size": 429,
+      "sha256": "a43d86f439a2f3f1aa87652e95fee28504b72277491817fb21cdcecca8b14e08"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/VISUAL_COMPARISON.md",
+      "size": 13371,
+      "sha256": "e0bc9be156eace15f48545715d1ee9183d3c649d19335869dfd00360319dcbf3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/VISUAL_COMPARISON_FRAMES.json",
+      "size": 6762,
+      "sha256": "30260f8a56e9afcc39b37130a8d8f18ec57d244df3576dd07e44e22a3d79dbe4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/ci01-actual-oneway-introduction.png",
+      "size": 521045,
+      "sha256": "bce6b8932dc7211fa20668cf368c895e933f20a9bf4c452bfd2ad14c9fd8dd5e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/ci02-actual-circle-main.png",
+      "size": 442197,
+      "sha256": "1bf71ed87f2cba8f80b1ca835dc91aacb18a0918f0d0219e311754ddc814994b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi01-actual-introductions-open.png",
+      "size": 556516,
+      "sha256": "6283bd0d06a573aecf012725663860779c9a46edc67f78497e18fa45b514dace"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi02-actual-full-profile.png",
+      "size": 429678,
+      "sha256": "90925737763090008be2f939a9490f523ea07d088294635dce936d32349da77a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi03-actual-saved.png",
+      "size": 550915,
+      "sha256": "ff143f29fc02eff18acbe5a795ea86738f8b649f9f4008b0cdc12cd62a5fbdaf"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi04-actual-past.png",
+      "size": 366453,
+      "sha256": "c4a542dada892d435febc76463ec0407bd0fb65922fa929544e0f35d79177490"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi05-actual-main-confirm.png",
+      "size": 444278,
+      "sha256": "76a61ef9c0ab90db734a350ccfdf44ad8bebae021d9721d5e1ee3b53a17e10aa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi06-actual-nonmain-confirm.png",
+      "size": 465522,
+      "sha256": "d6c5bba3f609d8a8b8534cc2694a73f197b92138745d8830d9d358f9acb28e0f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi07-actual-sent-approval.png",
+      "size": 413824,
+      "sha256": "d8f626869829b7f24fbf92ecb64ec69712f5132deb75c64831bcaed198db5585"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi08-actual-sent-both-open.png",
+      "size": 419844,
+      "sha256": "62ebd17555147168cf035215f1e7375a9f2214a2e1a5918dbd5d0e85f6940e7b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi09-actual-received-and-approval.png",
+      "size": 605468,
+      "sha256": "d64748b9bf5d7114f6ea6bd8ac6e15d6b3805c9d3f8ef316766f9794711ec199"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi10-actual-received-families-open.png",
+      "size": 586297,
+      "sha256": "4acd56d56413aa48b9b5ce29fe8898a8eb58f65d27a9aea1316b692be41366a0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi11-actual-sent-think.png",
+      "size": 407028,
+      "sha256": "51f863253f579083426f15c8df5756edb7ef77f9b093965068fcbd101489c01d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi12-actual-received-think.png",
+      "size": 593113,
+      "sha256": "e644c81b4fa41cc48c41715bb199d7514a0cf7a7241a207b7d1db616b1b64ed1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/requests-received-expanded.png",
+      "size": 420876,
+      "sha256": "8210bd2cf1f5cd29a68e99dd45f5940aa8f6ec9cb337b8904a1445e2acc9f79d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/supplemental-ci02-noor-with-sara-topic.png",
+      "size": 446695,
+      "sha256": "1291f0fa292dd7e525db48ddd39b5197194de409ca393d9644ecef6f88100534"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/supplemental-circle-family.png",
+      "size": 435468,
+      "sha256": "6770e373628af329943c618cae183e799e10cd289e89eb2f6e857374faea863e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/supplemental-fi08-main-adam-aisha.png",
+      "size": 418456,
+      "sha256": "9178bb8ac09239e18cf2e6960e1977279fd9dc50a9cb515dd3ad44882de49d80"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/admission-final.log",
+      "size": 4049,
+      "sha256": "2631530974517966933a8016236842573f719285d789e561b38c148a7c8454cb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/analyzer-final.log",
+      "size": 96,
+      "sha256": "01c15c090f875ac7958b660e975786ac61d9a65c2286b3361da1572e2469b712"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/candidate-gitleaks.json",
+      "size": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/candidate-gitleaks.log",
+      "size": 145,
+      "sha256": "c90b855cd756e8cf10dd0488c13d701855a8a049db45313f179ba1a692136c26"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/code-after-push-gitleaks.json",
+      "size": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/code-after-push-gitleaks.log",
+      "size": 163,
+      "sha256": "6d6fd069328e46e57c32c8557fb0ed72d35ded944fe1e18082b9dcad4f393a42"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/code-public-check.log",
+      "size": 2024,
+      "sha256": "d1443e99993f85bb48c65434e5b1a71545ed541d4111d40a781b3743c4e7b926"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/code-range-gitleaks.json",
+      "size": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/code-range-gitleaks.log",
+      "size": 174,
+      "sha256": "96d8c1d83b747f709ccabf316c31ed9540eaf4013837f89ca14471d98d2ebeeb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/focused-correct.log",
+      "size": 46936,
+      "sha256": "01557c6f73df0cfbbb1bae52ad416fa06d9b904ead2d756e51fe21251e01d0a3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/focused-raster.log",
+      "size": 3991,
+      "sha256": "c9ec40987b0a14dc1334cf75f72dcdb049e531588888c49aadf3c184df85e3ad"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/line126-routes.log",
+      "size": 1561,
+      "sha256": "504d29a66749a3d5c8af2a8a6d3fd8efdcbe270ca2fd4bb1dc544f769b599999"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/map-refresh.log",
+      "size": 64,
+      "sha256": "1ee9d648c974ba6ec401cace8776074939baf2191e42956ee9419aee369a55aa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/ordinary-regression.log",
+      "size": 1605649,
+      "sha256": "64ada039427dda915f69b56a4337003f2eca9feea28df4172fe80abf46a07114"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/patch-verification.json",
+      "size": 1339,
+      "sha256": "898d0566617a153c386ee9a05a755ba89060da78409a8568b1f83640de826e62"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/record-public-check-final.log",
+      "size": 178487,
+      "sha256": "c541f6b204921d86fb6d279de8115fb6e9b1176a8efd16ac3302b7704a4309f9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/record-public-check.log",
+      "size": 178487,
+      "sha256": "739c6147e1f9ebb9892df2beaad3d4afc703d7661d4afd051c6e9c386794188e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/whole-page-supplemental-main-ready.log",
+      "size": 297,
+      "sha256": "e5139e570fa95e942d5e0f811933ed5e9dbfa4bd4f2a92b789bb133a472c7118"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/whole-page-supplemental.log",
+      "size": 366,
+      "sha256": "836f61990ab15de98f9920b8df8b0548006a5e00f0f50c282a0656bee00ff70f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/whole-page.log",
+      "size": 631,
+      "sha256": "2023f29fdfe9adef6aa1201d2b017a3681e237918ff03a22953f06de83ddde57"
+    }
+  ],
+  "scope": "Owned Q236 POST146 evidence only; mixed queue/questions/MAP and every preexisting record excluded"
+}

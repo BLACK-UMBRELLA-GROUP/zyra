@@ -1,0 +1,599 @@
+{
+  "files_checked": 75,
+  "raw_hits": 1325,
+  "text_findings": [
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 7,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 14,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 21,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 28,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 35,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 42,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 49,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 56,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 63,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 70,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 77,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 84,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 91,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 98,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 105,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 112,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 119,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 126,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 133,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 140,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 147,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 154,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 161,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 168,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 175,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 182,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 189,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 196,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 203,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/PUBLIC_REVIEW.json",
+      "line": 207,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/TASK_NOTE_2026-11-27.txt",
+      "line": 4,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/ordinary-regression.log",
+      "line": 1273,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/ordinary-regression.log",
+      "line": 1274,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/ordinary-regression.log",
+      "line": 1275,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/ordinary-regression.log",
+      "line": 1276,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/ordinary-regression.log",
+      "line": 1287,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/ordinary-regression.log",
+      "line": 5435,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/ordinary-regression.log",
+      "line": 8058,
+      "kind": "money",
+      "disposition": "Technical code excerpt, existing approved product test name, or technical scan note; no amounts, credential or private document."
+    }
+  ],
+  "image_findings": [
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-introductions-430.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 27
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-larger-text-375.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 18
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-q227-reopened-375-larger.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 27
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi01-q227-reopened-430-normal.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 31
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-private-waiting-430.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 40
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-q227-saved-375-larger.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 19
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi03-q227-saved-430-normal.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 40
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi05-main-430.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 25
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi06-additional-430.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 36
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi09-received-430.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 38
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi11-q227-thinking-375-larger.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 23
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi11-q227-thinking-430-normal.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 10
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi12-q227-thinking-375-larger.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 29
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/FOCUSED_RASTER/fi12-q227-thinking-430-normal.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 33
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/ci01-actual-oneway-introduction.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 49
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/ci02-actual-circle-main.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 42
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi01-actual-introductions-open.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 61
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi02-actual-full-profile.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 66
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi03-actual-saved.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 66
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi04-actual-past.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 27
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi05-actual-main-confirm.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 46
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi06-actual-nonmain-confirm.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 43
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi07-actual-sent-approval.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 36
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi08-actual-sent-both-open.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 40
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi09-actual-received-and-approval.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 63
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi10-actual-received-families-open.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 70
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi11-actual-sent-think.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 32
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/fi12-actual-received-think.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 77
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/requests-received-expanded.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 49
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/supplemental-ci02-noor-with-sara-topic.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 40
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/supplemental-circle-family.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 42
+    },
+    {
+      "path": "PRODUCT/APPROVED/FAMILY_INTRODUCTION/BUILT/LINE147/Q236_POST146_2026-11-27/WHOLE_PAGE/supplemental-fi08-main-adam-aisha.png",
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ],
+      "hit_count": 42
+    }
+  ],
+  "image_disposition": "PNG signatures and chunks verified; no textual metadata. Scanner matches in compressed pixel data are binary false positives. Frames contain only guarded fictional preview UI with approved stand-ins. No image pixels changed to quiet scanner.",
+  "text_disposition": "All textual hits reviewed as technical syntax, existing product test names or the scan description. No private material.",
+  "approval": false,
+  "mixed_unstaged_files": {
+    "files": [
+      "MAP.md",
+      "PRODUCT/APPROVED/BUILD_QUEUE.md"
+    ],
+    "raw_hits": 7,
+    "disposition": "Existing technical metadata, references to private sources and an existing approved product rule summary; no amounts or private documents. Both files excluded from publication."
+  }
+}

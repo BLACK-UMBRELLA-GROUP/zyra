@@ -1,0 +1,27 @@
+{
+  "original_held_manifest_sha256": "50c5289f0137f9b2b0d94c6d9a0a44810be0c0eafc057e0609592e4cb0da124e",
+  "independent_exact_output_hashes": [
+    "SOURCE/README.md",
+    "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+    "SOURCE/lib/dev/zyra_family_introduction_preview.dart",
+    "SOURCE/lib/dev/zyra_full_profile_preview.dart",
+    "SOURCE/lib/dev/zyra_guardian_circle_preview.dart",
+    "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+    "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+    "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+    "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+    "SOURCE/lib/state/zyra_developer_samples.dart",
+    "SOURCE/lib/widgets/zyra_developer_title.dart",
+    "SOURCE/lib/widgets/zyra_guardian_preview_lifetime.dart",
+    "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+    "SOURCE/test/line147_family_introduction_test.dart",
+    "SOURCE/test/line147_q227_test.dart",
+    "SOURCE/test/zyra_developer_panel_entry_test.dart",
+    "SOURCE/test/line98_introductions_test.dart",
+    "SOURCE/test/visual/line98_introductions_visual_test.dart"
+  ],
+  "verified": true
+}

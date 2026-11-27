@@ -1,0 +1,13 @@
+{
+  "line": 147,
+  "action": "initial protected analyzer invoked without --no-pub as literal brief command",
+  "observed": [
+    "Resolving dependencies...",
+    "Downloading packages..."
+  ],
+  "project_dependency_file_change": false,
+  "cache_downloads_proven_absent": false,
+  "correction": "Every subsequent analyzer/test command explicitly used --no-pub",
+  "source_policy_relaxed": false,
+  "tracked_under": "OA-ZYRA-371"
+}

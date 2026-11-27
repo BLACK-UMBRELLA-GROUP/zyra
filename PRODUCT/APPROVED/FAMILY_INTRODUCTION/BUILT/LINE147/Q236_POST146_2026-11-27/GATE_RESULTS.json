@@ -1,0 +1,83 @@
+{
+  "code_commit": "4dc8510ed0ea8b302307e583463e4f5d896f444f",
+  "analyzer": {
+    "exit": 0,
+    "result": "No issues found",
+    "seconds": 9.0
+  },
+  "ordinary": {
+    "passed": 8092,
+    "skipped": 253,
+    "failed": 0,
+    "seconds": 764,
+    "full_failed_cycles": 0,
+    "completed_full_cycles": 1,
+    "early_stopped_start_for_fixture_review": 1
+  },
+  "focused_initial": {
+    "passed": 218,
+    "failed": 0
+  },
+  "final_admission_panel": {
+    "passed": 24,
+    "failed": 0
+  },
+  "focused_raster": {
+    "passed": 24,
+    "frames": 14,
+    "text_runs": 154,
+    "failed": 0
+  },
+  "line126_affected": {
+    "passed": 6,
+    "failed": 0
+  },
+  "whole_page": {
+    "passed": 5,
+    "frames": 16,
+    "full_match_claimed": false
+  },
+  "supplemental": {
+    "distinct_scenarios_passed": 2,
+    "main_final_photo_ready_replay_passed": 1,
+    "final_frames": 18,
+    "source_changes": false,
+    "initial_main_frame_rejected": true,
+    "bounded_main_attempts": 3
+  },
+  "hosted": {
+    "head_sha": "4dc8510ed0ea8b302307e583463e4f5d896f444f",
+    "run_id": 46070972009,
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46070972009",
+    "required_jobs": [
+      {
+        "name": "Select Flutter tests",
+        "id": 140747555605,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Flutter checks (shard 2)",
+        "id": 140747710143,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Flutter checks (shard 1)",
+        "id": 140747710155,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Flutter checks (shard 0)",
+        "id": 140747710182,
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "all_jobs_success": true
+  },
+  "no_gate_waivers": true
+}

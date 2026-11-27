@@ -1,0 +1,145 @@
+{
+  "line": 147,
+  "lock": 49,
+  "answers": [
+    227,
+    236
+  ],
+  "base": "dca9b4c7",
+  "source_taken_utc": "2026-11-27T21:07:18.630086+00:00",
+  "paths": [
+    {
+      "path": "SOURCE/README.md",
+      "accepted_sha256": "4fdbf1878811ac6cdde465325b6c9b3e251c2b65d6a3aaa2757964f4c4375f4a",
+      "candidate_sha256": "0527de4a9af2ef2b23c1d97a5100f4bb97a0b3ad7e3f03fef6ed7c25f7c66bb7",
+      "size": 20781
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "accepted_sha256": "f390a89e8fbae9a2594902ad0a27105e6ea39cf278e1ef3c6b7c2525e0dbaa66",
+      "candidate_sha256": "4fa0153b67171ffd697be0c79188d1cc29a4a14079a4a7274038ebcb5c61d169",
+      "size": 30593
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_family_introduction_preview.dart",
+      "accepted_sha256": null,
+      "candidate_sha256": "12fd903698f99343db2e3f07a15f1fdb705845ed7b8fe2d346d178387ee70532",
+      "size": 4198
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_full_profile_preview.dart",
+      "accepted_sha256": "4f3dd522eb33892ca9751246e8c9741fde4ad99aaaff4ff94e3b6ecc96cbac7d",
+      "candidate_sha256": "86bc360e796435960fab4b7f6a0928140c9c0f3cac9329012698b69450692fed",
+      "size": 13529
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_guardian_circle_preview.dart",
+      "accepted_sha256": "ea9de1245ba45c3eec23e8d1378a62528e67530431cec41ed2e652138647e548",
+      "candidate_sha256": "a3b6f271f6666067fed7c34f8e940dd926b5c0d07bb58b51ba235078e63df0bd",
+      "size": 10548
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "accepted_sha256": "b6e4b0f146a9a255271a89802f357ec073776c60a28739497a9f4874ef349e82",
+      "candidate_sha256": "eee694aa95617f9e84dbbfa5f08283af72fac833719429752c122213fbc3eb69",
+      "size": 29927
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "accepted_sha256": "a43303029642cca8d2af335c0f72d14388a2189dccc0f924b96347ccd7e9daab",
+      "candidate_sha256": "0741f0cc1ea5a44b992915187367b5626c1bab43ec5c1fd47a6b2d66f357c3d1",
+      "size": 473159
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "accepted_sha256": "16b0e360e15a198f5410baffe40520d56c132fbce95df2726be00642dbe29599",
+      "candidate_sha256": "3d42bc08e379c8b28e94cd1111c97a07361369aa1f02a595511e7811a7b243d2",
+      "size": 15814
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "accepted_sha256": "90f657cb85cadd06b4ff1a8e11f6c59731d3fa5d501423a7300b85a214c33b0a",
+      "candidate_sha256": "c1ea319a01a453effaae94ad20810d01f93f8c08a934bb5b72e735fdb3b53aba",
+      "size": 88979
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "accepted_sha256": "86e585923529e217dda3f3fc458afcbd9c507eb2ce66522b64f3135c6b946771",
+      "candidate_sha256": "f343d07c8ef9de60fad9c8182bb52770253ea3da15166779bfced4448a0cf143",
+      "size": 38099
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+      "accepted_sha256": "19a71f334a298e8f824511895f77f93243afe092f398f10964c542ede10fd566",
+      "candidate_sha256": "5afc6dc161d13fe947ccb20bc4a3466459cb5464e0d9623ae88fefd470c5c654",
+      "size": 65573
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "accepted_sha256": "7a7821713b6c1ff43c969ac0cf69de71d7df6ecf584896a8d7155e9d1a9c9cb9",
+      "candidate_sha256": "220bf1dbe19ca0c52faf926887e8cf1c9a69d5443a35a69553210d43c9de262c",
+      "size": 100848
+    },
+    {
+      "path": "SOURCE/lib/state/zyra_developer_samples.dart",
+      "accepted_sha256": "d6d90badde7f0184ced073363942740411600d5b553db5594951f3ed7dd0a7f6",
+      "candidate_sha256": "ffefb1224e1e0acd2f6187d05dc427203145171524c39ba059049514cf9218ca",
+      "size": 49481
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_title.dart",
+      "accepted_sha256": "772836c1ee6f07ac99449a99ebae7d6c8ac26aea30f19b1d38bd9f74e9614a24",
+      "candidate_sha256": "14b72d6f6671bca5afcc038cbf28dd229af93aab0759334b88e35d2bf286f7f9",
+      "size": 33394
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_guardian_preview_lifetime.dart",
+      "accepted_sha256": "38abd6475e6deee71d9b8c194eb7399d2ad10970b1e77d7c31b18325800822d7",
+      "candidate_sha256": "6778b3fa489c2585a0df53ea97a5d909ea6bc4aef402630f8b70f5c18ad3fd34",
+      "size": 5180
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "accepted_sha256": "8cd2ad4d554dd4dd2bbabbbb8ef1e180f7d53afeadf7fdbe1f398b102b717ab6",
+      "candidate_sha256": "b04ecba52ce263225c4f44b6f186cec97a298139f74093eacd7e0688c5f5ec84",
+      "size": 22722
+    },
+    {
+      "path": "SOURCE/test/line147_family_introduction_test.dart",
+      "accepted_sha256": null,
+      "candidate_sha256": "254825bbb716a8916decc7ba51e914182de5aabea68e3266abd7c17b4392cc7f",
+      "size": 20234
+    },
+    {
+      "path": "SOURCE/test/line147_q227_test.dart",
+      "accepted_sha256": null,
+      "candidate_sha256": "f4cc83bf87aadb36e037dba4c890eee4a0ae15994f56a239361f508f8207cd28",
+      "size": 11663
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_panel_entry_test.dart",
+      "accepted_sha256": "96506e180c602600b919c8da9c7b51e1d9e4b6fc3c652d47297746b59830bfa5",
+      "candidate_sha256": "3af48cee06394ff1f07cf9eda5ce93b2707f9a3b8335c7fc6ac8d9039fc0bfd6",
+      "size": 80131
+    },
+    {
+      "path": "SOURCE/test/line98_introductions_test.dart",
+      "accepted_sha256": "b4e759265a86471f8cac7139b0a3a41505c39e1b12953d029960a16e42cb0d39",
+      "candidate_sha256": "90cb774b2cfb053abc16babc92ed8879c4c820e45f66b3bc336c7410bd5eef32",
+      "size": 8937
+    },
+    {
+      "path": "SOURCE/test/visual/line98_introductions_visual_test.dart",
+      "accepted_sha256": "3403488655a74db4b95ee770f2ae451efec9c3e9943ef413c1bce94036641ad8",
+      "candidate_sha256": "7e7102cd0581ad6940a3709d003b4d54b1ace53e30ce00e9127063a7f374ac65",
+      "size": 9494
+    },
+    {
+      "path": "SOURCE/test/line147_admission_test.dart",
+      "accepted_sha256": null,
+      "candidate_sha256": "c2236829476116f747418292c347cf6f214ae7cb2bf40f80b379ef1f4eab3aad",
+      "size": 15604
+    }
+  ],
+  "code_commit": "4dc8510ed0ea8b302307e583463e4f5d896f444f"
+}

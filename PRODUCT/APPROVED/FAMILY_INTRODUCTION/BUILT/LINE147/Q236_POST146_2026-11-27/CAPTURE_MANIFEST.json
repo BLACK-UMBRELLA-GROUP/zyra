@@ -1,0 +1,255 @@
+{
+  "line": 147,
+  "lock": 49,
+  "logical_size": [
+    430,
+    932
+  ],
+  "pixel_ratio": 3,
+  "settle_ms": 2600,
+  "whole_page_driver_sha256_used": "4a7cc9fe02ed39e0b312ab125b0d9494398dc4345d8a9333163a9f350e2acea2",
+  "whole_page_scenarios_passed": 5,
+  "whole_page_frames": [
+    {
+      "path": "WHOLE_PAGE/ci01-actual-oneway-introduction.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "bce6b8932dc7211fa20668cf368c895e933f20a9bf4c452bfd2ad14c9fd8dd5e"
+    },
+    {
+      "path": "WHOLE_PAGE/ci02-actual-circle-main.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "1bf71ed87f2cba8f80b1ca835dc91aacb18a0918f0d0219e311754ddc814994b"
+    },
+    {
+      "path": "WHOLE_PAGE/fi01-actual-introductions-open.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "6283bd0d06a573aecf012725663860779c9a46edc67f78497e18fa45b514dace"
+    },
+    {
+      "path": "WHOLE_PAGE/fi02-actual-full-profile.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "90925737763090008be2f939a9490f523ea07d088294635dce936d32349da77a"
+    },
+    {
+      "path": "WHOLE_PAGE/fi03-actual-saved.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "ff143f29fc02eff18acbe5a795ea86738f8b649f9f4008b0cdc12cd62a5fbdaf"
+    },
+    {
+      "path": "WHOLE_PAGE/fi04-actual-past.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "c4a542dada892d435febc76463ec0407bd0fb65922fa929544e0f35d79177490"
+    },
+    {
+      "path": "WHOLE_PAGE/fi05-actual-main-confirm.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "76a61ef9c0ab90db734a350ccfdf44ad8bebae021d9721d5e1ee3b53a17e10aa"
+    },
+    {
+      "path": "WHOLE_PAGE/fi06-actual-nonmain-confirm.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "d6c5bba3f609d8a8b8534cc2694a73f197b92138745d8830d9d358f9acb28e0f"
+    },
+    {
+      "path": "WHOLE_PAGE/fi07-actual-sent-approval.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "d8f626869829b7f24fbf92ecb64ec69712f5132deb75c64831bcaed198db5585"
+    },
+    {
+      "path": "WHOLE_PAGE/fi08-actual-sent-both-open.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "62ebd17555147168cf035215f1e7375a9f2214a2e1a5918dbd5d0e85f6940e7b"
+    },
+    {
+      "path": "WHOLE_PAGE/fi09-actual-received-and-approval.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "d64748b9bf5d7114f6ea6bd8ac6e15d6b3805c9d3f8ef316766f9794711ec199"
+    },
+    {
+      "path": "WHOLE_PAGE/fi10-actual-received-families-open.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "4acd56d56413aa48b9b5ce29fe8898a8eb58f65d27a9aea1316b692be41366a0"
+    },
+    {
+      "path": "WHOLE_PAGE/fi11-actual-sent-think.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "51f863253f579083426f15c8df5756edb7ef77f9b093965068fcbd101489c01d"
+    },
+    {
+      "path": "WHOLE_PAGE/fi12-actual-received-think.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "e644c81b4fa41cc48c41715bb199d7514a0cf7a7241a207b7d1db616b1b64ed1"
+    },
+    {
+      "path": "WHOLE_PAGE/requests-received-expanded.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "8210bd2cf1f5cd29a68e99dd45f5940aa8f6ec9cb337b8904a1445e2acc9f79d"
+    },
+    {
+      "path": "WHOLE_PAGE/supplemental-circle-family.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "sha256": "6770e373628af329943c618cae183e799e10cd289e89eb2f6e857374faea863e"
+    }
+  ],
+  "focused_raster": [
+    {
+      "path": "FOCUSED_RASTER/fi01-introductions-430.json",
+      "runs": 13,
+      "failures": 0,
+      "sha256": "5b3ee0bbee28c2e19b7086fced43c39ba42df6b60e11ae95a2f5c48eb3efbfe2"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi12-q227-thinking-375-larger.json",
+      "runs": 9,
+      "failures": 0,
+      "sha256": "add2fde8af4620b9e01da62eef158b1cb0c23ff0ec15b2e142df153e46933199"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi01-larger-text-375.json",
+      "runs": 9,
+      "failures": 0,
+      "sha256": "2d6cdcd5ba93c0f7361ea52bae62041495684db1d09c611e9fd7872f3029c6ad"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi11-q227-thinking-430-normal.json",
+      "runs": 7,
+      "failures": 0,
+      "sha256": "1430031467c34ac8c49f490ff97475298670724efccc95ac1b4eaf67b7eb3fb6"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi06-additional-430.json",
+      "runs": 12,
+      "failures": 0,
+      "sha256": "f51dbff02312e94e1797daff31b957fba536c35b63dcdf4e2aff9ef148b1d6ed"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi09-received-430.json",
+      "runs": 15,
+      "failures": 0,
+      "sha256": "26fbdf33f02c792592356781b11dcd08f911a171055d7f2ccfb5f07ab0ab25c3"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi01-q227-reopened-375-larger.json",
+      "runs": 8,
+      "failures": 0,
+      "sha256": "de36a1db12cbd86b7919207b50337ffd45e1c47aa180ff95d4d7101cb895f454"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi03-q227-saved-375-larger.json",
+      "runs": 8,
+      "failures": 0,
+      "sha256": "caaf700903364ea41ef4d3b8192cbeb301d6b4928f28f244c839f849dee77b32"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi12-q227-thinking-430-normal.json",
+      "runs": 14,
+      "failures": 0,
+      "sha256": "e233f5c03655fb55a581ad6bf295a36ddcbc3f25acb87cc19b21e41be27c1c0a"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi03-private-waiting-430.json",
+      "runs": 14,
+      "failures": 0,
+      "sha256": "dfd93943b6ff8bd5a124444d0af266c5251bdeb093ecabf5eca8eb4742810fb1"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi11-q227-thinking-375-larger.json",
+      "runs": 7,
+      "failures": 0,
+      "sha256": "6386c7bc14c938cd76ff768e0c5e31681b6f29f8460c71ad7e387060a5970664"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi05-main-430.json",
+      "runs": 12,
+      "failures": 0,
+      "sha256": "ef476ae5dca94ba63ac642b991f2d4f46300c2efd43efaef202e9662df1fa24f"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi03-q227-saved-430-normal.json",
+      "runs": 14,
+      "failures": 0,
+      "sha256": "dfd93943b6ff8bd5a124444d0af266c5251bdeb093ecabf5eca8eb4742810fb1"
+    },
+    {
+      "path": "FOCUSED_RASTER/fi01-q227-reopened-430-normal.json",
+      "runs": 12,
+      "failures": 0,
+      "sha256": "89421ac96f2a3a21e1f6ffe2be8b122a9ea13df33efcb39a48f22eca594aca34"
+    }
+  ],
+  "focused_runs": 154,
+  "focused_failures": 0,
+  "full_master_match_claimed": false,
+  "supplemental_driver_sha256": "978d8353087bf833e746981c8a07168aa1f7d0facbbc8047ccf195dc9eb2d689",
+  "supplemental_distinct_scenarios_passed": 2,
+  "main_final_photo_ready_replay_passed": 1,
+  "final_whole_page_frames": 18,
+  "supplemental_final_frames": [
+    {
+      "path": "WHOLE_PAGE/supplemental-fi08-main-adam-aisha.png",
+      "sha256": "9178bb8ac09239e18cf2e6960e1977279fd9dc50a9cb515dd3ad44882de49d80",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "WHOLE_PAGE/supplemental-ci02-noor-with-sara-topic.png",
+      "sha256": "1291f0fa292dd7e525db48ddd39b5197194de409ca393d9644ecef6f88100534",
+      "size": [
+        1290,
+        2796
+      ]
+    }
+  ],
+  "work_driver_path": "/Users/shakeelahmad/Documents/Codex/2026-11-27/zyra-147-q236-post-141-146-fresh-ultra/work/line147_q236_whole_page_test.dart",
+  "code_commit": "4dc8510ed0ea8b302307e583463e4f5d896f444f"
+}
