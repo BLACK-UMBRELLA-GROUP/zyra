@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-27T19:55:54.980583+00:00",
+  "as_of": "2026-11-27T19:58:40.386163+00:00",
   "root_thread": "01a21e74-876d-7880-a9e7-e12a34a84f76",
   "conversation": "new",
   "metadata": {
@@ -10,16 +10,16 @@
     "model": "gpt-6.1-sol",
     "effort": "ultra"
   },
-  "count_events": 115,
+  "count_events": 125,
   "actual_count_snapshot": {
-    "timestamp": "2026-11-27T19:55:45.992Z",
+    "timestamp": "2026-11-27T19:57:55.424Z",
     "total_token_usage": {
-      "input_tokens": 18169262,
-      "cached_input_tokens": 18002304,
+      "input_tokens": 20481670,
+      "cached_input_tokens": 20311168,
       "cache_write_input_tokens": 0,
-      "output_tokens": 68962,
-      "reasoning_output_tokens": 36518,
-      "total_tokens": 18238224
+      "output_tokens": 74716,
+      "reasoning_output_tokens": 40190,
+      "total_tokens": 20556386
     }
   },
   "helper_usage": "Not available through collaboration metadata; no estimate.",

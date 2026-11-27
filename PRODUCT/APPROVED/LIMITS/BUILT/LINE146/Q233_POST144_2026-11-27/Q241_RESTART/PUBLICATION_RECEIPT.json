@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-11-27T19:58:42.544730+00:00",
+  "implementation_commit": "aa676e84b735caaf66e0880d8854118a23c035cc",
+  "implementation_remote_verified": true,
+  "record_commit": "29d84dc400041d7d8d420b5599cbca69982ce504",
+  "record_remote_verified_via_GitHub_ref": true,
+  "required_CI_exact_implementation": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46058179534",
+  "required_CI_pass": true,
+  "local_ordinary": "8017pass/252skip/0fail",
+  "strict_replay": "120pass/0fail;3984frames;43850runs;32proofs;0gaps",
+  "scoped_release": "FINAL_RELEASE_VERIFY.json",
+  "public_scans": "Implementation and record pre/post scans clean; receipt pre/post raw reports retained in held gates.",
+  "receiver_daily_note": "TASK_NOTE_2026-11-27.txt; coordinator copies it into daily report under L47 before archival."
+}

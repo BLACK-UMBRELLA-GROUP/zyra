@@ -1,5 +1,5 @@
 {
-  "A": "Implementation prepush1commit,0findings; postpush0newcommits,0findings; recordpre/post scans follow",
+  "A": "Implementation and records each: prepush1commit/0findings; postpush0unpushedcommits/0findings. Receipt pre/post raw reports remain in held gates.",
   "B": "Final3,070hits/184files independently reviewed:1,329assetfilename matches,1,501PNGbinarymatches,240existingapp-text lines;0genuine private/secret findings",
   "C": "No ROADMAP row finished; no issue action",
   "D": "Version unchanged; no release",
