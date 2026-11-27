@@ -1,0 +1,91 @@
+{
+  "source_commit": "c908544366d72d884ac80b7e75fd937d7f82ee78",
+  "files": [
+    {
+      "path": "SOURCE/README.md",
+      "bytes": 14159,
+      "sha256": "030c7e8ba448512e084a5245c67044bc9c0ffcf61e4f6da8afe7eb643f2c2522"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "bytes": 46362,
+      "sha256": "e52ea189499754da93864e9f782863b385ea58cffbe0b5b4979e8aef7b318f97"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 437773,
+      "sha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "bytes": 93220,
+      "sha256": "e2b6a2273698cb26b3b184084798bc5dfda728a4096df26515e4dd323a8e7c14"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_pause_private_preview.dart",
+      "bytes": 17966,
+      "sha256": "e84cd4aee07893cf24c79cf61c643e28bb934e71eb90e225d8e0eced6fe8df3f"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_pause_private_preview_state.dart",
+      "bytes": 2574,
+      "sha256": "306f8fd349d205f2976a14a9fb84bc208452d5ee98245d5775ecb57542f2321c"
+    },
+    {
+      "path": "SOURCE/lib/state/zyra_developer_samples.dart",
+      "bytes": 36532,
+      "sha256": "42d922ed5c0c3d0342bfc73384524cb887a376bb422aa50ed5f85c102e3a5711"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_title.dart",
+      "bytes": 32313,
+      "sha256": "33a4039ce9e4033a8d2e92c4c3aee1eacddf36fbef46f1987ec003c0ecb4d694"
+    },
+    {
+      "path": "SOURCE/test/zyra_pause_private_model_test.dart",
+      "bytes": 3422,
+      "sha256": "c6c9e85118fd3dcdc5fe21a78b4837cffa3ea5a6265fd30e57f4b5542c4883ec"
+    },
+    {
+      "path": "SOURCE/test/zyra_pause_private_preview_state_test.dart",
+      "bytes": 4738,
+      "sha256": "478ccf73f225abff5758ebe243d5d9a10c92bc0c598700f0ecfcbfbc5b7dbf8e"
+    },
+    {
+      "path": "SOURCE/test/visual/line138_pause_private_capture_test.dart",
+      "bytes": 13732,
+      "sha256": "689778d5dc36dd257f147196ed86040fb6b4d0537ef990d48c07438f382a5805"
+    },
+    {
+      "path": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "bytes": 48482,
+      "sha256": "49a7117c8b421fea18df01d8b58bed91a6aaf4f14d2479aae4d14e94b3f2b3c7"
+    },
+    {
+      "path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+      "bytes": 24792,
+      "sha256": "028cf05376b33b16115efef4830ddec85dd4db1d02b4105aff5f5de767d0553b"
+    },
+    {
+      "path": "SOURCE/test/visual/lock14_ivory_capture_test.dart",
+      "bytes": 15094,
+      "sha256": "ee164ff49bc9136d67bfe09c5248211b6cca7791ad75f711d6bc64aa013f4216"
+    },
+    {
+      "path": "SOURCE/test/whole_app_settings_destinations_test.dart",
+      "bytes": 36198,
+      "sha256": "932eb5e2b1c9a65c7e967520eb0d94a6e99f9bf2672aee8eb8621e46acf2fd94"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_samples_test.dart",
+      "bytes": 37380,
+      "sha256": "f50a1a6f86b1d7ddc63625d98cc8045d2268e5829351a2381a3ac37855f45b6d"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_panel_entry_test.dart",
+      "bytes": 73520,
+      "sha256": "96506e180c602600b919c8da9c7b51e1d9e4b6fc3c652d47297746b59830bfa5"
+    }
+  ],
+  "original_index_preserved": true
+}

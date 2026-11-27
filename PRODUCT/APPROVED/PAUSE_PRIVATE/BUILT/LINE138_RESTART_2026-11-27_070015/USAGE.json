@@ -1,0 +1,17 @@
+{
+  "usage_snapshot": {
+    "timestamp": "2026-11-27T07:09:22.869Z",
+    "counts": {
+      "input_tokens": 7672858,
+      "cached_input_tokens": 7503488,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 24430,
+      "reasoning_output_tokens": 6626,
+      "total_tokens": 7697288
+    }
+  },
+  "runtime": {
+    "model": "gpt-6.1-sol",
+    "effort": "ultra"
+  }
+}

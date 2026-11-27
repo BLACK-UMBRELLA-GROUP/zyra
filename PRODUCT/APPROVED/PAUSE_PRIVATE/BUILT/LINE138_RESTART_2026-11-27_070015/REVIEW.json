@@ -1,0 +1,44 @@
+{
+  "authority": [
+    "LOCK 44",
+    "Q225",
+    "Q226",
+    "DR-ZYRA-376",
+    "Founder 27 Nov direct focused gate"
+  ],
+  "source_admission_review": "Independent read-only review found no remaining outgoing bypass. Ordinary request/restart and developer toggle/Introduction/restart re-read pause policy. Bridge detach/disposal and owner replacement deny stale writers. Raw fixture setters unchanged.",
+  "visual_review": "Independent read-only review: all seven current captures have no material remaining mismatch. pp06 is PRIVACY rows only. pp07 solid gold button recaptured. Shared title (26/w200) and existing shared navigation retained under standing L45; prior claimed 58pt offset was withdrawn after pixel measurement.",
+  "pp07_geometry_pt": {
+    "concept_main_title_Profiles": [
+      20.0,
+      75.0,
+      90.53001403808594,
+      37.0
+    ],
+    "paused_profiles_card": [
+      20.0,
+      124.0,
+      390.0,
+      700.0
+    ],
+    "paused_profiles_show_again": [
+      45.0,
+      528.0,
+      340.0,
+      50.0
+    ],
+    "compact-nav-surface": [
+      20.0,
+      840.0,
+      390.0,
+      58.0
+    ]
+  },
+  "findings": "All implementation findings fixed under Q225/Q226; no new unresolved design or app finding. No new OA requested.",
+  "public_source_scan": {
+    "files": 17,
+    "hits": 22,
+    "review": "9 are unchanged lines already present in accepted base; 13 are positional Dart record fields/interpolation falsely matched as currency. No introduced sensitive material.",
+    "written_refusal": "Do not move or rewrite valid Dart selectors, synthetic test fixtures, or unchanged accepted code for these lexical false positives."
+  }
+}

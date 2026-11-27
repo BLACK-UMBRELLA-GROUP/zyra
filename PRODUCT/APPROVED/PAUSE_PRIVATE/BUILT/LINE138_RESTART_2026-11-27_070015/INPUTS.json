@@ -1,0 +1,62 @@
+{
+  "start_pack_bytes": 23628,
+  "locked_pack": [
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BRIEFS/BUILD_BRIEF_2026-11-23_V1.md",
+      "bytes": 9578,
+      "sha256": "bd33e02be9ac7eabef3229b7b99285d3218fd0fc621e2d830fb880177a84cff4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp01_pause__visible.png",
+      "bytes": 1016722,
+      "sha256": "05c251b3e35544d1754f97403bd1ebd58c4d6bb32166464569fc08049f45e158"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp02_pause__paused.png",
+      "bytes": 1014540,
+      "sha256": "46bec28df421fd41b4ff49a36abc89ebdeb57c920ce727b2ca9414b93614111a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp03_private_mode__off.png",
+      "bytes": 1054137,
+      "sha256": "0f07ea6d7ac492c4ecb3b6ceb569017f88b95d187fb227e763239de15817bd01"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp04_private_mode__on.png",
+      "bytes": 1050557,
+      "sha256": "6c5cab55adb11b5dcb25a17a4e9bc1a9c911c47b54b9634c78e0f85384da5d90"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp05_private_mode__seeker_basic_locked.png",
+      "bytes": 1061094,
+      "sha256": "446ae43ac659784b2bc29c22301e61ca1d465de4bf990b1b00ebc4f01438f794"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp06_settings__privacy_rows.png",
+      "bytes": 862590,
+      "sha256": "69eb74fbb31e3df450fbd1008bd1d525de99446c6f408d99af6f5a7176b205e3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp07_profiles__paused.png",
+      "bytes": 637735,
+      "sha256": "ba55a8dbe70a3ed1e78ceed300ec673e26204d6dfb8d9d155076dc35df8cdf46"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/RECORD/LOCK_RECORD.md",
+      "bytes": 772,
+      "sha256": "75c101da8116ad58cdd6140fd34a0fb25282c6fb335e6127f46b31292e901190"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/RECORD/PAUSE_PRIVATE_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 5113,
+      "sha256": "0fd26225813da41f8ec15e072aeb71962798f51baf696aad1e24b26a2e65ab43"
+    }
+  ],
+  "prototype_relevant_markup_reviewed": "../BLACK UMBRELLA GROUP/BUSINESS/ZYRA/PROTOTYPE/ARCHIVE/ZYRA_PROTOTYPE_2026-11-25_V372.html",
+  "other_named_reads": [
+    "AGENTS.md; current BUILD_QUEUE header and row138; QUESTIONS225-226",
+    "SOURCE/README.md; protected driver and SDK pins; held manifest and patch",
+    "ZYRA rules DOC-ZYRA-0277; handover standard DOC-BUG-0004",
+    "start_pack slices: core, MAP to Route paths, latest review through Corrections, changed lessons; whole short lessons was separately read per supplied pre-work instruction"
+  ]
+}

@@ -1,0 +1,413 @@
+{
+  "queue_line": 138,
+  "lock": 44,
+  "decision": "DR-ZYRA-376",
+  "question_authority": [
+    "Q225",
+    "Q226"
+  ],
+  "source_commit": "c908544366d72d884ac80b7e75fd937d7f82ee78",
+  "accepted_base_commit": "fefbd28afbf4c8948fa1f1e7c66f97985ac0fbc3",
+  "flutter": "3.44.2 stable pinned",
+  "build_mode": "headless Flutter widget-test preview",
+  "timestamp_utc": "2026-11-27T07:10:47.038467+00:00",
+  "live": false,
+  "native_build": false,
+  "install": false,
+  "server_or_member_data": false,
+  "ordinary_whole_app_test_or_audit": false,
+  "rendered_text_audit_files": 39,
+  "screen_files": 39,
+  "assets": [
+    {
+      "path": "RENDERED_TEXT/375_1_pause_bottom.json",
+      "bytes": 224,
+      "sha256": "1dc2ab30d0ac863b1c9a19759a7909f0e5450f9740d33da910b3ce961f288abb"
+    },
+    {
+      "path": "RENDERED_TEXT/375_1_pause_top.json",
+      "bytes": 226,
+      "sha256": "3a660b24f04da0e5c23dd75bd6ab48a411db5c9f3fbc91a23b0583430458b8c2"
+    },
+    {
+      "path": "RENDERED_TEXT/375_1_paused_profiles_bottom.json",
+      "bytes": 449,
+      "sha256": "983439e0db44f0472c6812cd187b344d946afa311d62b1faf812f63131c3a669"
+    },
+    {
+      "path": "RENDERED_TEXT/375_1_paused_profiles_top.json",
+      "bytes": 450,
+      "sha256": "e6a3b20e538619ee1c363507e143845d26e5d44ced6aefb71c7f90ade39e652b"
+    },
+    {
+      "path": "RENDERED_TEXT/375_1_paused_settings_bottom.json",
+      "bytes": 224,
+      "sha256": "01eee538c1300e418437fa2d3a7ab96b8ea7d30de2ea9ff4f37cdf0f31099881"
+    },
+    {
+      "path": "RENDERED_TEXT/375_1_paused_settings_top.json",
+      "bytes": 226,
+      "sha256": "83c84ed2a49fe152c68b3d116b2d58bd835226da977a6f5045d99ad9cb14350e"
+    },
+    {
+      "path": "RENDERED_TEXT/375_1_private_bottom.json",
+      "bytes": 224,
+      "sha256": "e411c1b42fda8f43bf67a8d15a0f63189210e0e26809a337d78655ac5ef9f33b"
+    },
+    {
+      "path": "RENDERED_TEXT/375_1_private_top.json",
+      "bytes": 226,
+      "sha256": "c962ff7ceade44382cc2f538dd9f7de7459dd8dfa0a9d92e3d55c6c4d8f68c8c"
+    },
+    {
+      "path": "RENDERED_TEXT/375_2_pause_bottom.json",
+      "bytes": 225,
+      "sha256": "7bf9a8ae98f2bdbd3a03c1bf0f07b8d06f8b619f9f7b4cfa8750fa7738b513d2"
+    },
+    {
+      "path": "RENDERED_TEXT/375_2_pause_top.json",
+      "bytes": 225,
+      "sha256": "0e4eacb737cb55d727b236a00f4fda625292d40b9052f6e953992f739f2bdb06"
+    },
+    {
+      "path": "RENDERED_TEXT/375_2_paused_profiles_bottom.json",
+      "bytes": 453,
+      "sha256": "6916f26e0f28fb782c313c1c986e1d95f901e21c91e5423b86c4de5b2961217f"
+    },
+    {
+      "path": "RENDERED_TEXT/375_2_paused_profiles_top.json",
+      "bytes": 454,
+      "sha256": "4e27391469829ede66a2e592d6c5b19672a7926d3af0eecc60a76b9d88a9f537"
+    },
+    {
+      "path": "RENDERED_TEXT/375_2_paused_settings_bottom.json",
+      "bytes": 225,
+      "sha256": "67dd6e25ae7b2ed02c4878286831eb6d186a8cd6260207558c82b5eeff478ac6"
+    },
+    {
+      "path": "RENDERED_TEXT/375_2_paused_settings_top.json",
+      "bytes": 225,
+      "sha256": "b5ecb318389da5014268906ba72b5280efd122007fda0f6b2997b0b4a5783e78"
+    },
+    {
+      "path": "RENDERED_TEXT/375_2_private_bottom.json",
+      "bytes": 225,
+      "sha256": "0dec49fe09fcf59f2acd0b1dae6521c4ebbb4edc284529ddbb29831782ffeea8"
+    },
+    {
+      "path": "RENDERED_TEXT/375_2_private_top.json",
+      "bytes": 225,
+      "sha256": "040f393daa3ca980951cf62c1adcf02111540fa8a5513705142d81f772555fdb"
+    },
+    {
+      "path": "RENDERED_TEXT/430_1_pause_bottom.json",
+      "bytes": 224,
+      "sha256": "e46bda1160da46203304ad0a00f970afa4f7933fb36ddd7300d24510f0909f7d"
+    },
+    {
+      "path": "RENDERED_TEXT/430_1_pause_top.json",
+      "bytes": 224,
+      "sha256": "e46bda1160da46203304ad0a00f970afa4f7933fb36ddd7300d24510f0909f7d"
+    },
+    {
+      "path": "RENDERED_TEXT/430_1_paused_profiles_bottom.json",
+      "bytes": 450,
+      "sha256": "6440772a86ff78401715582bd97507b64ab5fe3d544a6da7238209fdf2c635b1"
+    },
+    {
+      "path": "RENDERED_TEXT/430_1_paused_profiles_top.json",
+      "bytes": 451,
+      "sha256": "c3dc283e18a4f2e0b201226787ef1cc409e9f42791efc6e2a4d7e990b3f5dab5"
+    },
+    {
+      "path": "RENDERED_TEXT/430_1_paused_settings_bottom.json",
+      "bytes": 224,
+      "sha256": "9bab52ec32e0580c9f797052089903ed3d2f8a5ff30788d1e97928c1653d5cd8"
+    },
+    {
+      "path": "RENDERED_TEXT/430_1_paused_settings_top.json",
+      "bytes": 226,
+      "sha256": "8e706edb684ab1df5553038857d09236e44e4a1f63b89fdd7dbf2db90f9f9106"
+    },
+    {
+      "path": "RENDERED_TEXT/430_1_private_bottom.json",
+      "bytes": 224,
+      "sha256": "5c2498c2df75436147dd3d10d406f2dc069cdf9d7b1bca5b85d3f9c3bc527041"
+    },
+    {
+      "path": "RENDERED_TEXT/430_1_private_top.json",
+      "bytes": 224,
+      "sha256": "5c2498c2df75436147dd3d10d406f2dc069cdf9d7b1bca5b85d3f9c3bc527041"
+    },
+    {
+      "path": "RENDERED_TEXT/430_2_pause_bottom.json",
+      "bytes": 225,
+      "sha256": "bcc2368419242ec6c714f731172cd7c94f0520b7cf5039671d85ea19f17482a8"
+    },
+    {
+      "path": "RENDERED_TEXT/430_2_pause_top.json",
+      "bytes": 225,
+      "sha256": "ea9ebf49c73730632ad7beffb4c15d33ca9dd5203685f5e171db41d151de0d75"
+    },
+    {
+      "path": "RENDERED_TEXT/430_2_paused_profiles_bottom.json",
+      "bytes": 453,
+      "sha256": "a0fdd763b308e19d6d9d47e538d817a1335f408a18f0815324bc36ba6e44d878"
+    },
+    {
+      "path": "RENDERED_TEXT/430_2_paused_profiles_top.json",
+      "bytes": 454,
+      "sha256": "5aaf4c1e5c96d1975c4bbdd0237da1c7c5e56fd0f1c85d746ac2e6384522bed6"
+    },
+    {
+      "path": "RENDERED_TEXT/430_2_paused_settings_bottom.json",
+      "bytes": 225,
+      "sha256": "8920fe49378a69e1dc76f1c9d03d5a2dff216c8e4130cb7ed43a711d2f505ee8"
+    },
+    {
+      "path": "RENDERED_TEXT/430_2_paused_settings_top.json",
+      "bytes": 225,
+      "sha256": "bfa440dff3e92b83891e485e0f2dabada802badeebd8ed4ea7822d15878717b9"
+    },
+    {
+      "path": "RENDERED_TEXT/430_2_private_bottom.json",
+      "bytes": 225,
+      "sha256": "166c589e3d4f99c48d530474cf64f929931f484ba0bf968e09f77ef52ce1279b"
+    },
+    {
+      "path": "RENDERED_TEXT/430_2_private_top.json",
+      "bytes": 226,
+      "sha256": "6c6ae879e2e5cf7c88a6a0a5753bd941631c656a4c3a54844fdfcc0ab1c39f69"
+    },
+    {
+      "path": "RENDERED_TEXT/pp01_pause__visible.json",
+      "bytes": 226,
+      "sha256": "ca8ee976cab483d9e411952be29e1c1466459330117b78f8661bfd0fe48e2b74"
+    },
+    {
+      "path": "RENDERED_TEXT/pp02_pause__paused.json",
+      "bytes": 224,
+      "sha256": "9bab52ec32e0580c9f797052089903ed3d2f8a5ff30788d1e97928c1653d5cd8"
+    },
+    {
+      "path": "RENDERED_TEXT/pp03_private_mode__off.json",
+      "bytes": 226,
+      "sha256": "a5ab036705ffd72718270af0e672dfee3e00a7dd14799e6b9425d7b4e3d1cb0b"
+    },
+    {
+      "path": "RENDERED_TEXT/pp04_private_mode__on.json",
+      "bytes": 226,
+      "sha256": "bac56ffa2873bbbeff66e0db744d5962cbf3de694bfd1a1f7fc43a59e0e473dc"
+    },
+    {
+      "path": "RENDERED_TEXT/pp05_private_mode__seeker_basic_locked.json",
+      "bytes": 226,
+      "sha256": "e9d4258b11df89c61a8bee402c81ebe96b1d35f0e631fab951920781223b70e5"
+    },
+    {
+      "path": "RENDERED_TEXT/pp06_settings__privacy_rows.json",
+      "bytes": 225,
+      "sha256": "9ef3d6c5abf2ccf3435b8f375d400a3f2268b5688e24c7fe9efd0de6116b3340"
+    },
+    {
+      "path": "RENDERED_TEXT/pp07_profiles__paused.json",
+      "bytes": 450,
+      "sha256": "6440772a86ff78401715582bd97507b64ab5fe3d544a6da7238209fdf2c635b1"
+    },
+    {
+      "path": "SCREENS/375_1_pause_bottom.png",
+      "bytes": 447447,
+      "sha256": "75eca7951362ae655ca3261d8628d4b7386bf47f9f765209ca65da2b08116aa0"
+    },
+    {
+      "path": "SCREENS/375_1_pause_top.png",
+      "bytes": 447447,
+      "sha256": "75eca7951362ae655ca3261d8628d4b7386bf47f9f765209ca65da2b08116aa0"
+    },
+    {
+      "path": "SCREENS/375_1_paused_profiles_bottom.png",
+      "bytes": 270265,
+      "sha256": "78e30567b7ceed36c4046f01448fdbc51d83f8ca7ecadf9775db3acc698281d2"
+    },
+    {
+      "path": "SCREENS/375_1_paused_profiles_top.png",
+      "bytes": 270265,
+      "sha256": "78e30567b7ceed36c4046f01448fdbc51d83f8ca7ecadf9775db3acc698281d2"
+    },
+    {
+      "path": "SCREENS/375_1_paused_settings_bottom.png",
+      "bytes": 445954,
+      "sha256": "9b80f6a1d3781aea4fee15e2f7f8f5df7e65f81740598f47f3deaaf766fa2ba6"
+    },
+    {
+      "path": "SCREENS/375_1_paused_settings_top.png",
+      "bytes": 445954,
+      "sha256": "9b80f6a1d3781aea4fee15e2f7f8f5df7e65f81740598f47f3deaaf766fa2ba6"
+    },
+    {
+      "path": "SCREENS/375_1_private_bottom.png",
+      "bytes": 456527,
+      "sha256": "a3d62dac7978a002cd74d9970c32d7b1ee19017c3c6eb608c02c0dce3697398e"
+    },
+    {
+      "path": "SCREENS/375_1_private_top.png",
+      "bytes": 456527,
+      "sha256": "a3d62dac7978a002cd74d9970c32d7b1ee19017c3c6eb608c02c0dce3697398e"
+    },
+    {
+      "path": "SCREENS/375_2_pause_bottom.png",
+      "bytes": 433835,
+      "sha256": "b066e72f1ea31c61adffa7d982a4a8b57c86548931a246ae0bbeec2bd992558d"
+    },
+    {
+      "path": "SCREENS/375_2_pause_top.png",
+      "bytes": 370401,
+      "sha256": "abb583ce94f7589480985b8d7b202835d2fbaedbfe6713d69307f77f9bb561ee"
+    },
+    {
+      "path": "SCREENS/375_2_paused_profiles_bottom.png",
+      "bytes": 318106,
+      "sha256": "798516c68ec09f9ffabd111ba0dfabe6de60ca5693c8141f4dc4129531f9f843"
+    },
+    {
+      "path": "SCREENS/375_2_paused_profiles_top.png",
+      "bytes": 318106,
+      "sha256": "798516c68ec09f9ffabd111ba0dfabe6de60ca5693c8141f4dc4129531f9f843"
+    },
+    {
+      "path": "SCREENS/375_2_paused_settings_bottom.png",
+      "bytes": 414790,
+      "sha256": "140764702af85f97d4690ab327f8bf9dbebb42ad621c74121b4e8d47f6e7a021"
+    },
+    {
+      "path": "SCREENS/375_2_paused_settings_top.png",
+      "bytes": 370090,
+      "sha256": "e8fc2a6318a0c20a329f30addfec20ea1b3f9deeda99e34701d126399653b8e3"
+    },
+    {
+      "path": "SCREENS/375_2_private_bottom.png",
+      "bytes": 402956,
+      "sha256": "ca875383e45a0fa5663015c884a7748939b10db0dd6ecdb0c5b9c33f1748a97e"
+    },
+    {
+      "path": "SCREENS/375_2_private_top.png",
+      "bytes": 413488,
+      "sha256": "e89dcc45a1a4f06fba394eb5f88443f03470bb01c771f0ab87fd7e53efa0ed1d"
+    },
+    {
+      "path": "SCREENS/430_1_pause_bottom.png",
+      "bytes": 493283,
+      "sha256": "26e2e38b2c3afe37ddc7c1d2310716b217cb4f1b06c83b58d5252e0a62da28ac"
+    },
+    {
+      "path": "SCREENS/430_1_pause_top.png",
+      "bytes": 493283,
+      "sha256": "26e2e38b2c3afe37ddc7c1d2310716b217cb4f1b06c83b58d5252e0a62da28ac"
+    },
+    {
+      "path": "SCREENS/430_1_paused_profiles_bottom.png",
+      "bytes": 325144,
+      "sha256": "b3f4a2e25f53ef9d5c3503569820886093704853530b9149d175fe308d5e4e3e"
+    },
+    {
+      "path": "SCREENS/430_1_paused_profiles_top.png",
+      "bytes": 325144,
+      "sha256": "b3f4a2e25f53ef9d5c3503569820886093704853530b9149d175fe308d5e4e3e"
+    },
+    {
+      "path": "SCREENS/430_1_paused_settings_bottom.png",
+      "bytes": 489716,
+      "sha256": "302ecc27128279c297a6de71700b31a2ae2dae4fd667cb813749bd4547a61c59"
+    },
+    {
+      "path": "SCREENS/430_1_paused_settings_top.png",
+      "bytes": 489716,
+      "sha256": "302ecc27128279c297a6de71700b31a2ae2dae4fd667cb813749bd4547a61c59"
+    },
+    {
+      "path": "SCREENS/430_1_private_bottom.png",
+      "bytes": 485160,
+      "sha256": "2103a37646823f50912925b562b64e07ef4fd7493ff0d63e6fed18248e1f4d06"
+    },
+    {
+      "path": "SCREENS/430_1_private_top.png",
+      "bytes": 485160,
+      "sha256": "2103a37646823f50912925b562b64e07ef4fd7493ff0d63e6fed18248e1f4d06"
+    },
+    {
+      "path": "SCREENS/430_2_pause_bottom.png",
+      "bytes": 591036,
+      "sha256": "d7f099638e5e796e2bde7d6963f9ebe98ff52e1a7610f927e52d5e59fb4a46af"
+    },
+    {
+      "path": "SCREENS/430_2_pause_top.png",
+      "bytes": 499821,
+      "sha256": "b367227f4b846d91b034133bbbfd281db46da8ece46a07a10fdab22643c2ab0f"
+    },
+    {
+      "path": "SCREENS/430_2_paused_profiles_bottom.png",
+      "bytes": 372773,
+      "sha256": "02090a6c83ea5795b0141cf0924d1fe2ff1653ad177b1a02b314bb3024141c18"
+    },
+    {
+      "path": "SCREENS/430_2_paused_profiles_top.png",
+      "bytes": 372773,
+      "sha256": "02090a6c83ea5795b0141cf0924d1fe2ff1653ad177b1a02b314bb3024141c18"
+    },
+    {
+      "path": "SCREENS/430_2_paused_settings_bottom.png",
+      "bytes": 593843,
+      "sha256": "dcdaa825254dde7eec49c445dda43beced63ec5ac00eb9cd10e4481957b11107"
+    },
+    {
+      "path": "SCREENS/430_2_paused_settings_top.png",
+      "bytes": 499200,
+      "sha256": "1656e235916f37daa0766dc17fb41f2af0ce540186b1d59d94b1347eb9b569c9"
+    },
+    {
+      "path": "SCREENS/430_2_private_bottom.png",
+      "bytes": 576167,
+      "sha256": "4c5b5b50d1027cfb3eb2c244e89b8cce0b42c591e75d16f1efaa0e228111b03e"
+    },
+    {
+      "path": "SCREENS/430_2_private_top.png",
+      "bytes": 578029,
+      "sha256": "caf3e45c045d5ef825fd19a0ace37349ba5fad5d181cf20ee887a0c8a4d0a778"
+    },
+    {
+      "path": "SCREENS/pp01_pause__visible.png",
+      "bytes": 493283,
+      "sha256": "26e2e38b2c3afe37ddc7c1d2310716b217cb4f1b06c83b58d5252e0a62da28ac"
+    },
+    {
+      "path": "SCREENS/pp02_pause__paused.png",
+      "bytes": 489716,
+      "sha256": "302ecc27128279c297a6de71700b31a2ae2dae4fd667cb813749bd4547a61c59"
+    },
+    {
+      "path": "SCREENS/pp03_private_mode__off.png",
+      "bytes": 476633,
+      "sha256": "cec1f87582ebcddc6081a2632a66489e28d786545fa240dfca9fd640eae6214e"
+    },
+    {
+      "path": "SCREENS/pp04_private_mode__on.png",
+      "bytes": 485160,
+      "sha256": "2103a37646823f50912925b562b64e07ef4fd7493ff0d63e6fed18248e1f4d06"
+    },
+    {
+      "path": "SCREENS/pp05_private_mode__seeker_basic_locked.png",
+      "bytes": 506714,
+      "sha256": "18663b0eb071f9244e47f052989255e7a09ef745c92aba48d949e71f82bf4ccb"
+    },
+    {
+      "path": "SCREENS/pp06_settings__privacy_rows.png",
+      "bytes": 455151,
+      "sha256": "f83f8bda0295b6642c68e44dda2a90dba74c438ce3dbcd6f8655f2b414300f80"
+    },
+    {
+      "path": "SCREENS/pp07_profiles__paused.png",
+      "bytes": 325144,
+      "sha256": "b3f4a2e25f53ef9d5c3503569820886093704853530b9149d175fe308d5e4e3e"
+    }
+  ]
+}

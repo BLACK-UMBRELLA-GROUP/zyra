@@ -1,0 +1,100 @@
+{
+  "checked_at_utc": "2026-11-27T07:10:47.038467+00:00",
+  "failed_required_gate_runs": 1,
+  "gate_result": "PASS after correction",
+  "ordinary_whole_app_regression": "Not run: newest direct Founder bounded gate",
+  "checks": [
+    {
+      "check": "protection",
+      "command": "node tooling/no_git_driver.mjs check",
+      "exit_code": 0,
+      "sdk": "3.44.2",
+      "pins": 5,
+      "execDenial": "PASS",
+      "nestedExecDenial": "PASS",
+      "policy_sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+    },
+    {
+      "check": "behavior",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub test/zyra_pause_private_preview_state_test.dart test/zyra_pause_private_model_test.dart test/zyra_developer_samples_test.dart test/visual/line138_pause_private_capture_test.dart",
+      "exit_code": 0,
+      "terminal_result": "00:04 +38 ~23: All tests passed!",
+      "log_sha256": "900d067b4b39cbd19a59949f9aa9ae6c6a88d4d1889d686597674c0a07544550"
+    },
+    {
+      "check": "bridge",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub test/zyra_developer_panel_entry_test.dart --plain-name 'LOCK44 paused Founder bridge'",
+      "exit_code": 0,
+      "terminal_result": "00:01 +1: All tests passed!",
+      "log_sha256": "693ae7c817d908c3dfe64bf7fb02905bd92fc1de0f6aa38aa5361d8f8c2ac8a9"
+    },
+    {
+      "check": "capture",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LINE138_CAPTURE=true test/visual/line138_pause_private_capture_test.dart",
+      "exit_code": 0,
+      "terminal_result": "00:27 +28: All tests passed!",
+      "log_sha256": "a5937ad7cc56e78296e62bc14ec3b961cb094794855dda4bf3362354437d4153"
+    },
+    {
+      "check": "pp07_final",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LINE138_CAPTURE=true test/visual/line138_pause_private_capture_test.dart --name 'LOCK44 master pp07|LOCK44 paused rendered text .*profiles=true'",
+      "exit_code": 0,
+      "terminal_result": "00:04 +5: All tests passed!",
+      "log_sha256": "9ecb58558584c9e1c1d9d103fb998e099b61d9c1cb6db22e7e166f18068e0229"
+    },
+    {
+      "check": "analyzer_final",
+      "command": "node tooling/no_git_driver.mjs flutter analyze",
+      "exit_code": 0,
+      "terminal_result": "No issues found! (ran in 7.7s)",
+      "log_sha256": "97a03d3df789983fa86883efd8a4e5df58efd244999309a79e6333dcdde6f05d"
+    },
+    {
+      "check": "settings",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub test/visual/lock22_v4_settings_edit_profile_test.dart --plain-name \"LOCK22 V4 actual Settings\"",
+      "started_utc": "2026-11-27T07:07:34.327235+00:00",
+      "completed_utc": "2026-11-27T07:07:40.093532+00:00",
+      "exit_code": 0,
+      "log": "build/line138_restart_settings.log",
+      "terminal_result": "00:01 +2: All tests passed!",
+      "log_sha256": "f11c6f1941fb1e88da0b3a7ce522f8c77ce5f0500e55a2f64e9587dc8d3b7a0e"
+    },
+    {
+      "check": "resume",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub test/one_journey_resume_checkpoint_test.dart --plain-name LOCK44",
+      "started_utc": "2026-11-27T07:07:40.094137+00:00",
+      "completed_utc": "2026-11-27T07:07:43.261831+00:00",
+      "exit_code": 0,
+      "log": "build/line138_restart_resume.log",
+      "terminal_result": "00:00 +2: All tests passed!",
+      "log_sha256": "00b38fce41e05c182add9f0f0be0be243d19dc0d00f4eb6b5ce22aff7e7ee9ae"
+    },
+    {
+      "check": "routes",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub test/visual/line126_remaining_routes_test.dart --name \"overview (visibility|privateMode)\"",
+      "started_utc": "2026-11-27T07:07:43.262246+00:00",
+      "completed_utc": "2026-11-27T07:07:46.521303+00:00",
+      "exit_code": 0,
+      "log": "build/line138_restart_routes.log",
+      "terminal_result": "00:00 +4: All tests passed!",
+      "log_sha256": "d68b082b4838f12507f2d98354cb184b1fa0f30c45a0ff15276dae958eeb08aa"
+    },
+    {
+      "check": "text_controls",
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub test/zyra_rendered_text_audit_controls_test.dart",
+      "started_utc": "2026-11-27T07:07:46.521669+00:00",
+      "completed_utc": "2026-11-27T07:08:10.256307+00:00",
+      "exit_code": 0,
+      "log": "build/line138_restart_text_controls.log",
+      "terminal_result": "00:21 +130: All tests passed!",
+      "log_sha256": "222c4b5cd884a61ac76cd1e4ea7195f8e2d341f94caca5c6d7f95a8aa44420e0"
+    },
+    {
+      "check": "initial_analyzer",
+      "command": "node tooling/no_git_driver.mjs flutter analyze",
+      "exit_code": 1,
+      "result": "Six implementation diagnostics: three declaration/context errors, two obsolete duration test references, one missing block. Fixed before final analyzer and focused checks.",
+      "log_sha256": "a09c0759aff4a9d1e45cc6468274ccb19b4bd458ec7b4d7665a34bc63e897216"
+    }
+  ]
+}

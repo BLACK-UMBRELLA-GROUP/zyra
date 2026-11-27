@@ -1,0 +1,565 @@
+{
+  "checked_at_utc": "2026-11-27T07:12:44.070326+00:00",
+  "source_files": 17,
+  "source_hits": 22,
+  "source_result": "Reviewed: unchanged accepted code and Dart record-field syntax only. No new sensitive material.",
+  "initial_evidence_files": 88,
+  "compressed_png_lexical_matches": 1804,
+  "initial_evidence_text_hits": 1,
+  "text_hit_resolution": "Removed quoted Dart field syntax from the review explanation; source code remains valid and unchanged.",
+  "written_refusal": "Do not rewrite valid captured PNGs for compressed-byte text-scanner matches. All images have verified PNG signatures/dimensions, no textual metadata chunks, and visible content was checked against the locked sample screens. A scanner enhancement is outside this bounded line.",
+  "queue_scan": {
+    "exit_code": 1,
+    "summary": "Checked 1 file(s); 1 hit(s) to review.",
+    "review": "Only row138 status/date changed by this owner; all lexical matches are inherited queue text. No new sensitive content."
+  },
+  "png_validation": [
+    {
+      "file": "375_1_pause_bottom.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_1_pause_top.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_1_paused_profiles_bottom.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_1_paused_profiles_top.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_1_paused_settings_bottom.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_1_paused_settings_top.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_1_private_bottom.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_1_private_top.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_2_pause_bottom.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_2_pause_top.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_2_paused_profiles_bottom.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_2_paused_profiles_top.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_2_paused_settings_bottom.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_2_paused_settings_top.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_2_private_bottom.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "375_2_private_top.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_1_pause_bottom.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_1_pause_top.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_1_paused_profiles_bottom.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_1_paused_profiles_top.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_1_paused_settings_bottom.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_1_paused_settings_top.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_1_private_bottom.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_1_private_top.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_2_pause_bottom.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_2_pause_top.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_2_paused_profiles_bottom.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_2_paused_profiles_top.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_2_paused_settings_bottom.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_2_paused_settings_top.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_2_private_bottom.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "430_2_private_top.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "pp01_pause__visible.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "pp02_pause__paused.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "pp03_private_mode__off.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "pp04_private_mode__on.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "pp05_private_mode__seeker_basic_locked.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "pp06_settings__privacy_rows.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "file": "pp07_profiles__paused.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    }
+  ],
+  "push_status": "Paused; no upload recovery verification from coordinator, zero attempts. Pre-push secret-history scan deferred until publication resumes."
+}

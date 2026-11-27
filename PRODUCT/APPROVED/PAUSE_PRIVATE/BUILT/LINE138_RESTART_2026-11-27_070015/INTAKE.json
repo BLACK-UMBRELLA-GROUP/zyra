@@ -1,0 +1,53 @@
+{
+  "queue_line": 138,
+  "authority": [
+    "LOCK 44",
+    "Q225",
+    "Q226",
+    "Founder 27 Nov GO/direct bounded gate"
+  ],
+  "source_intake_utc": "2026-11-27T07:00:15Z",
+  "deadline_utc": "2026-11-27T13:00:15Z",
+  "base_commit": "fefbd28afbf4c8948fa1f1e7c66f97985ac0fbc3",
+  "source_and_github_clean": true,
+  "manifest_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+  "patch_sha256": "1adf29bdc8293157af531d56409159cd697cb2c4d7a4eba1d50a9db31f26e931",
+  "accepted_paths_verified": 13,
+  "staged_before": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "index_sha256": "6deb49c9bb2ed18a25a1838be203ea68dc63f2ec8ce418d23667c4ab2ce9d179"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+      "index_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+      "index_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+      "index_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+      "index_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+      "index_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "index_sha256": "ae91e39960c51f32646c2a0dd0d3548f11c2445d20180e186b2f892607ed1d16"
+    }
+  ],
+  "start_pack_bytes": 23628,
+  "failed_required_gate_runs": 0,
+  "push": "PAUSED unless coordinator verifies recovery",
+  "note": "Absolute start_pack invocation passed: 23628 UTF-8 bytes. Initial relative script invocation was refused because its path contained parent components; corrected once. Initial manifest-summary command used the wrong key and was corrected without source/index effects.",
+  "restored_candidate_hashes_verified": 13,
+  "conversation": "new (started 07:00 UTC)",
+  "root_thread_id": "01a21bcd-cfa4-7180-97fb-44f725d81bdd"
+}
