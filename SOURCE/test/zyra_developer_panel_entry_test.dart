@@ -17,6 +17,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_pause_private_preview.dart';
 import 'package:zyra/dev/zyra_first_tour_overlay.dart';
 import 'package:zyra/dev/zyra_first_tour_steps.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
@@ -395,6 +396,54 @@ void main() {
     if (arrival.evaluate().isNotEmpty) await tap(tester, arrival);
     expect(_key('concept_message'), findsOneWidget);
   }
+
+  testWidgets(
+    'LOCK44 paused Founder bridge blocks developer sends until manual unpause',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome(tab: 4));
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_view_as_0'));
+      await tap(tester, _key('dev_done'));
+      await previewTab(tester, 4);
+      await tap(tester, _key('concept_settings'));
+      final scroll = find
+          .descendant(
+            of: _key('concept-current-settings-scroll'),
+            matching: find.byType(Scrollable),
+          )
+          .first;
+      await tester.scrollUntilVisible(
+        _key('concept_settings_visibility'),
+        160,
+        scrollable: scroll,
+      );
+      await tap(tester, _key('concept_settings_visibility'));
+      final pause = tester.widget<ZyraPausePrivatePreview>(
+        find.byType(ZyraPausePrivatePreview),
+      );
+      pause.onPause();
+      await settle(tester);
+      final samples = ZyraDeveloperSamples.instance;
+      samples.setEnded(1);
+      samples.setIntroductions(1);
+      await settle(tester);
+      final ended = samples.endedRows!.single;
+      final introduced = samples.introductionRows!.single;
+      expect(samples.canSendPreviewRequest('draft-maryam'), isFalse);
+      expect(samples.togglePreviewRequest('draft-maryam'), isFalse);
+      expect(samples.requestIntroduction(introduced), isFalse);
+      expect(samples.restart(ended), isFalse);
+      tester
+          .widget<ZyraPausePrivatePreview>(find.byType(ZyraPausePrivatePreview))
+          .onShowProfile();
+      await settle(tester);
+      expect(samples.canSendPreviewRequest('draft-maryam'), isTrue);
+      expect(samples.togglePreviewRequest('draft-maryam'), isTrue);
+      await dispose(tester);
+      expect(samples.togglePreviewRequest('draft-hana'), isFalse);
+    },
+  );
 
   testWidgets(
     'every inactivity email returns to My ZYRA with the correct kept or removed history',
@@ -953,9 +1002,7 @@ void main() {
     );
     expect(enabled, isTrue);
     // This regression exercises the legacy immediate-lock path explicitly.
-    await tester.runAsync(
-      () => ZyraAppLock.instance.setDelay('straight_away'),
-    );
+    await tester.runAsync(() => ZyraAppLock.instance.setDelay('straight_away'));
     suspend(tester);
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);

@@ -215,6 +215,28 @@ Focused behavior and rendered-text checks are in
 protected driver with `--dart-define=ZYRA_LINE137_CAPTURE=true` to save the five
 states at 375/430 widths and normal/Larger Text under `build/line137/`.
 
+## Founder preview Pause and Private mode
+
+LOCK 44 supplies local sample pages at Settings → PRIVACY → Pause My Profile
+and Private mode for Seekers. Guardians have neither row. Pause hides the
+sample profile and refuses new outgoing request writes while retaining existing
+requests and Journeys. Private mode hides it from discovery, permits outgoing
+requests and is restricted to Seeker One; a downgrade turns it off. Settings
+and page actions use the existing route/account freshness guards.
+
+Q225 makes Pause a manual break: it stays on until the member chooses
+Show my profile again. While paused, the Profiles tab shows the locked calm
+card, with its usual navigation, instead of the deck. Ordinary requests,
+Introductions and Ended Journey requests share the same pause admission,
+including developer samples. Existing requests and Journeys remain available.
+There is no server enforcement, member data, native build or phone delivery.
+
+Focused policy/model tests are `test/zyra_pause_private_preview_state_test.dart`
+and `test/zyra_pause_private_model_test.dart`. Actual Settings routes and focused
+rendered-text replay are in `test/visual/line138_pause_private_capture_test.dart`;
+its optional seven master captures use `--dart-define=ZYRA_LINE138_CAPTURE=true`
+through the protected driver and write under `build/line138/`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

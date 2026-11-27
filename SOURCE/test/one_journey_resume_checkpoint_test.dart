@@ -14,6 +14,7 @@ import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_privacy_security_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_pause_private_preview.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
@@ -549,11 +550,55 @@ void main() {
       },
     );
 
+    if (!guardian) {
+      for (final action in ['visibility', 'privateMode']) {
+        testWidgets(
+          'LOCK44 resumes $action and drops retired discovery detail',
+          (tester) async {
+            final owner = _Owner();
+            await owner.mount(
+              tester,
+              checkpoint: _seed(
+                guardian: false,
+                tab: 4,
+                pages: const ['settings', 'account_action', 'settings_detail'],
+                accountDestination: action,
+                settingsDetail: 'discovery',
+              ),
+            );
+            final old = tester.widget<ZyraPausePrivatePreview>(
+              find.byType(ZyraPausePrivatePreview),
+            );
+            expect(old.privatePage, action == 'privateMode');
+            expect(
+              find.byType(ZyraConceptSettingsDetailPresentation),
+              findsNothing,
+            );
+            expect(owner.latest.pages, ['settings', 'account_action']);
+            expect(owner.latest.settingsDetail, isNull);
+            final captured = owner.latest;
+            await owner.mount(tester, checkpoint: captured);
+            old.onPause();
+            old.onPrivateChanged(true);
+            await tester.pump();
+            final current = tester.widget<ZyraPausePrivatePreview>(
+              find.byType(ZyraPausePrivatePreview),
+            );
+            expect(current.paused, isFalse);
+            expect(current.privateMode, isFalse);
+            expect(current.privatePage, action == 'privateMode');
+            expect(find.textContaining('confirmed Pause state'), findsNothing);
+            expect(find.textContaining('server setting'), findsNothing);
+            expect(tester.takeException(), isNull);
+          },
+        );
+      }
+    }
+
     for (final (action, detail) in <(String, String)>[
       ('appLock', 'appLock'),
       ('advanced', 'deleteAccount'),
       ('advanced', 'resetProfile'),
-      if (!guardian) ('visibility', 'discovery'),
       if (!guardian) ('hiddenProfiles', 'hiddenProfiles'),
       ('notificationSettings', 'notifications'),
       ('feedback', 'feedback'),
@@ -591,13 +636,7 @@ void main() {
           expect(currentDetail.detail.name, detail);
           expect(currentDetail.guardian, guardian);
           expect(currentDetail.overviewAction?.name, action);
-          if (action == 'visibility') {
-            expect(find.text('Pause My Profile'), findsOneWidget);
-            expect(
-              find.textContaining('Your confirmed Pause state is unavailable'),
-              findsOneWidget,
-            );
-          } else if (action == 'guardianPrivacy') {
+          if (action == 'guardianPrivacy') {
             expect(find.text('Guardian privacy'), findsOneWidget);
             expect(find.text('Pause My Profile'), findsNothing);
           } else if (action == 'hiddenProfiles') {

@@ -38,6 +38,7 @@ enum ZyraConceptAccountAction {
   advanced,
   guardianPrivacy,
   visibility,
+  privateMode,
   hiddenProfiles,
   phoneAccess,
   notificationSettings,
@@ -78,6 +79,8 @@ class ZyraConceptAccountData {
     this.standardUnlocks,
     this.plusUnlocks,
     this.appLock = false,
+    this.profilePaused = false,
+    this.privateMode = false,
     this.phoneAccessSeen = false,
     this.smoothSettings = false,
     this.versionLine,
@@ -106,6 +109,7 @@ class ZyraConceptAccountData {
   final int? standardUnlocks;
   final int? plusUnlocks;
   final bool appLock;
+  final bool profilePaused, privateMode;
   final bool phoneAccessSeen;
   final bool smoothSettings;
   final String? versionLine;
@@ -771,11 +775,18 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
                     title: 'PRIVACY',
                     smooth: smooth,
                     children: [
-                      if (!data.guardian)
+                      if (!data.guardian) ...[
                         row(
                           'Pause My Profile',
                           ZyraConceptAccountAction.visibility,
+                          value: data.profilePaused ? 'Paused' : null,
                         ),
+                        row(
+                          'Private mode',
+                          ZyraConceptAccountAction.privateMode,
+                          value: data.privateMode ? 'On' : 'Off',
+                        ),
+                      ],
                       row(
                         'Hidden and blocked',
                         ZyraConceptAccountAction.hiddenProfiles,

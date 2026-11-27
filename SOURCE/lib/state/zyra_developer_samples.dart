@@ -127,6 +127,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   bool Function()? _authorized;
   int Function()? _capacity;
   bool Function()? _isSeekerOne;
+  bool Function()? _canSendRequest;
   DateTime Function() _clock = DateTime.now;
   Timer? _timeRuleTimer;
   var _owner = (userId: null as String?, generation: -1);
@@ -288,6 +289,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     required bool Function() authorized,
     required int Function() capacity,
     bool Function()? isSeekerOne,
+    bool Function()? canSendRequest,
     DateTime Function()? clock,
     Object? lifetime,
     Object? binding,
@@ -310,6 +312,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _authorized = authorized;
     _capacity = capacity;
     _isSeekerOne = isSeekerOne;
+    _canSendRequest = canSendRequest;
     _clock = clock ?? DateTime.now;
     _scheduleTimeRules();
     if (changed || presentationChanged || !wasBound) notifyListeners();
@@ -330,6 +333,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _authorized = null;
     _capacity = null;
     _isSeekerOne = null;
+    _canSendRequest = null;
     _binding = null;
     _cancelTimeRuleTimer();
     ++_generation;
@@ -354,6 +358,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _authorized = null;
     _capacity = null;
     _isSeekerOne = null;
+    _canSendRequest = null;
     _reset();
     if (hadOwner) notifyListeners();
   }
@@ -861,8 +866,18 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     return pastRequestAskAgainAfter(latest);
   }
 
+  // Q225: every actual outgoing sample writer uses this owner policy.
+  bool get _requestAdmission {
+    if (!isAuthorized) return false;
+    try {
+      return _canSendRequest?.call() ?? true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   bool canSendPreviewRequest(String profileId) {
-    if (!isAuthorized ||
+    if (!_requestAdmission ||
         setupUnfinished ||
         capacity == 0 ||
         !_people.containsKey(profileId) ||
@@ -995,7 +1010,8 @@ class ZyraDeveloperSamples extends ChangeNotifier {
 
   bool mayRestart(ZyraSampleJourney row) {
     final endedAt = row.endedAt;
-    if (_isSeekerOne?.call() != true ||
+    if (!_requestAdmission ||
+        _isSeekerOne?.call() != true ||
         endedAt == null ||
         !hasSparePlace ||
         _removedEnded.contains(row.id)) {

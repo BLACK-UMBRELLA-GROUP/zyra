@@ -389,6 +389,16 @@ void main() {
       await h.mount(tab: 4);
       expect(find.text('Appearance & haptics'), findsNothing);
       await h.tap('concept_settings');
+      await t.scrollUntilVisible(
+        k('concept_settings_haptics'),
+        160,
+        scrollable: find
+            .descendant(
+              of: k('concept-current-settings-scroll'),
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
       await h.tap('concept_settings_haptics');
       final slider = k('zyra-haptic-strength-slider');
       await t.ensureVisible(slider);
@@ -408,6 +418,16 @@ void main() {
         'Settings Haptics reaches all five stops; the retired Appearance route is absent.',
       );
       await h.mount(tab: 4, pages: ['settings']);
+      await t.scrollUntilVisible(
+        k('concept_settings_phoneAccess'),
+        160,
+        scrollable: find
+            .descendant(
+              of: k('concept-current-settings-scroll'),
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
       await h.tap('concept_settings_phoneAccess');
       await cap(
         h,

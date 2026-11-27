@@ -18,6 +18,7 @@ import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
 import 'package:zyra/dev/zyra_privacy_security_preview.dart';
+import 'package:zyra/dev/zyra_pause_private_preview.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/settings/account_advanced_screen.dart';
@@ -69,7 +70,10 @@ const _nativeBoundaryChannels = [
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 Finder _overview(ZyraConceptAccountAction action) =>
-    action == ZyraConceptAccountAction.notificationSettings
+    action == ZyraConceptAccountAction.visibility ||
+        action == ZyraConceptAccountAction.privateMode
+    ? find.byType(ZyraPausePrivatePreview)
+    : action == ZyraConceptAccountAction.notificationSettings
     ? find.byType(ZyraEmailSettingsPreview)
     : action == ZyraConceptAccountAction.signInSecurity ||
           action == ZyraConceptAccountAction.appLock ||
@@ -90,6 +94,7 @@ List<ZyraConceptAccountAction> _roleOverviews(bool guardian) => [
               action != ZyraConceptAccountAction.guardianPrivacy
         : action != ZyraConceptAccountAction.guardianPrivacy)
       action,
+  if (!guardian) ZyraConceptAccountAction.privateMode,
 ];
 
 List<ZyraConceptSettingsDetail> _children(
@@ -398,6 +403,16 @@ class _ShellOwner {
   ) async {
     await _tap(tester, _key('concept_settings_${action.name}'));
     expect(_overview(action), findsOneWidget);
+    if (action == ZyraConceptAccountAction.visibility ||
+        action == ZyraConceptAccountAction.privateMode) {
+      final page = tester.widget<ZyraPausePrivatePreview>(
+        find.byType(ZyraPausePrivatePreview),
+      );
+      expect(page.privatePage, action == ZyraConceptAccountAction.privateMode);
+      expect(find.textContaining('server setting'), findsNothing);
+      _noLiveActionWidgets();
+      return;
+    }
     if (action == ZyraConceptAccountAction.notificationSettings) {
       expect(find.text('Journey emails'), findsOneWidget);
       _noLiveActionWidgets();
@@ -738,7 +753,7 @@ void main() {
       };
       final actualRows = await _actualSettingsRows(tester);
       expect(actualRows, expectedRows);
-      expect(actualRows.length, guardian ? 12 : 13);
+      expect(actualRows.length, guardian ? 12 : 14);
       await _tap(tester, _key('concept_settings_haptics'));
       expect(_key('zyra-haptic-strength-slider'), findsOneWidget);
       await _tap(tester, _key('concept_settings_haptics'));
@@ -747,6 +762,8 @@ void main() {
       for (final action in actions) {
         await owner.overview(tester, action);
         if (action == ZyraConceptAccountAction.notificationSettings ||
+            action == ZyraConceptAccountAction.visibility ||
+            action == ZyraConceptAccountAction.privateMode ||
             action == ZyraConceptAccountAction.signInSecurity ||
             action == ZyraConceptAccountAction.appLock ||
             action == ZyraConceptAccountAction.hiddenProfiles) {

@@ -14,6 +14,7 @@ import 'package:zyra/dev/zyra_email_settings_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_pause_private_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_info_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
@@ -233,12 +234,12 @@ void _registerAccountCases(
   final role = guardian ? 'Guardian' : 'Seeker';
   final plan = basic ? 'Basic' : 'One';
   final prefix = 'line126 ${frame.id} $role $plan';
-  final privacy = guardian
-      ? ZyraConceptAccountAction.guardianPrivacy
-      : ZyraConceptAccountAction.visibility;
   for (final action in [
     ..._commonOverviews,
-    if (!guardian) privacy,
+    if (!guardian) ...[
+      ZyraConceptAccountAction.visibility,
+      ZyraConceptAccountAction.privateMode,
+    ],
     ZyraConceptAccountAction.hiddenProfiles,
   ]) {
     _case('$prefix overview ${action.name}', (tester) async {
@@ -257,6 +258,19 @@ void _registerAccountCases(
         );
         expect(view.settings.journeyEmails, isTrue);
         expect(view.settings.journeyRequests, isTrue);
+      } else if (action == ZyraConceptAccountAction.visibility ||
+          action == ZyraConceptAccountAction.privateMode) {
+        final view = tester.widget<ZyraPausePrivatePreview>(
+          find.byType(ZyraPausePrivatePreview),
+        );
+        expect(
+          view.privatePage,
+          action == ZyraConceptAccountAction.privateMode,
+        );
+        expect(view.seekerOne, !basic);
+        expect(view.paused, isFalse);
+        expect(find.textContaining('confirmed Pause state'), findsNothing);
+        expect(find.textContaining('server setting'), findsNothing);
       } else if (action == ZyraConceptAccountAction.signInSecurity ||
           action == ZyraConceptAccountAction.appLock ||
           action == ZyraConceptAccountAction.hiddenProfiles) {
@@ -282,10 +296,7 @@ void _registerAccountCases(
       _record(h, 'overview_${action.name}');
     });
   }
-  for (final (action, detail) in [
-    ..._commonDetails,
-    if (!guardian) (privacy, ZyraConceptSettingsDetail.discovery),
-  ]) {
+  for (final (action, detail) in [..._commonDetails]) {
     _case('$prefix detail ${detail.name}', (tester) async {
       final h = await _mount(
         tester,

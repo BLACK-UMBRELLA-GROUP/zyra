@@ -204,6 +204,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
   final String Function() _realPlanName;
   Object? _attachedOwner;
   VoidCallback? _samplesChanged;
+  bool Function()? _canSendRequest;
   Future<void> Function(ZyraErrorKind)? _showError;
   Future<void> Function()? _continueSetup;
   Future<void> Function()? _startSignup;
@@ -213,6 +214,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
   bool _disposed = false, _notificationScheduled = false;
 
   bool get canPresent => !_disposed && _canPresent();
+  bool get canSendRequest => canPresent && (_canSendRequest?.call() ?? true);
   ZyraDeveloperPanelAccess? get access => canPresent ? _access() : null;
   Object? get verifiedLifetime => access?.verifiedLifetime;
   ZyraDeveloperViewAs? get viewAs => canPresent ? _viewAs() : null;
@@ -236,6 +238,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
   void attach({
     required Object owner,
     required VoidCallback samplesChanged,
+    bool Function()? canSendRequest,
     required Future<void> Function(ZyraErrorKind) showError,
     Future<void> Function()? continueSetup,
     Future<void> Function()? startSignup,
@@ -246,6 +249,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
         (_continueSetup == null) != (continueSetup == null);
     _attachedOwner = owner;
     _samplesChanged = samplesChanged;
+    _canSendRequest = canSendRequest;
     _showError = showError;
     _continueSetup = continueSetup;
     _startSignup = startSignup;
@@ -262,6 +266,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
     final hadContinuation = _continueSetup != null;
     _attachedOwner = null;
     _samplesChanged = null;
+    _canSendRequest = () => false;
     _showError = null;
     _continueSetup = null;
     _startSignup = null;
@@ -639,6 +644,7 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
           _seekerCurrent && _foreground && access.verifiedLifetime == lifetime,
       capacity: _places,
       isSeekerOne: _viewedSeekerOne,
+      canSendRequest: () => _owner?._bridge.canSendRequest ?? false,
     );
     if (AppState.instance.verifiedSeekerPlan == null &&
         _samples.viewAs == null) {

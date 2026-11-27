@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/models/journey_match.dart';
+import 'package:zyra/dev/zyra_pause_private_preview_state.dart';
 import 'package:zyra/models/zyra_developer_preview.dart';
 import 'package:zyra/models/zyra_dashboard_resolution.dart';
 import 'package:zyra/models/seeker_profile.dart';
@@ -38,6 +39,7 @@ Future<void> _bind({
   int capacity = 1,
   int? liveActive = 0,
   bool? isSeekerOne,
+  bool Function()? canSendRequest,
   DateTime Function()? clock,
 }) async {
   await ZyraAccountState.synchronize(_user);
@@ -45,6 +47,7 @@ Future<void> _bind({
     authorized: () => true,
     capacity: () => capacity,
     isSeekerOne: () => isSeekerOne ?? capacity == 3,
+    canSendRequest: canSendRequest,
     clock: clock,
   );
   _samples.recordRealCounts(
@@ -148,6 +151,60 @@ void main() {
     ZyraAccountState.clearImagesForTesting = null;
     ZyraText.useTestFontStubs = false;
   });
+
+  test(
+    'LOCK44 pause blocks every outgoing sample writer and preserves waiting state',
+    () async {
+      final privacy = ZyraPausePrivatePreviewState(
+        canAct: () => true,
+        seekerOne: () => true,
+      );
+      addTearDown(privacy.dispose);
+      await _bind(capacity: 3, canSendRequest: () => privacy.canSendRequest);
+      _samples.setReceived(1);
+      _samples.setSent(1);
+      _samples.setEnded(1);
+      _samples.setIntroductions(1);
+      final incoming = _samples.receivedRows!.toList();
+      final sent = _samples.sentRows!.toList();
+      final ended = _samples.endedRows!.single;
+      final introduced = _samples.introductionRows!.single;
+      expect(_samples.mayRestart(ended), isTrue);
+      privacy.pause();
+      expect(_samples.canSendPreviewRequest('draft-maryam'), isFalse);
+      expect(_samples.togglePreviewRequest('draft-maryam'), isFalse);
+      expect(_samples.canRequestIntroduction(introduced), isFalse);
+      expect(_samples.requestIntroduction(introduced), isFalse);
+      expect(_samples.mayRestart(ended), isFalse);
+      expect(_samples.restart(ended), isFalse);
+      expect(_samples.receivedRows, incoming);
+      expect(_samples.sentRows, sent);
+      expect(_samples.endedRows, [ended]);
+      expect(_samples.introductionRows, [introduced]);
+      privacy.showProfile();
+      privacy.setPrivateMode(true);
+      expect(_samples.togglePreviewRequest('draft-maryam'), isTrue);
+      expect(_samples.requestIntroduction(introduced), isTrue);
+      // The ended row uses Zainab; the fixture's existing Sent row uses Safiya.
+      expect(_samples.restart(ended), isTrue);
+    },
+  );
+
+  test(
+    'LOCK44 sample send policy fails closed and retires on owner replacement',
+    () async {
+      await _bind(
+        capacity: 3,
+        canSendRequest: () => throw StateError('retired'),
+      );
+      _samples.setEnded(1);
+      expect(_samples.togglePreviewRequest('draft-maryam'), isFalse);
+      expect(_samples.restart(_samples.endedRows!.single), isFalse);
+      _samples.unbind();
+      await _bind(capacity: 3);
+      expect(_samples.togglePreviewRequest('draft-maryam'), isTrue);
+    },
+  );
 
   test(
     'Q171 Everything preserves gate-only setup and permits cancellation',

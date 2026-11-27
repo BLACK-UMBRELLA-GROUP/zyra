@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'zyra_pause_private_preview_state.dart';
 
 import 'package:flutter/foundation.dart'
     show Listenable, ValueNotifier, visibleForTesting;
@@ -880,6 +881,11 @@ class ViewRequestDraftModel {
   bool _peerMainGuardian = true;
 
   int get capacity => _capacity;
+
+  /// Caller-owned sample policy, rebound by the shell after snapshot restore.
+  /// It is neither member state nor server permission and is not serialized.
+  ZyraPausePrivatePreviewState? ownProfilePrivacy;
+  final candidateProfilePrivacy = <String, ZyraPausePrivatePreviewState>{};
   Map<String, DraftJourneyState> get states => UnmodifiableMapView(_states);
   Set<String> get hiddenPeers => UnmodifiableSetView(_hiddenPeers);
   Set<String> get blockedPeers => UnmodifiableSetView(_blockedPeers);
@@ -1351,13 +1357,15 @@ class ViewRequestDraftModel {
       .length;
   int get occupiedCount => activeCount + preparingCount;
   bool get hasCapacity => occupiedCount < capacity;
-  bool get discoverable => hasCapacity;
+  bool get discoverable =>
+      hasCapacity && (ownProfilePrivacy?.discoveryVisible ?? true);
 
   /// Viewing/sending while full stays scoped to monthly three-place previews;
   /// Basic and two-place previews retain their Browse gate. Acceptance uses
   /// its separate capacity choice. Visibility to others is still
   /// [discoverable], not permission to inspect public profiles.
-  bool get canBrowse => hasCapacity || capacity == 3;
+  bool get canBrowse =>
+      (ownProfilePrivacy?.canBrowse ?? true) && (hasCapacity || capacity == 3);
 
   /// Ended peers can be viewed again without resurrecting the old attempt.
   /// A fresh request to the same peer remains held until distinct attempt
@@ -1365,6 +1373,7 @@ class ViewRequestDraftModel {
   List<DraftProfile> get discoverableProfiles => List.unmodifiable(
     verifiedPublicCandidates(draftProfiles).where((profile) {
       return !hasDeparted(profile.id) &&
+          (candidateProfilePrivacy[profile.id]?.discoveryVisible ?? true) &&
           !isHidden(profile.id) &&
           !isBlocked(profile.id) &&
           !peerOccupied(profile.id);
@@ -1562,6 +1571,7 @@ class ViewRequestDraftModel {
   }
 
   bool canRequest(String id) =>
+      (ownProfilePrivacy?.canSendRequest ?? true) &&
       _fixtureIds.contains(id) &&
       !isBlocked(id) &&
       !isHidden(id) &&
@@ -1709,6 +1719,7 @@ class ViewRequestDraftModel {
       _mainLeadershipPresent(id);
 
   bool request(String id) {
+    if (!(ownProfilePrivacy?.canSendRequest ?? true)) return false;
     if (!canRequest(id)) return false;
     _states[id] = DraftJourneyState.sent;
     _attemptRevisions[id] = ++_attemptSequence;
@@ -1896,7 +1907,8 @@ class ViewRequestDraftModel {
 
   bool canRequestEndedJourney(String id) {
     final availableAt = restartAvailableAt(id);
-    return hasVisibleEndedJourney(id) &&
+    return (ownProfilePrivacy?.canSendRequest ?? true) &&
+        hasVisibleEndedJourney(id) &&
         isRecentEndedJourney(id) &&
         !isHidden(id) &&
         !hasDeparted(id) &&
@@ -1908,6 +1920,7 @@ class ViewRequestDraftModel {
   }
 
   bool requestEndedJourney(String id) {
+    if (!(ownProfilePrivacy?.canSendRequest ?? true)) return false;
     advanceTimeRules();
     if (!canRequestEndedJourney(id)) return false;
     _restartRequestedAt[id] = _clock().toUtc();

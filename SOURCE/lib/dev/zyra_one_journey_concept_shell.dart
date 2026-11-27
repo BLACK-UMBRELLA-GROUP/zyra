@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 import 'zyra_developer_focus_presets.dart';
 import 'zyra_full_profile_preview.dart';
+import 'zyra_pause_private_preview.dart';
+import 'zyra_pause_private_preview_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
@@ -474,6 +476,7 @@ class _ZyraOneJourneyConceptShellState
     bridge?.attach(
       owner: this,
       samplesChanged: _syncDeveloperSamples,
+      canSendRequest: () => _profilePrivacy.canSendRequest,
       showError: _showDeveloperError,
       continueSetup: _resumeSignup,
       startSignup: _startSignup,
@@ -1403,6 +1406,7 @@ class _ZyraOneJourneyConceptShellState
   Widget? _scanEntryView;
   int _scanEntryRevision = -1;
   late final ZyraRequestAccountSession _accountSession;
+  late final ZyraPausePrivatePreviewState _profilePrivacy;
   GlobalKey<NavigatorState>? _accountNavigator;
   Widget? _accountLeafView;
   int _accountLeafRevision = -1;
@@ -1687,6 +1691,13 @@ class _ZyraOneJourneyConceptShellState
   void initState() {
     super.initState();
     _fixtureAccount = (ZyraAccountState.userId, ZyraAccountState.generation);
+    _profilePrivacy = ZyraPausePrivatePreviewState(
+      canAct: () =>
+          mounted &&
+          _fixtureAccount ==
+              (ZyraAccountState.userId, ZyraAccountState.generation),
+      seekerOne: () => _seekerMembership == 'Seeker One',
+    )..addListener(_accountChanged);
     _firstTourStore = ZyraFirstTourStore(
       ownerId: ZyraAccountState.userId,
       canAct: () => _firstTourCurrent,
@@ -1810,6 +1821,7 @@ class _ZyraOneJourneyConceptShellState
     ZyraConceptAccountAction.appLock,
     ZyraConceptAccountAction.advanced,
     ZyraConceptAccountAction.visibility,
+    ZyraConceptAccountAction.privateMode,
     ZyraConceptAccountAction.hiddenProfiles,
     ZyraConceptAccountAction.guardianPrivacy,
     ZyraConceptAccountAction.notificationSettings,
@@ -1822,6 +1834,7 @@ class _ZyraOneJourneyConceptShellState
       _settingsOverviewActions.contains(action) &&
       (_guardianRole
           ? action != ZyraConceptAccountAction.visibility &&
+                action != ZyraConceptAccountAction.privateMode &&
                 action != ZyraConceptAccountAction.guardianPrivacy
           : action != ZyraConceptAccountAction.guardianPrivacy);
 
@@ -1838,6 +1851,7 @@ class _ZyraOneJourneyConceptShellState
           detail == ZyraConceptSettingsDetail.deleteAccount ||
               detail == ZyraConceptSettingsDetail.resetProfile,
         ZyraConceptAccountAction.visibility ||
+        ZyraConceptAccountAction.privateMode => false,
         ZyraConceptAccountAction.guardianPrivacy =>
           detail == ZyraConceptSettingsDetail.discovery,
         ZyraConceptAccountAction.hiddenProfiles =>
@@ -2367,6 +2381,7 @@ class _ZyraOneJourneyConceptShellState
       _hiddenProfileRestore = null;
       if (!preserveCircle) _pendingMainUnreadOnEntry = null;
       change();
+      _profilePrivacy.synchronizePlan(notify: false);
       if (wasMyZyra && !_activityRoot) _dismissWelcomeBack();
       if (_tab != 2 ||
           _pages.firstOrNull != _myZyraQuickAccessPage ||
@@ -3008,6 +3023,8 @@ class _ZyraOneJourneyConceptShellState
 
   @override
   void dispose() {
+    _profilePrivacy.removeListener(_accountChanged);
+    _profilePrivacy.dispose();
     _firstTourStore.close();
     _developerBridge?.detach(this);
     _inactivityLifecycle.dispose();
@@ -3048,6 +3065,8 @@ class _ZyraOneJourneyConceptShellState
 
   @override
   Widget build(BuildContext context) {
+    _profilePrivacy.synchronizePlan(notify: false);
+    _model.ownProfilePrivacy = _profilePrivacy;
     _syncLocationOrigins();
     _syncTimeRuleTimer();
     final navigationRouteStamp = _routeStamp;
@@ -3639,6 +3658,7 @@ class _ZyraOneJourneyConceptShellState
       : _model.stateFor(id) == DraftJourneyState.sent;
 
   bool _canToggleInvitation(String id) =>
+      _profilePrivacy.canSendRequest &&
       !_guardianRole &&
       !_model.isBlocked(id) &&
       (_signupUnverified ||
@@ -3684,7 +3704,11 @@ class _ZyraOneJourneyConceptShellState
   }
 
   void _toggleInvitation(String id) {
-    if (!_allowed || !_canToggleInvitation(id)) return;
+    if (!_allowed ||
+        !_profilePrivacy.canSendRequest ||
+        !_canToggleInvitation(id)) {
+      return;
+    }
     if (_signupUnverified) {
       _verifyDeveloperIdentity();
       return;
@@ -3835,6 +3859,31 @@ class _ZyraOneJourneyConceptShellState
   }
 
   Widget _discover() {
+    if (_profilePrivacy.paused) {
+      final current = _bound(() {
+        if (_profilePrivacy.showProfile()) {
+          _act(() => _notice = 'Your profile is visible again.');
+        }
+      });
+      return SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            20,
+            16,
+            20,
+            ZyraNavBarMetrics.contentBottomClearance(context),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _mainHeading('Profiles'),
+              Expanded(child: ZyraPausedProfilesCard(onShowProfile: current)),
+            ],
+          ),
+        ),
+      );
+    }
     final people = _activeBrowseFilter
         .apply(_model.discoverableProfiles)
         .where(
@@ -9718,6 +9767,8 @@ class _ZyraOneJourneyConceptShellState
     guardianCount: '${_conceptGuardianPeople.length}',
     signedInWith: 'Apple',
     appLock: ZyraAppLock.instance.enabled,
+    profilePaused: _profilePrivacy.paused,
+    privateMode: _profilePrivacy.privateMode,
     backgroundLabel: _accountSession.palette.label.replaceAll(' · Current', ''),
     hapticLabel: _accountSession.hapticLevel.label,
     gold: false,
@@ -10693,6 +10744,7 @@ class _ZyraOneJourneyConceptShellState
         ZyraConceptAccountAction.advanced => 'Advanced',
         ZyraConceptAccountAction.guardianPrivacy => 'Guardian privacy',
         ZyraConceptAccountAction.visibility => 'Pause My Profile',
+        ZyraConceptAccountAction.privateMode => 'Private mode',
         ZyraConceptAccountAction.hiddenProfiles => 'Hidden and blocked',
         ZyraConceptAccountAction.notificationSettings =>
           'Notifications & emails',
@@ -10710,6 +10762,37 @@ class _ZyraOneJourneyConceptShellState
 
   Widget _accountActionView() {
     final action = _accountDestination;
+    if (action == ZyraConceptAccountAction.visibility ||
+        action == ZyraConceptAccountAction.privateMode) {
+      if (_guardianRole) return _unavailable();
+      final fresh = _accountFreshGuard();
+      return ZyraPausePrivatePreview(
+        privatePage: action == ZyraConceptAccountAction.privateMode,
+        paused: _profilePrivacy.paused,
+        privateMode: _profilePrivacy.privateMode,
+        seekerOne: _seekerMembership == 'Seeker One',
+        onPause: () {
+          if (!fresh()) return;
+          if (_profilePrivacy.pause()) {
+            _act(() => _notice = 'Paused. You are hidden from Profiles.');
+          }
+        },
+        onShowProfile: () {
+          if (fresh() && _profilePrivacy.showProfile()) {
+            _act(() => _notice = 'Your profile is visible again.');
+          }
+        },
+        onPrivateChanged: (enabled) {
+          if (!fresh()) return;
+          if (!_profilePrivacy.setPrivateMode(enabled)) {
+            _act(() => _notice = 'Private mode comes with Seeker One.');
+          }
+        },
+        onUpgrade: () {
+          if (fresh()) _accountDispatch(ZyraConceptAccountAction.membership);
+        },
+      );
+    }
     if (action == ZyraConceptAccountAction.signInSecurity ||
         action == ZyraConceptAccountAction.appLock ||
         action == ZyraConceptAccountAction.hiddenProfiles) {
