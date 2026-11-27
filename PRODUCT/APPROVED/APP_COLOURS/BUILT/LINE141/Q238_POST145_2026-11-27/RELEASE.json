@@ -1,0 +1,10 @@
+{
+  "source_index_released": "2026-11-27T17:25:58.308143+00:00",
+  "SOURCE_clean": true,
+  "entire_index_exact": true,
+  "foreign_staged_entries": 7,
+  "accepted_head": "b196ff6fa58f948dfb261744ac8ce18f7578b99d",
+  "product_or_auditor_corrections": false,
+  "held_patch_unchanged": true,
+  "disposable_only_instrumentation": true
+}

@@ -1,0 +1,28 @@
+{
+  "checked": "2026-11-27T17:29:41.978924+00:00",
+  "fable_public_check_all_written_files": {
+    "exit": 1,
+    "hits": 281,
+    "reviewed_false_positives": {
+      "binary_png_random_bytes": 272,
+      "preexisting_mixed_register_rows_outside_owned141note_and240row": 9
+    },
+    "owned_new_text_hits": 0,
+    "all_hit_category": "money",
+    "key_email_legal_wording_hits": 0,
+    "png_review": "All full frames decoded and dimensions375x667 verified, fictional local fixture screenshots visually reviewed. Random binary matches are not document content.",
+    "mixed_register_review": "All9hits existed before this task; no own141or240money hit. Foreign content preserved."
+  },
+  "gitleaks_before_commit": {
+    "command": "gitleaks detect --source . --log-opts=origin/main..HEAD --redact",
+    "exit": 0,
+    "commits": 0,
+    "leaks": 0
+  },
+  "B": "No new private material; only local fictional fixture evidence and implementation proof records",
+  "C": "No roadmap completion",
+  "D": "No version change",
+  "E": "Neutral community wording",
+  "F": "No app behavior or run instructions changed; no README update required",
+  "publication": "record-only; prepush range scan after commit still required; no duplicate CI wait"
+}

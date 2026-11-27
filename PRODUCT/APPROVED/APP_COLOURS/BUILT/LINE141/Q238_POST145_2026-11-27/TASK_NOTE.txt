@@ -1,0 +1,5 @@
+Built: Q238 bounded visibility proof only for ZYRA141, OA-ZYRA-371/Q240; no source/auditor correction or implementation publication.
+Measured: six real1x ON/OFF/ON triplets (current/candidate x3frames);1605layoutbox+5descender changes each, non-title0, restored0; strict audit retains3findings1.308:1 vs3:1 on each state. Proof17:19:12-17:27:09UK; no post-fix gates authorized.
+Handover: APP_COLOURS/BUILT/LINE141/Q238_POST145_2026-11-27/HANDOVER.txt; candidate SHAaf808e3e unchanged; question for ZYRA Claude with3framepairs.
+Commit: pending record-only; public checks pending; queue141/QUESTIONS working-only,7foreign staged entries preserved; daily report Task8.
+Conversation:new17:18UK; pack18324bytes; exact count-only usage unavailable. SOURCE/index released17:25:58UK clean; live:no; no other line/phone/live/dependencies.

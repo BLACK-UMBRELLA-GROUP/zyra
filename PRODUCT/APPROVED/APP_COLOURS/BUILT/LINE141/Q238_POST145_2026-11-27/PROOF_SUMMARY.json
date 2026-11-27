@@ -1,0 +1,312 @@
+{
+  "verdict": "NONZERO REAL TITLE PAINT; Q238 design-question branch; no product or auditor correction",
+  "question": 240,
+  "source_acquired": "2026-11-27T17:19:12.066111+00:00",
+  "proof_finished": "2026-11-27T17:27:09.475399+00:00",
+  "proof_budget_minutes": 60,
+  "original_held_candidates_verified": 28,
+  "accepted_head": "b196ff6fa58f948dfb261744ac8ce18f7578b99d",
+  "accepted_code": "0c2600c3568da65315310a2100528c9c2e4c3798",
+  "historical_control": "d4c25483302fcd89cc2edd799123d4e730332ed9",
+  "held_patch_sha256": "af808e3e640d54390d74e72fe409cb86b37c6fff43289397daf94c08ab5f8d26",
+  "current_and_candidate": [
+    {
+      "source": "current",
+      "frame": 0,
+      "layout_box_changed_pixels": 1605,
+      "glyph_overhang_changed_pixels": 5,
+      "total_changed_pixels": 1610,
+      "outside_title_glyph_support_changed_pixels": 0,
+      "restored_on_changed_pixels": 0,
+      "post_control_changed_pixels": 0,
+      "visible_control_changed_pixels": 1611,
+      "historical_sample": {
+        "xy": [
+          102.0,
+          283.0
+        ],
+        "on": [
+          245,
+          240,
+          231,
+          255
+        ],
+        "off": [
+          248,
+          243,
+          234,
+          255
+        ],
+        "restored": [
+          245,
+          240,
+          231,
+          255
+        ]
+      },
+      "title_box": [
+        45.642005920410156,
+        251.41000000000003,
+        276.5859909057617,
+        282.41
+      ],
+      "scroll_viewport": [
+        20.0,
+        112.0,
+        355.0,
+        579.0
+      ],
+      "on_rgba_sha256": "e6fb9df44d7dd1bc72c91ff5f644bdf58f6bcb66450619fcf44b55f119688144",
+      "off_rgba_sha256": "874c578ba8392e0d78f4063e9c6b074c17f5325096604e59a42d1b0b8d527520"
+    },
+    {
+      "source": "current",
+      "frame": 1,
+      "layout_box_changed_pixels": 1605,
+      "glyph_overhang_changed_pixels": 5,
+      "total_changed_pixels": 1610,
+      "outside_title_glyph_support_changed_pixels": 0,
+      "restored_on_changed_pixels": 0,
+      "post_control_changed_pixels": 0,
+      "visible_control_changed_pixels": 1611,
+      "historical_sample": {
+        "xy": [
+          102.0,
+          283.0
+        ],
+        "on": [
+          245,
+          240,
+          231,
+          255
+        ],
+        "off": [
+          248,
+          243,
+          234,
+          255
+        ],
+        "restored": [
+          245,
+          240,
+          231,
+          255
+        ]
+      },
+      "title_box": [
+        45.642005920410156,
+        251.41000000000003,
+        276.5859909057617,
+        282.41
+      ],
+      "scroll_viewport": [
+        20.0,
+        112.0,
+        355.0,
+        579.0
+      ],
+      "on_rgba_sha256": "e6fb9df44d7dd1bc72c91ff5f644bdf58f6bcb66450619fcf44b55f119688144",
+      "off_rgba_sha256": "874c578ba8392e0d78f4063e9c6b074c17f5325096604e59a42d1b0b8d527520"
+    },
+    {
+      "source": "current",
+      "frame": 2,
+      "layout_box_changed_pixels": 1605,
+      "glyph_overhang_changed_pixels": 5,
+      "total_changed_pixels": 1610,
+      "outside_title_glyph_support_changed_pixels": 0,
+      "restored_on_changed_pixels": 0,
+      "post_control_changed_pixels": 0,
+      "visible_control_changed_pixels": 1611,
+      "historical_sample": {
+        "xy": [
+          101.0,
+          188.0
+        ],
+        "on": [
+          247,
+          242,
+          233,
+          255
+        ],
+        "off": [
+          248,
+          243,
+          234,
+          255
+        ],
+        "restored": [
+          247,
+          242,
+          233,
+          255
+        ]
+      },
+      "title_box": [
+        45.642005920410156,
+        156.99999999999994,
+        276.5859909057617,
+        187.99999999999994
+      ],
+      "scroll_viewport": [
+        20.0,
+        112.0,
+        355.0,
+        579.0
+      ],
+      "on_rgba_sha256": "8e311fa1439505f7f7109d6f563b0631788cee4d3e1388a7c8c52641a8b212d0",
+      "off_rgba_sha256": "de8347f92bd2d61ed9ca252d21d3c5f98bd31c82af2058e64f8fb8e96bebe873"
+    },
+    {
+      "source": "candidate",
+      "frame": 0,
+      "layout_box_changed_pixels": 1605,
+      "glyph_overhang_changed_pixels": 5,
+      "total_changed_pixels": 1610,
+      "outside_title_glyph_support_changed_pixels": 0,
+      "restored_on_changed_pixels": 0,
+      "post_control_changed_pixels": 0,
+      "visible_control_changed_pixels": 1611,
+      "historical_sample": {
+        "xy": [
+          102.0,
+          283.0
+        ],
+        "on": [
+          245,
+          240,
+          231,
+          255
+        ],
+        "off": [
+          248,
+          243,
+          234,
+          255
+        ],
+        "restored": [
+          245,
+          240,
+          231,
+          255
+        ]
+      },
+      "title_box": [
+        45.642005920410156,
+        251.41000000000003,
+        276.5859909057617,
+        282.41
+      ],
+      "scroll_viewport": [
+        20.0,
+        112.0,
+        355.0,
+        579.0
+      ],
+      "on_rgba_sha256": "e6fb9df44d7dd1bc72c91ff5f644bdf58f6bcb66450619fcf44b55f119688144",
+      "off_rgba_sha256": "874c578ba8392e0d78f4063e9c6b074c17f5325096604e59a42d1b0b8d527520"
+    },
+    {
+      "source": "candidate",
+      "frame": 1,
+      "layout_box_changed_pixels": 1605,
+      "glyph_overhang_changed_pixels": 5,
+      "total_changed_pixels": 1610,
+      "outside_title_glyph_support_changed_pixels": 0,
+      "restored_on_changed_pixels": 0,
+      "post_control_changed_pixels": 0,
+      "visible_control_changed_pixels": 1611,
+      "historical_sample": {
+        "xy": [
+          102.0,
+          283.0
+        ],
+        "on": [
+          245,
+          240,
+          231,
+          255
+        ],
+        "off": [
+          248,
+          243,
+          234,
+          255
+        ],
+        "restored": [
+          245,
+          240,
+          231,
+          255
+        ]
+      },
+      "title_box": [
+        45.642005920410156,
+        251.41000000000003,
+        276.5859909057617,
+        282.41
+      ],
+      "scroll_viewport": [
+        20.0,
+        112.0,
+        355.0,
+        579.0
+      ],
+      "on_rgba_sha256": "e6fb9df44d7dd1bc72c91ff5f644bdf58f6bcb66450619fcf44b55f119688144",
+      "off_rgba_sha256": "874c578ba8392e0d78f4063e9c6b074c17f5325096604e59a42d1b0b8d527520"
+    },
+    {
+      "source": "candidate",
+      "frame": 2,
+      "layout_box_changed_pixels": 1605,
+      "glyph_overhang_changed_pixels": 5,
+      "total_changed_pixels": 1610,
+      "outside_title_glyph_support_changed_pixels": 0,
+      "restored_on_changed_pixels": 0,
+      "post_control_changed_pixels": 0,
+      "visible_control_changed_pixels": 1611,
+      "historical_sample": {
+        "xy": [
+          101.0,
+          188.0
+        ],
+        "on": [
+          247,
+          242,
+          233,
+          255
+        ],
+        "off": [
+          248,
+          243,
+          234,
+          255
+        ],
+        "restored": [
+          247,
+          242,
+          233,
+          255
+        ]
+      },
+      "title_box": [
+        45.642005920410156,
+        156.99999999999994,
+        276.5859909057617,
+        187.99999999999994
+      ],
+      "scroll_viewport": [
+        20.0,
+        112.0,
+        355.0,
+        579.0
+      ],
+      "on_rgba_sha256": "8e311fa1439505f7f7109d6f563b0631788cee4d3e1388a7c8c52641a8b212d0",
+      "off_rgba_sha256": "de8347f92bd2d61ed9ca252d21d3c5f98bd31c82af2058e64f8fb8e96bebe873"
+    }
+  ],
+  "independent_png_rgba_validation": true,
+  "proof_controls": "All six triplets same fake-clock time/geometry/scroll; fresh frame1; on==restored==postcontrol; all non-title pixels stable. Five descender pixels are outside layout box but inside title glyph support; retained separately.",
+  "strict_audit_preserved": "Both narrow witness tests retain all three raw1.3083445123333874:1 failures against3:1 and exit1 at strict tearDownAll, with behavior body1pass. This is evidence, not a gate pass.",
+  "ordinary_gates": "Not started: Q238 requires design handoff on any stable nonzero result; no auditor fix authorized on this branch. Prior Q229 passes are historical only."
+}

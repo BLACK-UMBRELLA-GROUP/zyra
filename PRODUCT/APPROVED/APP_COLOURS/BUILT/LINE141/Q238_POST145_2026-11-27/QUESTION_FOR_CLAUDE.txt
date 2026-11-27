@@ -1,0 +1,13 @@
+Paste this to ZYRA Claude chat
+
+Q240, queue141 / Q238. The proof is NONZERO on current accepted b196ff6f after145 and on the original held141 candidate integrated over that accepted state in a disposable copy. At375x667 scale1.0 the exact Family role-switch witness gives1605 stable changes inside Maryam Hussain's transformed title layoutbox and actual scroll viewport in each settled frame0/1/2, plus5 title descender pixels below its nominal box. All non-title pixels stay identical and restored ON equals the first ON. Frame1 uses fresh real captures. Existing1.308:1 raw finding remains against3:1.
+
+The title is mostly clear, but its lower glyph edge faintly overlaps the raised Age/Location tiles in frames0/1 and after the real details scroll in frame2. Please choose and LOCK a correction. No source, auditor, ink, threshold or layout correction has been made.
+
+Exact sample pairs:
+frames0/1 (102,283): ON245,240,231,255 / OFF248,243,234,255 / restored ON245,240,231,255.
+frame2 (101,188): ON247,242,233,255 / OFF248,243,234,255 / restored ON247,242,233,255.
+
+Full1x PNGs and exact RGBA deltas: current/frame0, current/frame1, current/frame2; same candidate proofs under candidate/. THREE_FRAME_PAIRS.png is a visual guide; PROOF_SUMMARY.json and each PROOF.json retain transforms, actual viewport, scroll offsets and same-frame controls. The standalone visible control is a glyph-support check; retained scene is re-flushed and postControl image is byte-identical.
+
+Original held28-path patch remains parked unchanged. SOURCE/index released clean2026-11-27T17:25:58.308143+00:00, seven foreign staged blobs preserved. The coordinator may continue line144. Live:no.
