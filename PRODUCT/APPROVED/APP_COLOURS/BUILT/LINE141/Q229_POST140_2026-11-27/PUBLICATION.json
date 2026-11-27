@@ -1,6 +1,6 @@
 {
   "created_at": "2026-11-27T15:05:26.402512+00:00",
-  "status": "QUESTION; record-only publication prepared; implementation held",
+  "status": "QUESTION; record-only publication completed; implementation held",
   "record_commit": "1cc09a9931c893f3690a1a46cbdb5ba6257c10bc",
   "paths_in_record_commit": 45,
   "accepted_source_base": "d4c25483302fcd89cc2edd799123d4e730332ed9",
@@ -20,6 +20,8 @@
   "foreign_staged_entries_preserved": 7,
   "old_evidence_files_preserved": 2159,
   "coordinator_actions": "Copy this task note into27Novdaily report; file one ForFablefollow-up underQ229 and setline141QUESTION. Existing queue/QUESTIONSworktree and staged blobs untouched. No next line by this owner.",
-  "push_state": "Not yet attempted at receipt creation; final chat/output publication receipt supplies actual pushed head and outcome",
-  "failed_push_connections": 0
+  "push_state": "Succeeded on first attempt; remote origin/main verified at dc86c9f1e2bf47fbd0d3f2e552fd297f8af68360",
+  "failed_push_connections": 0,
+  "record_receipt_commit": "dc86c9f1e2bf47fbd0d3f2e552fd297f8af68360",
+  "record_publication_verified_at": "2026-11-27T15:06:56.501421+00:00"
 }
