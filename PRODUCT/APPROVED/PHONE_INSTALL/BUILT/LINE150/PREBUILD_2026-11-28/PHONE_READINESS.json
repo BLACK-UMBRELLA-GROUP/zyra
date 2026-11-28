@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "checkedUtc": "2026-11-28T03:27:27.384Z",
+  "installAttempted": false,
+  "launchAttempted": false,
+  "nativeAttempts": 0,
+  "historicalProfileHashVerified": true,
+  "pairedProvisionedIphones": 1,
+  "transport": "localNetwork",
+  "tunnelConnected": false,
+  "singleAppleLockQuery": true,
+  "unlocked": true,
+  "strictWired": {
+    "ready": false,
+    "blocker": "Connect the single paired, provisioned iPhone by USB and keep it unlocked."
+  },
+  "usbHardwareIphones": 0,
+  "ready": false,
+  "hold": "USB data link is not verified; stop before the one Xcode attempt.",
+  "finishedUtc": "2026-11-28T03:27:30.008Z"
+}

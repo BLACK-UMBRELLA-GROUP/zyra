@@ -1,0 +1,21 @@
+Line 150 prebuild handover — 28 Nov 2026
+
+WAITING. Step 1 passed on source commit 711f1123aaefd0d1f1693a07049f975a3842abb6. The source version is 1.0.0+5; there is no newly signed build to announce or deliver.
+
+Checks
+Protected analyzer --no-pub: no issues, 8.5 seconds. Protected focused tests --no-pub: 382 passed, zero failed across 19 ordinary brief/handover-named files. FOCUSED_TESTS.json names the exact command. No whole-app gate, package fetch, opt-in capture or app logic change was added.
+
+Phone readiness
+At 03:27:30 UK, the historical signed profile hash verified and exactly one paired provisioned iPhone was selected in memory. One approved protected Apple lock-state query reported unlocked. The listed transport was localNetwork, with its tunnel disconnected at the initial list. The strict wired check failed with: “Connect the single paired, provisioned iPhone by USB and keep it unlocked.” USB hardware inventory found zero iPhones. Raw identifiers, provisioning contents and Apple responses were neither printed nor saved by the readiness script.
+
+Physical hold
+USB data is not verified. Zero Xcode attempts, no Flutter native preparation, no Xcode preference change, no new signed artifact or fresh source seal, and no install or launch. No transport change. The one native attempt remains unused. Line 150 stays WAITING; the queue and QUESTIONS files were untouched. Written refusal: no design question is filed for the absent physical USB link, following this line's dispatch. Recheck physical USB readiness on a resumed Founder-present build instruction.
+
+Approved route readiness
+Historical seal and receipt at SOURCE/build/ios/line117-native-2026-11-22 were read as safe projections: successful full native PROFILE build, Flutter 3.44.2, 179 files, source 96517312. Eight Swift checkouts match the exact current resolved revisions and the Package.resolved SHA is recorded in BUILD.json. The historical native-inspect pins only prove line 117; a later line 150 build needs its own measured proof, source seal and receipt. Generic ios-profile remains HELD. Use only DOC-ZYRA-0514 steps 2–3 and its named line 84 route: capture the actual prior Xcode preference, restore it immediately even on failure, keep exact cached pins/lockfile and exact profile/signature/certificate/applinks checks. No historical seal is reused as a fresh proof.
+
+Release
+SOURCE/lib, test, ios and .github were clean at release. Seven preexisting staged snapshots and all five line 138 working files are hash-exact. No stash, reset, checkout, app/device installation, key-folder access, window inventory or live action. The source and CI areas are released; no native build, device-query or delivery process remains active. Evidence is JSON/text only; historical build products stay in their original normal build paths.
+
+Startup and observations
+Successful prescribed start pack printed 16,873 bytes. The initially refused relative script path was corrected to its absolute path. The user-supplied short lessons instruction was followed with a full 25,386-byte read before the pack. AGENTS was read before the pack (16,748 bytes); its preexisting size is outside this implementation scope and unchanged. Named reads covered the line 150 brief, DOC-ZYRA-0514, source README/protected drivers, final 147–149 briefs/handovers/tests, historical source seal/receipt and exact paired-device helper. A preparatory scratch readiness check briefly counted all paired devices; it was corrected to match the approved helper's profile-matched phone selection before any lock-state query or native attempt. Existing tooling reads exposed identity-bearing source expressions in tool output; they were excluded from all saved evidence and later reads were filtered. No secrets or identifiers are copied into this handover.

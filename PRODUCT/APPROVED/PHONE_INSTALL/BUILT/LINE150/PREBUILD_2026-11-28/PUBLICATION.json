@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "checkpoint": "line150 waiting before Xcode because physical USB is unverified",
+  "sourceCommit": "711f1123aaefd0d1f1693a07049f975a3842abb6",
+  "independentReview": "passed; one process-status wording correction applied",
+  "publicChecks": {
+    "A": "history and scoped record secret scans passed before commit",
+    "B": "only safe public implementation handover JSON/text",
+    "C": "none; no roadmap row completed",
+    "D": "none; no source version change",
+    "E": "neutral wording",
+    "F": "none; no change to app behavior or how to run it"
+  },
+  "publicFileCheck": {
+    "files": 6,
+    "hits": 0,
+    "exitCode": 0
+  },
+  "commitScope": "this new PREBUILD_2026-11-28 folder only; foreign staged paths excluded",
+  "published": false,
+  "checkedUtc": "2026-11-28T03:29:23.384791+00:00"
+}

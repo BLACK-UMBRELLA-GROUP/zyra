@@ -1,0 +1,40 @@
+{
+  "started_utc": "2026-11-28T03:25:41.547486+00:00",
+  "ended_utc": "2026-11-28T03:26:45.262668+00:00",
+  "exit_code": 0,
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/line147_family_introduction_test.dart",
+    "test/line147_admission_test.dart",
+    "test/line147_q227_test.dart",
+    "test/line98_introductions_test.dart",
+    "test/visual/line98_introductions_visual_test.dart",
+    "test/zyra_developer_panel_entry_test.dart",
+    "test/visual/line148_account_recovery_capture_test.dart",
+    "test/visual/line148_lock50_rebase_proof_test.dart",
+    "test/zyra_wordmark_test.dart",
+    "test/line121_signup_account_session_test.dart",
+    "test/line121_signup_preview_controller_test.dart",
+    "test/line121_signup_preview_widget_test.dart",
+    "test/zyra_privacy_security_preview_test.dart",
+    "test/zyra_privacy_sensitive_actions_shell_test.dart",
+    "test/zyra_rendered_text_audit_controls_test.dart",
+    "test/line149_accepted_integration_test.dart",
+    "test/visual/line149_legal_reader_capture_test.dart",
+    "test/purchase_wording_preview_test.dart",
+    "test/founder_launch_review_test.dart"
+  ],
+  "last_lines": [
+    "00:53 +379: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.3",
+    "00:53 +380: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: LOCK51 settings, pinned title, jump and Read next at Size(430.0, 932.0)/1.3",
+    "00:59 +381: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: one iOS edge swipe returns to origin after Read next",
+    "00:59 +382: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line149_legal_reader_capture_test.dart: (tearDownAll)",
+    "00:59 +382: All tests passed!"
+  ]
+}

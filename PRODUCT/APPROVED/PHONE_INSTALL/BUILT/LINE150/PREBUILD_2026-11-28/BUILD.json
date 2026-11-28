@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "queueLine": 150,
+  "status": "WAITING",
+  "checkpoint": "step 1 passed; physical USB readiness hold before step 2",
+  "sourceCommit": "711f1123aaefd0d1f1693a07049f975a3842abb6",
+  "flutterVersion": "3.44.2",
+  "buildMode": "profile",
+  "sourceVersion": "1.0.0+5",
+  "timestamp": "2026-11-28T03:28:21.847420+00:00",
+  "analyzer": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exitCode": 0,
+    "result": "No issues found!",
+    "durationSeconds": 8.5
+  },
+  "focusedTests": {
+    "exitCode": 0,
+    "passed": 382,
+    "failed": 0,
+    "files": 19,
+    "receipt": "FOCUSED_TESTS.json"
+  },
+  "swiftCache": {
+    "checkouts": 8,
+    "exactResolvedRevisionsVerified": true,
+    "packageResolvedSha256": "b8aadefe2eb094ed5e17718db5eef01df028f014d4723b3127292d231778f081",
+    "packageFetchAttempted": false
+  },
+  "nativeBuildAttempted": false,
+  "xcodeAttempts": 0,
+  "xcodePreferenceChanged": false,
+  "freshSourceSealCreated": false,
+  "freshSignedArtifact": null,
+  "installAttempted": false,
+  "launchAttempted": false,
+  "transportChanged": false,
+  "phoneReadiness": "PHONE_READINESS.json",
+  "scopeReleasedUtc": "2026-11-28T03:28:21.847420+00:00",
+  "scopedSourceAndCiClean": true,
+  "foreignStagedSnapshotsPreserved": 7,
+  "line138WorkingFilesPreserved": 5
+}
