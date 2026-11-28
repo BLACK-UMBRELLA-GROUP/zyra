@@ -76,5 +76,6 @@
   "launchAttempted": false,
   "screenshotAttempted": false,
   "live": false,
-  "publication": "pending pin and evidence commit; no app version change or new release"
+  "publication": "Pin/evidence commit 37fd53fb5572c1a67850e2c80ec6af289e25c9c1 pushed to origin/main; no version/release/upload",
+  "scopeReleasedUtc": "2026-11-28T03:48:19.492590+00:00"
 }

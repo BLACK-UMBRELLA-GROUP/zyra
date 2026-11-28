@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "recordedUtc": "2026-11-28T03:48:19.492590+00:00",
+  "queueLine": 150,
+  "status": "WAITING at signed-build-ready; installation and launch not attempted",
+  "appSourceCommit": "2cb8e2b2443fa1cd0ccc47b0daa6f3620f45cb48",
+  "pinAndEvidenceCommit": "37fd53fb5572c1a67850e2c80ec6af289e25c9c1",
+  "originMainAtVerification": "37fd53fb5572c1a67850e2c80ec6af289e25c9c1",
+  "pushConfirmed": true,
+  "appVersion": "1.0.0+5",
+  "appVersionChanged": false,
+  "releaseAction": "none; no new release, TestFlight or App Store action",
+  "publicChecks": {
+    "A": "exact origin/main..HEAD gitleaks scan passed before pin push; exit 0",
+    "B": "7 owned files passed fable_public_check; zero hits",
+    "C": "no roadmap change",
+    "D": "version unchanged; no release",
+    "E": "neutral wording checked",
+    "F": "run behavior unchanged; README update unnecessary"
+  },
+  "sourceSnapshot": {
+    "allSourceAndCiTrackedAndUntrackedClean": true,
+    "libTestIosAndCiEqualBuildSource": true,
+    "foreignStagedSnapshotsExact": 7,
+    "line138WorkingFilesExact": 5,
+    "queueLeftUntouched": true
+  },
+  "preferenceRestored": "unset",
+  "nativeDeviceOrDeliveryProcessActive": false,
+  "hostedCI": {
+    "buildSource": "2cb8e2b2 accepted clean by coordinator",
+    "pinPublicationRun": 46104536124,
+    "pinPublicationStatus": "queued",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46104536124",
+    "localRouteTests": "99 passed",
+    "continuation": "Coordinator checks current CI before delivery; no duplicate records-only or whole-app wait added to this signed-artifact task"
+  },
+  "dailyReport": "coordinator owns current report copy; requested before archival",
+  "finalRecordsCommit": "resolve from git history of this file after the scoped publication commit"
+}
