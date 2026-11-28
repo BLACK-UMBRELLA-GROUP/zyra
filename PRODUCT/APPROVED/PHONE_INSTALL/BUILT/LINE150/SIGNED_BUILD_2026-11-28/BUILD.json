@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "success": true,
+  "fullXcodeBuild": true,
+  "commitSha": "2cb8e2b2443fa1cd0ccc47b0daa6f3620f45cb48",
+  "flutterVersion": "3.44.2",
+  "buildMode": "profile",
+  "target": "ios-arm64 / lib/main.dart / production",
+  "timestamp": "2026-11-28T03:45:23.911Z",
+  "artifactFiles": 179,
+  "artifactSha256": "63503328c03a55a5a5f479ea6666507f47e054747de1d4530198b87ff187b76e",
+  "sourceSealSha256": "e0014843b77c2dd9625f1a763cdd0f0c5d5062d905c02aa9eb8314b4abfed437"
+}

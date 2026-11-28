@@ -23,19 +23,19 @@ const team = '9Y7Z8F36SJ';
 const profileHash = '1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7';
 const engine = 'bin/cache/artifacts/engine/ios-profile/Flutter.xcframework/ios-arm64/Flutter.framework/Flutter';
 const enginePayloadHash = 'eb7bfa2968b9005682fcf7506f5ddcbcea9d35c5551d7f55542f10d95022832a';
-// Line 117: 22 Nov host includes the completed queue and Q158 rotation fix. Earlier hosts remain on disk.
+// Line 150 / DOC-ZYRA-0514 / OA-ZYRA-317: fresh 28 Nov native PROFILE host through lines 147–149.
+// Pins were measured after one cached build, exact profile/entitlements checks and preference restoration.
+// Earlier hosts remain on disk; application source is sealed at the build commit below.
 const nativePins = Object.freeze({
-  hostPath: 'build/ios/line117-native-2026-11-22/products/Runner.app',
-  hostSha256: '44f47f43b66a840b6c95d4eb89e98e43f325818c652d9fe23d05e178d9fcec5d',
+  hostPath: 'build/ios/line150-native-2026-11-28/products/Runner.app',
+  hostSha256: '63503328c03a55a5a5f479ea6666507f47e054747de1d4530198b87ff187b76e',
   hostFiles: 179,
-  // iOS Team Provisioning Profile: app.zyraconnect.zyra; expires 2027-11-14T14:31:53Z.
-  // The profile allows Associated Domains; the app claims only applinks:zyraconnect.app.
   profileSha256: '416b86da0439ca07ed0802ddcd657d8362d32502e99552a76449abcc5898327f',
   entitlementsSha256: '922db307b9556a786d52952deba2eca017ee7f219203970238bcfa9e9518d943',
-  sourceCommit: '9651731289d583ae660669fccba70aa0ed2252f7',
-  sourceSealSha256: '78a410e70f3c4de7c48f2d84b9c1329223d76e331ce79f4f1f8c9ef6d0197e3f',
-  nativeInputsSha256: '9a188971691f6b963d110824b6d31f477af1839922f4cfcbc38e0e10a3a43e82',
-  buildReceiptSha256: 'acfe159fa7f0a2b86051a258144c63e29b9eee415ead60963ac0f347a87b0358',
+  sourceCommit: '2cb8e2b2443fa1cd0ccc47b0daa6f3620f45cb48',
+  sourceSealSha256: 'e0014843b77c2dd9625f1a763cdd0f0c5d5062d905c02aa9eb8314b4abfed437',
+  nativeInputsSha256: '1fb8038747dec3dc5a728c3a33de640b84049261973df054c423275151794e20',
+  buildReceiptSha256: 'e63c707c5cc7ba8fae0bb9e9a3fa18b98143db76fa2e61dc10ec3cb3e3df410f',
 });
 const nativeTarget = 'ios-arm64 / lib/main.dart / production';
 const sdkPins = {
@@ -676,7 +676,7 @@ async function runNative(mode, file, receiptHash, transport = 'wired') {
   if (!nativePins.hostFiles || !/^[a-f0-9]{40,64}$/.test(nativePins.sourceCommit) ||
       ![nativePins.hostSha256, nativePins.profileSha256, nativePins.entitlementsSha256, nativePins.nativeInputsSha256, nativePins.sourceSealSha256,
         nativePins.buildReceiptSha256].every(value => /^[a-f0-9]{64}$/.test(value))) {
-    throw Error('Fresh native host is held until the checked line 117 pins are recorded');
+    throw Error('Fresh native host is held until the checked line 150 pins are recorded');
   }
   if (mode === 'native-deliver' && receiptHash !== nativePins.buildReceiptSha256) {
     throw Error('Use the build receipt SHA-256 observed in native-inspect');
