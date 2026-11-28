@@ -12,11 +12,12 @@
     "F": "none; no change to app behavior or how to run it"
   },
   "publicFileCheck": {
-    "files": 6,
+    "files": 7,
     "hits": 0,
     "exitCode": 0
   },
   "commitScope": "this new PREBUILD_2026-11-28 folder only; foreign staged paths excluded",
-  "published": false,
-  "checkedUtc": "2026-11-28T03:29:23.384791+00:00"
+  "checkedUtc": "2026-11-28T03:29:43.611911+00:00",
+  "checkpointCommit": "55083570c44ada8d3f4bb97e7cd41707defcec53",
+  "publicationStatus": "Final scoped commit and push outcome are reported in the owner chat final."
 }
