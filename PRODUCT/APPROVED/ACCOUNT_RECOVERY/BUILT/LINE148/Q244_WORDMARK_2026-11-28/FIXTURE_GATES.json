@@ -1,0 +1,56 @@
+[
+  {
+    "name": "fixture_analyzer",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exit_code": 0,
+    "seconds": 9.96
+  },
+  {
+    "name": "fixture_replay_three",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+      "--dart-define=ZYRA_TEXT_AUDIT_SHARD_COUNT=5",
+      "--dart-define=ZYRA_TEXT_AUDIT_SHARD_INDEX=2",
+      "--plain-name",
+      "line121 real presenter lock50_recovery__",
+      "test/zyra_clearer_text_contrast_test.dart",
+      "test/zyra_clearer_text_contrast_430_test.dart",
+      "test/zyra_clearer_text_contrast_large_430_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 13.2
+  },
+  {
+    "name": "fixture_replay_large375",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+      "--dart-define=ZYRA_TEXT_AUDIT_SHARD_COUNT=4",
+      "--dart-define=ZYRA_TEXT_AUDIT_SHARD_INDEX=3",
+      "--plain-name",
+      "line121 real presenter lock50_recovery__",
+      "test/zyra_clearer_text_contrast_large_375_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 12.47
+  }
+]

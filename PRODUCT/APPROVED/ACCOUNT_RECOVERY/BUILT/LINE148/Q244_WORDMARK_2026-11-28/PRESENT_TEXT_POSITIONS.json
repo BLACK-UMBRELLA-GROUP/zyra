@@ -1,0 +1,1232 @@
+{
+  "measurements": [
+    {
+      "platform": "android",
+      "width": 375.0,
+      "height": 667.0,
+      "text_scale": 1.0,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 633.0,
+      "top": {
+        "wordmark": [
+          80.4439926147461,
+          203.0,
+          214.1120147705078,
+          77.0
+        ],
+        "tagline": [
+          103.44376373291016,
+          288.0,
+          168.1124725341797,
+          18.0
+        ],
+        "first": [
+          20.0,
+          447.0,
+          335.0,
+          52.0
+        ],
+        "second": [
+          20.0,
+          511.0,
+          335.0,
+          52.0
+        ],
+        "recovery": [
+          128.60698699951172,
+          571.0,
+          117.78602600097656,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          80.4439926147461,
+          203.0,
+          214.1120147705078,
+          77.0
+        ],
+        "tagline": [
+          103.44376373291016,
+          288.0,
+          168.1124725341797,
+          18.0
+        ],
+        "first": [
+          20.0,
+          447.0,
+          335.0,
+          52.0
+        ],
+        "second": [
+          20.0,
+          511.0,
+          335.0,
+          52.0
+        ],
+        "recovery": [
+          128.60698699951172,
+          571.0,
+          117.78602600097656,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Google",
+        "second": "Continue with Apple",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "android",
+      "width": 375.0,
+      "height": 667.0,
+      "text_scale": 1.3,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 633.0,
+      "top": {
+        "wordmark": [
+          56.727203369140625,
+          173.4,
+          261.54559326171875,
+          99.99999999999997
+        ],
+        "tagline": [
+          79.12692260742188,
+          281.4,
+          216.74615478515625,
+          23.0
+        ],
+        "first": [
+          20.0,
+          415.8,
+          335.0,
+          67.59999999999997
+        ],
+        "second": [
+          20.0,
+          495.4,
+          335.0,
+          67.60000000000002
+        ],
+        "recovery": [
+          115.73909301757813,
+          571.0,
+          143.52181396484377,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          56.727203369140625,
+          173.4,
+          261.54559326171875,
+          99.99999999999997
+        ],
+        "tagline": [
+          79.12692260742188,
+          281.4,
+          216.74615478515625,
+          23.0
+        ],
+        "first": [
+          20.0,
+          415.8,
+          335.0,
+          67.59999999999997
+        ],
+        "second": [
+          20.0,
+          495.4,
+          335.0,
+          67.60000000000002
+        ],
+        "recovery": [
+          115.73909301757813,
+          571.0,
+          143.52181396484377,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Google",
+        "second": "Continue with Apple",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "android",
+      "width": 375.0,
+      "height": 667.0,
+      "text_scale": 2.0,
+      "cap_target": true,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 633.0,
+      "top": {
+        "wordmark": [
+          20.000274658203125,
+          112.5,
+          334.99945068359375,
+          136.0
+        ],
+        "tagline": [
+          22.387527465820312,
+          256.5,
+          330.2249450683594,
+          36.0
+        ],
+        "first": [
+          20.0,
+          343.0,
+          335.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          459.0,
+          335.0,
+          104.0
+        ],
+        "recovery": [
+          85.7140121459961,
+          571.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          20.000274658203125,
+          112.5,
+          334.99945068359375,
+          136.0
+        ],
+        "tagline": [
+          22.387527465820312,
+          256.5,
+          330.2249450683594,
+          36.0
+        ],
+        "first": [
+          20.0,
+          343.0,
+          335.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          459.0,
+          335.0,
+          104.0
+        ],
+        "recovery": [
+          85.7140121459961,
+          571.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Google",
+        "second": "Continue with Apple",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "android",
+      "width": 375.0,
+      "height": 500.0,
+      "text_scale": 2.0,
+      "cap_target": true,
+      "overflowing": true,
+      "min_extent": 0.0,
+      "max_extent": 66.0,
+      "end_pixels": 66.0,
+      "safe_bottom": 466.0,
+      "top": {
+        "wordmark": [
+          20.000274658203125,
+          62.0,
+          334.99945068359375,
+          136.0
+        ],
+        "tagline": [
+          22.387527465820312,
+          206.0,
+          330.2249450683594,
+          36.0
+        ],
+        "first": [
+          20.0,
+          242.0,
+          335.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          358.0,
+          335.0,
+          104.0
+        ],
+        "recovery": [
+          85.7140121459961,
+          470.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          20.000274658203125,
+          -4.0,
+          334.99945068359375,
+          136.0
+        ],
+        "tagline": [
+          22.387527465820312,
+          140.0,
+          330.2249450683594,
+          36.0
+        ],
+        "first": [
+          20.0,
+          176.0,
+          335.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          292.0,
+          335.0,
+          104.0
+        ],
+        "recovery": [
+          85.7140121459961,
+          404.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Google",
+        "second": "Continue with Apple",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "android",
+      "width": 430.0,
+      "height": 932.0,
+      "text_scale": 1.0,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 898.0,
+      "top": {
+        "wordmark": [
+          107.9439926147461,
+          334.5,
+          214.1120147705078,
+          77.0
+        ],
+        "tagline": [
+          119.14847564697266,
+          419.5,
+          191.7030487060547,
+          20.0
+        ],
+        "first": [
+          20.0,
+          712.0,
+          390.0,
+          52.0
+        ],
+        "second": [
+          20.0,
+          776.0,
+          390.0,
+          52.0
+        ],
+        "recovery": [
+          156.10698699951172,
+          836.0,
+          117.78602600097656,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          107.9439926147461,
+          334.5,
+          214.1120147705078,
+          77.0
+        ],
+        "tagline": [
+          119.14847564697266,
+          419.5,
+          191.7030487060547,
+          20.0
+        ],
+        "first": [
+          20.0,
+          712.0,
+          390.0,
+          52.0
+        ],
+        "second": [
+          20.0,
+          776.0,
+          390.0,
+          52.0
+        ],
+        "recovery": [
+          156.10698699951172,
+          836.0,
+          117.78602600097656,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Google",
+        "second": "Continue with Apple",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "android",
+      "width": 430.0,
+      "height": 932.0,
+      "text_scale": 1.3,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 898.0,
+      "top": {
+        "wordmark": [
+          84.22720336914062,
+          303.9,
+          261.54559326171875,
+          100.0
+        ],
+        "tagline": [
+          91.29297637939453,
+          411.9,
+          247.41404724121094,
+          27.0
+        ],
+        "first": [
+          20.0,
+          680.8,
+          390.0,
+          67.60000000000002
+        ],
+        "second": [
+          20.0,
+          760.4,
+          390.0,
+          67.60000000000002
+        ],
+        "recovery": [
+          143.2390930175781,
+          836.0,
+          143.52181396484372,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          84.22720336914062,
+          303.9,
+          261.54559326171875,
+          100.0
+        ],
+        "tagline": [
+          91.29297637939453,
+          411.9,
+          247.41404724121094,
+          27.0
+        ],
+        "first": [
+          20.0,
+          680.8,
+          390.0,
+          67.60000000000002
+        ],
+        "second": [
+          20.0,
+          760.4,
+          390.0,
+          67.60000000000002
+        ],
+        "recovery": [
+          143.2390930175781,
+          836.0,
+          143.52181396484372,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Google",
+        "second": "Continue with Apple",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "android",
+      "width": 430.0,
+      "height": 932.0,
+      "text_scale": 2.0,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 898.0,
+      "top": {
+        "wordmark": [
+          28.88800048828125,
+          233.5,
+          372.2239990234375,
+          154.0
+        ],
+        "tagline": [
+          26.296844482421875,
+          395.5,
+          377.40631103515625,
+          41.0
+        ],
+        "first": [
+          20.0,
+          608.0,
+          390.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          724.0,
+          390.0,
+          104.0
+        ],
+        "recovery": [
+          113.2140121459961,
+          836.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          28.88800048828125,
+          233.5,
+          372.2239990234375,
+          154.0
+        ],
+        "tagline": [
+          26.296844482421875,
+          395.5,
+          377.40631103515625,
+          41.0
+        ],
+        "first": [
+          20.0,
+          608.0,
+          390.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          724.0,
+          390.0,
+          104.0
+        ],
+        "recovery": [
+          113.2140121459961,
+          836.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Google",
+        "second": "Continue with Apple",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "iOS",
+      "width": 375.0,
+      "height": 667.0,
+      "text_scale": 1.0,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 633.0,
+      "top": {
+        "wordmark": [
+          80.4439926147461,
+          203.0,
+          214.1120147705078,
+          77.0
+        ],
+        "tagline": [
+          103.44376373291016,
+          288.0,
+          168.1124725341797,
+          18.0
+        ],
+        "first": [
+          20.0,
+          447.0,
+          335.0,
+          52.0
+        ],
+        "second": [
+          20.0,
+          511.0,
+          335.0,
+          52.0
+        ],
+        "recovery": [
+          128.60698699951172,
+          571.0,
+          117.78602600097656,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          80.4439926147461,
+          203.0,
+          214.1120147705078,
+          77.0
+        ],
+        "tagline": [
+          103.44376373291016,
+          288.0,
+          168.1124725341797,
+          18.0
+        ],
+        "first": [
+          20.0,
+          447.0,
+          335.0,
+          52.0
+        ],
+        "second": [
+          20.0,
+          511.0,
+          335.0,
+          52.0
+        ],
+        "recovery": [
+          128.60698699951172,
+          571.0,
+          117.78602600097656,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Apple",
+        "second": "Continue with Google",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "iOS",
+      "width": 375.0,
+      "height": 667.0,
+      "text_scale": 1.3,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 633.0,
+      "top": {
+        "wordmark": [
+          56.727203369140625,
+          173.4,
+          261.54559326171875,
+          99.99999999999997
+        ],
+        "tagline": [
+          79.12692260742188,
+          281.4,
+          216.74615478515625,
+          23.0
+        ],
+        "first": [
+          20.0,
+          415.8,
+          335.0,
+          67.59999999999997
+        ],
+        "second": [
+          20.0,
+          495.4,
+          335.0,
+          67.60000000000002
+        ],
+        "recovery": [
+          115.73909301757813,
+          571.0,
+          143.52181396484377,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          56.727203369140625,
+          173.4,
+          261.54559326171875,
+          99.99999999999997
+        ],
+        "tagline": [
+          79.12692260742188,
+          281.4,
+          216.74615478515625,
+          23.0
+        ],
+        "first": [
+          20.0,
+          415.8,
+          335.0,
+          67.59999999999997
+        ],
+        "second": [
+          20.0,
+          495.4,
+          335.0,
+          67.60000000000002
+        ],
+        "recovery": [
+          115.73909301757813,
+          571.0,
+          143.52181396484377,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Apple",
+        "second": "Continue with Google",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "iOS",
+      "width": 375.0,
+      "height": 667.0,
+      "text_scale": 2.0,
+      "cap_target": true,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 633.0,
+      "top": {
+        "wordmark": [
+          20.000274658203125,
+          112.5,
+          334.99945068359375,
+          136.0
+        ],
+        "tagline": [
+          22.387527465820312,
+          256.5,
+          330.2249450683594,
+          36.0
+        ],
+        "first": [
+          20.0,
+          343.0,
+          335.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          459.0,
+          335.0,
+          104.0
+        ],
+        "recovery": [
+          85.7140121459961,
+          571.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          20.000274658203125,
+          112.5,
+          334.99945068359375,
+          136.0
+        ],
+        "tagline": [
+          22.387527465820312,
+          256.5,
+          330.2249450683594,
+          36.0
+        ],
+        "first": [
+          20.0,
+          343.0,
+          335.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          459.0,
+          335.0,
+          104.0
+        ],
+        "recovery": [
+          85.7140121459961,
+          571.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Apple",
+        "second": "Continue with Google",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "iOS",
+      "width": 375.0,
+      "height": 500.0,
+      "text_scale": 2.0,
+      "cap_target": true,
+      "overflowing": true,
+      "min_extent": 0.0,
+      "max_extent": 66.0,
+      "end_pixels": 66.0,
+      "safe_bottom": 466.0,
+      "top": {
+        "wordmark": [
+          20.000274658203125,
+          62.0,
+          334.99945068359375,
+          136.0
+        ],
+        "tagline": [
+          22.387527465820312,
+          206.0,
+          330.2249450683594,
+          36.0
+        ],
+        "first": [
+          20.0,
+          242.0,
+          335.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          358.0,
+          335.0,
+          104.0
+        ],
+        "recovery": [
+          85.7140121459961,
+          470.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          20.000274658203125,
+          -4.0,
+          334.99945068359375,
+          136.0
+        ],
+        "tagline": [
+          22.387527465820312,
+          140.0,
+          330.2249450683594,
+          36.0
+        ],
+        "first": [
+          20.0,
+          176.0,
+          335.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          292.0,
+          335.0,
+          104.0
+        ],
+        "recovery": [
+          85.7140121459961,
+          404.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Apple",
+        "second": "Continue with Google",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "iOS",
+      "width": 430.0,
+      "height": 932.0,
+      "text_scale": 1.0,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 898.0,
+      "top": {
+        "wordmark": [
+          107.9439926147461,
+          334.5,
+          214.1120147705078,
+          77.0
+        ],
+        "tagline": [
+          119.14847564697266,
+          419.5,
+          191.7030487060547,
+          20.0
+        ],
+        "first": [
+          20.0,
+          712.0,
+          390.0,
+          52.0
+        ],
+        "second": [
+          20.0,
+          776.0,
+          390.0,
+          52.0
+        ],
+        "recovery": [
+          156.10698699951172,
+          836.0,
+          117.78602600097656,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          107.9439926147461,
+          334.5,
+          214.1120147705078,
+          77.0
+        ],
+        "tagline": [
+          119.14847564697266,
+          419.5,
+          191.7030487060547,
+          20.0
+        ],
+        "first": [
+          20.0,
+          712.0,
+          390.0,
+          52.0
+        ],
+        "second": [
+          20.0,
+          776.0,
+          390.0,
+          52.0
+        ],
+        "recovery": [
+          156.10698699951172,
+          836.0,
+          117.78602600097656,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Apple",
+        "second": "Continue with Google",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "iOS",
+      "width": 430.0,
+      "height": 932.0,
+      "text_scale": 1.3,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 898.0,
+      "top": {
+        "wordmark": [
+          84.22720336914062,
+          303.9,
+          261.54559326171875,
+          100.0
+        ],
+        "tagline": [
+          91.29297637939453,
+          411.9,
+          247.41404724121094,
+          27.0
+        ],
+        "first": [
+          20.0,
+          680.8,
+          390.0,
+          67.60000000000002
+        ],
+        "second": [
+          20.0,
+          760.4,
+          390.0,
+          67.60000000000002
+        ],
+        "recovery": [
+          143.2390930175781,
+          836.0,
+          143.52181396484372,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          84.22720336914062,
+          303.9,
+          261.54559326171875,
+          100.0
+        ],
+        "tagline": [
+          91.29297637939453,
+          411.9,
+          247.41404724121094,
+          27.0
+        ],
+        "first": [
+          20.0,
+          680.8,
+          390.0,
+          67.60000000000002
+        ],
+        "second": [
+          20.0,
+          760.4,
+          390.0,
+          67.60000000000002
+        ],
+        "recovery": [
+          143.2390930175781,
+          836.0,
+          143.52181396484372,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Apple",
+        "second": "Continue with Google",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    },
+    {
+      "platform": "iOS",
+      "width": 430.0,
+      "height": 932.0,
+      "text_scale": 2.0,
+      "cap_target": false,
+      "overflowing": false,
+      "min_extent": 0.0,
+      "max_extent": 0.0,
+      "end_pixels": 0.0,
+      "safe_bottom": 898.0,
+      "top": {
+        "wordmark": [
+          28.88800048828125,
+          233.5,
+          372.2239990234375,
+          154.0
+        ],
+        "tagline": [
+          26.296844482421875,
+          395.5,
+          377.40631103515625,
+          41.0
+        ],
+        "first": [
+          20.0,
+          608.0,
+          390.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          724.0,
+          390.0,
+          104.0
+        ],
+        "recovery": [
+          113.2140121459961,
+          836.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "end": {
+        "wordmark": [
+          28.88800048828125,
+          233.5,
+          372.2239990234375,
+          154.0
+        ],
+        "tagline": [
+          26.296844482421875,
+          395.5,
+          377.40631103515625,
+          41.0
+        ],
+        "first": [
+          20.0,
+          608.0,
+          390.0,
+          104.0
+        ],
+        "second": [
+          20.0,
+          724.0,
+          390.0,
+          104.0
+        ],
+        "recovery": [
+          113.2140121459961,
+          836.0,
+          203.5719757080078,
+          48.0
+        ]
+      },
+      "present_text": {
+        "wordmark": "ZYRA",
+        "tagline": "Connecting Through Trust",
+        "first": "Continue with Apple",
+        "second": "Continue with Google",
+        "recovery": "Can\u2019t sign in?"
+      },
+      "text_evidence": "Actual strict test finders/action assertions, current raster frames and independent visual inspection; positions measured by WidgetTester."
+    }
+  ],
+  "prior10_fitting_geometry": [
+    {
+      "state": "welcome_android_375_text100",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_android_375_text130",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_android_430_text100",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_android_430_text130",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_android_430_text200",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_iOS_375_text100",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_iOS_375_text130",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_iOS_430_text100",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_iOS_430_text130",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    },
+    {
+      "state": "welcome_iOS_430_text200",
+      "byte_exact_prior": false,
+      "measurements_exact_prior": true
+    }
+  ]
+}

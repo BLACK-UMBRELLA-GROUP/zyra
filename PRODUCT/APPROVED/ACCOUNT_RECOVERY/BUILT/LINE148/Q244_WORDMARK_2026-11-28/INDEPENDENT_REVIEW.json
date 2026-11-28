@@ -1,0 +1,52 @@
+{
+  "reviewers": [
+    "wordmark_review",
+    "preservation_review"
+  ],
+  "source_result": "PASS; no actionable source defect",
+  "runtime_scope": "Parent owns analyzer, gates, regression and publication",
+  "preserved_blocks": "Real nested Circle, account freshness, legal owner/retention and signup FinePrint unchanged apart from scoped notice helper rename",
+  "wordmark": "Resolved RenderParagraph metrics; inherited nonlinear cap only within wordmark; existing fonts/tracking/colors/transforms retained; genuine unbounded layout natural",
+  "proof_acceptance": "Original six combinations retained. Approved single-line cap makes375x667text2 fit. Zero extent followsLOCK26. Added375x500text2 retains all positive-extent/whole-element/end/reachability assertions. No auditor or thresholds changed.",
+  "visual": "All6normal captures+4masters+8target/stress top/end frames inspected. No clipping/overlap. Correct platform order and reachable actions.",
+  "approved_master_exceptions": [
+    "Prototype-only preview pill absent",
+    "Added green#326B4C per spec",
+    "Backup label aligns with shared settings row"
+  ],
+  "limits": [
+    "No literal raster-master identity claimed",
+    "Review did not execute tests/hosted checks"
+  ],
+  "fixture_correction_review": {
+    "result": "PASS",
+    "source_diff": "Only1existingtestfile,+12/-0;2audit-only actual Welcome\u2192recovery role samples",
+    "metadata_origin": "Live mounted controller.guardian and step, credited only from measured text runs",
+    "raw_reports": "4completed strict reports,0failures,bothactualrolekeys at4settings",
+    "unchanged": [
+      "auditor",
+      "registry",
+      "assertions",
+      "thresholds",
+      "workflow",
+      "all app source31-path candidate"
+    ],
+    "limits": "Targetedfixtureevidence;fresh exact-head union separately required"
+  },
+  "final_record_review": {
+    "result": "PASS",
+    "reviewer": "preservation_review",
+    "source_hashes_verified": 32,
+    "source_mismatches": 0,
+    "foreign_staged_exact": 7,
+    "line138_exact": 5,
+    "prior_BUILT_exact": 3311,
+    "current_head": "19eda524",
+    "required_final": "1/1SUCCESS",
+    "initial_feature": "3/3SUCCESS",
+    "final_union": "PASS;19artifacts;23suites each4settings;0gaps",
+    "claims_coherent": true,
+    "global_colour_pass_claimed": false,
+    "mixed_queue_publication_claimed": false
+  }
+}

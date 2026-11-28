@@ -1,0 +1,10 @@
+{
+  "thread_id": "01a21fdb-2e66-7770-bae3-beb48a6c5d6e",
+  "conversation": "new",
+  "started_utc": "2026-11-28T01:53:07.802Z",
+  "start_pack_bytes": 20727,
+  "named_read_bytes": 3018988,
+  "source_lease_started_utc": "2026-11-28T01:54:17.564853+00:00",
+  "budget_hours": 6,
+  "maximum_failed_full_gates": 3
+}

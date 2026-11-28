@@ -1,0 +1,16 @@
+{
+  "name": "ordinary_fixture_final",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded"
+  ],
+  "started_utc": "2026-11-28T02:29:26.912449+00:00",
+  "seconds": 546.13,
+  "exit_code": 0,
+  "completed": true
+}

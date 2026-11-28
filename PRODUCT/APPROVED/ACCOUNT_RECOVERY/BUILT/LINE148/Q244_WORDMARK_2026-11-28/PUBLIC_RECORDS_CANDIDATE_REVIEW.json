@@ -1,0 +1,2706 @@
+{
+  "result": "PASS_WITH_REVIEWED_FALSE_POSITIVES",
+  "files": 190,
+  "findings": [
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 74,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2009,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2010,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2011,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2012,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2013,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2014,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2015,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2016,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2017,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2018,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2019,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2020,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2021,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2022,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2023,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2024,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2025,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2026,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 2027,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "line": 5285,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 1268,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2020,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2021,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2022,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2023,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2024,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2025,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2026,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2027,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2028,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2029,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2030,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2031,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2032,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 2033,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 5300,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 5301,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 5304,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 5305,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "line": 7884,
+      "kind": "money",
+      "review": "Existing public regression test name; no private business material."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 244,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2116,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2230,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 2321,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 3737,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4315,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4467,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4703,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4875,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 4911,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5090,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5153,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5222,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 5329,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "line": 6018,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 1217,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 1254,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 1467,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 1505,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 1554,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 1581,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 1699,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 1852,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2107,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2180,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2200,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2409,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2571,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2716,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2813,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2927,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 2999,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 3065,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 3163,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 3298,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 3536,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 3732,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 3812,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 3853,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 3966,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 4602,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 4616,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 5663,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 5806,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 6045,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 6252,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 6573,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 6903,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 7078,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 9460,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 9461,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 9965,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "line": 10093,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 179,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 292,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 399,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 460,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 525,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 720,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 875,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 1464,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 1533,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 2031,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 2381,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 2550,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 2576,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 2674,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 2752,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 2882,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 3043,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 3294,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 3882,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 3918,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 3992,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 4049,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 4206,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 4552,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 4701,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 5075,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 5121,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "line": 5157,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 179,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 292,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 399,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 460,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 525,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 720,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 875,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 1464,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 1533,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2013,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2027,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2312,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2402,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2795,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 2913,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3082,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3130,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3369,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3465,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3740,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3777,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3931,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 3952,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4065,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4192,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4321,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4451,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4487,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4637,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4646,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4681,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 4981,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "line": 5457,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 179,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 292,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 399,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 460,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 525,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 720,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 875,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 1464,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 1533,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2013,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2027,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2312,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2402,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2795,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 2913,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3082,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3130,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3272,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3443,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3761,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 3883,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4003,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4013,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4033,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4136,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4347,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "line": 4605,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 244,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2116,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2230,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 2321,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 3737,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4224,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4315,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4572,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4733,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4874,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4875,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 4929,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5066,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5090,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5450,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5734,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 5981,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 6003,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "line": 6141,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 200,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 227,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 245,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 1216,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 1784,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 1971,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 2590,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 2672,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 2927,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 2983,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 3523,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 3614,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 3670,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 3863,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 3970,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 4042,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 5004,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 5069,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 5540,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 5549,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 5648,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 5726,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 5887,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 5931,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 6309,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 6597,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 6622,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 6661,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 6753,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 7123,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 7432,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 7594,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "line": 7597,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 95,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 594,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 628,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 631,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 650,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 949,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 1129,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 1173,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 2733,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 3643,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 3688,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 4157,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 4275,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 4279,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 4367,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 4500,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 4598,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 4659,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 4779,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 5112,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 5165,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 5260,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 6047,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 6217,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 6511,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 6688,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 6919,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "line": 7213,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 200,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 227,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 245,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 1216,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 1784,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 1971,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 2590,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 2672,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 2927,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 2983,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 3523,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 3614,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 3670,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 3863,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 3970,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 4042,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 5004,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 5069,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 5540,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 5549,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 5648,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 5726,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 5887,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 5931,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 6309,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 6597,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 6622,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 6661,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 6753,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 7123,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 7432,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 7594,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "line": 7597,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 8,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 31,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 231,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 288,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 298,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 904,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 1598,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 2136,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 2225,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 2470,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 2577,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 2661,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3201,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3244,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3267,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3354,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3573,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3612,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3616,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3672,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 3845,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 4083,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 4214,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 4246,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 4393,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 4505,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 4850,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 5240,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 5400,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 6334,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 6571,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "line": 6661,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 200,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 227,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 245,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 1216,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 1784,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 1971,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 2590,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 2672,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 2927,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 2983,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 3519,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 3851,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 4350,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 4403,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 4413,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 4425,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 4502,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 4511,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 5091,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 5395,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 5410,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 5451,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 5560,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 5603,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 5658,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 5920,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 6014,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 6267,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 6272,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 7199,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 7451,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 7516,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "line": 7945,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 8,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 31,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 231,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 288,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 298,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 904,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 1598,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 2136,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 2225,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 2335,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 2913,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 3068,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 3204,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 3256,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 3328,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 3973,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 4079,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 4261,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 4373,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 4571,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 4687,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 4706,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 5279,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 5392,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 5484,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 5594,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 5703,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 5872,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 6412,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 6473,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 6700,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 6861,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 6869,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "line": 7136,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 200,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 227,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 245,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 1216,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 1784,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 1971,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 2590,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 2672,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 2927,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 2983,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 3519,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 3851,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 4350,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 4403,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 4413,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 4425,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 4502,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 4511,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 5091,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 5395,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 5410,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 5451,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 5560,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 5603,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 5658,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 5920,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 6014,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 6267,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 6272,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 7199,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 7451,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 7516,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "line": 7945,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 95,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 594,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 628,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 631,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 650,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 949,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 1129,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 1173,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 2733,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 3697,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 3858,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 3906,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 4142,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 4874,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 5018,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 5280,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 5832,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 6084,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 6334,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 6424,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 6479,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 6641,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "line": 6914,
+      "kind": "money",
+      "review": "Encoded PNG bytes; decoded screenshots independently reviewed."
+    }
+  ]
+}

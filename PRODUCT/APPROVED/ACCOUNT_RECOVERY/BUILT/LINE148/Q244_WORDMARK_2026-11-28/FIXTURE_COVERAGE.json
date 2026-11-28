@@ -1,0 +1,46 @@
+[
+  {
+    "setting": "normal",
+    "frames": 4,
+    "runs": 40,
+    "failures": 0,
+    "real_role_recovery_keys": [
+      "Guardian:recovery:375x667@1.0",
+      "Seeker:recovery:375x667@1.0"
+    ],
+    "scope": "Strict targeted fixture observations only; full hosted union is required separately."
+  },
+  {
+    "setting": "normal-430",
+    "frames": 4,
+    "runs": 40,
+    "failures": 0,
+    "real_role_recovery_keys": [
+      "Guardian:recovery:430x932@1.0",
+      "Seeker:recovery:430x932@1.0"
+    ],
+    "scope": "Strict targeted fixture observations only; full hosted union is required separately."
+  },
+  {
+    "setting": "large-430",
+    "frames": 4,
+    "runs": 40,
+    "failures": 0,
+    "real_role_recovery_keys": [
+      "Guardian:recovery:430x932@1.3",
+      "Seeker:recovery:430x932@1.3"
+    ],
+    "scope": "Strict targeted fixture observations only; full hosted union is required separately."
+  },
+  {
+    "setting": "large-375",
+    "frames": 12,
+    "runs": 120,
+    "failures": 0,
+    "real_role_recovery_keys": [
+      "Guardian:recovery:375x667@1.3",
+      "Seeker:recovery:375x667@1.3"
+    ],
+    "scope": "Strict targeted fixture observations only; full hosted union is required separately."
+  }
+]

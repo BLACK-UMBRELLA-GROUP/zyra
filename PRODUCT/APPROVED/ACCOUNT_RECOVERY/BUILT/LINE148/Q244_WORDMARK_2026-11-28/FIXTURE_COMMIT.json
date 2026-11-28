@@ -1,0 +1,11 @@
+{
+  "commit": "19eda52452638f61755fe4098d21bcf1e21b644f",
+  "feature_commit": "fca15eaf4da5f630c63895c697dcf05dd7740147",
+  "path": "SOURCE/test/visual/line121_signup_capture_test.dart",
+  "diff": "+12/-0;2audit-only real recovery fixtures",
+  "app_code_unchanged": true,
+  "source_ci_clean": true,
+  "foreign_staged_exact": 7,
+  "ordinary": "8160passed/253skipped/0failed;546.13s",
+  "committed_utc": "2026-11-28T02:39:34.853600+00:00"
+}

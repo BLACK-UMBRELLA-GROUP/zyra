@@ -1,0 +1,158 @@
+{
+  "run_id": 46099169894,
+  "head_sha": "19eda52452638f61755fe4098d21bcf1e21b644f",
+  "tree": "a68792531d16e5292adcca3a858bd43ebf552659",
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46099169894",
+  "event": "push",
+  "attempt": 1,
+  "status": "in_progress",
+  "required_checks": [
+    {
+      "id": 140837576269,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "strict_union": {
+    "id": 140840920250,
+    "name": "Full text audit (strict union proof)",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "observed_utc": "2026-11-28T02:54:52.663Z",
+  "jobs": [
+    {
+      "id": 140837454222,
+      "name": "Select Flutter tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454363,
+      "name": "Full text audit (normal-375-1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454368,
+      "name": "Full text audit (large-375-3)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454373,
+      "name": "Full text audit (normal-430-1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454441,
+      "name": "Full text audit (normal-375-5)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454460,
+      "name": "Full text audit (large-430-3)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454462,
+      "name": "Full text audit (normal-375-3)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454465,
+      "name": "Full text audit (large-430-2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454468,
+      "name": "Full text audit (normal-375-4)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454474,
+      "name": "Full text audit (large-430-5)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454492,
+      "name": "Full text audit (normal-430-2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454496,
+      "name": "Full text audit (large-375-4)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454518,
+      "name": "Full text audit (normal-430-4)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454545,
+      "name": "Full text audit (normal-375-2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454554,
+      "name": "Full text audit (large-375-2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454557,
+      "name": "Full text audit (large-430-1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454558,
+      "name": "Full text audit (large-375-1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454583,
+      "name": "Full text audit (normal-430-3)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454599,
+      "name": "Full text audit (large-430-4)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837454649,
+      "name": "Full text audit (normal-430-5)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140837576269,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140840920250,
+      "name": "Full text audit (strict union proof)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}

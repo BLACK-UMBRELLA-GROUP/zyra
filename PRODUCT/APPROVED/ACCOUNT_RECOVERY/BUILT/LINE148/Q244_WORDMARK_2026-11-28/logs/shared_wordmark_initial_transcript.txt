@@ -1,0 +1,22 @@
+FIRST SHARED-WORDMARK TEST OBSERVATION — TRANSCRIPT EXCERPT
+
+Provenance: copied from the functions tool output of exec session 92020. The first command did not redirect stdout/stderr to a file. This is a selected transcript excerpt, not a raw process log, and does not claim complete raw-output preservation. The later final raw process log is shared_wordmark_final.log.
+
+Observed command: node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/zyra_wordmark_test.dart
+Observed result: 7 passed / 2 failed.
+
+The first failure was test-helper misuse of RenderBox.getDistanceToBaseline outside layout/paint:
+package:flutter/src/rendering/box.dart line 2479:
+RenderObject.debugCheckingIntrinsics || switch (owner!) { PipelineOwner(debugDoingLayout: true) => RenderObject.debugActiveLayout == parent && parent!.debugDoingThisLayout, PipelineOwner(debugDoingPaint: true) => RenderObject.debugActivePaint == parent && parent!.debugDoingThisPaint || (RenderObject.debugActivePaint == this && debugDoingThisPaint), PipelineOwner() => false, }
+Stack: RenderBox.getDistanceToBaseline; main.<anonymous closure>, zyra_wordmark_test.dart:115.
+Test: fitting wordmark retains exact Text metrics and pixels.
+Correction: ask the public dry-baseline API, which is valid outside active layout, and compare the original/candidate baseline. No product assertion was suppressed.
+
+The second failure was test-helper cleanup timing:
+A SemanticsHandle was active at the end of the test.
+All SemanticsHandle instances must be disposed by calling dispose() on the SemanticsHandle.
+Stack: WidgetTester._verifySemanticsHandlesWereDisposed; WidgetTester._endOfTestVerifications.
+Test: composed mark keeps one accessible brand name.
+Correction: dispose the SemanticsHandle within the test body before end-of-test verification.
+
+The real-cap width cases335/280/120, nonlinear normal-text scope, Text spacing/bold overrides, intrinsic/dry layout, and unbounded parent cases passed in this first run. Final run added the animated-letter-group proof and completed10/10 pass.

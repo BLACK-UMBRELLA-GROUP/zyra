@@ -1,0 +1,5 @@
+Analyzing SOURCE...                                             
+
+   info • 'textScaleFactor' is deprecated and shouldn't be used. Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. This feature was deprecated after v3.12.0-2.0.pre. Try replacing the use of the deprecated member with the replacement • lib/widgets/zyra_wordmark.dart:194:43 • deprecated_member_use
+
+1 issue found. (ran in 10.5s)

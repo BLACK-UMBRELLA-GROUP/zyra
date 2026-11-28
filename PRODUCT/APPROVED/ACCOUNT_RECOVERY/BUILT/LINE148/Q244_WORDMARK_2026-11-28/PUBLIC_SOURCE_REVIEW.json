@@ -1,0 +1,125 @@
+{
+  "result": "PASS_WITH_REVIEWED_FALSE_POSITIVES",
+  "files": 31,
+  "findings": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "line": 1005,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 3032,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 11604,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 11605,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 703,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 747,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 750,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 779,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 831,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+      "line": 739,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+      "line": 798,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+      "line": 799,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+      "line": 891,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/settings_screen.dart",
+      "line": 25,
+      "kind": "legal/company",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/settings_screen.dart",
+      "line": 194,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/settings_screen.dart",
+      "line": 729,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    },
+    {
+      "path": "SOURCE/lib/screens/splash_screen.dart",
+      "line": 247,
+      "kind": "money",
+      "preexisting_exact_line": true,
+      "review": "Pre-existing public app source/fixture or documentation comment; no newly added private business material."
+    }
+  ]
+}

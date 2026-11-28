@@ -1,0 +1,19 @@
+{
+  "line": 148,
+  "lock": 50,
+  "status": "BUILT",
+  "accepted_record_head": "8a983902",
+  "flutter": "3.44.2",
+  "mode": "protected offline Flutter widget tests;Founder sample preview",
+  "timestamp_utc": "2026-11-28T02:55:34.221585+00:00",
+  "native_build": false,
+  "phone_action": false,
+  "live": false,
+  "migrations": [],
+  "commit": "19eda52452638f61755fe4098d21bcf1e21b644f",
+  "ordinary": "8160passed/253skipped/0failed;546.13s",
+  "feature_commit": "fca15eaf4da5f630c63895c697dcf05dd7740147",
+  "hosted_run": 46099169894,
+  "required_checks": "1/1SUCCESS;automatic fixture-only selection;featurehead3/3SUCCESS",
+  "strict_union": "PASS;0coveragegaps at4settings"
+}

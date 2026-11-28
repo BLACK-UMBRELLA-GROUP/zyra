@@ -1,0 +1,31 @@
+{
+  "run_id": 46096918639,
+  "head_sha": "fca15eaf4da5f630c63895c697dcf05dd7740147",
+  "required_checks": [
+    {
+      "id": 140830417551,
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140830417556,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140830417580,
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "strict_union": {
+    "id": 140833241677,
+    "name": "Full text audit (strict union proof)",
+    "status": "completed",
+    "conclusion": "failure"
+  },
+  "superseded_reason": "Own new recovery state lacked existing corpus fixtures; minimal fixture addition pending final publication."
+}

@@ -1,0 +1,169 @@
+{
+  "run_id": 46096918639,
+  "head_sha": "fca15eaf4da5f630c63895c697dcf05dd7740147",
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46096918639",
+  "event": "push",
+  "attempt": 1,
+  "status": "in_progress",
+  "required_checks": [
+    {
+      "id": 140830417551,
+      "name": "Flutter checks (shard 2)",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 140830417556,
+      "name": "Flutter checks (shard 0)",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 140830417580,
+      "name": "Flutter checks (shard 1)",
+      "status": "in_progress",
+      "conclusion": null
+    }
+  ],
+  "observed_utc": "2026-11-28T02:16:12.852Z",
+  "jobs": [
+    {
+      "id": 140830282337,
+      "name": "Select Flutter tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 140830282573,
+      "name": "Full text audit (large-430-4)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282611,
+      "name": "Full text audit (normal-430-1)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282624,
+      "name": "Full text audit (normal-430-3)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282629,
+      "name": "Full text audit (large-375-4)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282631,
+      "name": "Full text audit (normal-375-1)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282648,
+      "name": "Full text audit (normal-430-2)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282655,
+      "name": "Full text audit (normal-375-3)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282661,
+      "name": "Full text audit (normal-375-2)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282667,
+      "name": "Full text audit (normal-375-4)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282669,
+      "name": "Full text audit (large-430-3)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282671,
+      "name": "Full text audit (normal-430-5)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282694,
+      "name": "Full text audit (large-375-2)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282713,
+      "name": "Full text audit (normal-430-4)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282714,
+      "name": "Full text audit (large-375-1)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282725,
+      "name": "Full text audit (normal-375-5)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282729,
+      "name": "Full text audit (large-430-1)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282769,
+      "name": "Full text audit (large-430-2)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282783,
+      "name": "Full text audit (large-430-5)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830282813,
+      "name": "Full text audit (large-375-3)",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 140830417551,
+      "name": "Flutter checks (shard 2)",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 140830417556,
+      "name": "Flutter checks (shard 0)",
+      "status": "queued",
+      "conclusion": null
+    },
+    {
+      "id": 140830417580,
+      "name": "Flutter checks (shard 1)",
+      "status": "in_progress",
+      "conclusion": null
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: LOCK50 Welcome and recovery iOS_375_text100
+00:01 +1: LOCK50 Welcome and recovery android_375_text100
+00:01 +2: LOCK50 Apple backup 375_text100
+00:02 +3: LOCK50 Google backup 375_text100
+00:02 +4: LOCK50 Welcome and recovery iOS_375_text130
+00:03 +5: LOCK50 Welcome and recovery android_375_text130
+00:03 +6: LOCK50 Apple backup 375_text130
+00:04 +7: LOCK50 Google backup 375_text130
+00:04 +8: LOCK50 Welcome and recovery iOS_375_text200
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: a value greater than <0>
+  Actual: <0.0>
+   Which: is not a value greater than <0>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:174:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 174
+The test description was:
+  LOCK50 Welcome and recovery iOS_375_text200
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +8 -1: LOCK50 Welcome and recovery iOS_375_text200 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery iOS_375_text200
+  
+00:04 +8 -1: LOCK50 Welcome and recovery android_375_text200
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: a value greater than <0>
+  Actual: <0.0>
+   Which: is not a value greater than <0>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart:174:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart line 174
+The test description was:
+  LOCK50 Welcome and recovery android_375_text200
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +8 -2: LOCK50 Welcome and recovery android_375_text200 [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK50 Welcome and recovery android_375_text200
+  
+00:05 +8 -2: LOCK50 Apple backup 375_text200
+00:05 +9 -2: LOCK50 Google backup 375_text200
+00:06 +10 -2: LOCK50 Welcome and recovery iOS_430_text100
+00:06 +11 -2: LOCK50 Welcome and recovery android_430_text100
+00:07 +12 -2: LOCK50 Apple backup 430_text100
+00:07 +13 -2: LOCK50 Google backup 430_text100
+00:08 +14 -2: LOCK50 Welcome and recovery iOS_430_text130
+00:08 +15 -2: LOCK50 Welcome and recovery android_430_text130
+00:09 +16 -2: LOCK50 Apple backup 430_text130
+00:09 +17 -2: LOCK50 Google backup 430_text130
+00:10 +18 -2: LOCK50 Welcome and recovery iOS_430_text200
+00:11 +19 -2: LOCK50 Welcome and recovery android_430_text200
+00:11 +20 -2: LOCK50 Apple backup 430_text200
+00:12 +21 -2: LOCK50 Google backup 430_text200
+00:13 +22 -2: LOCK50 backup stays with its role across LOCK46 Switch profile
+00:13 +23 -2: (tearDownAll)
+00:13 +23 -2: Some tests failed.
+
+Failing tests:
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart: LOCK50 Welcome and recovery android_375_text200
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line148_lock50_rebase_proof_test.dart: LOCK50 Welcome and recovery iOS_375_text200

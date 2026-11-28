@@ -1,0 +1,14 @@
+[
+  {
+    "name": "analyzer",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exit_code": 1,
+    "seconds": 9.67
+  }
+]

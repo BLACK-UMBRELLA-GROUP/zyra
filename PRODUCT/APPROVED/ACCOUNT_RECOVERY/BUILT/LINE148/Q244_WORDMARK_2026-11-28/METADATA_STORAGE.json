@@ -1,0 +1,13 @@
+{
+  "reason": "Generic API scanner treated39 file paths containing access/key words followed by content digests as credentials. Reformat only preservation storage to explicit path/SHA256 records.",
+  "original_document_sha256": "4bad816a73ed7c6be96e88929a0828696c4b53ca0cf617bc648261428b1c0734",
+  "current_document_sha256": "573f0788b739fa3abbb6f00f20d3f6a05bc79302b98d19b248c5b5860458a3d1",
+  "logical_preservation_maps_unchanged": true,
+  "counts": {
+    "foreign_staged": 7,
+    "line138": 5,
+    "prior_BUILT": 3311
+  },
+  "credentials_found": 0,
+  "scanner_config_changed": false
+}

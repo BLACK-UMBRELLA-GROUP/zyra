@@ -1,0 +1,82 @@
+[
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+    "sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+    "sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+    "sha256": "0cec6603bcdf4ef109237fb3d09cf1dc8609d0875eb2f85d9aa9a0b8f7205de6",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+    "sha256": "96f6c37e88ffd9d685c0aabd004de9117bf41cae8f6b7c1b73f6161a123001dc",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/rows_line148_account_recovery.json",
+    "sha256": "434dfe22bc6b8c07f015440c47f5cb8d0d75862c3942b55f4f432584d142fd3a",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+    "sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+    "sha256": "99310f60117d68f103ca2f421d25c99effb97ddb4669ed2e167f5d6efd9fb6dd",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar01_welcome__cant_sign_in.json",
+    "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar02_larger_text_top.json",
+    "sha256": "8081481cf9e26e6d5b39057a047d6a4542ddc61cd8d832588b49a240a6beeac7",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ps07_sign_in_one_device__with_backup.json",
+    "sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar02_larger_text_bottom.json",
+    "sha256": "a3206db3c69f09d13f760b33143acff971a856864c9a59f3940232a2ddc8267c",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar04_google_larger_text.json",
+    "sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/s03_welcome__android_google_first_with_recovery.json",
+    "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar02_cant_sign_in__support.json",
+    "sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar04_sign_in_security__backup_added.json",
+    "sha256": "98ee308abcdbd5317f2a99596df7df65e8e7ab62c1263cc4934a5a0f75d69848",
+    "prior_exact": true
+  },
+  {
+    "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar03_sign_in_security__backup.json",
+    "sha256": "6abc6d4d03c6a27d410ed1bc9717f7c99f188fcfdcf8a8743a82c6d93c557fcf",
+    "prior_exact": true
+  }
+]

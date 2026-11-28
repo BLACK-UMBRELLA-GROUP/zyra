@@ -1,0 +1,16 @@
+{
+  "name": "ordinary",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded"
+  ],
+  "started_utc": "2026-11-28T02:02:49.247590+00:00",
+  "seconds": 533.16,
+  "exit_code": 0,
+  "completed": true
+}

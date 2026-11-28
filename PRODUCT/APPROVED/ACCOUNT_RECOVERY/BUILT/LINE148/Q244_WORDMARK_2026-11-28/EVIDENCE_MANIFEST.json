@@ -1,0 +1,1045 @@
+{
+  "scope": "All files present before this manifest; excludes self to avoid recursive identity. Final Git commit/tree and owner receipt identify the complete record publication.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/AUDIT_SUMMARY.json",
+      "sha256": "162be5e1d1ef035c31afab667feb1177752d2f225a0f75ebe1e72e8dec2a6f14",
+      "bytes": 80
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/BUILD.json",
+      "sha256": "53c920cb3e8a504f4c0a5b82f291b4301ebade7d796a2b09407f881d847e1a61",
+      "bytes": 677
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/CAPTURES.json",
+      "sha256": "eca0323348ebf9ea6cbae9c047d5c76ae360565de63792107c7fc92603b73e2d",
+      "bytes": 3944
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/CHECKS.json",
+      "sha256": "c3615812370e32b3b002361fdffc1867d8a27214c347c065d89c46f556b998b1",
+      "bytes": 5490
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/CODE_COMMIT.json",
+      "sha256": "47a52e45d80197f3b3168459d18493a6f0d712532ed5b455dadaae91f4980219",
+      "bytes": 1981
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/CODE_MANIFEST_INITIAL31.json",
+      "sha256": "c910b66174cb15a9249677c7516c9d1e379b5bb6d95c087413bb4612ef8dfd6c",
+      "bytes": 7606
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/CONVERSATION.json",
+      "sha256": "c6f3bac16108bf74376f991b77161c171410fa64cf1369615a41b5b582347ffe",
+      "bytes": 309
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/FINAL_CODE_MANIFEST.json",
+      "sha256": "d0981c522cd6bff6420f02ca07f7f0752863759f89e530e9e6f22951023259cc",
+      "bytes": 7862
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/FIXTURE_COMMIT.json",
+      "sha256": "c649e4144270ebdc453a9d231c5670f1b04570cebbb62ea61cf7a81c7e9285c0",
+      "bytes": 439
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/FIXTURE_COVERAGE.json",
+      "sha256": "fd14a4f372faa982d88435e6426f1f1600aface5e4eaab2f2c67afceb6d5a09b",
+      "bytes": 1219
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/FIXTURE_GATES.json",
+      "sha256": "96a450986daf8c746485316b03066e6087a55593b6ae6b32bcc24f3147086c5c",
+      "bytes": 1382
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/FIXTURE_SECRET_SCAN.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HANDOVER.txt",
+      "sha256": "f903cd2815776f08555a78eadfce469165c6a43fad42a7775bf354f9c2a34118",
+      "bytes": 10951
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HISTORY_POST_CODE.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HISTORY_POST_FIXTURE.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HISTORY_PRE_CODE.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HISTORY_PRE_FIXTURE.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_CI.json",
+      "sha256": "1992755f7e00718508ec843b5938429b789b598685875ad7d6c6bb721ea3b63d",
+      "bytes": 4168
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_CI_FINAL.json",
+      "sha256": "1992755f7e00718508ec843b5938429b789b598685875ad7d6c6bb721ea3b63d",
+      "bytes": 4168
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_FINAL_POLL_01.json",
+      "sha256": "fe59c889a8c94c6fe49ec7ec3053aa4ebc148a379a583407293e453bfeede3e6",
+      "bytes": 3528
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_FINAL_POLL_02.json",
+      "sha256": "c6481105154f267286357d1e13bda30b3fff1c66387f83d89f5e9db56acf0c44",
+      "bytes": 3588
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_FINAL_POLL_03.json",
+      "sha256": "32981f95ce66c4eee74953f0109156f95f5f6db8689f1f4d06416d43bff38baf",
+      "bytes": 3862
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_INITIAL_CODE_CI.json",
+      "sha256": "82b76687995cb6e56586154a83babb82285802661b6dab1cb0c4b4894ca89bbd",
+      "bytes": 823
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_INITIAL_RUN_AT_START.json",
+      "sha256": "73767e62f048da9fe5e3391936db7fe58125a41d723d4e24aa446b9a609c74d2",
+      "bytes": 262
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_POLL_01.json",
+      "sha256": "a86cd21d11960ed26953c4b5dee5ba085653aa4785b4752b65b9eb8efe1f5a39",
+      "bytes": 3965
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_POLL_02.json",
+      "sha256": "844624bee4b210e02608134ddb7dbfb8b55212643968fa186c147401da56ea4f",
+      "bytes": 3994
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_POLL_03.json",
+      "sha256": "4295b8eff16b5a8103abd5719cc762c2bba7a20e64757190dc668ae535f05ef6",
+      "bytes": 4045
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_POLL_04.json",
+      "sha256": "fbcd4012e732e5ec09eeceb3a3ce715b68a4f9812601cff354e2b6e58d69f4e2",
+      "bytes": 4228
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_UNION_FINAL_PROOF.json",
+      "sha256": "7eda2d4e4695c4548be1bed1acfe20e09bbf751d71b98b21f91949c037b13fa6",
+      "bytes": 2915
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/HOSTED_UNION_INITIAL_PROOF.json",
+      "sha256": "cd5fb26fd670462490e4645f14081f44fa73966cc149a9def93cf26b9fcfe1de",
+      "bytes": 3463
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/INDEPENDENT_REVIEW.json",
+      "sha256": "a883dfcc968c381c03372dc726677baa70d7de909459ac745f720de79e7cfdfe",
+      "bytes": 2373
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/INITIAL_GATES_unused_import.json",
+      "sha256": "42d32f7fbcd1086407fb3378b474b4e9c3d7caceb2be06bde953c973029f344d",
+      "bytes": 200
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/INPUT_MANIFEST.json",
+      "sha256": "ad2f8d8d531f84bf21a0953bd14551f2614adb5146a46ca9115885238cda5c6e",
+      "bytes": 2485
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/LOCAL_GATES.json",
+      "sha256": "99cee93eb76a76abd67e8c05244c88fc12edb759c814b9b8e512573a68e71a56",
+      "bytes": 3223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/METADATA_STORAGE.json",
+      "sha256": "a08ad3ce0907491c22917ac836f39a5baa5156adbe256f249836e44fdf02a0e5",
+      "bytes": 588
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/NETWORK.json",
+      "sha256": "9ce0a2248a72a4e6617a7624fd570510a8042805cddfe4c3c04fa55dc486cf45",
+      "bytes": 586
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/ORDINARY_FIXTURE_GATE.json",
+      "sha256": "614ea8310e5c94132209b8fc0c4383acbc6086a27267d414c82d1465581b54a8",
+      "bytes": 293
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/ORDINARY_GATE.json",
+      "sha256": "4847f4d0bc377fd084e18f2e5f97f72545512ac12ddc254b245af1fd172d0381",
+      "bytes": 279
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PRESENT_TEXT_POSITIONS.json",
+      "sha256": "ba030f42d6d2dea2e8bc2d42ec87ddb3a675a6dd5bda2ba7de7981063c85a018",
+      "bytes": 27315
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PRESERVATION_BASELINE.json",
+      "sha256": "573f0788b739fa3abbb6f00f20d3f6a05bc79302b98d19b248c5b5860458a3d1",
+      "bytes": 667068
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PUBLICATION.json",
+      "sha256": "b855bb2e5edf85bca5840d299ec73f524eb620c27edeb6ab4814503b8d247330",
+      "bytes": 992
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PUBLIC_FINAL_REVIEW.json",
+      "sha256": "5f778b5ec9a0840625e6ef69ecb5f692bd873b76dda6ed9342af760c974b6203",
+      "bytes": 143946
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PUBLIC_RECORDS_CANDIDATE.log",
+      "sha256": "0337f964b4acefe08bf62cb16ad1e19cfc94e051a1362a84334f2a0d1e02a0e5",
+      "bytes": 61941
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PUBLIC_RECORDS_CANDIDATE_REVIEW.json",
+      "sha256": "fec3d639a71fa39ff125d0f37b1d7ecbb3948cf36c83c6db42a965eb78a587b3",
+      "bytes": 123842
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PUBLIC_RECORDS_DRAFT.log",
+      "sha256": "e87e335166e357110d0cd0e589a51756507478c0c6eaae2bb68cf7c6c219c0ee",
+      "bytes": 59501
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PUBLIC_RECORDS_DRAFT_REVIEW.json",
+      "sha256": "2532e68142da0a2ee41c9ed475a18183f1dcd94fce61a920e8194145d1dde28a",
+      "bytes": 130004
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PUBLIC_RECORDS_FINAL.log",
+      "sha256": "50592081093393740075c7b9775fe19ce9bef87d7683a70e10696963f4d87ac2",
+      "bytes": 61989
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/PUBLIC_SOURCE_REVIEW.json",
+      "sha256": "b630999d86b6842eddf5f897bc829a55e0e081937581baed23458ae3ba7602a6",
+      "bytes": 4952
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/QUEUE148_STATUS.json",
+      "sha256": "672eeecd09163b70ac6d67c76162ad71137e0ae87e53dbd7204ded017414737b",
+      "bytes": 248
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/RELEASE.json",
+      "sha256": "4d1257b5dfcb18d34fd44d9b3b19cdd7f8d6a172915e8d42c37ce6d562317df0",
+      "bytes": 1099
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/REMOTE_CODE_TREE.json",
+      "sha256": "63f73a4e9ba6756438f3cff9e87f5e561e39ba0e5da9419d4139e437db408732",
+      "bytes": 293
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_DRAFT_CLASSIFICATION.json",
+      "sha256": "d44d4c6fcdf43220f9fa9c80877e757d28664ef2a5bde93e14f1fc1caa4c676d",
+      "bytes": 8943
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_RECORDS_CANDIDATE.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_RECORDS_CANDIDATE.log",
+      "sha256": "cbb2a684e1d69c028717d8d9eb7d29b1972eb2421d5b472c583c32cc0ecb5695",
+      "bytes": 79
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_RECORDS_DRAFT.json",
+      "sha256": "0710ac10336bdab374e63e29374c87e96149af048669d68877a2ba8df05e6a7d",
+      "bytes": 20113
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_RECORDS_DRAFT.log",
+      "sha256": "3ef5a2b84eef13b92af08eb43caf506e4101713844cf65ab8fd8dc8087483761",
+      "bytes": 80
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_RECORDS_FINAL.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_RECORDS_FINAL.log",
+      "sha256": "011c198548e26d6a7972e8c2b469595ce1b57be0ad314ae31e056391a18e4c26",
+      "bytes": 79
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_RECORDS_REFORMATTED.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SECRET_RECORDS_REFORMATTED.log",
+      "sha256": "825cbf1981c5345e35dcfab855ded77b46d5e138a91f61b418ca9032538e63f3",
+      "bytes": 79
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/SOURCE_SECRET_SCAN.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/TASK_NOTE.txt",
+      "sha256": "95ce02b6b3cbc5cbc9423f5bce9d1e1ac77c7dde2a59555efe7367bb1c1af6f3",
+      "bytes": 1890
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/TOOL_OBSERVATIONS.json",
+      "sha256": "8cb2d7e2c36dcfc572111823cd523fac8c8c9ed13437a39c5915c6a7e7819b84",
+      "bytes": 1604
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/USAGE.json",
+      "sha256": "d16206a8b9cfcea4a2c28777428f62a481a4f1a182fad0c813b821a45200fafd",
+      "bytes": 858
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar01_welcome__cant_sign_in.json",
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar02_cant_sign_in__support.json",
+      "sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar02_larger_text_bottom.json",
+      "sha256": "a3206db3c69f09d13f760b33143acff971a856864c9a59f3940232a2ddc8267c",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar02_larger_text_top.json",
+      "sha256": "8081481cf9e26e6d5b39057a047d6a4542ddc61cd8d832588b49a240a6beeac7",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar03_sign_in_security__backup.json",
+      "sha256": "6abc6d4d03c6a27d410ed1bc9717f7c99f188fcfdcf8a8743a82c6d93c557fcf",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar04_google_larger_text.json",
+      "sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ar04_sign_in_security__backup_added.json",
+      "sha256": "98ee308abcdbd5317f2a99596df7df65e8e7ab62c1263cc4934a5a0f75d69848",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/ps07_sign_in_one_device__with_backup.json",
+      "sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_after_375_text100.json",
+      "sha256": "a2b618300aca80bf4f7be986b908d7bb24477b857927cd10c69687ace639dbe7",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_after_375_text130.json",
+      "sha256": "6c624185dbcfb40a0b4b79184022135d752c115ae69ef43e42dc41439a7edbb6",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_after_375_text200.json",
+      "sha256": "8ee63c82bd991973646f54144c85dfc4f9d652739feb06ad65d78fef70ca062e",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_after_430_text100.json",
+      "sha256": "807b257028beec104ca8a87a1cdbf80ccc5523703cfb8408c17da3c8896cf907",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_after_430_text130.json",
+      "sha256": "4301b40018816fa39438b9c500b74b3e4c1beccb1373d7aa57c9cfe016bf0682",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_after_430_text200.json",
+      "sha256": "44d9ee0ab545caa830b5627a56a145cff36255e45ba042f5116c75209b036ba2",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_before_375_text100.json",
+      "sha256": "c02a1ee940fca1d8ce9caf58441843a4aac30c15dbc4d0d419b20a13a56ecf5a",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_before_375_text130.json",
+      "sha256": "958d93154aa3a52d903b92a4dff216128e9631f8234f9dad93b3ef6dad9c8bfe",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_before_375_text200.json",
+      "sha256": "52fcac67c64a9624661bc846c0514fe997dd6f868edf7b444e76b72b0aa45d0f",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_before_430_text100.json",
+      "sha256": "7f09901a230bbec6815326d53a0a877382d83222921f7de43fa94381835162c1",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_before_430_text130.json",
+      "sha256": "0aadaeba0be87a65886106384d6b635f0c1daff58b5e83d6f6296aba0e71eb22",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Apple_before_430_text200.json",
+      "sha256": "55c7b9cbe11f9998bb3d9d58027799047e2ffb98b7e24e9fea30fea804935db3",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_after_375_text100.json",
+      "sha256": "3d4c8624779a2092d5a26a6280bb3bc681e727ce7fa98da1f07e31e80f93ed57",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_after_375_text130.json",
+      "sha256": "b3d1642060e98932c607597588a6959b94a8514d6d0a03ae93cc40f5a2c57429",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_after_375_text200.json",
+      "sha256": "bb2ebf56173a50ac8c4706689ffa9327ea40fc2709ee3b5648da4d8ef1ccb1af",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_after_430_text100.json",
+      "sha256": "b99dc9476c57f4299858cd2c2f9b8be5ceecb5bc2b1b36ec677b52e274968588",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_after_430_text130.json",
+      "sha256": "dcaf12d33cc6e2240c93598bd21c34333b5892c321f66fb711e8800fdd12b7df",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_after_430_text200.json",
+      "sha256": "34f5fcbdb0291837cc15e0dbf3e698b36c17d98d6211b867e6926cc9cbacbc40",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_before_375_text100.json",
+      "sha256": "e077fded49539db851be139d10be99c0e21be5aa3a5ec387e172b35140234137",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_before_375_text130.json",
+      "sha256": "707c8ec990f61c8002ff281782ee4d8bd032433534300015e356868fde0d037a",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_before_375_text200.json",
+      "sha256": "2254367ce5fd1bcb28707547ed52212c93cb672b84ffed15af6eca22ef1136b9",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_before_430_text100.json",
+      "sha256": "a9f92289c554e7c0fb5f1ca42eaf5062bbda88d6011543ff5769733bd369f7df",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_before_430_text130.json",
+      "sha256": "68ee99a41c4c1d1cf7cce7f58145af6978cbf1c21d7e09e8892a5c2e56395036",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/backup_Google_before_430_text200.json",
+      "sha256": "9bb4fe034be02be57b52f611dc4a452e5b0fe7ef6b46e4b83e0c00d3a21d9f7e",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_android_375_text100.json",
+      "sha256": "289f769ce414cd372c284bfc53e8a09980c3c1893fc2f8852d11bcc2012cb168",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_android_375_text130.json",
+      "sha256": "42be55649abb722971228c5a9cbcfdb9588ec70915ef63b80bb4030408e0b0e7",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_android_375_text200.json",
+      "sha256": "69fcc5f9645a6f86e313854cd9dc93f9580f70761a086dddace5846b95d06661",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_android_375_text200_height500.json",
+      "sha256": "f9621a61723cec8226cb780a10241f5cd8ef81ade919a6c18ac5177cd9596ad0",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_android_430_text100.json",
+      "sha256": "032975ec6b92e6621fc3a85049cdc508060712e5de396740e1899b2e459c721b",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_android_430_text130.json",
+      "sha256": "3eaf93aca4090c6711440419f4bc8c170a3c03edb4520644be719161a02badf9",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_android_430_text200.json",
+      "sha256": "aafeece0faed182910764e89d37331248f5d772b206a05f37566648174114000",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_iOS_375_text100.json",
+      "sha256": "289f769ce414cd372c284bfc53e8a09980c3c1893fc2f8852d11bcc2012cb168",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_iOS_375_text130.json",
+      "sha256": "da926b330161b61e18da52d9d4196495dfee8b436ed10cdb1fee61354fe1ddff",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_iOS_375_text200.json",
+      "sha256": "a3206db3c69f09d13f760b33143acff971a856864c9a59f3940232a2ddc8267c",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_iOS_375_text200_height500.json",
+      "sha256": "62f24a0e587d19a463d82748771f45f1dfc97fd75716b60fd17892bcf92d34d0",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_iOS_430_text100.json",
+      "sha256": "032975ec6b92e6621fc3a85049cdc508060712e5de396740e1899b2e459c721b",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_iOS_430_text130.json",
+      "sha256": "3eaf93aca4090c6711440419f4bc8c170a3c03edb4520644be719161a02badf9",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_bottom_iOS_430_text200.json",
+      "sha256": "ee3b9b812a6fb073da441309b1d35e875c5bf2c218573d46e338eb1ff5ccc886",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_android_375_text100.json",
+      "sha256": "289f769ce414cd372c284bfc53e8a09980c3c1893fc2f8852d11bcc2012cb168",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_android_375_text130.json",
+      "sha256": "096dac3c750f6e4fd12730ce98228f89cf20db524b6d1bd9ca252bf86bd812fc",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_android_375_text200.json",
+      "sha256": "bfa7e27345d59f5e14e006b188e8044e3b8ea05e81278a8d5504d8ebd57180c9",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_android_375_text200_height500.json",
+      "sha256": "86a5ef2b68e4a345190e894d654fbdb84e6e317ccd2580be1d58a883f86a79fa",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_android_430_text100.json",
+      "sha256": "032975ec6b92e6621fc3a85049cdc508060712e5de396740e1899b2e459c721b",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_android_430_text130.json",
+      "sha256": "3eaf93aca4090c6711440419f4bc8c170a3c03edb4520644be719161a02badf9",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_android_430_text200.json",
+      "sha256": "70f14d4f9afebfd5dbc3988488cc399975b7df6e0e3a25048e2cfa9aeff189a5",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_iOS_375_text100.json",
+      "sha256": "ec64dc8b3c7b3f189931703f69147277184930e8a10fad179000699ab993b55f",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_iOS_375_text130.json",
+      "sha256": "48c789d94aa22e9e7f8e7696116c219c57246aa3d84b54ec630792f5778193c3",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_iOS_375_text200.json",
+      "sha256": "8081481cf9e26e6d5b39057a047d6a4542ddc61cd8d832588b49a240a6beeac7",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_iOS_375_text200_height500.json",
+      "sha256": "057d8f60a64b95a1a06b7520c823d12b6dc0b739801e67484895389e231a0ac6",
+      "bytes": 227
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_iOS_430_text100.json",
+      "sha256": "846342ba827c4eda85f4aa05d8d3fd539ed08654597c4cca356cc7758e0f57e8",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_iOS_430_text130.json",
+      "sha256": "c24251e7deb80dc4e7ae60174bfea8474443356b3463deb1dbdcc4f6c0c9fe73",
+      "bytes": 225
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/recovery_top_iOS_430_text200.json",
+      "sha256": "8ac807d5b21fcc96ce08b153b99ddfa4fa9bd980980b669f1b945fec9492d48c",
+      "bytes": 226
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_android_375_text100.json",
+      "sha256": "7a99602e18c046774048a167db3880e239a660883b3eb3945a50eda7ab206ede",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_android_375_text130.json",
+      "sha256": "0cc259e52745d5fc15e2e328c31f56488535a1df908fb859cc04f0c5fb05aea6",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_android_375_text200.json",
+      "sha256": "650f7ba1b7085285b37a5ec699f11c4eeeccd5f68f8a56ad31b1b49fcac017e2",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_android_375_text200_height500.json",
+      "sha256": "86c7d8a8f43f5549f984911bea3bcd5899f756cf4c217ed344ba59d5a0069b31",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_android_430_text100.json",
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_android_430_text130.json",
+      "sha256": "826db2af1e98b1b3bc65a4c950f5bd64b4007156a2959dd13848f1daa6814eda",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_android_430_text200.json",
+      "sha256": "6fc1a1a5903cd3ed5f300fdabb94fa2501978db41764bbb23038e9767c5c7e86",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_end_android_375_text200.json",
+      "sha256": "ac7d527273863e0ce4013948d87f34036eb5d51f61c0fba6d1de3919d1b01cb8",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_end_android_375_text200_height500.json",
+      "sha256": "7752cc4727af700deae9ba2761e8952695919ab2d9feb3985ab807782b37b9f0",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_end_iOS_375_text200.json",
+      "sha256": "ac7d527273863e0ce4013948d87f34036eb5d51f61c0fba6d1de3919d1b01cb8",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_end_iOS_375_text200_height500.json",
+      "sha256": "7752cc4727af700deae9ba2761e8952695919ab2d9feb3985ab807782b37b9f0",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_iOS_375_text100.json",
+      "sha256": "7a99602e18c046774048a167db3880e239a660883b3eb3945a50eda7ab206ede",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_iOS_375_text130.json",
+      "sha256": "0cc259e52745d5fc15e2e328c31f56488535a1df908fb859cc04f0c5fb05aea6",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_iOS_375_text200.json",
+      "sha256": "650f7ba1b7085285b37a5ec699f11c4eeeccd5f68f8a56ad31b1b49fcac017e2",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_iOS_375_text200_height500.json",
+      "sha256": "86c7d8a8f43f5549f984911bea3bcd5899f756cf4c217ed344ba59d5a0069b31",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_iOS_430_text100.json",
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_iOS_430_text130.json",
+      "sha256": "826db2af1e98b1b3bc65a4c950f5bd64b4007156a2959dd13848f1daa6814eda",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/rebase/welcome_iOS_430_text200.json",
+      "sha256": "6fc1a1a5903cd3ed5f300fdabb94fa2501978db41764bbb23038e9767c5c7e86",
+      "bytes": 224
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/audit/s03_welcome__android_google_first_with_recovery.json",
+      "sha256": "33b4fd7007c6e882908f9097d12c2676e324f8c336170fec706d20e21f8b3c0a",
+      "bytes": 223
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/fixture_audit/line126-rebuild-contrast-large-375-4.json",
+      "sha256": "48f25b4e29635ec3fd49f813dafa7a4c6e78b931f34a451e9a708cc754cf57de",
+      "bytes": 45141
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/fixture_audit/line126-rebuild-contrast-large-430-3.json",
+      "sha256": "cc3cc979a10677553e53a18ab1870be83d74ed639ee54d7420e842048250a92c",
+      "bytes": 41504
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/fixture_audit/line126-rebuild-contrast-normal-3.json",
+      "sha256": "ccf059a964ca7df721512ff6e82a9115d50dc55fda19e3cf3b00d2d857549a77",
+      "bytes": 41498
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/fixture_audit/line126-rebuild-contrast-normal-430-3.json",
+      "sha256": "c4546b1038fce45d4693769e7852940c0fda73ed53bf739afe507f70fd22962b",
+      "bytes": 41506
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_android_375_text100.json",
+      "sha256": "d28e0856d75eaace86b20166e0a91cf6e8dcc7e5254eafc23e8f8c00a75ef1a9",
+      "bytes": 686
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_android_375_text130.json",
+      "sha256": "a7d1ef696f7840bc5682b5e5641294f77bb1d7ba73b6960114154279d4deb13a",
+      "bytes": 770
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_android_375_text200.json",
+      "sha256": "c3cc322aaa1884da452abb1b96e47c197c967db6b612bf4535615d70a3b1f7d1",
+      "bytes": 691
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_android_375_text200_height500.json",
+      "sha256": "a0a80b5f91eb160b5800220e4daa6222695fd8cc9774ddbbe8b86766e3783a9f",
+      "bytes": 690
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_android_430_text100.json",
+      "sha256": "b9de41c8d9dfa5ed8cd8242fbd008b9eeb180f3265fcebc86f83ef9d1818e83d",
+      "bytes": 688
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_android_430_text130.json",
+      "sha256": "78d471733f048c22128c6a55cf64bb4e7f9a2d2fa5aa94fcc7e476b8af867368",
+      "bytes": 742
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_android_430_text200.json",
+      "sha256": "965e01f2fb0c43ef467e4701fc507c34379f39347b54ce4026368d2ab47e54da",
+      "bytes": 692
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_iOS_375_text100.json",
+      "sha256": "8945a4bf651d982862aec09c2966021b8411ba486318b2883523e0ff96beddbe",
+      "bytes": 682
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_iOS_375_text130.json",
+      "sha256": "a3a862f83e810743060cb8821cfaed8b952edea83e5c5d28646b436893e2bbad",
+      "bytes": 766
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_iOS_375_text200.json",
+      "sha256": "4fe25aec961df2045cf791b6feb0084e173f6249d968f4a62a047907e200d414",
+      "bytes": 687
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_iOS_375_text200_height500.json",
+      "sha256": "a96c692ad12d38f37c00cc393e86d574b3b36d172562097985a298e9ccf245ce",
+      "bytes": 686
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_iOS_430_text100.json",
+      "sha256": "58cd3ac9dde34bac3b78064bdf45d02e0f8cad9c809823e791ac1ce5e7ad43bc",
+      "bytes": 684
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_iOS_430_text130.json",
+      "sha256": "fe7add815a779f780069b9fbca5293e5d0bf414531eee605942a19e62314334a",
+      "bytes": 738
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/geometry/welcome_iOS_430_text200.json",
+      "sha256": "75a2899a07084ba26dee13a09dbc99aab5fc7b2277ec0e6fb48433d6b773aa9e",
+      "bytes": 688
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/CODE_PUSH.log",
+      "sha256": "95ff8f074dea55f0215ec39d5459577039efb295d286adc70a7934509e15c442",
+      "bytes": 88
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/FIXTURE_PUSH.log",
+      "sha256": "472820f831ce9c7965ce589c187781cb554d442372ed6a71fd95a2b7d328bc9a",
+      "bytes": 88
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/HISTORY_POST_CODE.log",
+      "sha256": "0e75143c59ff095cf31b57d4dcb8c3805779ccee8800c0bed3fba41e27f4ea3b",
+      "bytes": 163
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/HISTORY_POST_FIXTURE.log",
+      "sha256": "b0134f043735bdf708b7d13257400dacb7250ff9fa2136a46f9b5e86c4e89f47",
+      "bytes": 163
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/HISTORY_PRE_CODE.log",
+      "sha256": "3dee5f78e3d9d7e42e80fc5715c68ec65490f72e29534eafea2050939e23e93d",
+      "bytes": 174
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/HISTORY_PRE_FIXTURE.log",
+      "sha256": "9872322853acc81b38c67ea026af44a3a15c6136ab5bbde8ec0a63469b345e63",
+      "bytes": 173
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/HOSTED_UNION.log",
+      "sha256": "c1f7311d5e0217e39742ecee0742c1df2d1810e46cdc7bdbd471293c71663b42",
+      "bytes": 43873
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/HOSTED_UNION_FINAL.log",
+      "sha256": "52d105515ad5e00d62594b41ac0443147f73da8efb7fcd5ead3052edfc5cc0f1",
+      "bytes": 43212
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/PUBLIC_FIXTURE.log",
+      "sha256": "73b97df036140af466c4b6ce9f4db483f464b9e71aa10a06d80c9e8e5991410a",
+      "bytes": 39
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/PUBLIC_SOURCE.log",
+      "sha256": "f30e9e91b5fbf7718668425e69f11d2ad0f63af0e6c38844fe3e44808b212cb4",
+      "bytes": 1182
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/SECRET_FIXTURE.log",
+      "sha256": "c6648596c69de84b4cfadb6559751122edf5c0c02fe16033b13d3739fef5d708",
+      "bytes": 79
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/SECRET_SOURCE.log",
+      "sha256": "4b31b3c7a1712d2e51ff17cfc7c551b28ecdae983515f960cbae7543e51348f4",
+      "bytes": 79
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/analyzer.log",
+      "sha256": "f3b2768cf308e61df50d9f03f3ff25c08141fbce9aad858305b3a44612c4ae52",
+      "bytes": 96
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/analyzer_initial.log",
+      "sha256": "733205660fc04b1931f31553d14587c6d7c4bd4f24c4499004bd013e1e43b313",
+      "bytes": 453
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/analyzer_unused_import.log",
+      "sha256": "40791def6b318e62f0d1de8e4e6b18cfcaa4d61879b5502d948366b2ead5c368",
+      "bytes": 350
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ask_circle147.log",
+      "sha256": "4d3cb32a814b8e70685f1fa6bda226acb8f5bab9def8601d3f1f2d306e6a3300",
+      "bytes": 433
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/controls.log",
+      "sha256": "73946a4a5c87da46512ac3b79378eecb3f948ff8001a399c7c38484a77217117",
+      "bytes": 25518
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/fixture_analyzer.log",
+      "sha256": "71a620067741a73e55eed289fbdaed3d51179b14ab1103689bd6e8d0b2359eea",
+      "bytes": 96
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/fixture_replay_large375.log",
+      "sha256": "1783b054d9daee959fa74d1e6cca57c4cc901feeaac70a794cfdc776405645a6",
+      "bytes": 510
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/fixture_replay_three.log",
+      "sha256": "2e963fa7c5790ccf2cdc73cc555907733573dbd4d7815b56569f08b9874989fd",
+      "bytes": 2436
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/focused.log",
+      "sha256": "c8bd1c643bf530e1686584bcd04cfcf924ab6a9fff2a246069b7cf4b73ca28b7",
+      "bytes": 6491
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/guarded_backup.log",
+      "sha256": "2ecd9f425b3dc5346453857236df92ec9280b87c7557660abe82a25800682cec",
+      "bytes": 1033
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/legal149.log",
+      "sha256": "eda81c3be1794dc9235e6a2d7b5954c9682b3088d029c98004dc774370c9d61a",
+      "bytes": 11785
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary.log",
+      "sha256": "daaa7c2ed748e66f97296bb73784044e40aff19c79cde905dd769b1e28d6e5ff",
+      "bytes": 1633390
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/ordinary_fixture_final.log",
+      "sha256": "7603521b38b12928cb74120f5bcfcd6ac61a5a3ffc01f711804c692339146687",
+      "bytes": 1645346
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/preservation147.log",
+      "sha256": "55e7530e14afda81eb8253f0bb1fd5536266966b0dcc810c8b5726d9938b705e",
+      "bytes": 6128
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/replay.log",
+      "sha256": "a6b6929c490e1601ab89c3be94bd4dcd2aa5461de96f99c3394b65ecbad82a38",
+      "bytes": 580
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/shared_wordmark_final.log",
+      "sha256": "8c35911a1665303b71a9618da12e6e0d92fbb40e4adedbd08b4cc7b50e00fc14",
+      "bytes": 812
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/shared_wordmark_initial_transcript.txt",
+      "sha256": "e3e1a977aa7ee6af9e6d01e71b584983ffdd0233d674295db0f6a549c2eba004",
+      "bytes": 2065
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/six_size_after_layout_fix.log",
+      "sha256": "a20562a1fd57c977075f5ed3c29fc7c300ec871a21cab902333ad47aa62994e9",
+      "bytes": 5162
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/six_size_initial.log",
+      "sha256": "7e29a6a91ae191a68bf85142074b3fb1b24892c7c08f5cfcc03d7039eb243fab",
+      "bytes": 160656
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/logs/six_size_proof.log",
+      "sha256": "b8fb37eaf740ed1a9f63197ab027879f67c8712b3540ce914f5ff8f64e0c74d2",
+      "bytes": 1601
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar01_welcome__cant_sign_in.png",
+      "sha256": "0cec6603bcdf4ef109237fb3d09cf1dc8609d0875eb2f85d9aa9a0b8f7205de6",
+      "bytes": 291241
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar02_cant_sign_in__support.png",
+      "sha256": "99310f60117d68f103ca2f421d25c99effb97ddb4669ed2e167f5d6efd9fb6dd",
+      "bytes": 407173
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar03_sign_in_security__backup.png",
+      "sha256": "4c0aba7c0e8c499d6b133d713327ce506caba8e9620161641a8a568826b1856d",
+      "bytes": 232677
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ar04_sign_in_security__backup_added.png",
+      "sha256": "cca0f086a56e76a6b0990f92f316c6545ab3853b594edfe7270085293147b4be",
+      "bytes": 228879
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/ps07_sign_in_one_device__with_backup.png",
+      "sha256": "022efaab3420e034f54c8d0e63813a75797af1fcec657a6b7ebd2cf2ea1ddfdc",
+      "bytes": 201058
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/rows_line148_account_recovery.json",
+      "sha256": "434dfe22bc6b8c07f015440c47f5cb8d0d75862c3942b55f4f432584d142fd3a",
+      "bytes": 2044
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/screens/s03_welcome__android_google_first_with_recovery.png",
+      "sha256": "96f6c37e88ffd9d685c0aabd004de9117bf41cae8f6b7c1b73f6161a123001dc",
+      "bytes": 291132
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200.png",
+      "sha256": "ee88f744b71cd266fa4b587ba1c7b7f476a01fc266f5749280999005c4ee7657",
+      "bytes": 327317
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_android_375_text200_height500.png",
+      "sha256": "85391beeda800d4a16d0e6bb198c95ba91d30b699afa40b23e45191a1af92844",
+      "bytes": 293909
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200.png",
+      "sha256": "ee88f744b71cd266fa4b587ba1c7b7f476a01fc266f5749280999005c4ee7657",
+      "bytes": 327317
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_android_375_text200_height500.png",
+      "sha256": "6e79e212ad0208924ce59d7974b03fa966c17cbdfc668cb8280b2a7ce037e6f5",
+      "bytes": 306526
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200.png",
+      "sha256": "971fd43ab3da446cb6e3e2c57980c9f68ea4a83d5b2a930ad657faad49f31d37",
+      "bytes": 327072
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_end_iOS_375_text200_height500.png",
+      "sha256": "640db579c0d270b59a4214589249ef3af2d29921d73d56eb2d591a32c9f091f2",
+      "bytes": 306641
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200.png",
+      "sha256": "971fd43ab3da446cb6e3e2c57980c9f68ea4a83d5b2a930ad657faad49f31d37",
+      "bytes": 327072
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BUILT/LINE148/Q244_WORDMARK_2026-11-28/wordmark_frames/welcome_iOS_375_text200_height500.png",
+      "sha256": "44a004a335cf55bcbf0d04d6b9bf97d60af0369b8c97789bf206776c0368ba07",
+      "bytes": 293583
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md",
+      "sha256": "536f609e7e3d77aa913ebdfc7906434aa6c79bd4e33586f38519b5427fa2ce72",
+      "bytes": 6677
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/RECORD/ACCOUNT_RECOVERY_SPEC_CURRENT_VERSION_V1.md",
+      "sha256": "11688e7719f7d7f061fd2aad5a903621661efc9d5e195b20f6086557288b948f",
+      "bytes": 2445
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/RECORD/LOCK_RECORD.md",
+      "sha256": "b8341002f6793f1b21638eaf9faa185a61c67dfd44fa0746b3880ab2796611df",
+      "bytes": 320
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V9.md",
+      "sha256": "b2905f998c05430c40b8fb7bdf153e321d046345f366c51abbafef71178ca80b",
+      "bytes": 17784
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_SWIPE/RECORD/APP_SWIPE_SPEC_CURRENT_VERSION_V4.md",
+      "sha256": "4d5d446427b7534369e96fc253a520dc958526ab3ac250c6a529eeb1c2bc07a3",
+      "bytes": 6202
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar04_sign_in_security__backup_added.png",
+      "sha256": "82dd250b3d366d33be90b6c5ef6d04401c3d6dd544662bd0d4ac50a2d20b6686",
+      "bytes": 1102804
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar01_welcome__cant_sign_in.png",
+      "sha256": "deecf7db5ba7801fa48f7fb35191e36284a36aefd1e7d718a06ae7b7f03ea863",
+      "bytes": 309085
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar03_sign_in_security__backup.png",
+      "sha256": "c551b8113148394e6f0625bc62d155e0ab15a39f9852230f8d77b625b430c321",
+      "bytes": 1105689
+    },
+    {
+      "path": "PRODUCT/APPROVED/ACCOUNT_RECOVERY/MASTERS/ar02_cant_sign_in__support.png",
+      "sha256": "3d9948a5ee818608dd5bb2849994e46d336a1688a6538efa773510d3bce33fe3",
+      "bytes": 460945
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md",
+      "sha256": "9e82a32996a6b12b2baea4a61143029a9e82718caac919b32ddb1b1dec8f9827",
+      "bytes": 7037
+    }
+  ],
+  "prior_seal_verified": true,
+  "start_pack_bytes": 20727,
+  "named_question_reads": [
+    234,
+    243,
+    244
+  ],
+  "line149_accepted_source": "d9986c81b2222763bff5305bb9fecc26cec0196c",
+  "accepted_record_head": "8a983902",
+  "correction": "LOCK14V9 correction4b recorded; current V9 spec has no newer 4b text yet; use explicit LOCK_RECORD row per task authority.",
+  "named_read_bytes": 3018988
+}

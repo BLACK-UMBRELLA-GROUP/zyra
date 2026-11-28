@@ -1,0 +1,247 @@
+[
+  {
+    "name": "analyzer",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exit_code": 0,
+    "seconds": 9.2
+  },
+  {
+    "name": "focused",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_LINE148_CAPTURE=true",
+      "test/line121_signup_account_session_test.dart",
+      "test/line121_signup_preview_widget_test.dart",
+      "test/zyra_privacy_security_preview_test.dart",
+      "test/zyra_privacy_sensitive_actions_shell_test.dart",
+      "test/visual/line148_account_recovery_capture_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 11.39
+  },
+  {
+    "name": "controls",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/line121_signup_preview_controller_test.dart",
+      "test/zyra_rendered_text_audit_controls_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 30.44
+  },
+  {
+    "name": "replay",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/visual/line126_remaining_routes_test.dart",
+      "--name",
+      "overview signInSecurity"
+    ],
+    "exit_code": 0,
+    "seconds": 4.79
+  },
+  {
+    "name": "preservation147",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/line147_admission_test.dart",
+      "test/line147_family_introduction_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 13.42
+  },
+  {
+    "name": "ask_circle147",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/zyra_developer_panel_entry_test.dart",
+      "--name",
+      "LOCK 49"
+    ],
+    "exit_code": 0,
+    "seconds": 5.93
+  },
+  {
+    "name": "legal149",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/line149_accepted_integration_test.dart",
+      "test/purchase_wording_preview_test.dart",
+      "test/founder_launch_review_test.dart",
+      "test/visual/line149_legal_reader_capture_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 29.21
+  },
+  {
+    "name": "guarded_backup",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/zyra_developer_panel_entry_test.dart",
+      "--name",
+      "LOCK50 actual"
+    ],
+    "exit_code": 0,
+    "seconds": 8.81
+  },
+  {
+    "name": "six_size_proof",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_LINE148_CAPTURE=true",
+      "test/visual/line148_lock50_rebase_proof_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 19.33
+  },
+  {
+    "name": "ordinary",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded"
+    ],
+    "started_utc": "2026-11-28T02:02:49.247590+00:00",
+    "seconds": 533.16,
+    "exit_code": 0,
+    "completed": true
+  },
+  {
+    "name": "fixture_analyzer",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exit_code": 0,
+    "seconds": 9.96
+  },
+  {
+    "name": "fixture_replay_three",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+      "--dart-define=ZYRA_TEXT_AUDIT_SHARD_COUNT=5",
+      "--dart-define=ZYRA_TEXT_AUDIT_SHARD_INDEX=2",
+      "--plain-name",
+      "line121 real presenter lock50_recovery__",
+      "test/zyra_clearer_text_contrast_test.dart",
+      "test/zyra_clearer_text_contrast_430_test.dart",
+      "test/zyra_clearer_text_contrast_large_430_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 13.2
+  },
+  {
+    "name": "fixture_replay_large375",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+      "--dart-define=ZYRA_TEXT_AUDIT_SHARD_COUNT=4",
+      "--dart-define=ZYRA_TEXT_AUDIT_SHARD_INDEX=3",
+      "--plain-name",
+      "line121 real presenter lock50_recovery__",
+      "test/zyra_clearer_text_contrast_large_375_test.dart"
+    ],
+    "exit_code": 0,
+    "seconds": 12.47
+  },
+  {
+    "name": "ordinary_fixture_final",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded"
+    ],
+    "started_utc": "2026-11-28T02:29:26.912449+00:00",
+    "seconds": 546.13,
+    "exit_code": 0,
+    "completed": true
+  },
+  {
+    "name": "final_hosted",
+    "head": "19eda52452638f61755fe4098d21bcf1e21b644f",
+    "run": 46099169894,
+    "required_passed": true,
+    "required_count": 1,
+    "strict_union_passed": true,
+    "coverage_gaps": 0,
+    "corpus_jobs": 19
+  }
+]

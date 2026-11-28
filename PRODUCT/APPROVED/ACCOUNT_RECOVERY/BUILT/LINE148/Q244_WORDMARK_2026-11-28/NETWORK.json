@@ -1,0 +1,13 @@
+{
+  "push_attempts": 2,
+  "limit": 3,
+  "code_push_started_utc": "2026-11-28T02:12:26.531755+00:00",
+  "code_push_exit": 0,
+  "code_push_finished_utc": "2026-11-28T02:12:29.527544+00:00",
+  "fixture_push_started_utc": "2026-11-28T02:39:41.161615+00:00",
+  "fixture_push_exit": 0,
+  "fixture_push_finished_utc": "2026-11-28T02:39:44.004199+00:00",
+  "final_records_push_attempt": 3,
+  "final_records_push_result": "Recorded by owner final receipt after this commit is pushed",
+  "snapshot": "Two successful code pushes; third and final publication attempt reserved for these records."
+}

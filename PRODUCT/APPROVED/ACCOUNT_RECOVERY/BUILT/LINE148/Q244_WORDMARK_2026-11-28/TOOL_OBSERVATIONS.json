@@ -1,0 +1,21 @@
+{
+  "start_pack": "Relative tool invocation refused its own lexical parent path; absolute invocation passed20727bytes.",
+  "initial_cap": "Initial six-size23pass2fail: framework rejected child mutation in performLayout. Fixed with documented invokeLayoutCallback; no assertion suppression.",
+  "initial_analyzer": [
+    "Deprecated approximation getter corrected to scale(14)/14",
+    "Unused test import removed; final analyzer no issues"
+  ],
+  "stale_scroll_expectation": "After layout fix23pass2fail solely >0 expectation vs actual0 at375x667text2. Natural one-line cap removes wrapped-line height. Updated fitting expectation; added trueoverflow375x500 retaining all assertions.",
+  "shared_initial_raw_limitation": "First isolated test-helper output retained only as explicitly labeled transcript excerpt; final10pass is raw redirected log.",
+  "original_evidence": "All prior records remain exact; genuine original wrap findings retained in prior sealed records.",
+  "hosted_initial_union": {
+    "run": 46096918639,
+    "code": "fca15eaf",
+    "actual_failure": "3new recovery coverage obligations missing per setting in original Signup fixture list",
+    "repair": "Only2audit-only real Welcome\u2192recovery fixtures in existing line121 signup suite; unchanged auditor/registry/coverage/threshold/workflow",
+    "strict_targeted_result": "8tests/4settings/24frames/240runs/0findings;bothrolekeysrecorded",
+    "full_union_failures_observed": 1,
+    "full_ordinary_failures": 0,
+    "fresh_final_ordinary_and_hosted_union": "PASS;newhead19eda524;run46099169894;0coveragegaps/all4settings"
+  }
+}

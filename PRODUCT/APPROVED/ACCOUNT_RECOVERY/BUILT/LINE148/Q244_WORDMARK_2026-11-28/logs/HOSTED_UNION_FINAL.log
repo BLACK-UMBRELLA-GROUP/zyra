@@ -1,0 +1,398 @@
+﻿2026-11-28T02:54:05.7574038Z Current runner version: '2.338.2'
+2026-11-28T02:54:05.7596695Z ##[group]Runner Image Provisioner
+2026-11-28T02:54:05.7597589Z Hosted Compute Agent
+2026-11-28T02:54:05.7598090Z Version: 20261111.635
+2026-11-28T02:54:05.7598650Z Commit: b8a594ea514ff44cadb5342986c68b1eac6e22ed
+2026-11-28T02:54:05.7599265Z Build Date: 2026-11-11T01:49:01Z
+2026-11-28T02:54:05.7599833Z Worker ID: {b611377c-6a92-410e-ba86-37eb67919085}
+2026-11-28T02:54:05.7600455Z Region: westus2
+2026-11-28T02:54:05.7600999Z Cloud: Azure
+2026-11-28T02:54:05.7601471Z ##[endgroup]
+2026-11-28T02:54:05.7603050Z ##[group]Operating System
+2026-11-28T02:54:05.7603595Z Ubuntu
+2026-11-28T02:54:05.7604142Z 24.04.5
+2026-11-28T02:54:05.7604685Z LTS
+2026-11-28T02:54:05.7605395Z ##[endgroup]
+2026-11-28T02:54:05.7605921Z ##[group]Runner Image
+2026-11-28T02:54:05.7606435Z Image: ubuntu-24.04
+2026-11-28T02:54:05.7607023Z Version: 20261122.23.1
+2026-11-28T02:54:05.7608083Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261122.23/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-28T02:54:05.7609376Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261122.23
+2026-11-28T02:54:05.7610183Z ##[endgroup]
+2026-11-28T02:54:05.7611282Z ##[group]GITHUB_TOKEN Permissions
+2026-11-28T02:54:05.7613312Z Actions: read
+2026-11-28T02:54:05.7613880Z Contents: read
+2026-11-28T02:54:05.7614375Z Metadata: read
+2026-11-28T02:54:05.7614882Z ##[endgroup]
+2026-11-28T02:54:05.7616740Z Secret source: Actions
+2026-11-28T02:54:05.7617535Z Cache mode: write
+2026-11-28T02:54:05.7618371Z Prepare workflow directory
+2026-11-28T02:54:05.7884387Z Prepare all required actions
+2026-11-28T02:54:05.7933027Z Getting action download info
+2026-11-28T02:54:06.1319061Z Download action repository 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-11-28T02:54:06.2240700Z Download action repository 'actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2026-11-28T02:54:06.4682833Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-28T02:54:06.7111082Z Complete job name: Full text audit (strict union proof)
+2026-11-28T02:54:06.7872644Z ##[group]Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+2026-11-28T02:54:06.7873594Z with:
+2026-11-28T02:54:06.7873990Z   persist-credentials: false
+2026-11-28T02:54:06.7874459Z   repository: BLACK-UMBRELLA-GROUP/zyra
+2026-11-28T02:54:06.7877768Z   token: ***
+2026-11-28T02:54:06.7878157Z   ssh-strict: true
+2026-11-28T02:54:06.7878552Z   ssh-user: git
+2026-11-28T02:54:06.7878948Z   clean: true
+2026-11-28T02:54:06.7879340Z   sparse-checkout-cone-mode: true
+2026-11-28T02:54:06.7879801Z   fetch-depth: 1
+2026-11-28T02:54:06.7880176Z   fetch-tags: false
+2026-11-28T02:54:06.7880566Z   show-progress: true
+2026-11-28T02:54:06.7880958Z   lfs: false
+2026-11-28T02:54:06.7881345Z   submodules: false
+2026-11-28T02:54:06.7881911Z   set-safe-directory: true
+2026-11-28T02:54:06.7882351Z   allow-unsafe-pr-checkout: false
+2026-11-28T02:54:06.7882974Z ##[endgroup]
+2026-11-28T02:54:07.0458889Z Syncing repository: BLACK-UMBRELLA-GROUP/zyra
+2026-11-28T02:54:07.0460627Z ##[group]Getting Git version info
+2026-11-28T02:54:07.0461171Z Working directory is '/home/runner/work/zyra/zyra'
+2026-11-28T02:54:07.0462259Z [command]/usr/bin/git version
+2026-11-28T02:54:07.0574315Z git version 2.56.1
+2026-11-28T02:54:07.0595566Z ##[endgroup]
+2026-11-28T02:54:07.0609526Z Temporarily overriding HOME='/home/runner/work/_temp/c01a8e80-dcb4-4726-ae20-38f0a0bb4583' before making global git config changes
+2026-11-28T02:54:07.0610859Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-28T02:54:07.0614408Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/zyra/zyra
+2026-11-28T02:54:07.0672659Z Deleting the contents of '/home/runner/work/zyra/zyra'
+2026-11-28T02:54:07.0683686Z ##[group]Determining repository object format
+2026-11-28T02:54:07.0685298Z ##[endgroup]
+2026-11-28T02:54:07.0686195Z ##[group]Initializing the repository
+2026-11-28T02:54:07.0686932Z [command]/usr/bin/git init /home/runner/work/zyra/zyra
+2026-11-28T02:54:07.0820116Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-28T02:54:07.0821473Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-28T02:54:07.0822763Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-28T02:54:07.0823706Z hint: call:
+2026-11-28T02:54:07.0824183Z hint:
+2026-11-28T02:54:07.0824847Z hint: 	git config --global init.defaultBranch <name>
+2026-11-28T02:54:07.0825616Z hint:
+2026-11-28T02:54:07.0826334Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-28T02:54:07.0827521Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-28T02:54:07.0828434Z hint:
+2026-11-28T02:54:07.0828956Z hint: 	git branch -m <name>
+2026-11-28T02:54:07.0829550Z hint:
+2026-11-28T02:54:07.0830316Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-28T02:54:07.0842605Z Initialized empty Git repository in /home/runner/work/zyra/zyra/.git/
+2026-11-28T02:54:07.0853642Z [command]/usr/bin/git remote add origin https://github.com/BLACK-UMBRELLA-GROUP/zyra
+2026-11-28T02:54:07.0907180Z ##[endgroup]
+2026-11-28T02:54:07.0908219Z ##[group]Disabling automatic garbage collection
+2026-11-28T02:54:07.0916666Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-28T02:54:07.0952718Z ##[endgroup]
+2026-11-28T02:54:07.0953942Z ##[group]Setting up auth
+2026-11-28T02:54:07.0954584Z Removing SSH command configuration
+2026-11-28T02:54:07.0959929Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-28T02:54:07.0998517Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-28T02:54:07.1334410Z Removing HTTP extra header
+2026-11-28T02:54:07.1340069Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-28T02:54:07.1380069Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-28T02:54:07.1580896Z Removing includeIf entries pointing to credentials config files
+2026-11-28T02:54:07.1586581Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-28T02:54:07.1625656Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-28T02:54:07.1835706Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-28T02:54:07.1877889Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/zyra/zyra/.git.path /home/runner/work/_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:07.1913853Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/zyra/zyra/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:07.1985719Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:07.2028005Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:07.2060324Z ##[endgroup]
+2026-11-28T02:54:07.2061229Z ##[group]Fetching the repository
+2026-11-28T02:54:07.2067032Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +19eda52452638f61755fe4098d21bcf1e21b644f:refs/remotes/origin/main
+2026-11-28T02:54:31.9623536Z From https://github.com/BLACK-UMBRELLA-GROUP/zyra
+2026-11-28T02:54:31.9624720Z  * [new ref]         19eda52452638f61755fe4098d21bcf1e21b644f -> origin/main
+2026-11-28T02:54:31.9633497Z [command]/usr/bin/git branch --list --remote origin/main
+2026-11-28T02:54:31.9678071Z   origin/main
+2026-11-28T02:54:31.9687661Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-11-28T02:54:31.9717829Z 19eda52452638f61755fe4098d21bcf1e21b644f
+2026-11-28T02:54:31.9722188Z ##[endgroup]
+2026-11-28T02:54:31.9722833Z ##[group]Determining the checkout info
+2026-11-28T02:54:31.9723839Z ##[endgroup]
+2026-11-28T02:54:31.9728264Z [command]/usr/bin/git sparse-checkout disable
+2026-11-28T02:54:31.9791173Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-28T02:54:31.9828837Z ##[group]Checking out the ref
+2026-11-28T02:54:31.9832758Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-28T02:54:33.1085712Z Updating files:  22% (1615/7295)
+2026-11-28T02:54:33.2032155Z Updating files:  23% (1678/7295)
+2026-11-28T02:54:33.3633819Z Updating files:  24% (1751/7295)
+2026-11-28T02:54:33.4799464Z Updating files:  25% (1824/7295)
+2026-11-28T02:54:33.6158768Z Updating files:  26% (1897/7295)
+2026-11-28T02:54:33.7090514Z Updating files:  27% (1970/7295)
+2026-11-28T02:54:33.8428400Z Updating files:  28% (2043/7295)
+2026-11-28T02:54:33.9007476Z Updating files:  29% (2116/7295)
+2026-11-28T02:54:33.9655574Z Updating files:  30% (2189/7295)
+2026-11-28T02:54:34.0026553Z Updating files:  31% (2262/7295)
+2026-11-28T02:54:34.0036839Z Updating files:  31% (2302/7295)
+2026-11-28T02:54:34.0606785Z Updating files:  32% (2335/7295)
+2026-11-28T02:54:34.0637931Z Updating files:  33% (2408/7295)
+2026-11-28T02:54:34.1169760Z Updating files:  34% (2481/7295)
+2026-11-28T02:54:34.1638302Z Updating files:  35% (2554/7295)
+2026-11-28T02:54:34.2306471Z Updating files:  36% (2627/7295)
+2026-11-28T02:54:34.3663656Z Updating files:  37% (2700/7295)
+2026-11-28T02:54:34.4703495Z Updating files:  38% (2773/7295)
+2026-11-28T02:54:34.5215176Z Updating files:  39% (2846/7295)
+2026-11-28T02:54:34.6002835Z Updating files:  40% (2918/7295)
+2026-11-28T02:54:34.6217243Z Updating files:  41% (2991/7295)
+2026-11-28T02:54:34.7114755Z Updating files:  42% (3064/7295)
+2026-11-28T02:54:34.7299712Z Updating files:  43% (3137/7295)
+2026-11-28T02:54:34.7326573Z Updating files:  44% (3210/7295)
+2026-11-28T02:54:34.7862170Z Updating files:  45% (3283/7295)
+2026-11-28T02:54:34.8393961Z Updating files:  46% (3356/7295)
+2026-11-28T02:54:34.8953059Z Updating files:  47% (3429/7295)
+2026-11-28T02:54:34.9779263Z Updating files:  48% (3502/7295)
+2026-11-28T02:54:34.9948871Z Updating files:  49% (3575/7295)
+2026-11-28T02:54:35.0502399Z Updating files:  49% (3587/7295)
+2026-11-28T02:54:35.1944378Z Updating files:  50% (3648/7295)
+2026-11-28T02:54:35.2652659Z Updating files:  51% (3721/7295)
+2026-11-28T02:54:35.3420551Z Updating files:  52% (3794/7295)
+2026-11-28T02:54:35.3690886Z Updating files:  53% (3867/7295)
+2026-11-28T02:54:35.4128467Z Updating files:  54% (3940/7295)
+2026-11-28T02:54:35.4960187Z Updating files:  55% (4013/7295)
+2026-11-28T02:54:35.5669800Z Updating files:  56% (4086/7295)
+2026-11-28T02:54:35.5705714Z Updating files:  57% (4159/7295)
+2026-11-28T02:54:35.5749696Z Updating files:  58% (4232/7295)
+2026-11-28T02:54:35.5790929Z Updating files:  59% (4305/7295)
+2026-11-28T02:54:35.5842580Z Updating files:  60% (4377/7295)
+2026-11-28T02:54:35.5893823Z Updating files:  61% (4450/7295)
+2026-11-28T02:54:35.5934929Z Updating files:  62% (4523/7295)
+2026-11-28T02:54:35.6278191Z Updating files:  63% (4596/7295)
+2026-11-28T02:54:35.6374999Z Updating files:  64% (4669/7295)
+2026-11-28T02:54:35.6464144Z Updating files:  65% (4742/7295)
+2026-11-28T02:54:35.6537565Z Updating files:  66% (4815/7295)
+2026-11-28T02:54:35.6641830Z Updating files:  67% (4888/7295)
+2026-11-28T02:54:35.6722135Z Updating files:  68% (4961/7295)
+2026-11-28T02:54:35.6788431Z Updating files:  69% (5034/7295)
+2026-11-28T02:54:35.6832792Z Updating files:  70% (5107/7295)
+2026-11-28T02:54:35.6904261Z Updating files:  71% (5180/7295)
+2026-11-28T02:54:35.6975391Z Updating files:  72% (5253/7295)
+2026-11-28T02:54:35.7039841Z Updating files:  73% (5326/7295)
+2026-11-28T02:54:35.7090423Z Updating files:  74% (5399/7295)
+2026-11-28T02:54:35.7130533Z Updating files:  75% (5472/7295)
+2026-11-28T02:54:35.7183123Z Updating files:  76% (5545/7295)
+2026-11-28T02:54:35.7211071Z Updating files:  77% (5618/7295)
+2026-11-28T02:54:35.7242070Z Updating files:  78% (5691/7295)
+2026-11-28T02:54:35.7277453Z Updating files:  79% (5764/7295)
+2026-11-28T02:54:35.7317418Z Updating files:  80% (5836/7295)
+2026-11-28T02:54:35.7412550Z Updating files:  81% (5909/7295)
+2026-11-28T02:54:35.7460474Z Updating files:  82% (5982/7295)
+2026-11-28T02:54:35.7516246Z Updating files:  83% (6055/7295)
+2026-11-28T02:54:35.7567986Z Updating files:  84% (6128/7295)
+2026-11-28T02:54:35.7620243Z Updating files:  85% (6201/7295)
+2026-11-28T02:54:35.7679857Z Updating files:  86% (6274/7295)
+2026-11-28T02:54:35.7771685Z Updating files:  87% (6347/7295)
+2026-11-28T02:54:35.7950283Z Updating files:  88% (6420/7295)
+2026-11-28T02:54:35.8124705Z Updating files:  89% (6493/7295)
+2026-11-28T02:54:35.8170562Z Updating files:  90% (6566/7295)
+2026-11-28T02:54:35.8219085Z Updating files:  91% (6639/7295)
+2026-11-28T02:54:35.8264010Z Updating files:  92% (6712/7295)
+2026-11-28T02:54:35.8338237Z Updating files:  93% (6785/7295)
+2026-11-28T02:54:35.8355988Z Updating files:  94% (6858/7295)
+2026-11-28T02:54:35.8455004Z Updating files:  95% (6931/7295)
+2026-11-28T02:54:35.8565562Z Updating files:  96% (7004/7295)
+2026-11-28T02:54:35.8718095Z Updating files:  97% (7077/7295)
+2026-11-28T02:54:35.8828154Z Updating files:  98% (7150/7295)
+2026-11-28T02:54:35.8877895Z Updating files:  99% (7223/7295)
+2026-11-28T02:54:35.8878168Z Updating files: 100% (7295/7295)
+2026-11-28T02:54:35.8878390Z Updating files: 100% (7295/7295), done.
+2026-11-28T02:54:35.8956021Z Switched to a new branch 'main'
+2026-11-28T02:54:35.8960222Z branch 'main' set up to track 'origin/main'.
+2026-11-28T02:54:35.9128031Z ##[endgroup]
+2026-11-28T02:54:35.9183736Z [command]/usr/bin/git log -1 --format=%H
+2026-11-28T02:54:35.9220613Z 19eda52452638f61755fe4098d21bcf1e21b644f
+2026-11-28T02:54:35.9230988Z ##[group]Removing auth
+2026-11-28T02:54:35.9231802Z Removing SSH command configuration
+2026-11-28T02:54:35.9237172Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-28T02:54:35.9280071Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-28T02:54:35.9509621Z Removing HTTP extra header
+2026-11-28T02:54:35.9515077Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-28T02:54:35.9554211Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-28T02:54:35.9778211Z Removing includeIf entries pointing to credentials config files
+2026-11-28T02:54:35.9781768Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-28T02:54:35.9817591Z includeif.gitdir:/home/runner/work/zyra/zyra/.git.path
+2026-11-28T02:54:35.9818179Z includeif.gitdir:/home/runner/work/zyra/zyra/.git/worktrees/*.path
+2026-11-28T02:54:35.9818562Z includeif.gitdir:/github/workspace/.git.path
+2026-11-28T02:54:35.9818842Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-28T02:54:35.9827442Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/zyra/zyra/.git.path
+2026-11-28T02:54:35.9857286Z /home/runner/work/_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:35.9866865Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/zyra/zyra/.git.path /home/runner/work/_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:35.9907618Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/zyra/zyra/.git/worktrees/*.path
+2026-11-28T02:54:35.9937809Z /home/runner/work/_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:35.9945657Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/zyra/zyra/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:35.9988682Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-11-28T02:54:36.0018800Z /github/runner_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:36.0025436Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:36.0069181Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-11-28T02:54:36.0098868Z /github/runner_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:36.0105467Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config
+2026-11-28T02:54:36.0145304Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-28T02:54:36.0370952Z Removing credentials config '/home/runner/work/_temp/git-credentials-7655d237-d984-4d62-b335-4c0967f04ce8.config'
+2026-11-28T02:54:36.0381011Z ##[endgroup]
+2026-11-28T02:54:36.0616903Z ##[group]Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+2026-11-28T02:54:36.0617250Z with:
+2026-11-28T02:54:36.0617452Z   pattern: zyra-text-audit-*-attempt-1
+2026-11-28T02:54:36.0617728Z   path: /home/runner/work/_temp/zyra-text-audit-shards/
+2026-11-28T02:54:36.0617993Z   merge-multiple: false
+2026-11-28T02:54:36.0618198Z   repository: BLACK-UMBRELLA-GROUP/zyra
+2026-11-28T02:54:36.0618412Z   run-id: 46099169894
+2026-11-28T02:54:36.0618582Z ##[endgroup]
+2026-11-28T02:54:36.2143091Z (node:2233) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-28T02:54:36.2143922Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-28T02:54:36.5261372Z Found 19 artifact(s)
+2026-11-28T02:54:36.5262437Z Filtering artifacts by pattern 'zyra-text-audit-*-attempt-1'
+2026-11-28T02:54:36.5278841Z Preparing to download the following artifacts:
+2026-11-28T02:54:36.5279939Z - zyra-text-audit-normal-375-2-attempt-1 (ID: 15245366065, Size: 129977, Expected Digest: sha256:fab4efe42966eca2cb13896b9d71deffcbefcc235e00174010f1c47e3b9a3724)
+2026-11-28T02:54:36.5281410Z - zyra-text-audit-normal-430-5-attempt-1 (ID: 15245340786, Size: 88138, Expected Digest: sha256:d3ebb0b30f72ea35a733c1abce67dd2ed200608154a1da56e59ea078e2f158d2)
+2026-11-28T02:54:36.5282928Z - zyra-text-audit-normal-375-5-attempt-1 (ID: 15245231054, Size: 103968, Expected Digest: sha256:1c22fef88244209ec0b3cc73700ffe97b518ebe6f04afa7a22b745c8948b0430)
+2026-11-28T02:54:36.5284352Z - zyra-text-audit-normal-430-2-attempt-1 (ID: 15245221049, Size: 94606, Expected Digest: sha256:c8a0366e9fc9e13630d8cc637c0710dd86788d326b716e95d8cf5963f87b2f09)
+2026-11-28T02:54:36.5285510Z - zyra-text-audit-large-430-5-attempt-1 (ID: 15245216222, Size: 103701, Expected Digest: sha256:babe6eb728e790b91176f6932d717477133742d70cc8e9a558a0d88033926859)
+2026-11-28T02:54:36.5286385Z - zyra-text-audit-large-375-4-attempt-1 (ID: 15244912277, Size: 170586, Expected Digest: sha256:44bba3ddf3d1f87b0ed0a61c8648464736bc92759ca19013df852e4116e00bff)
+2026-11-28T02:54:36.5287257Z - zyra-text-audit-large-430-2-attempt-1 (ID: 15244907580, Size: 117218, Expected Digest: sha256:440c4fbb664e30b2054e8bcc84ef338845e28b0ccb91c5125df0abd099c7a926)
+2026-11-28T02:54:36.5288569Z - zyra-text-audit-normal-430-3-attempt-1 (ID: 15244892483, Size: 108412, Expected Digest: sha256:aed24f853898efcd98740bbd3df255c070c6870c9c1b2e05e0134c6aa52aa657)
+2026-11-28T02:54:36.5289562Z - zyra-text-audit-large-375-1-attempt-1 (ID: 15244883808, Size: 219145, Expected Digest: sha256:4acbd6905cf1d188b77042a16e560b7e338e6391b3dd3d8599c96e15172da6f7)
+2026-11-28T02:54:36.5290906Z - zyra-text-audit-large-375-3-attempt-1 (ID: 15244803618, Size: 124346, Expected Digest: sha256:78e7f5876a18d23a20830793688b52ecc231ae3e8cda17a2c3abadedbe03cbd1)
+2026-11-28T02:54:36.5292000Z - zyra-text-audit-normal-375-1-attempt-1 (ID: 15244752754, Size: 105277, Expected Digest: sha256:1188445a4ea7e8806d82be5a20b0f6b20d3f8713b049ae7e11e24dddfd44e466)
+2026-11-28T02:54:36.5292901Z - zyra-text-audit-normal-430-1-attempt-1 (ID: 15244698854, Size: 81323, Expected Digest: sha256:7443849df07758dc500df794813a413cd14e07d06d4910520f6868f0add0d6d2)
+2026-11-28T02:54:36.5293757Z - zyra-text-audit-normal-375-3-attempt-1 (ID: 15244653773, Size: 142619, Expected Digest: sha256:c4142ed29dd8401fb676c9a7b03db2757a17bf98e2e314b96a2fdb446dcc92cd)
+2026-11-28T02:54:36.5294596Z - zyra-text-audit-large-375-2-attempt-1 (ID: 15244629012, Size: 126896, Expected Digest: sha256:5a90ea32444dee485b3a2249e38cbabeee6d2c8b21fc3d8838a6b3c1b3b6f450)
+2026-11-28T02:54:36.5295406Z - zyra-text-audit-large-430-3-attempt-1 (ID: 15244587978, Size: 125777, Expected Digest: sha256:f8dd621dc4884950acd5993076876be0ad3543812b5736be89128d199561d562)
+2026-11-28T02:54:36.5296188Z - zyra-text-audit-normal-375-4-attempt-1 (ID: 15244459696, Size: 108729, Expected Digest: sha256:f3500de6925ce178ec5c0d4dcc52855a95040b888a4eb9b09c055d3d65736c57)
+2026-11-28T02:54:36.5297413Z - zyra-text-audit-large-430-1-attempt-1 (ID: 15244328260, Size: 96131, Expected Digest: sha256:79a3e0cd0d9f29b93f3135a9acb7e9811fcb4b8bd69dc58fb83e88eec1d59ec6)
+2026-11-28T02:54:36.5298873Z - zyra-text-audit-normal-430-4-attempt-1 (ID: 15244308157, Size: 83372, Expected Digest: sha256:1e62e1af01f6f4b2b77c9fbbeb33dffcb0af94a2af0c3b755329315e9d7ee95e)
+2026-11-28T02:54:36.5300311Z - zyra-text-audit-large-430-4-attempt-1 (ID: 15244233685, Size: 99415, Expected Digest: sha256:6f389869f138d27af3cc777c8a6d5ff0ada33647bc22af22b76a60bacb3c645e)
+2026-11-28T02:54:36.7749269Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-b8beebd3-8352-5994-9df8-141ee465bd3b/artifacts/017952ed85f5e691c1ddb87b289a640e0fd9bc3c9bdc89f2f1676702b4abeef1.zip
+2026-11-28T02:54:36.7751136Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-375-2-attempt-1
+2026-11-28T02:54:36.8974873Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-8c02ad3b-f476-5952-b44c-037d49667faa/artifacts/8456a74cc1fd03a35cf096d373e734bcf5bcb455ca93b69c5afe7cc9c267a272.zip
+2026-11-28T02:54:36.8976021Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-375-3-attempt-1
+2026-11-28T02:54:36.8999786Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-76f7062b-75ad-50c0-9658-7a0a7ab081e2/artifacts/452e9a4f4a838bfa39bf902034f48f95ed546776a3bd2f5a7a6b0668b2dcc211.zip
+2026-11-28T02:54:36.9001997Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-430-1-attempt-1
+2026-11-28T02:54:36.9028663Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-a8757fa3-2799-5666-894e-b5e28aae6029/artifacts/f9f0f39aa8fad3c9d713787b25f2974efed83cae71d3570b183e89acb1fcac3c.zip
+2026-11-28T02:54:36.9029791Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-430-1-attempt-1
+2026-11-28T02:54:36.9047941Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-ecf12a42-e677-5dcb-9e0b-541388f60156/artifacts/408ffd341cd68f4d9c6eae6d445a3f7817847889fd6660d29194bad5b7284b68.zip
+2026-11-28T02:54:36.9049767Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-375-1-attempt-1
+2026-11-28T02:54:36.9058652Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-6d2f0a18-8bf0-5a13-95dd-0b71e6f70a18/artifacts/0f003a576785369202993a08189bb9a32b797f0fdcb69bfd54e404134deecfc1.zip
+2026-11-28T02:54:36.9060071Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-430-2-attempt-1
+2026-11-28T02:54:36.9102511Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-d8d6b0b2-b550-5ced-9615-e7d0044aece4/artifacts/4e8fef9f23c3fa2f7e897063e4cdf52242a1957bd8c7a5ec29a285300b3058e3.zip
+2026-11-28T02:54:36.9103682Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-430-4-attempt-1
+2026-11-28T02:54:36.9111256Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-c2399382-3196-5094-bbac-3c29de9f1701/artifacts/8cdecdfbc0a87dab2bac666aaa4dc1c4190f9006c8c344268f313be80ac7967b.zip
+2026-11-28T02:54:36.9113905Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-375-1-attempt-1
+2026-11-28T02:54:36.9138781Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-6756a004-6275-5655-88d8-f24bc6cc1e07/artifacts/e3032cd6ce6ca3b0861b4dfcd253ca76d9333c970512d4990fafaad0da2d81df.zip
+2026-11-28T02:54:36.9139942Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-375-2-attempt-1
+2026-11-28T02:54:36.9161020Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-002c984a-8cc2-5088-a827-7fe226de453a/artifacts/2aedecc22394aeaf04fe8156b468442ead2c1841b96ddad3346401352113a1da.zip
+2026-11-28T02:54:36.9162538Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-430-5-attempt-1
+2026-11-28T02:54:36.9239590Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-dafe438d-eefd-5281-b2e6-9bcfc7122c16/artifacts/e3b277724a11a8afbb02965df9ac4657aba845cb2722ed4f1382a9dc82a30c92.zip
+2026-11-28T02:54:36.9240819Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-430-5-attempt-1
+2026-11-28T02:54:36.9243713Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-1f7fbf2d-eaa8-5a2d-ad4b-44118b5ab15f/artifacts/7c65754a05f1d4ab48153791992a1271bd9c2dbb4590034379ab3a6013fb6c59.zip
+2026-11-28T02:54:36.9244861Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-375-4-attempt-1
+2026-11-28T02:54:36.9247242Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-9a251ffc-cae5-56f8-9c89-31330b18b57f/artifacts/3b5fd2f5e2f9d6bd716ba0f58478e839b606a18c4a0aaf6d90e93f37a703830c.zip
+2026-11-28T02:54:36.9248404Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-430-3-attempt-1
+2026-11-28T02:54:36.9259574Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-be67cd8a-6275-57cc-9324-a2ac3f067ea4/artifacts/c2afbb8bcd2dc9942397cd98ce44bee7789dd3ea0f2be1ffb7fc2c6b93cd1719.zip
+2026-11-28T02:54:36.9261061Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-430-2-attempt-1
+2026-11-28T02:54:36.9267030Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-4c437aca-be29-5316-86ea-97f0805dee46/artifacts/65fe2d2d07f901b1acf63510b16533e590bebaf4e328005149ce2522cc8436b4.zip
+2026-11-28T02:54:36.9268509Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-375-4-attempt-1
+2026-11-28T02:54:36.9298856Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-958e6471-90c5-5d3f-9185-0c910e9bbbd4/artifacts/b308a741faf673004e9c8b2faca9d04014952b6713d9c1116e39cdebdb8cbbbe.zip
+2026-11-28T02:54:36.9300454Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-375-3-attempt-1
+2026-11-28T02:54:36.9315182Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-9b00da34-6a4c-53cc-bdb5-b2e6fb404452/artifacts/06c6b5d0fbd36aeada638461f2c1e66e1edd19c58164b889a2069a9b080e5bb5.zip
+2026-11-28T02:54:36.9317484Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-430-3-attempt-1
+2026-11-28T02:54:36.9325392Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-906334e8-f4a5-5340-a240-9eccb2c0850e/artifacts/6d15fd0bd06a69eb0bdf62ff22fb687867e4fafa86792ab6d7c2dca4c7959aea.zip
+2026-11-28T02:54:36.9326772Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-large-430-4-attempt-1
+2026-11-28T02:54:36.9550455Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/21c17c47-a3c2-8fba-acea-4f9e1da64ea1/workflow-job-run-e589e67d-e9c9-54bd-afd0-9e0f0f98096d/artifacts/5620051e318a8422364ce58f2cc293f69de33d1db54316055e58812efe946c1a.zip
+2026-11-28T02:54:36.9552712Z Starting download of artifact to: /home/runner/work/_temp/zyra-text-audit-shards/zyra-text-audit-normal-375-5-attempt-1
+2026-11-28T02:54:37.0814343Z (node:2233) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-28T02:54:37.3083906Z SHA256 digest of downloaded artifact is fab4efe42966eca2cb13896b9d71deffcbefcc235e00174010f1c47e3b9a3724
+2026-11-28T02:54:37.3085462Z Artifact download completed successfully.
+2026-11-28T02:54:37.3280009Z SHA256 digest of downloaded artifact is 7443849df07758dc500df794813a413cd14e07d06d4910520f6868f0add0d6d2
+2026-11-28T02:54:37.3280590Z Artifact download completed successfully.
+2026-11-28T02:54:37.3343694Z SHA256 digest of downloaded artifact is 79a3e0cd0d9f29b93f3135a9acb7e9811fcb4b8bd69dc58fb83e88eec1d59ec6
+2026-11-28T02:54:37.3345746Z Artifact download completed successfully.
+2026-11-28T02:54:37.3438415Z SHA256 digest of downloaded artifact is c8a0366e9fc9e13630d8cc637c0710dd86788d326b716e95d8cf5963f87b2f09
+2026-11-28T02:54:37.3439332Z Artifact download completed successfully.
+2026-11-28T02:54:37.3440471Z SHA256 digest of downloaded artifact is 1e62e1af01f6f4b2b77c9fbbeb33dffcb0af94a2af0c3b755329315e9d7ee95e
+2026-11-28T02:54:37.3441794Z Artifact download completed successfully.
+2026-11-28T02:54:37.3485462Z SHA256 digest of downloaded artifact is 1188445a4ea7e8806d82be5a20b0f6b20d3f8713b049ae7e11e24dddfd44e466
+2026-11-28T02:54:37.3486819Z Artifact download completed successfully.
+2026-11-28T02:54:37.3689620Z SHA256 digest of downloaded artifact is d3ebb0b30f72ea35a733c1abce67dd2ed200608154a1da56e59ea078e2f158d2
+2026-11-28T02:54:37.3690885Z Artifact download completed successfully.
+2026-11-28T02:54:37.3859206Z SHA256 digest of downloaded artifact is 440c4fbb664e30b2054e8bcc84ef338845e28b0ccb91c5125df0abd099c7a926
+2026-11-28T02:54:37.3860472Z Artifact download completed successfully.
+2026-11-28T02:54:37.3874368Z SHA256 digest of downloaded artifact is babe6eb728e790b91176f6932d717477133742d70cc8e9a558a0d88033926859
+2026-11-28T02:54:37.3876673Z Artifact download completed successfully.
+2026-11-28T02:54:37.3882069Z SHA256 digest of downloaded artifact is 6f389869f138d27af3cc777c8a6d5ff0ada33647bc22af22b76a60bacb3c645e
+2026-11-28T02:54:37.3886231Z Artifact download completed successfully.
+2026-11-28T02:54:37.3894021Z SHA256 digest of downloaded artifact is 78e7f5876a18d23a20830793688b52ecc231ae3e8cda17a2c3abadedbe03cbd1
+2026-11-28T02:54:37.3909152Z Artifact download completed successfully.
+2026-11-28T02:54:37.3934160Z SHA256 digest of downloaded artifact is 1c22fef88244209ec0b3cc73700ffe97b518ebe6f04afa7a22b745c8948b0430
+2026-11-28T02:54:37.3934863Z Artifact download completed successfully.
+2026-11-28T02:54:37.4056034Z SHA256 digest of downloaded artifact is 4acbd6905cf1d188b77042a16e560b7e338e6391b3dd3d8599c96e15172da6f7
+2026-11-28T02:54:37.4056615Z Artifact download completed successfully.
+2026-11-28T02:54:37.4197907Z SHA256 digest of downloaded artifact is f3500de6925ce178ec5c0d4dcc52855a95040b888a4eb9b09c055d3d65736c57
+2026-11-28T02:54:37.4198784Z Artifact download completed successfully.
+2026-11-28T02:54:37.4205856Z SHA256 digest of downloaded artifact is 5a90ea32444dee485b3a2249e38cbabeee6d2c8b21fc3d8838a6b3c1b3b6f450
+2026-11-28T02:54:37.4206802Z Artifact download completed successfully.
+2026-11-28T02:54:37.4316130Z SHA256 digest of downloaded artifact is aed24f853898efcd98740bbd3df255c070c6870c9c1b2e05e0134c6aa52aa657
+2026-11-28T02:54:37.4316741Z Artifact download completed successfully.
+2026-11-28T02:54:37.4322932Z SHA256 digest of downloaded artifact is f8dd621dc4884950acd5993076876be0ad3543812b5736be89128d199561d562
+2026-11-28T02:54:37.4323469Z Artifact download completed successfully.
+2026-11-28T02:54:37.4344075Z SHA256 digest of downloaded artifact is c4142ed29dd8401fb676c9a7b03db2757a17bf98e2e314b96a2fdb446dcc92cd
+2026-11-28T02:54:37.4344698Z Artifact download completed successfully.
+2026-11-28T02:54:37.4357455Z SHA256 digest of downloaded artifact is 44bba3ddf3d1f87b0ed0a61c8648464736bc92759ca19013df852e4116e00bff
+2026-11-28T02:54:37.4358186Z Artifact download completed successfully.
+2026-11-28T02:54:37.4358672Z Total of 19 artifact(s) downloaded
+2026-11-28T02:54:37.4364363Z Download artifact has finished successfully
+2026-11-28T02:54:37.4958731Z ##[group]Run python3 .github/scripts/zyra_text_audit_proof.py jobs \
+2026-11-28T02:54:37.4959509Z [36;1mpython3 .github/scripts/zyra_text_audit_proof.py jobs \[0m
+2026-11-28T02:54:37.4960205Z [36;1m  --output "$RUNNER_TEMP/zyra-text-audit-proof/jobs.json"[0m
+2026-11-28T02:54:37.5007598Z shell: /usr/bin/bash -e {0}
+2026-11-28T02:54:37.5007965Z env:
+2026-11-28T02:54:37.5010586Z   GITHUB_TOKEN: ***
+2026-11-28T02:54:37.5010875Z ##[endgroup]
+2026-11-28T02:54:38.4505346Z ##[group]Run python3 .github/scripts/zyra_text_audit_proof.py verify \
+2026-11-28T02:54:38.4505914Z [36;1mpython3 .github/scripts/zyra_text_audit_proof.py verify \[0m
+2026-11-28T02:54:38.4506365Z [36;1m  --root "$RUNNER_TEMP/zyra-text-audit-shards" \[0m
+2026-11-28T02:54:38.4506866Z [36;1m  --head "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" \[0m
+2026-11-28T02:54:38.4507386Z [36;1m  --jobs "$RUNNER_TEMP/zyra-text-audit-proof/jobs.json" \[0m
+2026-11-28T02:54:38.4507826Z [36;1m  --output "$RUNNER_TEMP/zyra-text-audit-proof/proof.json"[0m
+2026-11-28T02:54:38.4546222Z shell: /usr/bin/bash -e {0}
+2026-11-28T02:54:38.4546545Z ##[endgroup]
+2026-11-28T02:54:39.3936796Z {"artifact_count": 19, "head_sha": "19eda52452638f61755fe4098d21bcf1e21b644f", "product_colour_gate": "not asserted", "run_attempt": "1", "run_id": "46099169894", "settings": {"large-375": {"coverage_gaps": [], "frames": 9818, "raw_findings": 138, "suite_counts": {"Basic plans": 1, "Chat": 1, "Circle": 1, "Compatibility": 1, "Coverage entries": 1, "Eid gifts": 1, "Ended": 1, "Family": 1, "Filters": 1, "Focus": 1, "Guardian One": 1, "Help and safety": 1, "Membership": 1, "Menus": 1, "Phone": 1, "Recovery": 1, "Remaining routes": 1, "Safety": 1, "Seeker": 1, "Seekers": 1, "Settings": 1, "Signup": 1, "Walkthrough": 1}}, "large-430": {"coverage_gaps": [], "frames": 6598, "raw_findings": 84, "suite_counts": {"Basic plans": 1, "Chat": 1, "Circle": 1, "Compatibility": 1, "Coverage entries": 1, "Eid gifts": 1, "Ended": 1, "Family": 1, "Filters": 1, "Focus": 1, "Guardian One": 1, "Help and safety": 1, "Membership": 1, "Menus": 1, "Phone": 1, "Recovery": 1, "Remaining routes": 1, "Safety": 1, "Seeker": 1, "Seekers": 1, "Settings": 1, "Signup": 1, "Walkthrough": 1}}, "normal-375": {"coverage_gaps": [], "frames": 7814, "raw_findings": 678, "suite_counts": {"Basic plans": 1, "Chat": 1, "Circle": 1, "Compatibility": 1, "Coverage entries": 1, "Eid gifts": 1, "Ended": 1, "Family": 1, "Filters": 1, "Focus": 1, "Guardian One": 1, "Help and safety": 1, "Membership": 1, "Menus": 1, "Phone": 1, "Recovery": 1, "Remaining routes": 1, "Safety": 1, "Seeker": 1, "Seekers": 1, "Settings": 1, "Signup": 1, "Walkthrough": 1}}, "normal-430": {"coverage_gaps": [], "frames": 5332, "raw_findings": 74, "suite_counts": {"Basic plans": 1, "Chat": 1, "Circle": 1, "Compatibility": 1, "Coverage entries": 1, "Eid gifts": 1, "Ended": 1, "Family": 1, "Filters": 1, "Focus": 1, "Guardian One": 1, "Help and safety": 1, "Membership": 1, "Menus": 1, "Phone": 1, "Recovery": 1, "Remaining routes": 1, "Safety": 1, "Seeker": 1, "Seekers": 1, "Settings": 1, "Signup": 1, "Walkthrough": 1}}}, "status": "pass"}
+2026-11-28T02:54:39.4083779Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-28T02:54:39.4084237Z with:
+2026-11-28T02:54:39.4084539Z   name: zyra-text-audit-union-proof-attempt-1
+2026-11-28T02:54:39.4084935Z   path: /home/runner/work/_temp/zyra-text-audit-proof/
+2026-11-28T02:54:39.4085301Z   if-no-files-found: error
+2026-11-28T02:54:39.4085592Z   compression-level: 6
+2026-11-28T02:54:39.4085870Z   overwrite: false
+2026-11-28T02:54:39.4086152Z   include-hidden-files: false
+2026-11-28T02:54:39.4086454Z ##[endgroup]
+2026-11-28T02:54:39.5521872Z (node:2249) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-28T02:54:39.5523117Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-28T02:54:39.5663649Z With the provided path, there will be 2 files uploaded
+2026-11-28T02:54:39.5702511Z Artifact name is valid!
+2026-11-28T02:54:39.5727965Z Root directory input is valid!
+2026-11-28T02:54:39.9307187Z Beginning upload of artifact content to blob storage
+2026-11-28T02:54:39.9542803Z (node:2249) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-28T02:54:40.3098587Z Uploaded bytes 18467
+2026-11-28T02:54:40.3893074Z Finished uploading artifact content to blob storage!
+2026-11-28T02:54:40.3894017Z SHA256 digest of uploaded artifact zip is e60052caa0243b3124da653794b7a54989e931329649039d7edb37eed828f664
+2026-11-28T02:54:40.3894815Z Finalizing artifact upload
+2026-11-28T02:54:40.7576853Z Artifact zyra-text-audit-union-proof-attempt-1.zip successfully finalized. Artifact ID 15244364146
+2026-11-28T02:54:40.7578125Z Artifact zyra-text-audit-union-proof-attempt-1 has been successfully uploaded! Final size is 18467 bytes. Artifact ID is 15244364146
+2026-11-28T02:54:40.7583670Z Artifact download URL: https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/46099169894/artifacts/15244364146
+2026-11-28T02:54:40.7772691Z Post job cleanup.
+2026-11-28T02:54:40.8535389Z [command]/usr/bin/git version
+2026-11-28T02:54:40.8584853Z git version 2.56.1
+2026-11-28T02:54:40.8611041Z Temporarily overriding HOME='/home/runner/work/_temp/85f58956-0ea2-408e-a2b9-f59d6c304630' before making global git config changes
+2026-11-28T02:54:40.8612670Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-28T02:54:40.8616389Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/zyra/zyra
+2026-11-28T02:54:40.8651982Z Removing SSH command configuration
+2026-11-28T02:54:40.8658927Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-28T02:54:40.8695305Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-28T02:54:40.8966527Z Removing HTTP extra header
+2026-11-28T02:54:40.8972898Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-28T02:54:40.9030294Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-28T02:54:40.9265095Z Removing includeIf entries pointing to credentials config files
+2026-11-28T02:54:40.9272734Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-28T02:54:40.9310383Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-28T02:54:40.9694471Z Cleaning up orphan processes
+2026-11-28T02:54:41.0042107Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
