@@ -1,6 +1,8 @@
 // LOCK 32 email presentation only. No email delivery or account mutation.
 import 'package:flutter/material.dart';
 
+import '../widgets/zyra_wordmark.dart';
+
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_developer_title.dart';
@@ -108,8 +110,7 @@ class ZyraDeveloperInactivityEmail extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      'ZYRA',
+                    ZyraWordmark(
                       textAlign: TextAlign.center,
                       style: ZyraText.heading(
                         size: 26,

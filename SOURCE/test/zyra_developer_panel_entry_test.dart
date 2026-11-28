@@ -1748,6 +1748,154 @@ void main() {
     await dispose(tester);
   });
 
+  for (final guardian in [false, true]) {
+    for (final provider in ['Apple', 'Google']) {
+      testWidgets('LOCK50 actual ${guardian ? 'Guardian' : 'Seeker'} $provider '
+          'backup retains its signup provider and rejects stale actions', (
+        tester,
+      ) async {
+        plan = 'seeker_premium';
+        var nativeChecks = 0;
+        final messenger =
+            TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+        const nativeAuth = MethodChannel('plugins.flutter.io/local_auth');
+        messenger.setMockMethodCallHandler(nativeAuth, (_) async {
+          nativeChecks++;
+          return true;
+        });
+        addTearDown(() => messenger.setMockMethodCallHandler(nativeAuth, null));
+        final navigator = await mount(tester);
+        await tap(tester, _key('dev_page_title'));
+        await tap(tester, _key('dev_start_signup'));
+        await tap(
+          tester,
+          _key(provider == 'Apple' ? 'signup_apple' : 'signup_google'),
+        );
+        final signup = tester.widget<ZyraSignupPreview>(
+          find.byType(ZyraSignupPreview),
+        );
+        final controller = signup.controller;
+        controller.setGuardian(guardian);
+        controller.setStep(ZyraSignupStep.verify);
+        controller.verifyLater();
+        controller.advance();
+        expect(controller.hasAccount, isTrue);
+        expect(controller.provider, provider);
+        signup.onPause();
+        await settle(tester);
+        await finishFirstTour(tester);
+
+        Future<void> openSecurity(String expectedProvider) async {
+          await previewTab(tester, 4);
+          await tap(tester, _key('concept_settings'));
+          final settings = tester.widget<ZyraConceptSettingsPresentation>(
+            find.byType(ZyraConceptSettingsPresentation),
+          );
+          expect(settings.data.signedInWith, expectedProvider);
+          await tap(tester, _key('concept_settings_signInSecurity'));
+          final backup = expectedProvider == 'Apple' ? 'Google' : 'Apple';
+          expect(find.text('Add $backup as a backup'), findsOneWidget);
+        }
+
+        Future<void> back() async {
+          await tester.binding.handlePopRoute();
+          await settle(tester);
+        }
+
+        Future<void> switchProfile() async {
+          await back();
+          await back();
+          await tap(tester, _key('switch-account-button'));
+          expect(_key('small_pages_switch_profile'), findsOneWidget);
+          await tap(tester, _key('small_pages_switch_role'));
+        }
+
+        VoidCallback backupAction() =>
+            tester.widget<InkWell>(_key('privacy_add_backup_sign_in')).onTap!;
+
+        Future<void> localBackupAction(VoidCallback action) async {
+          final requestsBefore = readsAndWrites.length;
+          action();
+          await settle(tester);
+          expect(readsAndWrites, hasLength(requestsBefore));
+          expect(nativeChecks, 0);
+        }
+
+        await openSecurity(provider);
+        final retiredRoute = backupAction();
+        await back();
+        await tap(tester, _key('concept_settings_signInSecurity'));
+        await localBackupAction(retiredRoute);
+        final backup = provider == 'Apple' ? 'Google' : 'Apple';
+        expect(find.text('Add $backup as a backup'), findsOneWidget);
+        expect(find.text('Added'), findsNothing);
+
+        final covered = backupAction();
+        final cover = MaterialPageRoute<void>(
+          builder: (_) => const Scaffold(body: Text('Backup route cover')),
+        );
+        navigator.currentState!.push(cover);
+        await settle(tester);
+        await localBackupAction(covered);
+        expect(cover.isCurrent, isTrue);
+        expect(find.text('Backup route cover'), findsOneWidget);
+        navigator.currentState!.pop();
+        await settle(tester);
+        expect(find.text('Add $backup as a backup'), findsOneWidget);
+        expect(find.text('Added'), findsNothing);
+
+        final retiredRole = backupAction();
+        await switchProfile();
+        await openSecurity('Apple');
+        await localBackupAction(retiredRole);
+        expect(find.text('Add Google as a backup'), findsOneWidget);
+        expect(find.text('Added'), findsNothing);
+        await switchProfile();
+        await openSecurity(provider);
+        await localBackupAction(retiredRole);
+        expect(find.text('Add $backup as a backup'), findsOneWidget);
+        expect(find.text('Added'), findsNothing);
+
+        final requestsBeforeAdd = readsAndWrites.length;
+        await tap(tester, _key('privacy_add_backup_sign_in'));
+        expect(readsAndWrites, hasLength(requestsBeforeAdd));
+        expect(nativeChecks, 0);
+        expect(find.text('Added'), findsOneWidget);
+        expect(
+          find.text('$backup added. You can now sign in with Apple or Google.'),
+          findsOneWidget,
+        );
+        expect(_key('privacy_add_backup_sign_in'), findsNothing);
+        await tester.pump(const Duration(seconds: 4));
+        await settle(tester);
+        await back();
+        await tap(tester, _key('concept_settings_signInSecurity'));
+        expect(find.text('Added'), findsOneWidget);
+        expect(_key('privacy_add_backup_sign_in'), findsNothing);
+        await switchProfile();
+        await openSecurity('Apple');
+        expect(find.text('Added'), findsNothing);
+        final backgrounded = backupAction();
+        final requestsBeforeSuspend = readsAndWrites.length;
+        expect(nativeChecks, 0);
+        suspend(tester);
+        await localBackupAction(backgrounded);
+        expect(samples.isAuthorized, isFalse);
+        expect(
+          find.text('Google added. You can now sign in with Apple or Google.'),
+          findsNothing,
+        );
+        expect(readsAndWrites, hasLength(requestsBeforeSuspend));
+        expect(nativeChecks, 0);
+        await dispose(tester);
+        resume(tester);
+        await localBackupAction(backgrounded);
+        expect(readsAndWrites, hasLength(requestsBeforeSuspend));
+        expect(nativeChecks, 0);
+      });
+    }
+  }
+
   testWidgets('LOCK 34 progress long press freshly admits Developer', (
     tester,
   ) async {

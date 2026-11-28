@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/zyra_wordmark.dart';
+
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../services/zyra_profile_service.dart';
@@ -167,8 +169,7 @@ class _SeekerPostIdentityChoiceScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'ZYRA',
+                  ZyraWordmark(
                     textAlign: TextAlign.center,
                     style: ZyraText.wordmark(
                       size: 20,
@@ -874,12 +875,15 @@ class _AccountPathOverview extends StatelessWidget {
                               color: ZyraColors.ink(0.70),
                             ),
                           ),
-                          const Spacer(),
-                          Text(
-                            'ZYRA',
-                            style: ZyraText.wordmark(
-                              size: 18,
-                              color: ZyraColors.splashWordmark,
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: ZyraWordmark(
+                                style: ZyraText.wordmark(
+                                  size: 18,
+                                  color: ZyraColors.splashWordmark,
+                                ),
+                              ),
                             ),
                           ),
                         ],

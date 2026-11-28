@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../widgets/zyra_wordmark.dart';
+
 import '../../services/zyra_developer_access.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
@@ -529,8 +531,7 @@ class _WelcomePageState extends State<_WelcomePage>
                 ? CrossAxisAlignment.start
                 : CrossAxisAlignment.center,
             children: [
-              Text(
-                'ZYRA',
+              ZyraWordmark(
                 style: ZyraText.wordmark(
                   size: 17,
                   color: ZyraColors.splashWordmark,
@@ -937,8 +938,7 @@ class _StagePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'ZYRA',
+                  ZyraWordmark(
                     style: ZyraText.wordmark(
                       size: 17,
                       color: ZyraColors.splashWordmark,

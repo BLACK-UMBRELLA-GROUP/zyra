@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../widgets/zyra_wordmark.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 
 import '../../services/zyra_auth.dart';
@@ -38,7 +40,7 @@ class MembershipRequiredScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('ZYRA', style: ZyraText.wordmark(size: 24)),
+              ZyraWordmark(style: ZyraText.wordmark(size: 24)),
               const Spacer(),
               Icon(
                 Icons.lock_outline_rounded,

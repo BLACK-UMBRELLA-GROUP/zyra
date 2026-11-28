@@ -147,6 +147,27 @@ The focused checks are in `test/zyra_privacy_security_preview_test.dart`,
 `test/visual/line134_privacy_security_capture_test.dart`. The 430 × 932
 captures stay under `build/line134/screens`.
 
+## Founder preview account recovery
+
+LOCK 50 adds Can’t sign in? to the sample Welcome screen. The recovery page
+returns to Welcome with the sign-up chevron, and Contact support shows the
+preview notice. Sign-in & security offers the other provider as a backup for
+the current sample profile, including when only this phone is signed in.
+The preview records Added locally for the sample. Real support and provider
+linking are deferred under OA-ZYRA-402.
+Welcome scrolls as one when Larger Text makes its content taller than the
+screen; fitting screens keep their existing positions and stay still.
+LOCK 14 V9 correction 4b keeps live wordmarks on one line: their resolved
+font and tracking grow with Larger Text until the available content width
+is full. Fitting wordmarks retain their inherited scale and layout.
+
+The focused checks are in
+`test/visual/line148_account_recovery_capture_test.dart` and
+`test/visual/line148_lock50_rebase_proof_test.dart`. The latter covers Switch
+profile ownership and 375/430 widths at 1.0, 1.3 and 2.0 text scales. Set
+`--dart-define=ZYRA_LINE148_CAPTURE=true` to write the 430 × 932 captures to
+`build/line148/screens`.
+
 ## Founder preview full profiles
 
 Profiles and full profiles share the LOCK 4 V5 card, including Main Guardian

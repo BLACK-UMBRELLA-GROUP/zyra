@@ -45,6 +45,8 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   final _photos = <bool, List<String>>{};
   final _avatar = <bool, Offset>{};
   final _signupProfiles = <bool, SeekerProfile>{};
+  final _signupProviders = <bool, String>{};
+  final _backupSignIns = <bool>{};
   final _signupAbout = <bool, String>{};
   final _profileEdits =
       <bool, ({String city, String? nationality, String? ethnicity})>{};
@@ -84,6 +86,20 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   }
 
   String get seekerGender => _signupProfiles[false]?.gender ?? 'male';
+  String signInProvider(bool guardian) =>
+      current ? _signupProviders[guardian] ?? 'Apple' : 'Apple';
+
+  bool hasBackupSignIn(bool guardian) =>
+      current && _backupSignIns.contains(guardian);
+
+  /// Records the other provider in this sample only. No authentication runs.
+  bool addBackupSignIn(bool guardian, {required String primaryProvider}) {
+    if (!current || signInProvider(guardian) != primaryProvider) return false;
+    if (!_backupSignIns.add(guardian)) return false;
+    notifyListeners();
+    return true;
+  }
+
   String? signupAbout(bool guardian) => current ? _signupAbout[guardian] : null;
   bool editProfileDetails({
     required bool guardian,
@@ -177,6 +193,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     required List<String> ethnicities,
     required List<String> photos,
     required ZyraCompatibilityDraft preferences,
+    String? signInProvider,
   }) {
     if (!current ||
         !const {'male', 'female'}.contains(gender) ||
@@ -185,6 +202,8 @@ class ZyraRequestAccountSession extends ChangeNotifier {
         surname.trim().isEmpty ||
         surname.characters.length > 40 ||
         age < 18 ||
+        (signInProvider != null &&
+            !const {'Apple', 'Google'}.contains(signInProvider)) ||
         !_localPhotos(photos) ||
         (!guardian && preferences.gender != gender)) {
       return false;
@@ -213,6 +232,10 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     );
     _profileEdits.remove(guardian);
     _signupProfiles[guardian] = profile;
+    if (signInProvider != null) {
+      _signupProviders[guardian] = signInProvider;
+      _backupSignIns.remove(guardian);
+    }
     final about = preferences.answers['bio_about_me'];
     if (about is String) {
       _signupAbout[guardian] = about;
@@ -229,10 +252,13 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     if (!current) return false;
     if (_signupProfiles.isEmpty &&
         _profileEdits.isEmpty &&
-        _signupAbout.isEmpty) {
+        _signupAbout.isEmpty &&
+        _backupSignIns.isEmpty) {
       return true;
     }
     _signupProfiles.clear();
+    _signupProviders.clear();
+    _backupSignIns.clear();
     _signupAbout.clear();
     _profileEdits.clear();
     for (final entry in _signupPhotoBaselines.entries) {

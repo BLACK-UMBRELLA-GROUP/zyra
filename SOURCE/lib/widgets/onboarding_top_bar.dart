@@ -3,6 +3,8 @@
 // Single row, always present: [progress area, flex-grows] [··· help button]
 
 import 'package:flutter/material.dart';
+
+import 'zyra_wordmark.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_onboarding_direction_style.dart';
@@ -39,8 +41,7 @@ class OnboardingTopBar extends StatelessWidget {
           children: [
             if (previewStyle != null) ...[
               Center(
-                child: Text(
-                  'ZYRA',
+                child: ZyraWordmark(
                   style: ZyraText.wordmark(
                     size: 17,
                     color: ZyraColors.splashWordmark,

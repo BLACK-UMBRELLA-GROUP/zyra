@@ -37,6 +37,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
 
+import '../../widgets/zyra_wordmark.dart';
+
 import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import 'package:flutter/scheduler.dart';
@@ -778,8 +780,7 @@ class _VersionFooterState extends State<_VersionFooter> {
   Widget build(BuildContext context) => Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      Text(
-        'ZYRA',
+      ZyraWordmark(
         style: ZyraText.wordmark(size: 11, color: ZyraColors.ink(0.24)),
       ),
       if (_line != null) ...[

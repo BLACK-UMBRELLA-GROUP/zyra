@@ -6,6 +6,8 @@ import '../../widgets/zyra_developer_title.dart';
 // production "verified" switch. Developer state never leaves this widget.
 
 import 'package:flutter/material.dart';
+
+import '../../widgets/zyra_wordmark.dart';
 import 'package:flutter/services.dart';
 
 import '../../data/help_content.dart';
@@ -522,8 +524,7 @@ class _InitialIdentityCheckScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
-          child: Text(
-            'ZYRA',
+          child: ZyraWordmark(
             style: ZyraText.wordmark(
               size: 20,
               color: ZyraColors.splashWordmark,
@@ -555,24 +556,33 @@ class _InitialIdentityCheckScreenState
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              'ZYRA',
-              style: ZyraText.wordmark(
-                size: 20,
-                color: ZyraColors.splashWordmark,
+        LayoutBuilder(
+          builder: (context, constraints) => Row(
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: (constraints.maxWidth - 12).clamp(
+                    0,
+                    double.infinity,
+                  ),
+                ),
+                child: ZyraWordmark(
+                  style: ZyraText.wordmark(
+                    size: 20,
+                    color: ZyraColors.splashWordmark,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'IDENTITY CHECK',
-                textAlign: TextAlign.right,
-                style: ZyraText.chapterLabel(color: ZyraColors.ink(0.46)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'IDENTITY CHECK',
+                  textAlign: TextAlign.right,
+                  style: ZyraText.chapterLabel(color: ZyraColors.ink(0.46)),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 34),
         Expanded(
@@ -658,8 +668,7 @@ class _InitialIdentityCheckScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Text(
-              'ZYRA',
+            child: ZyraWordmark(
               style: ZyraText.wordmark(
                 size: 20,
                 color: ZyraColors.splashWordmark,
@@ -757,8 +766,7 @@ class _InitialIdentityCheckScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
-          child: Text(
-            'ZYRA',
+          child: ZyraWordmark(
             style: ZyraText.wordmark(
               size: 20,
               color: ZyraColors.splashWordmark,

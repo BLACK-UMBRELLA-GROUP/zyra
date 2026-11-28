@@ -2,6 +2,8 @@
 // action. Visiting this page never manufactures completion or verification.
 import 'package:flutter/material.dart';
 
+import '../../widgets/zyra_wordmark.dart';
+
 import '../../main.dart';
 import '../../models/seeker_setup_checkpoint.dart';
 import '../../models/zyra_identity_verification.dart';
@@ -335,8 +337,7 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
                   padding: const EdgeInsets.fromLTRB(24, 20, 24, 10),
                   child: Column(
                     children: [
-                      Text(
-                        'ZYRA',
+                      ZyraWordmark(
                         style: ZyraText.wordmark(
                           size: 20,
                           color: ZyraColors.splashWordmark,

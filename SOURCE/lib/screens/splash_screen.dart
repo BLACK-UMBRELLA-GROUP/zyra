@@ -45,6 +45,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_splash_motion.dart';
 import '../widgets/zyra_splash_artwork.dart';
+import '../widgets/zyra_wordmark.dart';
 
 /// Total time the splash owns the screen.
 ///
@@ -338,38 +339,40 @@ class _Wordmark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(_letters.length, (i) {
-        final begin =
-            _SplashScreenState._letterStart +
-            i * _SplashScreenState._letterStagger;
-        final t = Interval(
-          begin,
-          (begin + _SplashScreenState._letterLen).clamp(0.0, 1.0),
-          curve: const Cubic(.22, .9, .3, 1),
-        ).transform(progress);
+    return ZyraWordmarkGroup(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(_letters.length, (i) {
+          final begin =
+              _SplashScreenState._letterStart +
+              i * _SplashScreenState._letterStagger;
+          final t = Interval(
+            begin,
+            (begin + _SplashScreenState._letterLen).clamp(0.0, 1.0),
+            curve: const Cubic(.22, .9, .3, 1),
+          ).transform(progress);
 
-        // The 74 that produced this on a 390pt phone came from the size
-        // comparison the Founder approved — that widget was mislabelled
-        // (cards ~215px standing in for a 390pt phone, a 0.55 scale, sizes
-        // picked by eye rather than divided through), so the card marked
-        // "60" was really drawing at ~74pt. Confirmed against a
-        // true-device-scale render, then made proportional here.
-        final base = ZyraText.wordmark(size: size);
-        return Opacity(
-          opacity: t,
-          child: Transform.translate(
-            offset: Offset(0, 12 * (1 - t)),
-            child: Text(
-              _letters[i],
-              style: i == _letters.length - 1
-                  ? base.copyWith(letterSpacing: 0)
-                  : base,
+          // The 74 that produced this on a 390pt phone came from the size
+          // comparison the Founder approved — that widget was mislabelled
+          // (cards ~215px standing in for a 390pt phone, a 0.55 scale, sizes
+          // picked by eye rather than divided through), so the card marked
+          // "60" was really drawing at ~74pt. Confirmed against a
+          // true-device-scale render, then made proportional here.
+          final base = ZyraText.wordmark(size: size);
+          return Opacity(
+            opacity: t,
+            child: Transform.translate(
+              offset: Offset(0, 12 * (1 - t)),
+              child: Text(
+                _letters[i],
+                style: i == _letters.length - 1
+                    ? base.copyWith(letterSpacing: 0)
+                    : base,
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

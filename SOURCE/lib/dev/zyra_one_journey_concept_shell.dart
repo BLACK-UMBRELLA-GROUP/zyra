@@ -641,6 +641,7 @@ class _ZyraOneJourneyConceptShellState
       ethnicities: controller.ethnicities.toList(),
       photos: controller.photos,
       preferences: prefs,
+      signInProvider: firstEntry ? controller.provider : null,
     );
     if (_developerBridge?.canPresent == true) {
       final basic = controller.guardian
@@ -10391,7 +10392,7 @@ class _ZyraOneJourneyConceptShellState
         ? _guardianFamily.inviteFor('draft-guardian-hassan')!.seekerName
         : null,
     guardianCount: '${_conceptGuardianPeople.length}',
-    signedInWith: 'Apple',
+    signedInWith: _accountSession.signInProvider(_guardianRole),
     appLock: ZyraAppLock.instance.enabled,
     profilePaused: _profilePrivacy.paused,
     privateMode: _profilePrivacy.privateMode,
@@ -10439,6 +10440,7 @@ class _ZyraOneJourneyConceptShellState
 
   Widget _privacySecurityView(ZyraConceptAccountAction action) {
     final fresh = _accountFreshGuard();
+    final primaryProvider = _accountSession.signInProvider(_guardianRole);
     final page = switch (action) {
       ZyraConceptAccountAction.hiddenProfiles =>
         ZyraPrivacySecurityPage.hiddenBlocked,
@@ -10531,6 +10533,21 @@ class _ZyraOneJourneyConceptShellState
         if (!fresh()) return;
         unawaited(ZyraLocalPrefs.setMessageTextHidden(enabled));
         _act(() {});
+      },
+      signedInWith: primaryProvider,
+      backupSignInAdded: _accountSession.hasBackupSignIn(_guardianRole),
+      onAddBackupSignIn: () {
+        if (!fresh()) return;
+        if (!_accountSession.addBackupSignIn(
+          _guardianRole,
+          primaryProvider: primaryProvider,
+        )) {
+          return;
+        }
+        final backup = primaryProvider == 'Google' ? 'Apple' : 'Google';
+        _act(() {
+          _notice = '$backup added. You can now sign in with Apple or Google.';
+        });
       },
       otherDevicesPresent: _otherSampleDevicesPresent,
       onSignOutOtherDevices: () async {

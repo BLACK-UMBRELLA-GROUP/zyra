@@ -20,6 +20,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'zyra_wordmark.dart';
+
 import '../services/zyra_app_lock.dart';
 import '../services/zyra_auth.dart';
 import '../theme/zyra_colors.dart';
@@ -111,7 +113,7 @@ class _ObscureVeil extends StatelessWidget {
     child: Container(
       decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
       alignment: Alignment.center,
-      child: Text('ZYRA', style: ZyraText.wordmark(size: 26)),
+      child: ZyraWordmark(style: ZyraText.wordmark(size: 26)),
     ),
   );
 }
@@ -139,7 +141,7 @@ class _LockScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('ZYRA', style: ZyraText.wordmark(size: 30)),
+                  ZyraWordmark(style: ZyraText.wordmark(size: 30)),
                   SizedBox(height: 10),
                   Text(
                     'Locked',

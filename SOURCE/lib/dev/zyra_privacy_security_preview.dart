@@ -39,6 +39,8 @@ class ZyraPrivacySecurityPreview extends StatefulWidget {
     this.onMessageTextChanged,
     this.signedInWith = 'Apple',
     this.email = 'adam@…',
+    this.backupSignInAdded = false,
+    this.onAddBackupSignIn,
     this.otherDevicesPresent = true,
     this.onSignOutOtherDevices,
   });
@@ -52,6 +54,8 @@ class ZyraPrivacySecurityPreview extends StatefulWidget {
   final ValueChanged<String>? onDelayChanged;
   final ValueChanged<bool>? onSwitcherCoverChanged, onMessageTextChanged;
   final String signedInWith, email;
+  final bool backupSignInAdded;
+  final VoidCallback? onAddBackupSignIn;
   final bool otherDevicesPresent;
   final VoidCallback? onSignOutOtherDevices;
 
@@ -63,6 +67,7 @@ class ZyraPrivacySecurityPreview extends StatefulWidget {
 class _ZyraPrivacySecurityPreviewState
     extends State<ZyraPrivacySecurityPreview> {
   bool _busy = false;
+  static const _activeGreen = Color(0xFF326B4C);
 
   @override
   Widget build(BuildContext context) {
@@ -424,8 +429,20 @@ class _ZyraPrivacySecurityPreviewState
     ]),
     const SizedBox(height: 8),
     _copy(
-      'Your ${widget.signedInWith} ID protects your account, including its own two-step check.',
+      'Your $_primaryAccount protects your account, including its own '
+      'two-step check.',
     ),
+    if (widget.onAddBackupSignIn != null || widget.backupSignInAdded) ...[
+      const SizedBox(height: 31),
+      _section('BACKUP SIGN-IN'),
+      _card([_backupSignInRow()]),
+      const SizedBox(height: 8),
+      _copy(
+        'If you ever lose your $_primaryAccount, you can still sign in '
+        'with $_backupProvider.',
+        size: 12.5,
+      ),
+    ],
     const SizedBox(height: 31),
     _section('SIGNED-IN DEVICES'),
     _card([
@@ -437,9 +454,52 @@ class _ZyraPrivacySecurityPreviewState
     ]),
     const SizedBox(height: 15),
     _copy(
-      'Lost a phone? Sign out everywhere else, then change your ${widget.signedInWith} ID password.',
+      'Lost a phone? Sign out everywhere else, then change your '
+      '$_primaryAccount password.',
     ),
   ];
+
+  String get _primaryAccount =>
+      widget.signedInWith == 'Google' ? 'Google account' : 'Apple ID';
+
+  String get _backupProvider =>
+      widget.signedInWith == 'Google' ? 'Apple' : 'Google';
+
+  Widget _backupSignInRow() {
+    final added = widget.backupSignInAdded;
+    final row = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              added ? _backupProvider : 'Add $_backupProvider as a backup',
+              style: ZyraText.body(size: 15),
+            ),
+          ),
+          const SizedBox(width: 8),
+          if (added)
+            Text('Added', style: ZyraText.body(size: 13, color: _activeGreen))
+          else
+            const Icon(
+              Icons.chevron_right,
+              color: ZyraColors.secondaryText,
+              size: 18,
+            ),
+        ],
+      ),
+    );
+    if (added) return row;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        key: const ValueKey('privacy_add_backup_sign_in'),
+        borderRadius: BorderRadius.circular(16),
+        onTap: ZyraTapFeedback.onTap(context, widget.onAddBackupSignIn),
+        child: row,
+      ),
+    );
+  }
 
   Widget _device(String name, String detail, {bool current = false}) => Padding(
     padding: const EdgeInsets.fromLTRB(16, 2, 16, 2),
@@ -452,7 +512,7 @@ class _ZyraPrivacySecurityPreviewState
           detail,
           style: ZyraText.body(
             size: 12,
-            color: current ? const Color(0xFF326B4C) : ZyraColors.secondaryText,
+            color: current ? _activeGreen : ZyraColors.secondaryText,
           ),
         ),
       ],
@@ -477,7 +537,7 @@ class _ZyraPrivacySecurityPreviewState
       : Center(
           child: Text(
             'Only this phone is signed in.',
-            style: ZyraText.body(size: 14, color: const Color(0xFF326B4C)),
+            style: ZyraText.body(size: 14, color: _activeGreen),
           ),
         );
 

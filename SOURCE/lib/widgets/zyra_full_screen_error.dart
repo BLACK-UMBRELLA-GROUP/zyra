@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import 'zyra_wordmark.dart';
 import 'package:flutter/services.dart';
 
 import '../models/zyra_error_state.dart';
@@ -160,8 +162,7 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          'ZYRA',
+                        ZyraWordmark(
                           textAlign: TextAlign.center,
                           style: ZyraText.wordmark(
                             size: 23,

@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+
+import '../widgets/zyra_wordmark.dart';
 import 'package:flutter/semantics.dart';
 
 import '../theme/zyra_text.dart';
@@ -323,8 +325,7 @@ class _ZyraFirstTourOverlayState extends State<ZyraFirstTourOverlay>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'ZYRA',
+          ZyraWordmark(
             style: ZyraText.body(
               size: 22,
               color: _gold,

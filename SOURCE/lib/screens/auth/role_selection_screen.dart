@@ -9,6 +9,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+import '../../widgets/zyra_wordmark.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_initial_signup_draft_service.dart';
@@ -353,18 +355,22 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
   }) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Row(
-        children: [
-          Text(
-            'ZYRA',
-            style: ZyraText.wordmark(
-              size: 20,
-              color: ZyraColors.splashWordmark,
+      LayoutBuilder(
+        builder: (context, constraints) => Row(
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: constraints.maxWidth),
+              child: ZyraWordmark(
+                style: ZyraText.wordmark(
+                  size: 20,
+                  color: ZyraColors.splashWordmark,
+                ),
+              ),
             ),
-          ),
-          const Spacer(),
-          Flexible(child: setupLabel),
-        ],
+            const Spacer(),
+            Flexible(child: setupLabel),
+          ],
+        ),
       ),
       SizedBox(height: 12),
       // Path choice is a branch, not step one of an invented two-step bar.

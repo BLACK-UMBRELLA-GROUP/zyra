@@ -34,6 +34,7 @@ bool _apply(
   List<String> photos = const [_chosen],
   List<String> ethnicities = const ['British', 'Pakistani'],
   ZyraCompatibilityDraft? preferences,
+  String? signInProvider,
 }) => session.applySignup(
   guardian: guardian,
   firstName: 'Aisha',
@@ -45,9 +46,32 @@ bool _apply(
   ethnicities: ethnicities,
   photos: photos,
   preferences: preferences ?? _preferences(gender),
+  signInProvider: signInProvider,
 );
 
 void main() {
+  test('backup sign-in remains with the sample and its current provider', () {
+    var allowed = true;
+    final session = _session(canAct: () => allowed);
+    addTearDown(session.dispose);
+    expect(session.signInProvider(false), 'Apple');
+    expect(session.addBackupSignIn(false, primaryProvider: 'Apple'), isTrue);
+    expect(_apply(session, signInProvider: 'Google'), isTrue);
+    expect(session.signInProvider(false), 'Google');
+    expect(session.hasBackupSignIn(false), isFalse);
+    expect(session.addBackupSignIn(false, primaryProvider: 'Apple'), isFalse);
+    expect(session.addBackupSignIn(false, primaryProvider: 'Google'), isTrue);
+    expect(session.addBackupSignIn(false, primaryProvider: 'Google'), isFalse);
+    expect(session.hasBackupSignIn(true), isFalse);
+    expect(session.clearSignup(), isTrue);
+    expect(session.signInProvider(false), 'Apple');
+    expect(session.hasBackupSignIn(false), isFalse);
+    allowed = false;
+    expect(session.addBackupSignIn(false, primaryProvider: 'Apple'), isFalse);
+    allowed = true;
+    expect(session.addBackupSignIn(false, primaryProvider: 'Apple'), isFalse);
+  });
+
   test(
     'signup identity, photos and preferences are detached and role-local',
     () async {

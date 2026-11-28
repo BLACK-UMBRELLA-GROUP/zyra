@@ -2,6 +2,8 @@
 // OA-ZYRA-316 / DR-ZYRA-276: unchosen splash artwork retired.
 import 'package:flutter/material.dart';
 
+import 'zyra_wordmark.dart';
+
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 
@@ -102,8 +104,7 @@ class ZyraSplashArtworkFrame extends StatelessWidget {
             opacity: arrival,
             child: Transform.translate(
               offset: Offset(0, 10 * (1 - arrival)),
-              child: Text(
-                'ZYRA',
+              child: ZyraWordmark(
                 key: const ValueKey('splash_study_wordmark'),
                 style: ZyraText.wordmark(
                   size: wordmarkSize,

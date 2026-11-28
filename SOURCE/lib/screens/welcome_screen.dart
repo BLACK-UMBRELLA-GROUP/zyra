@@ -15,6 +15,8 @@
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
+
+import '../widgets/zyra_wordmark.dart';
 import '../dev/dev_onboarding_gold_design.dart';
 import '../models/zyra_error_state.dart';
 import '../services/zyra_auth.dart';
@@ -221,18 +223,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     // settling, so the mark GROWS into place across the
                     // handoff rather than shrinking away.
                     //
-                    // NOT RESPONSIVE. 80pt is close to edge-to-edge on a 390pt
-                    // phone and there is no scaling for narrower devices — an
-                    // iPhone SE will be tight. Flagged rather than solved,
-                    // because a responsive wordmark is its own decision.
+                    // LOCK14 V9 correction 4b keeps the inherited size while
+                    // it fits, then caps the whole word at the content width.
                     if (widget.devPreview)
                       // The local rehearsal has a persistent Close header. Keep
                       // its wordmark single-line at compact/enlarged-text sizes;
                       // ordinary Welcome retains its approved 80pt presentation.
                       FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Text(
-                          'ZYRA',
+                        child: ZyraWordmark(
                           maxLines: 1,
                           style: ZyraText.wordmark(
                             size: 80,
@@ -241,8 +240,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         ),
                       )
                     else
-                      Text(
-                        'ZYRA',
+                      ZyraWordmark(
                         style: ZyraText.wordmark(
                           size: 80,
                           color: ZyraColors.splashWordmark,

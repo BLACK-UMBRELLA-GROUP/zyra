@@ -23,6 +23,7 @@ enum ZyraSignupStep {
   aboutYou,
   addGuardian,
   allSet,
+  recovery,
 }
 
 /// Detached LOCK 34 rehearsal state. It never creates an account, grants a
@@ -123,6 +124,12 @@ class ZyraSignupPreviewController extends ChangeNotifier {
     _surname = 'Hussain';
     _step = ZyraSignupStep.role;
     notifyListeners();
+  }
+
+  void openRecovery() {
+    if (_step == ZyraSignupStep.welcome) {
+      setStep(ZyraSignupStep.recovery);
+    }
   }
 
   // The existing admin Unverified switch changes only this local rehearsal.
@@ -348,7 +355,9 @@ class ZyraSignupPreviewController extends ChangeNotifier {
     ZyraSignupStep.relationship => _relationship != null,
     ZyraSignupStep.addSeeker => pendingSeekerName != null,
     ZyraSignupStep.membership => _verified,
-    ZyraSignupStep.splash || ZyraSignupStep.welcome => false,
+    ZyraSignupStep.splash ||
+    ZyraSignupStep.welcome ||
+    ZyraSignupStep.recovery => false,
     _ => true,
   };
 
@@ -514,6 +523,10 @@ class ZyraSignupPreviewController extends ChangeNotifier {
 
   void back() {
     if (!canGoBack) {
+      return;
+    }
+    if (_step == ZyraSignupStep.recovery) {
+      setStep(ZyraSignupStep.welcome);
       return;
     }
     final steps = isSetup ? _setupSteps : _initialSteps;

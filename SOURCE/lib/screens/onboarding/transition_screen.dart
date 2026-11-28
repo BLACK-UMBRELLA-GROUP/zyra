@@ -2,6 +2,8 @@
 // the reading area scrollable and its continuation consistently reachable.
 
 import 'package:flutter/material.dart';
+
+import '../../widgets/zyra_wordmark.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_onboarding_direction_style.dart';
@@ -133,8 +135,7 @@ class TransitionScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
-              child: Text(
-                'ZYRA',
+              child: ZyraWordmark(
                 style: ZyraText.wordmark(
                   size: 17,
                   color: ZyraColors.splashWordmark,

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+
+import '../widgets/zyra_wordmark.dart';
 import 'package:flutter/services.dart';
 
 import '../data/zyra_membership_catalog.dart';
@@ -64,12 +66,14 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
   Timer? _splashTimer;
   String _search = '';
   ZyraSignupStep? _lastStep;
+  int _stepVisit = 0;
 
   ZyraSignupPreviewController get c => widget.controller;
 
   @override
   void initState() {
     super.initState();
+    _lastStep = c.step;
     c.addListener(_changed);
   }
 
@@ -85,7 +89,8 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     if (oldWidget.controller != c) {
       oldWidget.controller.removeListener(_changed);
       c.addListener(_changed);
-      _lastStep = null;
+      _lastStep = c.step;
+      _stepVisit++;
       _scheduleSplash();
     }
   }
@@ -108,6 +113,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
       _search = '';
       _textControllers['search']?.clear();
       _lastStep = c.step;
+      _stepVisit++;
       _roleSwipe.cancel();
       _membershipSwipe.cancel();
       _scheduleSplash();
@@ -136,13 +142,15 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     );
   }
 
-  VoidCallback _action(VoidCallback callback) {
+  VoidCallback _action(VoidCallback callback, {bool currentVisit = false}) {
     final opening = c;
     final step = c.step;
+    final visit = _stepVisit;
     return ZyraTapFeedback.onTap(context, () {
       if (mounted &&
           identical(opening, c) &&
           c.step == step &&
+          (!currentVisit || _stepVisit == visit) &&
           widget.canAct()) {
         callback();
       }
@@ -192,6 +200,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     final content = switch (c.step) {
       ZyraSignupStep.splash => _splash(),
       ZyraSignupStep.welcome => _welcome(),
+      ZyraSignupStep.recovery => _recovery(),
       ZyraSignupStep.role => _role(),
       ZyraSignupStep.gender => _gender(),
       ZyraSignupStep.membership => _membership(),
@@ -203,7 +212,8 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
         MediaQuery.sizeOf(context).height < 700 &&
         (textScale > 1.2 || c.step == ZyraSignupStep.accountReady) &&
         c.step != ZyraSignupStep.splash &&
-        c.step != ZyraSignupStep.welcome;
+        c.step != ZyraSignupStep.welcome &&
+        c.step != ZyraSignupStep.recovery;
     return ColoredBox(
       color: ZyraColors.ivoryTop,
       child: DecoratedBox(
@@ -250,8 +260,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
   Widget _brand({bool line = false}) => Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      Text(
-        'ZYRA',
+      ZyraWordmark(
         style: ZyraText.wordmark(size: 54).copyWith(letterSpacing: 14),
       ),
       const SizedBox(height: 8),
@@ -283,40 +292,168 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
           : Text('G', style: ZyraText.button(color: ZyraColors.ivoryTop)),
       onPressed: () => c.chooseProvider(apple ? 'Apple' : 'Google'),
     );
-    return Column(
-      key: const ValueKey('signup_welcome'),
-      children: [
-        Expanded(child: Center(child: _brand())),
-        signIn(appleFirst),
-        const SizedBox(height: 12),
-        signIn(!appleFirst),
-        const SizedBox(height: 40),
-      ],
+    return LayoutBuilder(
+      builder: (context, viewport) => ZyraShadowScrollView(
+        key: const ValueKey('signup_welcome_scroll'),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: viewport.maxHeight),
+          child: IntrinsicHeight(
+            child: Column(
+              key: const ValueKey('signup_welcome'),
+              children: [
+                Expanded(child: Center(child: _brand())),
+                signIn(appleFirst),
+                const SizedBox(height: 12),
+                signIn(!appleFirst),
+                const SizedBox(height: 8),
+                TextButton(
+                  key: const ValueKey('signup_open_recovery'),
+                  onPressed: _action(c.openRecovery, currentVisit: true),
+                  style: TextButton.styleFrom(
+                    foregroundColor: ZyraColors.goldText,
+                    textStyle: ZyraText.body(size: 14),
+                  ),
+                  child: const Text('Can’t sign in?'),
+                ),
+                const SizedBox(height: 14),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
+
+  Widget _backButton() => SizedBox(
+    width: 34,
+    child: IconButton(
+      key: const ValueKey('signup_back'),
+      padding: EdgeInsets.zero,
+      alignment: Alignment.centerLeft,
+      tooltip: 'Back',
+      onPressed: _action(
+        c.back,
+        currentVisit: c.step == ZyraSignupStep.recovery,
+      ),
+      icon: const Icon(
+        Icons.chevron_left,
+        color: ZyraColors.goldText,
+        size: 27,
+      ),
+    ),
+  );
+
+  Widget _recovery() => Column(
+    key: const ValueKey('signup_recovery'),
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      SizedBox(height: 36, child: Row(children: [_backButton()])),
+      Expanded(
+        child: ZyraShadowScrollView(
+          key: const ValueKey('signup_recovery_scroll'),
+          padding: const EdgeInsets.only(top: 8, bottom: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _title(
+                'Can’t sign in?',
+                'If you can still use your Apple or Google account, sign in '
+                    'with it on any phone — your ZYRA account comes with you.',
+              ),
+              const SizedBox(height: 16),
+              ZyraFloatingSurface(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: ZyraColors.cardSurface,
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'LOST YOUR APPLE OR GOOGLE ACCOUNT?',
+                          style: ZyraText.chapterLabel(
+                            color: ZyraColors.goldText,
+                          ),
+                        ),
+                        const Divider(height: 12),
+                        _recoveryStep(
+                          1,
+                          'Contact support',
+                          'Tell us your name and the email on your old Apple '
+                              'or Google account.',
+                        ),
+                        const Divider(height: 16),
+                        _recoveryStep(
+                          2,
+                          'We check it’s you',
+                          'A member of the ZYRA team checks your details by '
+                              'email. This can take a few days.',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      _button(
+        id: 'signup_recovery_contact',
+        label: 'Contact support',
+        currentVisit: true,
+        onPressed: () =>
+            _showPreviewNotice('Opens the support form — no sign-in needed'),
+      ),
+    ],
+  );
+
+  Widget _recoveryStep(int number, String title, String copy) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: ZyraColors.journeyGold.withValues(alpha: .6),
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            '$number',
+            style: ZyraText.body(size: 12, color: ZyraColors.goldText),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: ZyraText.body(size: 15)),
+              const SizedBox(height: 5),
+              Text(
+                copy,
+                style: ZyraText.subtext(size: 12.5).copyWith(height: 1.45),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 
   Widget _header() => SizedBox(
     height: 36,
     child: Row(
       children: [
-        if (c.canGoBack)
-          SizedBox(
-            width: 34,
-            child: IconButton(
-              key: const ValueKey('signup_back'),
-              padding: EdgeInsets.zero,
-              alignment: Alignment.centerLeft,
-              tooltip: 'Back',
-              onPressed: _action(c.back),
-              icon: Icon(
-                Icons.chevron_left,
-                color: ZyraColors.goldText,
-                size: 27,
-              ),
-            ),
-          )
-        else
-          const SizedBox(width: 34),
+        if (c.canGoBack) _backButton() else const SizedBox(width: 34),
         Expanded(
           child: ZyraDeveloperTitle(
             longPress: true,
@@ -405,6 +542,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     required VoidCallback? onPressed,
     bool dark = false,
     bool outlined = false,
+    bool currentVisit = false,
     Widget? leading,
   }) {
     final button = SizedBox(
@@ -416,7 +554,9 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
       child: outlined
           ? OutlinedButton(
               key: ValueKey(id),
-              onPressed: onPressed == null ? null : _action(onPressed),
+              onPressed: onPressed == null
+                  ? null
+                  : _action(onPressed, currentVisit: currentVisit),
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 foregroundColor: ZyraColors.onAction,
@@ -434,7 +574,9 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
             )
           : FilledButton(
               key: ValueKey(id),
-              onPressed: onPressed == null ? null : _action(onPressed),
+              onPressed: onPressed == null
+                  ? null
+                  : _action(onPressed, currentVisit: currentVisit),
               style: FilledButton.styleFrom(
                 backgroundColor: dark
                     ? ZyraColors.espresso
@@ -655,7 +797,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     );
   }
 
-  void _purchaseNotice(String message) {
+  void _showPreviewNotice(String message) {
     if (!widget.canAct()) return;
     ScaffoldMessenger.maybeOf(
       context,
@@ -708,7 +850,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
         offer: c.membershipBasic
             ? ZyraPurchaseOffer.seekerBasic
             : ZyraPurchaseOffer.seekerOne,
-        onNotice: _purchaseNotice,
+        onNotice: _showPreviewNotice,
         canAct: widget.canAct,
         canRetainLegal: () =>
             mounted &&
@@ -725,7 +867,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
         onPressed: c.verified
             ? c.membershipBasic
                   ? _holdMembership
-                  : () => _purchaseNotice(ZyraPurchaseFinePrint.appleNotice)
+                  : () => _showPreviewNotice(ZyraPurchaseFinePrint.appleNotice)
             : null,
       ),
     ],

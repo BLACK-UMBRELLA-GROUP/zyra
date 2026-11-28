@@ -9,6 +9,8 @@ import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/zyra_wordmark.dart';
+
 import '../data/zyra_membership_catalog.dart';
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
@@ -854,8 +856,7 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          'ZYRA',
+                        ZyraWordmark(
                           style: ZyraText.wordmark(
                             size: 11,
                             color: ZyraColors.ink(0.24),

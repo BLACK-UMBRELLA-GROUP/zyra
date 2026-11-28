@@ -92,10 +92,18 @@ void main() {
         lessThan(tester.getTopLeft(_key('signup_google')).dy),
       );
       expect(find.byType(TextField), findsNothing);
+      expect(
+        tester.getTopLeft(_key('signup_open_recovery')).dy,
+        greaterThan(tester.getBottomRight(_key('signup_google')).dy),
+      );
       await _mount(tester, c, platform: TargetPlatform.android);
       expect(
         tester.getTopLeft(_key('signup_google')).dy,
         lessThan(tester.getTopLeft(_key('signup_apple')).dy),
+      );
+      expect(
+        tester.getTopLeft(_key('signup_open_recovery')).dy,
+        greaterThan(tester.getBottomRight(_key('signup_apple')).dy),
       );
       await tester.tap(_key('signup_google'));
       await tester.pumpAndSettle();
@@ -103,6 +111,53 @@ void main() {
       expect(c.provider, 'Google');
     },
   );
+
+  testWidgets('Recovery stays in the sample and rejects retired actions', (
+    tester,
+  ) async {
+    final c = ZyraSignupPreviewController()..finishSplash();
+    addTearDown(c.dispose);
+    var allowed = true;
+    await _mount(tester, c, canAct: () => allowed);
+    final fromWelcome = tester
+        .widget<TextButton>(_key('signup_open_recovery'))
+        .onPressed!;
+    await tester.tap(_key('signup_open_recovery'));
+    await tester.pumpAndSettle();
+    expect(c.step, ZyraSignupStep.recovery);
+    expect(_key('signup_progress'), findsNothing);
+    expect(_key('signup_skip'), findsNothing);
+    expect(find.byType(TextField), findsNothing);
+    final fromRecovery = tester
+        .widget<FilledButton>(_key('signup_recovery_contact'))
+        .onPressed!;
+    await tester.tap(_key('signup_recovery_contact'));
+    await tester.pumpAndSettle();
+    expect(find.text('Opens the support form — no sign-in needed'), findsOne);
+    expect(c.step, ZyraSignupStep.recovery);
+    expect(c.hasAccount, isFalse);
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
+    final back = tester.widget<IconButton>(_key('signup_back')).onPressed!;
+    await tester.tap(_key('signup_back'));
+    await tester.pumpAndSettle();
+    expect(c.step, ZyraSignupStep.welcome);
+    fromWelcome();
+    expect(c.step, ZyraSignupStep.welcome);
+    await tester.tap(_key('signup_open_recovery'));
+    await tester.pumpAndSettle();
+    back();
+    fromRecovery();
+    await tester.pumpAndSettle();
+    expect(c.step, ZyraSignupStep.recovery);
+    expect(find.byType(SnackBar), findsNothing);
+    allowed = false;
+    await tester.tap(_key('signup_recovery_contact'));
+    await tester.tap(_key('signup_back'));
+    await tester.pumpAndSettle();
+    expect(c.step, ZyraSignupStep.recovery);
+    expect(find.byType(SnackBar), findsNothing);
+  });
 
   testWidgets('A retired role swipe cannot change a later step', (
     tester,

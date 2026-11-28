@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/zyra_wordmark.dart';
+
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
@@ -33,8 +35,9 @@ class ZyraEmailTemplatePreview extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'Z Y R A',
+                  ZyraWordmark(
+                    text: 'Z Y R A',
+                    semanticsLabel: 'ZYRA',
                     textAlign: TextAlign.center,
                     style: ZyraText.heading(
                       size: 18,
