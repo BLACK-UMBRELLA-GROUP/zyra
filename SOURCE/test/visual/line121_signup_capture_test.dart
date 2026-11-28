@@ -281,6 +281,18 @@ void main() {
         c.advance();
       },
     ),
+    // LOCK50 adds this signed-out route to both typed signup-role matrices.
+    // Audit-only samples preserve the existing LOCK34 master capture set.
+    if (baselineTextAuditOnly)
+      for (final guardian in [false, true])
+        (
+          'lock50_recovery__${guardian ? 'guardian' : 'seeker'}',
+          guardian,
+          (c) {
+            c.setStep(ZyraSignupStep.welcome);
+            c.openRecovery();
+          },
+        ),
   ];
 
   for (final (name, guardian, arrange) in samples) {
